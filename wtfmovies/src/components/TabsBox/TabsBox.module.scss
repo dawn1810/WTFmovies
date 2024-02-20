@@ -1,0 +1,86 @@
+.wrapper {
+    height: fit-content;
+    width: 100%;
+    grid-area: tabbox;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    .tabs {
+        --bs-nav-tabs-border-width: none;
+        --bs-nav-tabs-link-active-color: var(--white);
+        --bs-nav-link-color: var(--white);
+        --bs-nav-tabs-link-hover-border-color: transparent;
+        --bs-nav-tabs-link-active-bg: #00000081;
+
+        height: 60px;
+        gap: 10px;
+        font-weight: 600;
+
+        button {
+            height: 100%;
+        }
+    }
+
+    .cmt-tabs {
+        --bs-nav-tabs-link-active-bg: #a87c7c;
+
+        position: relative;
+
+        button {
+            padding: 10px 30px;
+            border-radius: 5px 20px 0 0;
+            background-color: #8785a2;
+        }
+
+        li:first-child button {
+            position: relative;
+            isolation: auto !important;
+
+            &:after {
+                content: '';
+                position: absolute;
+                top: 100%;
+                left: 0;
+                display: block;
+                height: 100px;
+                width: 100px;
+                background-color: inherit;
+                z-index: -1;
+            }
+        }
+    }
+
+    // tab content
+    .tab-content {
+        border-radius: 0 5px 5px 5px;
+        background-color: #00000081;
+    }
+
+    .tab-content {
+        padding: 28px;
+        color: var(--white);
+    }
+
+    .grid-content {
+        padding: 18px;
+    }
+
+    .list-content {
+        padding: 0;
+        background-color: transparent;
+
+        .films-list {
+            width: 100%;
+            border-radius: 0 5px 5px;
+            background-color: #00000081;
+        }
+    }
+
+    .cmt-content {
+        position: relative;
+        padding: 50px;
+        border-radius: 100px 5px 5px 5px;
+        background-color: #503c3c;
+    }
+}

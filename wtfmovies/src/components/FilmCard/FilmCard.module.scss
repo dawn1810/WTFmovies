@@ -1,0 +1,133 @@
+.wrapper {
+    cursor: pointer;
+    position: relative;
+    width: 180px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 5px;
+    background-color: #000;
+
+    img {
+        border-radius: 5px;
+        object-fit: cover;
+        background-position: center;
+    }
+
+    .nooverlay-img {
+        border-radius: 5px 5px 0 0;
+    }
+
+    .info {
+        position: absolute;
+        bottom: 0;
+        height: 30%;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        border-radius: 5px;
+        background-color: #3228289c;
+        color: var(--white);
+        text-align: center;
+
+        h4 {
+            width: 80%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        h5 {
+            width: 80%;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    }
+
+    .nooverlay-info {
+        position: static;
+        height: 20%;
+        border-radius: 0 0 5px 5px;
+        background-color: var(--primary);
+    }
+
+    .large-info {
+        width: 50%;
+        align-self: flex-end;
+    }
+
+    .rating {
+        position: absolute;
+        top: 5px;
+        left: 5px;
+        height: 50px;
+        width: 50px;
+
+        img {
+            height: 100%;
+            width: 100%;
+            opacity: 0.7;
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--white);
+            font-weight: 600;
+        }
+    }
+
+    .large-rating {
+        top: unset;
+        bottom: 5px;
+    }
+
+    .episodes {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+        height: 50px;
+        width: 50px;
+
+        img {
+            height: 100%;
+            width: 100%;
+            opacity: 0.7;
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--white);
+            font-weight: 600;
+        }
+    }
+
+    .nooverlay-episodes {
+        top: unset;
+        bottom: 20%;
+    }
+
+    .large-episodes {
+        top: unset;
+        bottom: 5px;
+        left: 60px;
+    }
+}
+
+.nooverlay-wrapper {
+    height: auto;
+}
+
+.large-wrapper {
+    width: 360px;
+}

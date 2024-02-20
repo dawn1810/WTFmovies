@@ -1,0 +1,29 @@
+.wrapper {
+    width: 500px;
+    display: flex;
+    border-radius: 999px;
+
+    .search-input {
+        width: 90%;
+        height: 40px;
+        padding: 5px 18px;
+        border: 2px solid var(--blur);
+        border-radius: 999px 0 0 999px;
+
+        &:focus {
+            border: 2px solid var(--text-color);
+
+            ~ .search-btn {
+                color: #000;
+            }
+        }
+    }
+    .search-btn {
+        width: 15%;
+        border: 2px solid var(--blur);
+        border-left: none;
+        border-radius: 0 999px 999px 0;
+        color: var(--blur);
+        font-size: 1.8rem;
+    }
+}

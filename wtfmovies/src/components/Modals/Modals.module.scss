@@ -1,0 +1,66 @@
+.wrapper {
+    // Custom
+    --bs-modal-header-padding: 1rem 2rem !important;
+    --bs-modal-padding: 2rem !important;
+
+    .title {
+        font-size: 2.4rem;
+    }
+
+    .login-form {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+
+        .text-input {
+            padding: 5px 10px;
+            font-size: 1.4rem;
+        }
+
+        .submit {
+            margin-left: 0;
+        }
+    }
+
+    .btn-group {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        justify-content: flex-start;
+
+        button {
+            margin-left: 0;
+        }
+    }
+
+    .divider {
+        display: flex;
+
+        &:before,
+        &:after {
+            content: '';
+            flex: 1;
+        }
+    }
+
+    // Base line
+    .line {
+        align-items: center;
+        margin: 20px -10px 10px;
+
+        &:before,
+        &:after {
+            height: 1px;
+            margin: 0 1em;
+        }
+    }
+
+    .one-line {
+        &:before,
+        &:after {
+            background: var(--primary);
+        }
+    }
+}
