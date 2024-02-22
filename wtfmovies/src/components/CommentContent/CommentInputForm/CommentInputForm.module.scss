@@ -1,0 +1,52 @@
+.wrapper {
+    display: flex;
+    gap: 40px;
+    justify-content: center;
+
+    .user-info {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+        }
+
+        .user-name {
+            text-align: center;
+        }
+    }
+
+    .form {
+        --bs-body-color: var(--white);
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        input,
+        textarea {
+            padding: 5px 10px;
+            border: none;
+            background-color: var(--comment-background-color);
+            font-size: 1.4rem;
+
+            &::placeholder {
+                color: var(--bs-body-color);
+            }
+        }
+
+        .form-bottom {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+
+            input {
+                width: 280px;
+            }
+        }
+    }
+}

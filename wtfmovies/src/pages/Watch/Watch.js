@@ -1,10 +1,10 @@
 import ReactPlayer from 'react-player/youtube';
 import classNames from 'classnames/bind';
 
-import Button from '~/components/Button';
-import Rating from '~/components/Rating';
+import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
+import FilmInteract from '~/components/FilmInteract';
 
 const cx = classNames.bind(style);
 
@@ -176,7 +176,7 @@ const commentTabs = [
     {
         title: '#BÌNH LUẬN',
         eventKey: 'comment',
-        content: 'LỊCH CHIẾU: Thứ 2 hàng tuần trên WTF movie.',
+        content: <CommentContent />,
     },
     {
         title: '#THÔNG TIN PHIM',
@@ -185,6 +185,7 @@ const commentTabs = [
             'THÔNG BÁO: Tuần này do một vài lý do chúng mình sẽ ra bản Thuyết minh chậm hơn một chút mong mọi người thông cảm',
     },
 ];
+
 function Watch() {
     return (
         <div className={cx('wrapper')}>
@@ -197,15 +198,7 @@ function Watch() {
                 controls
                 light
             />
-            <div className={cx('film-ỉnteract')}>
-                <Rating />
-                <div className={cx('server-list')}>
-                    <Button primary>#Máy chủ miền Tây</Button>
-                    <Button primary>#Máy chủ miền Đất Hứa</Button>
-                    <Button primary>#Máy chủ miền Đất Trống</Button>
-                </div>
-                <Button primary>#Méc bọ</Button>
-            </div>
+            <FilmInteract />
             <TabsBox tabs={episodesTabs} flexContent textContent defaultActiveKey="visub" className={cx('tab-box')} />
             <TabsBox
                 tabs={proposeFilmsTabs}

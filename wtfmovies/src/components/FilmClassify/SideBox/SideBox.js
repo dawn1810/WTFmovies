@@ -77,7 +77,7 @@ const films = [
 function SideBox({ to, title, icon }) {
     return (
         <div className={cx('wrapper')}>
-            <Button to={to} primary={true} large={true} leftIcon={icon} className={cx('title')}>
+            <Button primary large to={to} leftIcon={icon} className={cx('title')}>
                 {title}
             </Button>
             <div className={cx('side-films')}>

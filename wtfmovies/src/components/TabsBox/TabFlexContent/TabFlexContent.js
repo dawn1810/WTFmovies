@@ -10,7 +10,7 @@ function TabFlexContent({ episodes }) {
     return (
         <div className={cx('wrapper')}>
             {episodes.map((episode, index) => (
-                <Button key={index} className={cx('expisode')} primary>
+                <Button primary key={index} className={cx('expisode')}>
                     {episode}
                 </Button>
             ))}

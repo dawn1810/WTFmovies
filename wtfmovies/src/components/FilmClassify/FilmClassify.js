@@ -154,7 +154,7 @@ const tabs = [
 function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extraIcon }) {
     return (
         <div className={cx('wrapper')}>
-            <Button to={mainDir} primary={true} large={true} leftIcon={mainIcon} className={cx('film-classify-title')}>
+            <Button primary large to={mainDir} leftIcon={mainIcon} className={cx('film-classify-title')}>
                 {mainTitle}
             </Button>
             <TabBox tabs={tabs} defaultActiveKey="all" gridContent />

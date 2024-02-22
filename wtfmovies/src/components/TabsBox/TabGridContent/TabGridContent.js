@@ -25,7 +25,7 @@ function TabGridContent({ films }) {
                     />
                 ))}
             </div>
-            <Button primary={true} rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
+            <Button primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
                 Xem thêm
             </Button>
         </div>

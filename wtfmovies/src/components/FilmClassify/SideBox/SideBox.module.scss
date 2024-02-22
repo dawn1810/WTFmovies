@@ -19,7 +19,7 @@
         justify-items: center;
         padding: 18px;
         border-radius: 5px;
-        background-color: #00000081;
+        background-color: var(--blur-background-color);
 
         .side-films-top {
             grid-area: one;

@@ -19,16 +19,20 @@ function Modals({ ...props }) {
             </Modal.Header>
             <Modal.Body className={cx('modal-body')}>
                 <Form.Group className={cx('btn-group')} controlId="formHorizontalCheck">
-                    <Button leftIcon={<FontAwesomeIcon icon={faGoogle} />}>Google</Button>
+                    <Button primary leftIcon={<FontAwesomeIcon icon={faGoogle} />}>
+                        Google
+                    </Button>
 
-                    <Button leftIcon={<FontAwesomeIcon icon={faFacebook} />}>Facebook</Button>
+                    <Button primary leftIcon={<FontAwesomeIcon icon={faFacebook} />}>
+                        Facebook
+                    </Button>
 
-                    <Button leftIcon={<FontAwesomeIcon icon={faTwitter} />}>Twitter</Button>
+                    <Button primary leftIcon={<FontAwesomeIcon icon={faTwitter} />}>
+                        Twitter
+                    </Button>
                 </Form.Group>
 
-                <h3 className={cx('divider', 'line', 'one-line')} contenteditable>
-                    Đăng nhập bằng tài khoản
-                </h3>
+                <h3 className={cx('divider', 'line', 'one-line')}>Đăng nhập bằng tài khoản</h3>
 
                 <Form className={cx('login-form')}>
                     <Form.Group className="mb-3" controlId="formHorizontalEmail">
@@ -54,7 +58,7 @@ function Modals({ ...props }) {
                         </Form.Text>
                     </Form.Group>
 
-                    <Button className={`mb-5 ${cx('submit')}`} type="submit">
+                    <Button primary className={`mb-5 ${cx('submit')}`} type="submit">
                         Đăng nhập
                     </Button>
                 </Form>

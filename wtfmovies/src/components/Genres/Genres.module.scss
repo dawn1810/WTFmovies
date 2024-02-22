@@ -1,20 +1,45 @@
 .wrapper {
-    width: 100%;
+    width: var(--default-layout-width);
+    position: relative;
     display: flex;
+    justify-content: center;
     align-items: center;
-    gap: 10px;
-}
 
-.genres {
-    display: flex;
-    gap: 10px;
-    padding: 10px 0;
-    overflow: hidden;
-}
+    .genres {
+        display: flex;
+        gap: 5px;
+        padding: 10px 0;
+        overflow: hidden;
 
-.nav-btn {
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 1.6rem;
-    background-color: transparent;
+        .genres-carousel {
+            display: flex;
+            justify-content: center;
+            div {
+                width: var(--default-layout-width);
+                display: flex;
+                gap: 10px;
+                padding: 10px;
+            }
+        }
+    }
+
+    .left-btn,
+    .right-btn {
+        position: absolute;
+        padding: 5px 10px;
+        color: var(--white);
+        font-size: 1.6rem;
+        z-index: 1;
+    }
+
+    .left-btn {
+        left: 0;
+        background: rgb(1, 0, 15);
+        background: linear-gradient(90deg, rgba(1, 0, 15, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+    }
+    .right-btn {
+        right: 0;
+        background: rgb(1, 0, 15);
+        background: linear-gradient(90deg, rgba(1, 0, 15, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+    }
 }

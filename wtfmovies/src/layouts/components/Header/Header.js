@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
+import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
 import config from '~/config';
 import Button from '~/components/Button';
@@ -25,7 +26,6 @@ import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import Image from '~/components/Image';
 import Search from '../Search';
-import Genres from '~/components/Genres';
 
 const cx = classNames.bind(styles);
 

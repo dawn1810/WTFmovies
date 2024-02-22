@@ -4,10 +4,16 @@
 
 :root {
     // color
-    --primary: #81689d;
-    --text-color: #1f2544;
-    --white: #ffd0ec;
-    --blur: #474f7a;
+    --primary: #7e6363;
+    --primary-hover: #5d4949;
+    --white: #fff;
+    --text-color: #000;
+    --background-color: #3e3232;
+    --blur-background-color: #00000030;
+    --comment-background-color: #403030;
+    --cmt-content-background-color: #503c3c;
+    --cmt-tab-color: #a87c7c;
+    --cmt-tab-active-color: #8785a2;
 
     // font
     --font-family: 'Montserrat';
@@ -33,7 +39,7 @@ body {
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizespeed;
-    background-color: var(--blur);
+    background-color: var(--background-color);
     color: var(--text-color);
     overflow-y: overlay;
 }

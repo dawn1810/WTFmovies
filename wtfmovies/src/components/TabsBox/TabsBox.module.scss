@@ -11,7 +11,7 @@
         --bs-nav-tabs-link-active-color: var(--white);
         --bs-nav-link-color: var(--white);
         --bs-nav-tabs-link-hover-border-color: transparent;
-        --bs-nav-tabs-link-active-bg: #00000081;
+        --bs-nav-tabs-link-active-bg: var(--blur-background-color);
 
         height: 60px;
         gap: 10px;
@@ -23,14 +23,14 @@
     }
 
     .cmt-tabs {
-        --bs-nav-tabs-link-active-bg: #a87c7c;
+        --bs-nav-tabs-link-active-bg: var(--cmt-tab-color);
 
         position: relative;
 
         button {
             padding: 10px 30px;
             border-radius: 5px 20px 0 0;
-            background-color: #8785a2;
+            background-color: var(--cmt-tab-active-color);
         }
 
         li:first-child button {
@@ -54,7 +54,7 @@
     // tab content
     .tab-content {
         border-radius: 0 5px 5px 5px;
-        background-color: #00000081;
+        background-color: var(--blur-background-color);
     }
 
     .tab-content {
@@ -73,14 +73,14 @@
         .films-list {
             width: 100%;
             border-radius: 0 5px 5px;
-            background-color: #00000081;
+            background-color: var(--blur-background-color);
         }
     }
 
     .cmt-content {
         position: relative;
-        padding: 50px;
+        padding: 80px 100px;
         border-radius: 100px 5px 5px 5px;
-        background-color: #503c3c;
+        background-color: var(--cmt-content-background-color);
     }
 }
