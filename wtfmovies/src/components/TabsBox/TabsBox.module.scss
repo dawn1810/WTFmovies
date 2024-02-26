@@ -5,7 +5,8 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-
+    // width: var(--default-layout-width);
+    // margin-bottom: 60px;
     .tabs {
         --bs-nav-tabs-border-width: none;
         --bs-nav-tabs-link-active-color: var(--white);
@@ -23,14 +24,14 @@
     }
 
     .cmt-tabs {
-        --bs-nav-tabs-link-active-bg: var(--cmt-tab-color);
+        --bs-nav-tabs-link-active-bg: var(--light-background-color);
 
         position: relative;
 
         button {
             padding: 10px 30px;
             border-radius: 5px 20px 0 0;
-            background-color: var(--cmt-tab-active-color);
+            background-color: var(--blur-background-color);
         }
 
         li:first-child button {
@@ -81,6 +82,6 @@
         position: relative;
         padding: 80px 100px;
         border-radius: 100px 5px 5px 5px;
-        background-color: var(--cmt-content-background-color);
+        background-color: var(--light-background-color);
     }
 }

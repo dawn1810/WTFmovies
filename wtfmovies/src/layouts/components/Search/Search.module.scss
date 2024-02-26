@@ -7,12 +7,12 @@
         width: 90%;
         height: 40px;
         padding: 5px 18px;
-        border: 2px solid var(--background-color);
-        border-radius: 999px 0 0 999px;
+        border-radius: 8px 0px 0px 8px;
+        background: var(--light-background-color);
+        color: var(--white);
 
         &:focus {
-            border: 2px solid var(--text-color);
-
+            background: var(--background-color);
             ~ .search-btn {
                 color: #000;
             }
@@ -20,10 +20,11 @@
     }
     .search-btn {
         width: 15%;
-        border: 2px solid var(--background-color);
         border-left: none;
-        border-radius: 0 999px 999px 0;
+        border-radius: 0 8px 8px 0;
         color: var(--background-color);
         font-size: 1.8rem;
+        background: var(--blur-background-color);
+        color: var(--background-color);
     }
 }
