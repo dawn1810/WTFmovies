@@ -1,6 +1,7 @@
 import ReactPlayer from 'react-player/youtube';
 import classNames from 'classnames/bind';
 
+import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
@@ -181,22 +182,25 @@ const commentTabs = [
     {
         title: '#THÔNG TIN PHIM',
         eventKey: 'film-info',
-        content:
-            'THÔNG BÁO: Tuần này do một vài lý do chúng mình sẽ ra bản Thuyết minh chậm hơn một chút mong mọi người thông cảm',
+        content: <FilmInfo />,
     },
 ];
 
 function Watch() {
     return (
         <div className={cx('wrapper')}>
-            <h1>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
+            <h1 className={cx('title')}>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
             <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
             <ReactPlayer
-                url="https://www.youtube.com/watch?v=zU3hvvv15jQ"
+                url="https://rurimeiko.pages.dev/demo3.m3u8"
+                config={{
+                    forceHLS: true,
+                }}
                 width="1250px"
                 height="690px"
+                playing
                 controls
-                light
+                // light
             />
             <FilmInteract />
             <TabsBox tabs={episodesTabs} flexContent textContent defaultActiveKey="visub" className={cx('tab-box')} />

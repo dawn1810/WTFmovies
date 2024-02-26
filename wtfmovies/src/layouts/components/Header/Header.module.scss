@@ -42,11 +42,12 @@
 }
 
 .more-btn {
+    cursor: pointer;
     font-size: 2rem;
     margin-left: 28px;
     padding: 4px 8px;
     background-color: transparent;
-    cursor: pointer;
+    color: var(--white);
 }
 
 .action-btn {
