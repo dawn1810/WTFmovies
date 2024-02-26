@@ -9,8 +9,8 @@ const Player = ({ url }) => {
                 url={url}
                 width="1250px"
                 height="690px"
-                controls={true}
-                playing={true}
+                controls
+                playing
                 light={images.preload}
                 // config={{
                 //     file: {
