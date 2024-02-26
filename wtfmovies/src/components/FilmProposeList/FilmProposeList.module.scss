@@ -2,7 +2,7 @@
     width: var(--default-layout-width);
     padding: 18px;
     border-radius: 5px;
-    background-color: #32282862;
+    background-color: var(--blur-background-color);
 
     .carousel {
         position: relative;

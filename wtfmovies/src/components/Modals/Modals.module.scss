@@ -2,6 +2,7 @@
     // Custom
     --bs-modal-header-padding: 1rem 2rem !important;
     --bs-modal-padding: 2rem !important;
+    --bs-modal-bg: var(--white) !important;
 
     .title {
         font-size: 2.4rem;
@@ -14,8 +15,8 @@
         justify-content: flex-end;
 
         .text-input {
-            padding: 5px 10px;
-            font-size: 1.4rem;
+            padding: 6px 8px;
+            font-size: 1.6rem;
         }
 
         .submit {
