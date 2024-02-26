@@ -18,6 +18,8 @@
     }
 
     .cmt-tab-box {
+        width: var(--default-layout-width);
+        margin-bottom: 60px;
         display: flex;
         justify-content: center;
     }
