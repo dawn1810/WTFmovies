@@ -1,8 +1,8 @@
 const images = {
-    logo: require('~/assets/image/logo.png'),
-    itatory: require('~/assets/image/Itadory.jpg'),
-    star: require('~/assets/image/rating.png'),
-    episodes: require('~/assets/image/episodes.png'),
+    logo: require('~/assets/image/logo.svg').default,
+    itatory: require('~/assets/image/Itadory.jpg').default,
+    star: require('~/assets/image/rating.png').default,
+    episodes: require('~/assets/image/episodes.png').default,
 };
 
 export default images;

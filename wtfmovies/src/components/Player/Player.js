@@ -1,71 +1,29 @@
-import { useCallback, useRef, useState } from 'react';
+import React from 'react';
 import ReactPlayer from 'react-player';
-import classNames from 'classnames/bind';
 
-import style from './Player.module.scss';
-
-const cx = classNames.bind(style);
-
-function Player() {
-    const playerRef = useRef(null);
-    const urlInputRef = useRef(null);
-
-    const [state, setState] = useState({
-        url: null,
-        pip: false,
-        playing: true,
-        controls: false,
-        light: false,
-        volume: 0.8,
-        muted: false,
-        played: 0,
-        loaded: 0,
-        duration: 0,
-        playbackRate: 1.0,
-        loop: false,
-    });
-
-    const load = useCallback((url) => {
-        setState((prevState) => ({
-            ...prevState,
-            url,
-            played: 0,
-            loaded: 0,
-            pip: false,
-        }));
-    }, []);
-
-    const renderLoadButton = (url, label) => {
-        return <button onClick={() => load(url)}>{label}</button>;
-    };
-
-    renderLoadButton(
-        'https://bitdash-a.akamaihd.net/content/MI201109210084_1/m3u8s/f08e80da-bf1d-4e3d-8899-f0f6155f6efa.m3u8',
-        'HLS (m3u8)',
-    );
-
-    const { url, playing, controls, light, volume, muted, loop, played, loaded, duration, playbackRate, pip } = state;
-
-    const SEPARATOR = ' · ';
-
-    console.log(url);
+const Player = ({ url }) => {
     return (
-        <ReactPlayer
-            ref={playerRef}
-            className="react-player"
-            width="100%"
-            height="100%"
-            url={url}
-            pip={pip}
-            playing={playing}
-            controls={controls}
-            light={light}
-            loop={loop}
-            playbackRate={playbackRate}
-            volume={volume}
-            muted={muted}
-        />
+        <div className="player-wrapper">
+            <ReactPlayer
+                url={url}
+                width="1250px"
+                height="690px"
+                controls={true}
+                playing={true}
+                config={{
+                    file: {
+                        hlsOptions: {
+                            xhrSetup: function (xhr, url) {
+                                // Đây là cấu hình cho các request HTTP khi tải file M3U8,
+                                // bạn có thể sử dụng nó để cấu hình các header, ví dụ như để qua CORS
+                                xhr.withCredentials = true; // Đặt nếu server yêu cầu credentials
+                            },
+                        },
+                    },
+                }}
+            />
+        </div>
     );
-}
+};
 
 export default Player;

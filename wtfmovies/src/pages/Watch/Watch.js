@@ -6,6 +6,7 @@ import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
 import FilmInteract from '~/components/FilmInteract';
+import Player from '~/components/Player';
 
 const cx = classNames.bind(style);
 
@@ -191,17 +192,7 @@ function Watch() {
         <div className={cx('wrapper')}>
             <h1 className={cx('title')}>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
             <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-            <ReactPlayer
-                url="https://rurimeiko.pages.dev/demo3.m3u8"
-                config={{
-                    forceHLS: true,
-                }}
-                width="1250px"
-                height="690px"
-                playing
-                controls
-                // light
-            />
+            <Player />
             <FilmInteract />
             <TabsBox tabs={episodesTabs} flexContent textContent defaultActiveKey="visub" className={cx('tab-box')} />
             <TabsBox
