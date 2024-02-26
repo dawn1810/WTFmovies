@@ -8,13 +8,13 @@
         height: 40px;
         padding: 5px 18px;
         border-radius: 8px 0px 0px 8px;
-        background: var(--light-background-color);
+        background: var(--primary-active);
         color: var(--white);
 
         &:focus {
             background: var(--background-color);
             ~ .search-btn {
-                color: #000;
+                color: var(--white);
             }
         }
     }
@@ -22,9 +22,8 @@
         width: 15%;
         border-left: none;
         border-radius: 0 8px 8px 0;
-        color: var(--background-color);
+        color: var(--blur-background-color);
         font-size: 1.8rem;
         background: var(--blur-background-color);
-        color: var(--background-color);
     }
 }

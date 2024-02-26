@@ -24,7 +24,7 @@
     }
 
     .cmt-tabs {
-        --bs-nav-tabs-link-active-bg: var(--light-background-color);
+        --bs-nav-tabs-link-active-bg: var(--primary-active);
 
         position: relative;
 
@@ -83,6 +83,6 @@
         position: relative;
         padding: 80px 100px;
         border-radius: 100px 5px 5px 5px;
-        background-color: var(--light-background-color);
+        background-color: var(--primary-active);
     }
 }

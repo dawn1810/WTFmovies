@@ -53,7 +53,10 @@
 
     &:hover {
         border-color: var(--primary);
-        background: linear-gradient(0deg, rgba(0, 0, 0, 0.06), rgba(0, 0, 0, 0.06)), var(--primary-hover);
+        background: var(--primary-hover);
+    }
+    &:active {
+        background: var(--primary-active);
     }
 }
 
