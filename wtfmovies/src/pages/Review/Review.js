@@ -79,7 +79,9 @@ function Home() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('home-top')}>
-                <FilmInfo />
+                <div className={cx('info-content')}>
+                    <FilmInfo />
+                </div>
                 <FilmProposeList films={films} />
             </div>
             <TabBox

@@ -12,7 +12,9 @@
         align-items: center;
         gap: 20px;
         margin-bottom: 80px;
-
+        .info-content {
+            width: var(--default-layout-width);
+        }
         .film-info-container {
             display: flex;
             width: var(--default-layout-width);
