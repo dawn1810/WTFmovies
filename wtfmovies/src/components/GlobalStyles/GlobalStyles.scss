@@ -8,7 +8,7 @@
     --primary-hover: #69a0f9;
     --primary-active: #1b2330;
     --text-color: #fff;
-    --textfooter-border-star-color: #000;
+    --body-color: #000;
     --background-color: #0d1117;
     --blur-background-color: #1b233074;
     // fontD
@@ -36,7 +36,7 @@ body {
     line-height: 1.5;
     text-rendering: optimizespeed;
     background-color: var(--background-color);
-    color: var(--textfooter-border-star-color);
+    color: var(--body-color);
     overflow-y: overlay;
 }
 
@@ -65,7 +65,7 @@ input,
 }
 
 a {
-    color: var(--textfooter-border-star-color);
+    color: var(--body-color);
     text-decoration: none;
 }
 
