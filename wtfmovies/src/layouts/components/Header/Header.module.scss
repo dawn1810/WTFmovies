@@ -47,14 +47,14 @@
     margin-left: 28px;
     padding: 4px 8px;
     background-color: transparent;
-    color: var(--white);
+    color: var(--text-color);
 }
 
 .action-btn {
     position: relative;
     display: flex;
     font-size: 2.2rem;
-    color: var(--text-color);
+    color: var(--textfooter-border-star-color);
     background-color: transparent;
     padding: 4px 10px;
     cursor: pointer;
@@ -70,7 +70,7 @@
     border-radius: 10px;
     font-size: 1.4rem;
     font-weight: 600;
-    color: var(--white);
+    color: var(--text-color);
     font-family: var(--font-family);
     background-color: var(--background-color);
 }
@@ -91,11 +91,11 @@
     height: 32px;
     padding: 5px 10px;
     border-radius: 5px;
-    color: var(--white);
+    color: var(--text-color);
     background-color: var(--blur-background-color);
     white-space: nowrap;
 
     &:hover {
-        background-color: var(--genre-hover);
+        background-color: var(--primary);
     }
 }

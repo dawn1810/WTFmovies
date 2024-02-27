@@ -9,7 +9,7 @@
     font-family: var(--font-family);
     font-weight: 600;
     cursor: pointer;
-    background-color: var(--white);
+    background-color: var(--text-color);
     border: 1px solid transparent;
     user-select: none;
 
@@ -47,7 +47,7 @@
 }
 
 .primary {
-    color: var(--white);
+    color: var(--text-color);
     background-color: var(--primary);
     border-color: var(--primary);
 

@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: center;
     border-radius: 5px;
-    background-color: var(--text-color);
+    background-color: var(--textfooter-border-star-color);
 
     img {
         border-radius: 5px;
@@ -31,7 +31,7 @@
         padding: 10px;
         border-radius: 5px;
         background-color: var(--blur-background-color);
-        color: var(--white);
+        color: var(--text-color);
         text-align: center;
 
         h4 {
@@ -79,7 +79,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: var(--white);
+            color: var(--text-color);
             font-weight: 600;
         }
     }
@@ -107,7 +107,7 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            color: var(--white);
+            color: var(--text-color);
             font-weight: 600;
         }
     }

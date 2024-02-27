@@ -20,7 +20,7 @@
         border-radius: 5px;
         background-color: var(--comment-background-color);
         text-align: left;
-        color: var(--white);
+        color: var(--text-color);
     }
 }
 
@@ -69,7 +69,7 @@
             align-items: center;
             border-radius: 999px;
             font-size: 2.2rem;
-            color: var(--white);
+            color: var(--text-color);
             background-color: var(--blur-background-color);
             padding: 4px 10px;
             cursor: pointer;

@@ -9,8 +9,8 @@
     // margin-bottom: 60px;
     .tabs {
         --bs-nav-tabs-border-width: none;
-        --bs-nav-tabs-link-active-color: var(--white);
-        --bs-nav-link-color: var(--white);
+        --bs-nav-tabs-link-active-color: var(--text-color);
+        --bs-nav-link-color: var(--text-color);
         --bs-nav-tabs-link-hover-border-color: transparent;
         --bs-nav-tabs-link-active-bg: var(--blur-background-color);
 
@@ -54,14 +54,13 @@
 
     // tab content
     .tab-content {
-        
         border-radius: 0 5px 5px 5px;
         background-color: var(--blur-background-color);
     }
 
     .tab-content {
         padding: 28px;
-        color: var(--white);
+        color: var(--text-color);
     }
 
     .grid-content {
