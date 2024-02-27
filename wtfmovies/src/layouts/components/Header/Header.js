@@ -146,6 +146,7 @@ function Header() {
                         ) : (
                             <>
                                 <Button
+                                    className={cx('header-btn')}
                                     primary
                                     leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
                                     onClick={() => setModalShow(true)}

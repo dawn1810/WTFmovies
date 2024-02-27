@@ -12,7 +12,7 @@
         --bs-nav-tabs-link-active-color: var(--text-color);
         --bs-nav-link-color: var(--text-color);
         --bs-nav-tabs-link-hover-border-color: transparent;
-        --bs-nav-tabs-link-active-bg: var(--blur-background-color);
+        --bs-nav-tabs-link-active-bg: var(--card-background-color);
 
         height: 60px;
         gap: 10px;
@@ -24,7 +24,7 @@
     }
 
     .cmt-tabs {
-        --bs-nav-tabs-link-active-bg: var(--primary-active);
+        --bs-nav-tabs-link-active-bg: var(--card-background-color);
 
         position: relative;
 
@@ -55,7 +55,7 @@
     // tab content
     .tab-content {
         border-radius: 0 5px 5px 5px;
-        background-color: var(--blur-background-color);
+        background-color: var(--card-background-color);
     }
 
     .tab-content {
@@ -74,7 +74,7 @@
         .films-list {
             width: 100%;
             border-radius: 0 5px 5px;
-            background-color: var(--blur-background-color);
+            background-color: var(--card-background-color);
         }
     }
 
@@ -82,6 +82,6 @@
         position: relative;
         padding: 80px 100px;
         border-radius: 100px 5px 5px 5px;
-        background-color: var(--primary-active);
+        background-color: var(--card-background-color);
     }
 }
