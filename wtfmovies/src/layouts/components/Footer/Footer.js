@@ -46,8 +46,13 @@ function Footer() {
                 <div className={cx('about-tag')}>
                     <h3 className={cx('title')}>WTFdev team</h3>
                     <ul>
-                        <li>Mã số thuế: </li>
-                        <li>Ngày thàn lập:</li>
+                        <li>
+                            Liên hệ:{' '}
+                            <a className={cx('mailtoEle')} href="mailto:mail@wtfdev.pages.dev">
+                                mail@wtfdev.pages.dev
+                            </a>
+                        </li>
+                        <li>Ngày thành lập: 31/01/2024</li>
                         <li>Lĩnh vực: Công nghệ, WTFdev xây dựng những ứng dụng giải trí dành cho người dùng</li>
                     </ul>
                 </div>
