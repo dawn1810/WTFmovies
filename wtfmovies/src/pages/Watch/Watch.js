@@ -1,4 +1,3 @@
-import ReactPlayer from 'react-player/youtube';
 import classNames from 'classnames/bind';
 
 import FilmInfo from '~/components/FilmInfo/FilmInfo';
