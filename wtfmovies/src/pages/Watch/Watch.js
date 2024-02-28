@@ -191,7 +191,7 @@ function Watch() {
         <div className={cx('wrapper')}>
             <h1 className={cx('title')}>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
             <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-            <Player url={'https://rurimeiko.pages.dev/demo3.m3u8'}/>
+            <Player url={'https://rurimeiko.pages.dev/demo3.m3u8'} />
             <FilmInteract />
             <TabsBox tabs={episodesTabs} flexContent textContent defaultActiveKey="visub" className={cx('tab-box')} />
             <TabsBox
