@@ -26,7 +26,6 @@ import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import Image from '~/components/Image';
 import Search from '../Search';
-
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
