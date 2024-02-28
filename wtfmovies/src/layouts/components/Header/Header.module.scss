@@ -18,7 +18,12 @@
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     background-color: var(--primary);
 }
-
+.header-btn {
+    color: var(--body-color);
+    &:active {
+        background-color: var(--blur-background-color);
+    }
+}
 .inner {
     height: 100%;
     width: var(--default-layout-width);
@@ -48,7 +53,7 @@
     margin-left: 28px;
     padding: 4px 8px;
     background-color: transparent;
-    color: var(--text-color);
+    color: var(--body-color);
 }
 
 .action-btn {

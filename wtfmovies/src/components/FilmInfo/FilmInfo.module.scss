@@ -2,7 +2,7 @@
     display: flex;
     // width: var(--default-layout-width);
     padding: 18px;
-    background-color: var(--blur-background-color);
+    background-color: var(--card-background-color);
     border-radius: 5px;
 
     .film-image {
@@ -70,7 +70,7 @@
             border-radius: 999px;
             font-size: 2.2rem;
             color: var(--text-color);
-            background-color: var(--blur-background-color);
+            background-color: var(--card-blur-color);
             padding: 4px 10px;
             cursor: pointer;
         }

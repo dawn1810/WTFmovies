@@ -4,13 +4,15 @@
 
 :root {
     // color
-    --primary: #395787;
-    --primary-hover: #69a0f9;
-    --primary-active: #1b2330;
+    --primary: #bb7676;
+    --primary-hover: #bb7676a3;
+    --primary-active: #ffffff9e;
     --text-color: #fff;
     --body-color: #000;
-    --background-color: #0d1117;
-    --blur-background-color: #1b233074;
+    --card-background-color: #222831;
+    --blur-background-color: #2228317a;
+    --card-blur-color: #000000a7;
+    --background-color: #000000;
     // fontD
     --font-family: 'Montserrat';
 
@@ -18,6 +20,8 @@
     --default-layout-header-height: 80px;
     --default-layout-width: 1250px;
     --default-layout-horizontal-spacer: 24px;
+    //
+    --bs-link-hover-color: var(--primary);
 }
 
 * {
