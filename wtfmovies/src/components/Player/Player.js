@@ -54,11 +54,13 @@ import style from './Player.module.scss';
 const cx = classNames.bind(style);
 
 const Player = () => {
+    let i;
+
     // State hooks
     const [state, setState] = useState({
         url: null,
         pip: false,
-        playing: true,
+        playing: false,
         controls: false,
         light: false,
         volume: 0.8,
@@ -70,10 +72,12 @@ const Player = () => {
         loop: false,
         seeking: false,
     });
+    const [contactShow, setContactShow] = useState(false);
 
     // Ref hooks
     const playerRef = useRef(null);
     const wrapperRef = useRef(null);
+    const contactRef = useRef(null);
 
     // Callback hooks
     const load = useCallback((url) => {
@@ -82,6 +86,7 @@ const Player = () => {
 
     const handlePlayPause = useCallback(() => {
         setState((state) => ({ ...state, playing: !state.playing }));
+        handleMouseMove();
     }, []);
 
     const handleStop = useCallback(() => {
@@ -166,6 +171,15 @@ const Player = () => {
         screenfull.toggle(wrapperRef.current);
     }, []);
 
+    const handleMouseMove = () => {
+        clearTimeout(i);
+        setContactShow(true);
+
+        i = setTimeout(function () {
+            setContactShow(false);
+        }, 3000);
+    };
+
     const renderLoadButton = useCallback(
         (url, label) => {
             return <button onClick={() => load(url)}>{label}</button>;
@@ -176,122 +190,122 @@ const Player = () => {
     // const SEPARATOR = ' · ';
 
     return (
-        <div className={cx('wrapper')}>
-            <div ref={wrapperRef} className={cx('player-wrapper')}>
-                <ReactPlayer
-                    ref={playerRef}
-                    className="react-player"
-                    width="100%"
-                    height="100%"
-                    // url={state.url}
-                    url="https://rurimeiko.pages.dev/demo3.m3u8"
-                    pip={state.pip}
-                    playing={state.playing}
-                    controls={false}
-                    light={images.preload}
-                    loop={state.loop}
-                    playbackRate={state.playbackRate}
-                    volume={state.volume}
-                    muted={state.muted}
-                    onReady={() => console.log('onReady')}
-                    onStart={() => console.log('onStart')}
-                    onPlay={handlePlay}
-                    onEnablePIP={handleEnablePIP}
-                    onDisablePIP={handleDisablePIP}
-                    onPause={handlePause}
-                    onBuffer={() => console.log('onBuffer')}
-                    onPlaybackRateChange={handleOnPlaybackRateChange}
-                    onSeek={(e) => console.log('onSeek', e)}
-                    onEnded={handleEnded}
-                    onError={(e) => console.log('onError', e)}
-                    onProgress={handleProgress}
-                    onDuration={handleDuration}
-                    onPlaybackQualityChange={(e) => console.log('onPlaybackQualityChange', e)}
-                />
-                <div className={cx('player-contact-wrapper')}>
-                    <div className={cx('progress-bar')}>
-                        <progress max={1} value={state.loaded} className={cx('loaded-bar')} />
-                        <progress max={1} value={state.played} className={cx('played-bar')} />
-                        <input
-                            type="range"
-                            min={0}
-                            max={0.999999}
-                            step="any"
-                            value={state.played}
-                            className={cx('seek-bar')}
-                            onMouseDown={handleSeekMouseDown}
-                            onChange={(e) => handleSeekChange(e)}
-                            onMouseUp={(e) => handleSeekMouseUp(e)}
-                        />
-                    </div>
-                    <div className={cx('btn-list')}>
-                        <div className={cx('left-btn-list')}>
-                            <Tippy delay={[0, 50]} content="Tập trước" placement="top">
-                                <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faBackwardStep} />
-                                </button>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content="Phát (k)" placement="top">
-                                <button className={cx('action-btn')} onClick={handlePlayPause}>
-                                    {state.playing ? (
-                                        <FontAwesomeIcon icon={faPause} />
-                                    ) : (
-                                        <FontAwesomeIcon icon={faPlay} />
-                                    )}
-                                </button>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content="Tập tiếp theo" placement="top">
-                                <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faForwardStep} />
-                                </button>
-                            </Tippy>
-                            <Tippy
-                                delay={[0, 50]}
-                                content={state.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'}
-                                placement="top"
-                            >
-                                <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>
-                                    {state.muted ? (
-                                        <FontAwesomeIcon icon={faVolumeMute} />
-                                    ) : (
-                                        <FontAwesomeIcon icon={faVolumeHigh} />
-                                    )}
-                                </button>
-                            </Tippy>
+        <div ref={wrapperRef} className={cx('wrapper')}>
+            <ReactPlayer
+                ref={playerRef}
+                className="react-player"
+                width="100%"
+                height="100%"
+                // url={state.url}
+                url="https://rurimeiko.pages.dev/demo3.m3u8"
+                pip={state.pip}
+                playing={state.playing}
+                controls={false}
+                light={state.light}
+                loop={state.loop}
+                playbackRate={state.playbackRate}
+                volume={state.volume}
+                muted={state.muted}
+                onReady={() => console.log('onReady')}
+                onStart={() => console.log('onStart')}
+                onPlay={handlePlay}
+                onEnablePIP={handleEnablePIP}
+                onDisablePIP={handleDisablePIP}
+                onPause={handlePause}
+                onBuffer={() => console.log('onBuffer')}
+                onPlaybackRateChange={handleOnPlaybackRateChange}
+                onSeek={(e) => console.log('onSeek', e)}
+                onEnded={handleEnded}
+                onError={(e) => console.log('onError', e)}
+                onProgress={handleProgress}
+                onDuration={handleDuration}
+                onPlaybackQualityChange={(e) => console.log('onPlaybackQualityChange', e)}
+            />
+            <div ref={contactRef} className={cx('player-contact-wrapper', { 'contact-show': contactShow })}>
+                <div className={cx('progress-bar')}>
+                    <progress max={1} value={state.loaded} className={cx('loaded-bar')} />
+                    <progress max={1} value={state.played} className={cx('played-bar')} />
+                    <input
+                        type="range"
+                        min={0}
+                        max={0.999999}
+                        step="any"
+                        value={state.played}
+                        className={cx('seek-bar')}
+                        onMouseDown={handleSeekMouseDown}
+                        onChange={(e) => handleSeekChange(e)}
+                        onMouseUp={(e) => handleSeekMouseUp(e)}
+                    />
+                </div>
+                <div className={cx('btn-list')}>
+                    <div className={cx('left-btn-list')}>
+                        <Tippy delay={[0, 50]} content="Tập trước" placement="top">
+                            <button className={cx('action-btn')}>
+                                <FontAwesomeIcon icon={faBackwardStep} />
+                            </button>
+                        </Tippy>
+                        <Tippy delay={[0, 50]} content="Phát (k)" placement="top">
+                            <button className={cx('action-btn')} onClick={handlePlayPause}>
+                                {state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                            </button>
+                        </Tippy>
+                        <Tippy delay={[0, 50]} content="Tập tiếp theo" placement="top">
+                            <button className={cx('action-btn')}>
+                                <FontAwesomeIcon icon={faForwardStep} />
+                            </button>
+                        </Tippy>
+                        <Tippy
+                            delay={[0, 50]}
+                            content={state.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'}
+                            placement="top"
+                        >
+                            <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>
+                                {state.muted ? (
+                                    <FontAwesomeIcon icon={faVolumeMute} />
+                                ) : (
+                                    <FontAwesomeIcon icon={faVolumeHigh} />
+                                )}
+                            </button>
+                        </Tippy>
 
-                            <Tippy delay={[0, 50]} content="Âm lượng" placement="top">
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    step="any"
-                                    value={state.volume}
-                                    className={cx('volumn-input')}
-                                    onChange={(e) => handleVolumeChange(e)}
-                                />
-                            </Tippy>
-                        </div>
-                        <div className={cx('right-btn-list')}>
-                            <Tippy delay={[0, 50]} content="Tốc độ phát" placement="top">
-                                <button className={cx('action-btn', 'action2-btn')}>Chuẩn</button>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content="Chất lượng" placement="top">
-                                <button className={cx('action-btn', 'action2-btn')}>1080 (HD)</button>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content="Trình phát thu nhỏ (i)" placement="top">
-                                <button className={cx('action-btn')} onClick={handleTogglePIP}>
-                                    <FontAwesomeIcon icon={faWindowRestore} />
-                                </button>
-                            </Tippy>
-                            <Tippy delay={[0, 50]} content="Toàn màn hình (f)" placement="top">
-                                <button className={cx('action-btn')} onClick={handleClickFullscreen}>
-                                    <FontAwesomeIcon icon={faExpand} />
-                                </button>
-                            </Tippy>
-                        </div>
+                        <Tippy delay={[0, 50]} content="Âm lượng" placement="top">
+                            <input
+                                type="range"
+                                min={0}
+                                max={1}
+                                step="any"
+                                value={state.volume}
+                                className={cx('volumn-input')}
+                                onChange={(e) => handleVolumeChange(e)}
+                            />
+                        </Tippy>
+                    </div>
+                    <div className={cx('right-btn-list')}>
+                        <Tippy delay={[0, 50]} content="Tốc độ phát" placement="top">
+                            <button className={cx('action-btn', 'action2-btn')}>1 Xnxx</button>
+                        </Tippy>
+                        <Tippy delay={[0, 50]} content="Chất lượng" placement="top">
+                            <button className={cx('action-btn', 'action2-btn')}>1080 (HD)</button>
+                        </Tippy>
+                        <Tippy delay={[0, 50]} content="Trình phát thu nhỏ (i)" placement="top">
+                            <button className={cx('action-btn')} onClick={handleTogglePIP}>
+                                <FontAwesomeIcon icon={faWindowRestore} />
+                            </button>
+                        </Tippy>
+                        <Tippy delay={[0, 50]} content="Toàn màn hình (f)" placement="top">
+                            <button className={cx('action-btn')} onClick={handleClickFullscreen}>
+                                <FontAwesomeIcon icon={faExpand} />
+                            </button>
+                        </Tippy>
                     </div>
                 </div>
             </div>
+            <div
+                className={cx('player-cover')}
+                onMouseMove={handleMouseMove}
+                onClick={handlePlayPause}
+                onDoubleClick={handleClickFullscreen}
+            ></div>
 
             {/* <table>
                 <tbody>
