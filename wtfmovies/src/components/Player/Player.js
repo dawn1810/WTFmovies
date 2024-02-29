@@ -42,23 +42,24 @@ import {
     faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
 import { faWindowRestore } from '@fortawesome/free-regular-svg-icons';
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
 
+import Duration from './Duration';
 import images from '~/assets/image';
 import style from './Player.module.scss';
-// import Duration from './Duration';
 
 const cx = classNames.bind(style);
 
 const Player = () => {
     let i;
+    let y;
 
     // State hooks
     const [state, setState] = useState({
-        url: null,
+        url: 'https://rurimeiko.pages.dev/demo3.m3u8',
         pip: false,
         playing: false,
         controls: false,
@@ -71,8 +72,45 @@ const Player = () => {
         playbackRate: 1.0,
         loop: false,
         seeking: false,
+        loading: false,
     });
     const [contactShow, setContactShow] = useState(false);
+    const [animBtnShow, setAnimBtnShow] = useState(false);
+
+    useEffect(() => {
+        const handleKeyPress = (e) => {
+            // If spacebar is pressed, toggle play/pause
+            switch (e.keyCode) {
+                case 32:
+                    e.preventDefault();
+                    handlePlayPause();
+                    break;
+                case 75:
+                    handlePlayPause();
+                    break;
+                case 77:
+                    handleToggleMuted();
+                    handleMouseMove();
+                    break;
+                case 73:
+                    handleTogglePIP();
+                    break;
+                case 70:
+                    handleClickFullscreen();
+                    break;
+                default:
+                    break;
+            }
+        };
+
+        // Add event listener for keydown
+        window.addEventListener('keydown', handleKeyPress);
+
+        // Remove event listener on cleanup
+        return () => {
+            window.removeEventListener('keydown', handleKeyPress);
+        };
+    }, [state.playing]);
 
     // Ref hooks
     const playerRef = useRef(null);
@@ -87,6 +125,7 @@ const Player = () => {
     const handlePlayPause = useCallback(() => {
         setState((state) => ({ ...state, playing: !state.playing }));
         handleMouseMove();
+        handleAnimBtnClick();
     }, []);
 
     const handleStop = useCallback(() => {
@@ -110,7 +149,7 @@ const Player = () => {
     }, []);
 
     const handleVolumeChange = useCallback((e) => {
-        setState((state) => ({ ...state, volume: parseFloat(e.target.value) }));
+        setState((state) => ({ ...state, volume: parseFloat(e.target.value), muted: false }));
     }, []);
 
     const handleToggleMuted = useCallback(() => {
@@ -128,8 +167,6 @@ const Player = () => {
     const handleTogglePIP = useCallback(() => {
         setState((state) => ({ ...state, pip: !state.pip }));
     }, []);
-
-    const handlePlay = useCallback(() => console.log('onPlay'), []);
 
     const handleEnablePIP = useCallback(() => console.log('onEnablePIP'), []);
 
@@ -171,6 +208,15 @@ const Player = () => {
         screenfull.toggle(wrapperRef.current);
     }, []);
 
+    const handleOnBuffer = () => {
+        setState((state) => ({ ...state, loading: true }));
+    };
+
+    const handlePlay = () => {
+        console.log('onPlay');
+        setState((state) => ({ ...state, loading: false }));
+    };
+
     const handleMouseMove = () => {
         clearTimeout(i);
         setContactShow(true);
@@ -178,6 +224,15 @@ const Player = () => {
         i = setTimeout(function () {
             setContactShow(false);
         }, 3000);
+    };
+
+    const handleAnimBtnClick = () => {
+        clearTimeout(y);
+        setAnimBtnShow(true);
+
+        y = setTimeout(function () {
+            setAnimBtnShow(false);
+        }, 500);
     };
 
     const renderLoadButton = useCallback(
@@ -196,8 +251,7 @@ const Player = () => {
                 className="react-player"
                 width="100%"
                 height="100%"
-                // url={state.url}
-                url="https://rurimeiko.pages.dev/demo3.m3u8"
+                url={state.url}
                 pip={state.pip}
                 playing={state.playing}
                 controls={false}
@@ -206,13 +260,15 @@ const Player = () => {
                 playbackRate={state.playbackRate}
                 volume={state.volume}
                 muted={state.muted}
-                onReady={() => console.log('onReady')}
+                onReady={() => console.log('onStart')}
                 onStart={() => console.log('onStart')}
                 onPlay={handlePlay}
+                // onProgress
+                onBuffer={handleOnBuffer}
+                onBufferEnd={handlePlay}
                 onEnablePIP={handleEnablePIP}
                 onDisablePIP={handleDisablePIP}
                 onPause={handlePause}
-                onBuffer={() => console.log('onBuffer')}
                 onPlaybackRateChange={handleOnPlaybackRateChange}
                 onSeek={(e) => console.log('onSeek', e)}
                 onEnded={handleEnded}
@@ -220,6 +276,15 @@ const Player = () => {
                 onProgress={handleProgress}
                 onDuration={handleDuration}
                 onPlaybackQualityChange={(e) => console.log('onPlaybackQualityChange', e)}
+                config={{
+                    file: {
+                        hlsOptions: {
+                            autoStartLoad: true,
+                            // additional hls.js options
+                        },
+                        hlsVersion: '0.14.16', // use the version you prefer
+                    },
+                }}
             />
             <div ref={contactRef} className={cx('player-contact-wrapper', { 'contact-show': contactShow })}>
                 <div className={cx('progress-bar')}>
@@ -239,17 +304,17 @@ const Player = () => {
                 </div>
                 <div className={cx('btn-list')}>
                     <div className={cx('left-btn-list')}>
-                        <Tippy delay={[0, 50]} content="Tập trước" placement="top">
+                        <Tippy delay={[0, 50]} content="Tập trước" placement="top" arrow={false}>
                             <button className={cx('action-btn')}>
                                 <FontAwesomeIcon icon={faBackwardStep} />
                             </button>
                         </Tippy>
-                        <Tippy delay={[0, 50]} content="Phát (k)" placement="top">
+                        <Tippy delay={[0, 50]} content="Phát (k)" placement="top" arrow={false}>
                             <button className={cx('action-btn')} onClick={handlePlayPause}>
                                 {state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
                             </button>
                         </Tippy>
-                        <Tippy delay={[0, 50]} content="Tập tiếp theo" placement="top">
+                        <Tippy delay={[0, 50]} content="Tập tiếp theo" placement="top" arrow={false}>
                             <button className={cx('action-btn')}>
                                 <FontAwesomeIcon icon={faForwardStep} />
                             </button>
@@ -258,6 +323,7 @@ const Player = () => {
                             delay={[0, 50]}
                             content={state.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'}
                             placement="top"
+                            arrow={false}
                         >
                             <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>
                                 {state.muted ? (
@@ -268,31 +334,38 @@ const Player = () => {
                             </button>
                         </Tippy>
 
-                        <Tippy delay={[0, 50]} content="Âm lượng" placement="top">
-                            <input
-                                type="range"
-                                min={0}
-                                max={1}
-                                step="any"
-                                value={state.volume}
-                                className={cx('volumn-input')}
-                                onChange={(e) => handleVolumeChange(e)}
-                            />
+                        <Tippy delay={[0, 50]} content="Âm lượng" placement="top" arrow={false}>
+                            <div className={cx('volumn-input-box')}>
+                                <input
+                                    type="range"
+                                    min={0}
+                                    max={1}
+                                    step="any"
+                                    value={state.volume}
+                                    className={cx('volumn-input')}
+                                    onChange={(e) => handleVolumeChange(e)}
+                                />
+                            </div>
                         </Tippy>
+                        <div className={cx('duration')}>
+                            <Duration seconds={state.duration * state.played} /> / <Duration seconds={state.duration} />
+                        </div>
                     </div>
                     <div className={cx('right-btn-list')}>
-                        <Tippy delay={[0, 50]} content="Tốc độ phát" placement="top">
-                            <button className={cx('action-btn', 'action2-btn')}>1 Xnxx</button>
+                        <Tippy delay={[0, 50]} content="Tốc độ phát" placement="top" arrow={false}>
+                            <button className={cx('action-btn', 'action2-btn')}>x1</button>
                         </Tippy>
-                        <Tippy delay={[0, 50]} content="Chất lượng" placement="top">
+                        <Tippy delay={[0, 50]} content="Chất lượng" placement="top" arrow={false}>
                             <button className={cx('action-btn', 'action2-btn')}>1080 (HD)</button>
                         </Tippy>
-                        <Tippy delay={[0, 50]} content="Trình phát thu nhỏ (i)" placement="top">
-                            <button className={cx('action-btn')} onClick={handleTogglePIP}>
-                                <FontAwesomeIcon icon={faWindowRestore} />
-                            </button>
+                        <Tippy delay={[0, 50]} content="Trình phát thu nhỏ (i)" placement="top" arrow={false}>
+                            {ReactPlayer.canEnablePIP(state.url) && (
+                                <button className={cx('action-btn')} onClick={handleTogglePIP}>
+                                    <FontAwesomeIcon icon={faWindowRestore} />
+                                </button>
+                            )}
                         </Tippy>
-                        <Tippy delay={[0, 50]} content="Toàn màn hình (f)" placement="top">
+                        <Tippy delay={[0, 50]} content="Toàn màn hình (f)" placement="top" arrow={false}>
                             <button className={cx('action-btn')} onClick={handleClickFullscreen}>
                                 <FontAwesomeIcon icon={faExpand} />
                             </button>
@@ -305,7 +378,22 @@ const Player = () => {
                 onMouseMove={handleMouseMove}
                 onClick={handlePlayPause}
                 onDoubleClick={handleClickFullscreen}
-            ></div>
+            >
+                <div
+                    className={cx('center-btn', {
+                        'loading-btn': state.loading,
+                    })}
+                >
+                    <img className={cx('loading-img')} src={images.logo} alt="" />
+                </div>
+                <div
+                    className={cx('center-btn', {
+                        'animation-btn': animBtnShow,
+                    })}
+                >
+                    {state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                </div>
+            </div>
 
             {/* <table>
                 <tbody>

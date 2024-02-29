@@ -104,7 +104,7 @@ const genres = [
 ];
 
 function Header() {
-    const currentUser = false;
+    const currentUser = true;
     const [modalShow, setModalShow] = useState(false);
 
     // Handle logic

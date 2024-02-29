@@ -77,10 +77,10 @@ a {
 // Custom tippy tooltip
 body {
     .tippy-box {
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 1.6rem;
-        line-height: 2.2rem;
+        border-radius: 5px;
+        font-weight: 300;
+        font-size: 1.2rem;
+        line-height: 1.2rem;
         background-color: rgba(84, 84, 84, 0.92);
     }
 
@@ -89,7 +89,7 @@ body {
     }
 
     .tippy-content {
-        padding: 8px 9px;
+        padding: 5px 6px;
     }
 
     .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
