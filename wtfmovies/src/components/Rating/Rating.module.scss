@@ -11,6 +11,7 @@
         display: flex;
         gap: 5px;
         white-space: nowrap;
+        color: var(--text-color);
     }
 
     .star-rating [type='radio'] {

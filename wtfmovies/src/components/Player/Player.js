@@ -27,31 +27,34 @@
 // };
 
 // export default Player;
-import Tippy from '@tippyjs/react';
+// import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faBackwardStep,
+    // faBackwardStep,
     faCheck,
-    faClock,
-    faExpand,
-    faForwardStep,
-    faGear,
-    faPause,
-    faPlay,
-    faSliders,
-    faVolumeHigh,
-    faVolumeMute,
+    // faClock,
+    // faClockRotateLeft,
+    // faExpand,
+    // faForwardStep,
+    // faGear,
+    // faPause,
+    // faPlay,
+    // faSliders,
+    // faVolumeHigh,
+    // faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
-import { faCirclePlay, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
+// import { faCirclePlay, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
 
-import Duration from './Duration';
-import images from '~/assets/image';
+// import Duration from './Duration';
+// import images from '~/assets/image';
 import style from './Player.module.scss';
-import Menu from '../Popper/Menu';
+// import Menu from '../Popper/Menu';
+import Contact from './Contact';
+import Cover from './Cover';
 
 const cx = classNames.bind(style);
 
@@ -90,7 +93,7 @@ const VIDEO_SPEED = [
     },
 ];
 
-const RESOL_SPEED = [
+const RESOLUTION = [
     {
         icon: null,
         title: '4K - VIP',
@@ -127,11 +130,10 @@ const RESOL_SPEED = [
 
 const Player = () => {
     let i;
-    let y;
 
     // State hooks
     const [state, setState] = useState({
-        url: 'https://rurimeiko.pages.dev/demo3.m3u8',
+        url: 'https://rurimeiko.pages.dev/demo.m3u8',
         pip: false,
         playing: false,
         controls: false,
@@ -148,11 +150,15 @@ const Player = () => {
     });
     const [contactShow, setContactShow] = useState(false);
     const [animBtnShow, setAnimBtnShow] = useState(false);
-    const [currSpeed, setCurrSpeed] = useState('1');
-    const [currResol, setCurrResol] = useState('1080 (HD)');
+    const [animLeftBtnShow, setAnimLeftBtnShow] = useState(false);
+    const [animRightBtnShow, setAnimRightBtnShow] = useState(false);
+    // const [currSpeed, setCurrSpeed] = useState('1');
+    // const [currResol, setCurrResol] = useState('1080 (HD)');
 
     useEffect(() => {
         const handleKeyPress = (e) => {
+            const currTime = playerRef.current.getCurrentTime();
+
             // If spacebar is pressed, toggle play/pause
             switch (e.keyCode) {
                 case 32:
@@ -163,8 +169,8 @@ const Player = () => {
                     handlePlayPause();
                     break;
                 case 77:
-                    handleToggleMuted();
                     handleMouseMove();
+                    handleToggleMuted();
                     break;
                 case 73:
                     handleTogglePIP();
@@ -172,6 +178,19 @@ const Player = () => {
                 case 70:
                     handleClickFullscreen();
                     break;
+                case 37:
+                case 74:
+                    handleAnimLeftBtnClick();
+                    handleMouseMove();
+                    playerRef.current.seekTo(currTime - 5);
+                    break;
+                case 39:
+                case 76:
+                    handleAnimRightBtnClick();
+                    handleMouseMove();
+                    playerRef.current.seekTo(currTime + 5);
+                    break;
+
                 default:
                     break;
             }
@@ -184,7 +203,8 @@ const Player = () => {
         return () => {
             window.removeEventListener('keydown', handleKeyPress);
         };
-    }, [state.playing]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state]);
 
     // Ref hooks
     const playerRef = useRef(null);
@@ -192,35 +212,36 @@ const Player = () => {
     const contactRef = useRef(null);
 
     // Callback hooks
-    const load = useCallback((url) => {
-        setState((state) => ({ ...state, url, played: 0, loaded: 0, pip: false }));
-    }, []);
+    // const load = useCallback((url) => {
+    //     setState((state) => ({ ...state, url, played: 0, loaded: 0, pip: false }));
+    // }, []);
 
     const handlePlayPause = useCallback(() => {
+        handleAnimBtnClick();
         setState((state) => ({ ...state, playing: !state.playing }));
         handleMouseMove();
-        handleAnimBtnClick();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const handleStop = useCallback(() => {
-        setState((state) => ({ ...state, url: null, playing: false }));
-    }, []);
+    // const handleStop = useCallback(() => {
+    //     setState((state) => ({ ...state, url: null, playing: false }));
+    // }, []);
 
-    const handleToggleControls = useCallback(() => {
-        const url = state.url;
-        setState(
-            (state) => ({ ...state, controls: !state.controls, url: null }),
-            () => load(url),
-        );
-    }, [state.url, load]);
+    // const handleToggleControls = useCallback(() => {
+    //     const url = state.url;
+    //     setState(
+    //         (state) => ({ ...state, controls: !state.controls, url: null }),
+    //         () => load(url),
+    //     );
+    // }, [state.url, load]);
 
-    const handleToggleLight = useCallback((e) => {
-        setState((state) => ({ ...state, light: !state.light }));
-    }, []);
+    // const handleToggleLight = useCallback((e) => {
+    //     setState((state) => ({ ...state, light: !state.light }));
+    // }, []);
 
-    const handleToggleLoop = useCallback((e) => {
-        setState((state) => ({ ...state, loop: !state.loop }));
-    }, []);
+    // const handleToggleLoop = useCallback((e) => {
+    //     setState((state) => ({ ...state, loop: !state.loop }));
+    // }, []);
 
     const handleVolumeChange = useCallback((e) => {
         setState((state) => ({ ...state, volume: parseFloat(e.target.value), muted: false }));
@@ -230,9 +251,9 @@ const Player = () => {
         setState((state) => ({ ...state, muted: !state.muted }));
     }, []);
 
-    const handleSetPlaybackRate = useCallback((value) => {
-        setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
-    }, []);
+    // const handleSetPlaybackRate = useCallback((value) => {
+    //     setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
+    // }, []);
 
     const handleOnPlaybackRateChange = useCallback((value) => {
         setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
@@ -252,8 +273,8 @@ const Player = () => {
         setState((state) => ({ ...state, seeking: true }));
     }, []);
 
-    const handleSeekChange = useCallback((e) => {
-        setState((state) => ({ ...state, played: parseFloat(e.target.value) }));
+    const handleSeekChange = useCallback((value) => {
+        setState((state) => ({ ...state, played: parseFloat(value) }));
     }, []);
 
     const handleSeekMouseUp = useCallback((e) => {
@@ -300,7 +321,9 @@ const Player = () => {
         }, 3000);
     };
 
+    let x, y, z;
     const handleAnimBtnClick = () => {
+        console.log(y);
         clearTimeout(y);
         setAnimBtnShow(true);
 
@@ -309,30 +332,48 @@ const Player = () => {
         }, 500);
     };
 
-    const handleSpeedSettingChange = (selectedSpeed) => {
-        handleOnPlaybackRateChange(selectedSpeed.title);
-        VIDEO_SPEED.forEach((menuItem) => {
-            if (menuItem.title === selectedSpeed.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
-            else menuItem.icon = null;
-        });
-        setCurrSpeed(selectedSpeed.title);
+    const handleAnimLeftBtnClick = () => {
+        clearTimeout(z);
+        setAnimLeftBtnShow(true);
+
+        y = setTimeout(function () {
+            setAnimLeftBtnShow(false);
+        }, 500);
     };
 
-    const handleResolSettingChange = (selectedResol) => {
-        // handleOnPlaybackRateChange(selectedResol.title);
-        RESOL_SPEED.forEach((menuItem) => {
-            if (menuItem.title === selectedResol.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
-            else menuItem.icon = null;
-        });
-        setCurrResol(selectedResol.title);
+    const handleAnimRightBtnClick = () => {
+        clearTimeout(x);
+        setAnimRightBtnShow(true);
+
+        y = setTimeout(function () {
+            setAnimRightBtnShow(false);
+        }, 500);
     };
 
-    const renderLoadButton = useCallback(
-        (url, label) => {
-            return <button onClick={() => load(url)}>{label}</button>;
-        },
-        [load],
-    );
+    // const handleSpeedSettingChange = (selectedSpeed) => {
+    //     handleOnPlaybackRateChange(selectedSpeed.title);
+    //     VIDEO_SPEED.forEach((menuItem) => {
+    //         if (menuItem.title === selectedSpeed.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
+    //         else menuItem.icon = null;
+    //     });
+    //     setCurrSpeed(selectedSpeed.title);
+    // };
+
+    // const handleResolSettingChange = (selectedResol) => {
+    //     // handleOnPlaybackRateChange(selectedResol.title);
+    //     RESOL_SPEED.forEach((menuItem) => {
+    //         if (menuItem.title === selectedResol.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
+    //         else menuItem.icon = null;
+    //     });
+    //     setCurrResol(selectedResol.title);
+    // };
+
+    // const renderLoadButton = useCallback(
+    //     (url, label) => {
+    //         return <button onClick={() => load(url)}>{label}</button>;
+    //     },
+    //     [load],
+    // );
 
     // const SEPARATOR = ' · ';
 
@@ -352,7 +393,7 @@ const Player = () => {
                 playbackRate={state.playbackRate}
                 volume={state.volume}
                 muted={state.muted}
-                onReady={() => console.log('onStart')}
+                onReady={() => console.log('onReady')}
                 onStart={() => console.log('onStart')}
                 onPlay={handlePlay}
                 // onProgress
@@ -378,107 +419,39 @@ const Player = () => {
                     },
                 }}
             />
-            <div ref={contactRef} className={cx('player-contact-wrapper', { 'contact-show': contactShow })}>
-                <div className={cx('progress-bar')}>
-                    <progress max={1} value={state.loaded} className={cx('loaded-bar')} />
-                    <progress max={1} value={state.played} className={cx('played-bar')} />
-                    <input
-                        type="range"
-                        min={0}
-                        max={0.999999}
-                        step="any"
-                        value={state.played}
-                        className={cx('seek-bar')}
-                        onMouseDown={handleSeekMouseDown}
-                        onChange={(e) => handleSeekChange(e)}
-                        onMouseUp={(e) => handleSeekMouseUp(e)}
-                    />
-                </div>
-                <div className={cx('btn-list')}>
-                    <div className={cx('left-btn-list')}>
-                        <Tippy delay={[0, 50]} content="Tập trước" placement="top" arrow={false}>
-                            <button className={cx('action-btn')}>
-                                <FontAwesomeIcon icon={faBackwardStep} />
-                            </button>
-                        </Tippy>
-                        <Tippy delay={[0, 50]} content="Phát (k)" placement="top" arrow={false}>
-                            <button className={cx('action-btn')} onClick={handlePlayPause}>
-                                {state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
-                            </button>
-                        </Tippy>
-                        <Tippy delay={[0, 50]} content="Tập tiếp theo" placement="top" arrow={false}>
-                            <button className={cx('action-btn')}>
-                                <FontAwesomeIcon icon={faForwardStep} />
-                            </button>
-                        </Tippy>
-                        <Tippy
-                            delay={[0, 50]}
-                            content={state.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'}
-                            placement="top"
-                            arrow={false}
-                        >
-                            <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>
-                                {state.muted ? (
-                                    <FontAwesomeIcon icon={faVolumeMute} />
-                                ) : (
-                                    <FontAwesomeIcon icon={faVolumeHigh} />
-                                )}
-                            </button>
-                        </Tippy>
-                        <Tippy delay={[0, 50]} content="Âm lượng" placement="top" arrow={false}>
-                            <div className={cx('volumn-input-box')}>
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    step="any"
-                                    value={state.volume}
-                                    className={cx('volumn-input')}
-                                    onChange={(e) => handleVolumeChange(e)}
-                                />
-                            </div>
-                        </Tippy>
-                        <div className={cx('duration')}>
-                            <Duration seconds={state.duration * state.played} /> / <Duration seconds={state.duration} />
-                        </div>
-                    </div>
-                    <div className={cx('right-btn-list')}>
-                        <Menu
-                            playerMenu
-                            items={VIDEO_SPEED}
-                            title="Tốc độ phát"
-                            placement="top"
-                            delay={0}
-                            onChange={handleSpeedSettingChange}
-                        >
-                            <button className={cx('action-btn', 'action2-btn')}>x {currSpeed}</button>
-                        </Menu>
-                        <Menu
-                            playerMenu
-                            items={RESOL_SPEED}
-                            title="Chất lượng"
-                            placement="top"
-                            delay={0}
-                            onChange={handleResolSettingChange}
-                        >
-                            <button className={cx('action-btn', 'action2-btn')}>{currResol}</button>
-                        </Menu>
-                        <Tippy delay={[0, 50]} content="Trình phát thu nhỏ (i)" placement="top" arrow={false}>
-                            {ReactPlayer.canEnablePIP(state.url) && (
-                                <button className={cx('action-btn')} onClick={handleTogglePIP}>
-                                    <FontAwesomeIcon icon={faWindowRestore} />
-                                </button>
-                            )}
-                        </Tippy>
-                        <Tippy delay={[0, 50]} content="Toàn màn hình (f)" placement="top" arrow={false}>
-                            <button className={cx('action-btn')} onClick={handleClickFullscreen}>
-                                <FontAwesomeIcon icon={faExpand} />
-                            </button>
-                        </Tippy>
-                    </div>
-                </div>
-            </div>
-            <div
+            <Contact
+                ref={contactRef}
+                url={state.url}
+                loaded={state.loaded}
+                played={state.played}
+                playing={state.playing}
+                muted={state.muted}
+                volume={state.volume}
+                duration={state.duration}
+                videoSpeeds={VIDEO_SPEED}
+                resolutions={RESOLUTION}
+                contactShow={contactShow}
+                handleSeekMouseDown={handleSeekMouseDown}
+                handleSeekMouseUp={handleSeekMouseUp}
+                handleSeekChange={handleSeekChange}
+                handlePlayPause={handlePlayPause}
+                handleToggleMuted={handleToggleMuted}
+                handleVolumeChange={handleVolumeChange}
+                handleOnPlaybackRateChange={handleOnPlaybackRateChange}
+                handleTogglePIP={handleTogglePIP}
+                handleClickFullscreen={handleClickFullscreen}
+            />
+            <Cover
+                loading={state.loading}
+                playing={state.playing}
+                animBtnShow={animBtnShow}
+                animLeftBtnShow={animLeftBtnShow}
+                animRightBtnShow={animRightBtnShow}
+                handleMouseMove={handleMouseMove}
+                handlePlayPause={handlePlayPause}
+                handleClickFullscreen={handleClickFullscreen}
+            />
+            {/* <div
                 className={cx('player-cover')}
                 onMouseMove={handleMouseMove}
                 onClick={handlePlayPause}
@@ -496,9 +469,23 @@ const Player = () => {
                         'animation-btn': animBtnShow,
                     })}
                 >
-                    {state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                    {!state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
                 </div>
-            </div>
+                <div
+                    className={cx('center-btn', 'left-btn', {
+                        'animation-btn': animLeftBtnShow,
+                    })}
+                >
+                    <FontAwesomeIcon icon={faClockRotateLeft} />
+                </div>
+                <div
+                    className={cx('center-btn', 'right-btn', {
+                        'animation-btn': animRightBtnShow,
+                    })}
+                >
+                    <FontAwesomeIcon icon={faClockRotateLeft} flip="horizontal" />
+                </div>
+            </div> */}
 
             {/* <table>
                 <tbody>
