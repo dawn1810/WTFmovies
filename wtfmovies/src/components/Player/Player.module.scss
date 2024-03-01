@@ -200,6 +200,10 @@
     .right-btn-list {
         display: flex;
         align-items: center;
+
+        .video-speed-setting {
+            background-color: aqua;
+        }
     }
 
     .action-btn {

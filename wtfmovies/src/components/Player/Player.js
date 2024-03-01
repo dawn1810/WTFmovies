@@ -31,17 +31,18 @@ import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBackwardStep,
+    faCheck,
+    faClock,
     faExpand,
     faForwardStep,
     faGear,
     faPause,
     faPlay,
-    faPoo,
     faSliders,
     faVolumeHigh,
     faVolumeMute,
 } from '@fortawesome/free-solid-svg-icons';
-import { faWindowRestore } from '@fortawesome/free-regular-svg-icons';
+import { faCirclePlay, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
@@ -50,8 +51,79 @@ import classNames from 'classnames/bind';
 import Duration from './Duration';
 import images from '~/assets/image';
 import style from './Player.module.scss';
+import Menu from '../Popper/Menu';
 
 const cx = classNames.bind(style);
+
+const VIDEO_SPEED = [
+    {
+        icon: null,
+        title: '0.25',
+    },
+    {
+        icon: null,
+        title: '0.5',
+    },
+    {
+        icon: null,
+        title: '0.75',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faCheck} />,
+        title: '1',
+    },
+    {
+        icon: null,
+        title: '1.25',
+    },
+    {
+        icon: null,
+        title: '1.5',
+    },
+    {
+        icon: null,
+        title: '1.75',
+    },
+    {
+        icon: null,
+        title: '2',
+    },
+];
+
+const RESOL_SPEED = [
+    {
+        icon: null,
+        title: '4K - VIP',
+    },
+    {
+        icon: null,
+        title: '2K - VIP',
+    },
+    {
+        icon: null,
+        title: '1080p (HD)',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faCheck} />,
+        title: '720p',
+    },
+    {
+        icon: null,
+        title: '480p',
+    },
+    {
+        icon: null,
+        title: '360p',
+    },
+    {
+        icon: null,
+        title: '240p',
+    },
+    {
+        icon: null,
+        title: '144p',
+    },
+];
 
 const Player = () => {
     let i;
@@ -76,6 +148,8 @@ const Player = () => {
     });
     const [contactShow, setContactShow] = useState(false);
     const [animBtnShow, setAnimBtnShow] = useState(false);
+    const [currSpeed, setCurrSpeed] = useState('1');
+    const [currResol, setCurrResol] = useState('1080 (HD)');
 
     useEffect(() => {
         const handleKeyPress = (e) => {
@@ -156,12 +230,12 @@ const Player = () => {
         setState((state) => ({ ...state, muted: !state.muted }));
     }, []);
 
-    const handleSetPlaybackRate = useCallback((e) => {
-        setState((state) => ({ ...state, playbackRate: parseFloat(e.target.value) }));
+    const handleSetPlaybackRate = useCallback((value) => {
+        setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
     }, []);
 
-    const handleOnPlaybackRateChange = useCallback((speed) => {
-        setState((state) => ({ ...state, playbackRate: parseFloat(speed) }));
+    const handleOnPlaybackRateChange = useCallback((value) => {
+        setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
     }, []);
 
     const handleTogglePIP = useCallback(() => {
@@ -233,6 +307,24 @@ const Player = () => {
         y = setTimeout(function () {
             setAnimBtnShow(false);
         }, 500);
+    };
+
+    const handleSpeedSettingChange = (selectedSpeed) => {
+        handleOnPlaybackRateChange(selectedSpeed.title);
+        VIDEO_SPEED.forEach((menuItem) => {
+            if (menuItem.title === selectedSpeed.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
+            else menuItem.icon = null;
+        });
+        setCurrSpeed(selectedSpeed.title);
+    };
+
+    const handleResolSettingChange = (selectedResol) => {
+        // handleOnPlaybackRateChange(selectedResol.title);
+        RESOL_SPEED.forEach((menuItem) => {
+            if (menuItem.title === selectedResol.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
+            else menuItem.icon = null;
+        });
+        setCurrResol(selectedResol.title);
     };
 
     const renderLoadButton = useCallback(
@@ -333,7 +425,6 @@ const Player = () => {
                                 )}
                             </button>
                         </Tippy>
-
                         <Tippy delay={[0, 50]} content="Âm lượng" placement="top" arrow={false}>
                             <div className={cx('volumn-input-box')}>
                                 <input
@@ -352,12 +443,26 @@ const Player = () => {
                         </div>
                     </div>
                     <div className={cx('right-btn-list')}>
-                        <Tippy delay={[0, 50]} content="Tốc độ phát" placement="top" arrow={false}>
-                            <button className={cx('action-btn', 'action2-btn')}>x1</button>
-                        </Tippy>
-                        <Tippy delay={[0, 50]} content="Chất lượng" placement="top" arrow={false}>
-                            <button className={cx('action-btn', 'action2-btn')}>1080 (HD)</button>
-                        </Tippy>
+                        <Menu
+                            playerMenu
+                            items={VIDEO_SPEED}
+                            title="Tốc độ phát"
+                            placement="top"
+                            delay={0}
+                            onChange={handleSpeedSettingChange}
+                        >
+                            <button className={cx('action-btn', 'action2-btn')}>x {currSpeed}</button>
+                        </Menu>
+                        <Menu
+                            playerMenu
+                            items={RESOL_SPEED}
+                            title="Chất lượng"
+                            placement="top"
+                            delay={0}
+                            onChange={handleResolSettingChange}
+                        >
+                            <button className={cx('action-btn', 'action2-btn')}>{currResol}</button>
+                        </Menu>
                         <Tippy delay={[0, 50]} content="Trình phát thu nhỏ (i)" placement="top" arrow={false}>
                             {ReactPlayer.canEnablePIP(state.url) && (
                                 <button className={cx('action-btn')} onClick={handleTogglePIP}>

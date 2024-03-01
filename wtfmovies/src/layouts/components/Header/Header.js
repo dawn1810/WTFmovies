@@ -111,6 +111,7 @@ function Header() {
     const handleMenuChange = (menuItem) => {
         switch (menuItem.type) {
             case 'language':
+                console.log('aaaa');
                 // Handle change language
                 break;
             default:
@@ -155,7 +156,12 @@ function Header() {
                             </>
                         )}
 
-                        <Menu items={currentUser ? userMenu : MENU_ITEMS} onChange={handleMenuChange}>
+                        <Menu
+                            items={currentUser ? userMenu : MENU_ITEMS}
+                            placement="bottom-end"
+                            delay={[0, 500]}
+                            onChange={handleMenuChange}
+                        >
                             {currentUser ? (
                                 <Image className={cx('user-avatar')} src="" alt="Itadory" />
                             ) : (

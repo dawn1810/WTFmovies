@@ -10,6 +10,26 @@
     padding-bottom: 8px;
 }
 
+.player-menu-popper {
+    background-color: var(--card-blur-color);
+
+    .menu-title {
+        margin-top: 10px;
+        text-align: center;
+        color: var(--text-color);
+    }
+
+    button {
+        color: var(--text-color);
+        background-color: transparent;
+        border: none;
+
+        &:hover {
+            background-color: var(--primary);
+        }
+    }
+}
+
 .menu-body {
     overflow: auto;
 }
