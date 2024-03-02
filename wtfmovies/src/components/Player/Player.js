@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import ReactPlayer from 'react-player/lazy';
 
 // const Player = ({ url }) => {
@@ -28,183 +29,96 @@
 
 // export default Player;
 // import Tippy from '@tippyjs/react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    // faBackwardStep,
-    faCheck,
-    // faClock,
-    // faClockRotateLeft,
-    // faExpand,
-    // faForwardStep,
-    // faGear,
-    // faPause,
-    // faPlay,
-    // faSliders,
-    // faVolumeHigh,
-    // faVolumeMute,
-} from '@fortawesome/free-solid-svg-icons';
-// import { faCirclePlay, faWindowRestore } from '@fortawesome/free-regular-svg-icons';
-import { useState, useRef, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useRef, useCallback } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
 
-// import Duration from './Duration';
-// import images from '~/assets/image';
 import style from './Player.module.scss';
-// import Menu from '../Popper/Menu';
+import { changePlayPause, togglePIP, changeProgress, changeDuration, changeLoading, showContact } from './playerSlice';
+import { playerSelector } from '~/redux/selectors';
 import Contact from './Contact';
 import Cover from './Cover';
 
 const cx = classNames.bind(style);
 
-const VIDEO_SPEED = [
-    {
-        icon: null,
-        title: '0.25',
-    },
-    {
-        icon: null,
-        title: '0.5',
-    },
-    {
-        icon: null,
-        title: '0.75',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCheck} />,
-        title: '1',
-    },
-    {
-        icon: null,
-        title: '1.25',
-    },
-    {
-        icon: null,
-        title: '1.5',
-    },
-    {
-        icon: null,
-        title: '1.75',
-    },
-    {
-        icon: null,
-        title: '2',
-    },
-];
-
-const RESOLUTION = [
-    {
-        icon: null,
-        title: '4K - VIP',
-    },
-    {
-        icon: null,
-        title: '2K - VIP',
-    },
-    {
-        icon: null,
-        title: '1080p (HD)',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCheck} />,
-        title: '720p',
-    },
-    {
-        icon: null,
-        title: '480p',
-    },
-    {
-        icon: null,
-        title: '360p',
-    },
-    {
-        icon: null,
-        title: '240p',
-    },
-    {
-        icon: null,
-        title: '144p',
-    },
-];
-
 const Player = () => {
     let i;
 
+    const state = useSelector(playerSelector);
+
+    const dispatch = useDispatch();
+
     // State hooks
-    const [state, setState] = useState({
-        url: 'https://rurimeiko.pages.dev/demo.m3u8',
-        pip: false,
-        playing: false,
-        controls: false,
-        light: false,
-        volume: 0.8,
-        muted: false,
-        played: 0,
-        loaded: 0,
-        duration: 0,
-        playbackRate: 1.0,
-        loop: false,
-        seeking: false,
-        loading: false,
-    });
-    const [contactShow, setContactShow] = useState(false);
-    const [animBtnShow, setAnimBtnShow] = useState(false);
-    const [animLeftBtnShow, setAnimLeftBtnShow] = useState(false);
-    const [animRightBtnShow, setAnimRightBtnShow] = useState(false);
+    // const [state, setState] = useState({
+    //     url: 'https://rurimeiko.pages.dev/demo.m3u8',
+    //     pip: false,
+    //     playing: false,
+    //     controls: false,
+    //     light: false,
+    //     volume: 0.8,
+    //     muted: false,
+    //     played: 0,
+    //     loaded: 0,
+    //     duration: 0,
+    //     playbackRate: 1.0,
+    //     loop: false,
+    //     seeking: false,
+    //     loading: false,
+    // });
+    // const [contactShow, setContactShow] = useState(false);
+    // const [animBtnShow, setAnimBtnShow] = useState(false);
+    // const [animLeftBtnShow, setAnimLeftBtnShow] = useState(false);
+    // const [animRightBtnShow, setAnimRightBtnShow] = useState(false);
     // const [currSpeed, setCurrSpeed] = useState('1');
     // const [currResol, setCurrResol] = useState('1080 (HD)');
 
-    useEffect(() => {
-        const handleKeyPress = (e) => {
-            const currTime = playerRef.current.getCurrentTime();
+    // Key board shortcut
+    // useEffect(() => {
+    //     const handleKeyPress = (e) => {
+    //         const currTime = playerRef.current.getCurrentTime();
 
-            // If spacebar is pressed, toggle play/pause
-            switch (e.keyCode) {
-                case 32:
-                    e.preventDefault();
-                    handlePlayPause();
-                    break;
-                case 75:
-                    handlePlayPause();
-                    break;
-                case 77:
-                    handleMouseMove();
-                    handleToggleMuted();
-                    break;
-                case 73:
-                    handleTogglePIP();
-                    break;
-                case 70:
-                    handleClickFullscreen();
-                    break;
-                case 37:
-                case 74:
-                    handleAnimLeftBtnClick();
-                    handleMouseMove();
-                    playerRef.current.seekTo(currTime - 5);
-                    break;
-                case 39:
-                case 76:
-                    handleAnimRightBtnClick();
-                    handleMouseMove();
-                    playerRef.current.seekTo(currTime + 5);
-                    break;
+    //         // If spacebar is pressed, toggle play/pause
+    //         switch (e.keyCode) {
+    //             case 32:
+    //                 e.preventDefault();
+    //                 handlePlayPause();
+    //                 break;
+    //             case 75:
+    //                 handlePlayPause();
+    //                 break;
+    //             case 77:
+    //                 handleMouseMove();
+    //                 break;
+    //             case 70:
+    //                 handleClickFullscreen();
+    //                 break;
+    //             case 37:
+    //             case 74:
+    //                 handleMouseMove();
+    //                 playerRef.current.seekTo(currTime - 5);
+    //                 break;
+    //             case 39:
+    //             case 76:
+    //                 handleMouseMove();
+    //                 playerRef.current.seekTo(currTime + 5);
+    //                 break;
 
-                default:
-                    break;
-            }
-        };
+    //             default:
+    //                 break;
+    //         }
+    //     };
 
-        // Add event listener for keydown
-        window.addEventListener('keydown', handleKeyPress);
+    //     // Add event listener for keydown
+    //     window.addEventListener('keydown', handleKeyPress);
 
-        // Remove event listener on cleanup
-        return () => {
-            window.removeEventListener('keydown', handleKeyPress);
-        };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state]);
+    //     // Remove event listener on cleanup
+    //     return () => {
+    //         window.removeEventListener('keydown', handleKeyPress);
+    //     };
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [state]);
 
     // Ref hooks
     const playerRef = useRef(null);
@@ -217,11 +131,10 @@ const Player = () => {
     // }, []);
 
     const handlePlayPause = useCallback(() => {
-        handleAnimBtnClick();
-        setState((state) => ({ ...state, playing: !state.playing }));
+        dispatch(changePlayPause(!state.playing));
         handleMouseMove();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [state.playing]);
 
     // const handleStop = useCallback(() => {
     //     setState((state) => ({ ...state, url: null, playing: false }));
@@ -243,60 +156,70 @@ const Player = () => {
     //     setState((state) => ({ ...state, loop: !state.loop }));
     // }, []);
 
-    const handleVolumeChange = useCallback((e) => {
-        setState((state) => ({ ...state, volume: parseFloat(e.target.value), muted: false }));
-    }, []);
+    // const handleVolumeChange = useCallback((e) => {
+    //     dispatch(changeVolume(e.target.value));
+    // }, []);
 
-    const handleToggleMuted = useCallback(() => {
-        setState((state) => ({ ...state, muted: !state.muted }));
-    }, []);
+    // const handleToggleMuted = useCallback(() => {
+    //     dispatch(toggleMuted(!state.muted));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [state.muted]);
 
     // const handleSetPlaybackRate = useCallback((value) => {
     //     setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
     // }, []);
 
-    const handleOnPlaybackRateChange = useCallback((value) => {
-        setState((state) => ({ ...state, playbackRate: parseFloat(value) }));
-    }, []);
+    // const handleOnPlaybackRateChange = useCallback((value) => {
+    //     dispatch(changePlaybackRate(value));
+    // }, []);
 
-    const handleTogglePIP = useCallback(() => {
-        setState((state) => ({ ...state, pip: !state.pip }));
-    }, []);
+    // const handleTogglePIP = useCallback(() => {
+    //     dispatch(togglePIP(!state.pip));
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    // }, [state.pip]);
 
     const handleEnablePIP = useCallback(() => console.log('onEnablePIP'), []);
 
-    const handleDisablePIP = useCallback(() => console.log('onDisablePIP'), []);
+    const handleDisablePIP = useCallback(() => dispatch(togglePIP(false)), []);
 
     const handlePause = useCallback(() => console.log('onPause'), []);
 
-    const handleSeekMouseDown = useCallback(() => {
-        setState((state) => ({ ...state, seeking: true }));
-    }, []);
+    // const handleSeekMouseDown = useCallback(() => {
+    //     dispatch(grabSeek(true));
+    // }, []);
 
-    const handleSeekChange = useCallback((value) => {
-        setState((state) => ({ ...state, played: parseFloat(value) }));
-    }, []);
+    // const handleSeekChange = useCallback(
+    //     (value) => {
+    //         dispatch(changeSeek(value));
+    //     },
+    //     // eslint-disable-next-line react-hooks/exhaustive-deps
+    //     [state.seeking],
+    // );
 
-    const handleSeekMouseUp = useCallback((e) => {
-        setState((state) => ({ ...state, seeking: false }));
-        playerRef.current.seekTo(parseFloat(e.target.value));
-    }, []);
+    // const handleSeekMouseUp = useCallback((e) => {
+    //     dispatch(grabSeek(false));
+    //     playerRef.current.seekTo(parseFloat(e.target.value));
+    // }, []);
 
     const handleProgress = useCallback(
         (progress) => {
             if (!state.seeking) {
-                setState((state) => ({ ...state, ...progress }));
+                dispatch(changeProgress(progress));
             }
         },
         [state.seeking],
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        // [state.seeking, state],
     );
 
     const handleEnded = useCallback(() => {
-        setState((state) => ({ ...state, playing: state.loop }));
+        dispatch(changePlayPause(state.loop));
+        // setState((state) => ({ ...state, playing: state.loop }));
     }, []);
 
     const handleDuration = useCallback((duration) => {
-        setState((state) => ({ ...state, duration }));
+        dispatch(changeDuration(duration));
+        // setState((state) => ({ ...state, duration }));
     }, []);
 
     const handleClickFullscreen = useCallback(() => {
@@ -304,51 +227,58 @@ const Player = () => {
     }, []);
 
     const handleOnBuffer = () => {
-        setState((state) => ({ ...state, loading: true }));
+        dispatch(changeLoading(true));
+        // setState((state) => ({ ...state, loading: true }));
     };
 
     const handlePlay = () => {
-        console.log('onPlay');
-        setState((state) => ({ ...state, loading: false }));
+        dispatch(changeLoading(false));
+        // setState((state) => ({ ...state, loading: false }));
     };
 
     const handleMouseMove = () => {
         clearTimeout(i);
-        setContactShow(true);
+        dispatch(showContact(true));
+        // setContactShow(true);
 
         i = setTimeout(function () {
-            setContactShow(false);
+            dispatch(showContact(false));
+            // setContactShow(false);
         }, 3000);
     };
 
-    let x, y, z;
-    const handleAnimBtnClick = () => {
-        console.log(y);
-        clearTimeout(y);
-        setAnimBtnShow(true);
+    // const handleAnimBtnClick = () => {
+    //     clearTimeout(y);
+    //     dispatch(showCenterBtn(true));
+    //     // setAnimBtnShow(true);
 
-        y = setTimeout(function () {
-            setAnimBtnShow(false);
-        }, 500);
-    };
+    //     y = setTimeout(function () {
+    //         dispatch(showCenterBtn(false));
+    //         // setAnimBtnShow(false);
+    //     }, 500);
+    // };
 
-    const handleAnimLeftBtnClick = () => {
-        clearTimeout(z);
-        setAnimLeftBtnShow(true);
+    // const handleAnimLeftBtnClick = () => {
+    //     clearTimeout(z);
+    //     dispatch(showLeftBtn(true));
+    //     // setAnimLeftBtnShow(true);
 
-        y = setTimeout(function () {
-            setAnimLeftBtnShow(false);
-        }, 500);
-    };
+    //     y = setTimeout(function () {
+    //         dispatch(showLeftBtn(false));
+    //         // setAnimLeftBtnShow(false);
+    //     }, 500);
+    // };
 
-    const handleAnimRightBtnClick = () => {
-        clearTimeout(x);
-        setAnimRightBtnShow(true);
+    // const handleAnimRightBtnClick = () => {
+    //     clearTimeout(x);
+    //     dispatch(showRightBtn(true));
+    //     // setAnimRightBtnShow(true);
 
-        y = setTimeout(function () {
-            setAnimRightBtnShow(false);
-        }, 500);
-    };
+    //     y = setTimeout(function () {
+    //         dispatch(showRightBtn(false));
+    //         // setAnimRightBtnShow(false);
+    //     }, 500);
+    // };
 
     // const handleSpeedSettingChange = (selectedSpeed) => {
     //     handleOnPlaybackRateChange(selectedSpeed.title);
@@ -376,7 +306,6 @@ const Player = () => {
     // );
 
     // const SEPARATOR = ' · ';
-
     return (
         <div ref={wrapperRef} className={cx('wrapper')}>
             <ReactPlayer
@@ -402,7 +331,7 @@ const Player = () => {
                 onEnablePIP={handleEnablePIP}
                 onDisablePIP={handleDisablePIP}
                 onPause={handlePause}
-                onPlaybackRateChange={handleOnPlaybackRateChange}
+                // onPlaybackRateChange={handleOnPlaybackRateChange}
                 onSeek={(e) => console.log('onSeek', e)}
                 onEnded={handleEnded}
                 onError={(e) => console.log('onError', e)}
@@ -421,71 +350,16 @@ const Player = () => {
             />
             <Contact
                 ref={contactRef}
-                url={state.url}
-                loaded={state.loaded}
-                played={state.played}
-                playing={state.playing}
-                muted={state.muted}
-                volume={state.volume}
-                duration={state.duration}
-                videoSpeeds={VIDEO_SPEED}
-                resolutions={RESOLUTION}
-                contactShow={contactShow}
-                handleSeekMouseDown={handleSeekMouseDown}
-                handleSeekMouseUp={handleSeekMouseUp}
-                handleSeekChange={handleSeekChange}
+                playerRef={playerRef}
                 handlePlayPause={handlePlayPause}
-                handleToggleMuted={handleToggleMuted}
-                handleVolumeChange={handleVolumeChange}
-                handleOnPlaybackRateChange={handleOnPlaybackRateChange}
-                handleTogglePIP={handleTogglePIP}
                 handleClickFullscreen={handleClickFullscreen}
+                handleMouseMove={handleMouseMove}
             />
             <Cover
-                loading={state.loading}
-                playing={state.playing}
-                animBtnShow={animBtnShow}
-                animLeftBtnShow={animLeftBtnShow}
-                animRightBtnShow={animRightBtnShow}
                 handleMouseMove={handleMouseMove}
                 handlePlayPause={handlePlayPause}
                 handleClickFullscreen={handleClickFullscreen}
             />
-            {/* <div
-                className={cx('player-cover')}
-                onMouseMove={handleMouseMove}
-                onClick={handlePlayPause}
-                onDoubleClick={handleClickFullscreen}
-            >
-                <div
-                    className={cx('center-btn', {
-                        'loading-btn': state.loading,
-                    })}
-                >
-                    <img className={cx('loading-img')} src={images.logo} alt="" />
-                </div>
-                <div
-                    className={cx('center-btn', {
-                        'animation-btn': animBtnShow,
-                    })}
-                >
-                    {!state.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
-                </div>
-                <div
-                    className={cx('center-btn', 'left-btn', {
-                        'animation-btn': animLeftBtnShow,
-                    })}
-                >
-                    <FontAwesomeIcon icon={faClockRotateLeft} />
-                </div>
-                <div
-                    className={cx('center-btn', 'right-btn', {
-                        'animation-btn': animRightBtnShow,
-                    })}
-                >
-                    <FontAwesomeIcon icon={faClockRotateLeft} flip="horizontal" />
-                </div>
-            </div> */}
 
             {/* <table>
                 <tbody>

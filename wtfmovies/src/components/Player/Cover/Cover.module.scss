@@ -33,7 +33,11 @@
     }
 
     .animation-btn {
-        animation: fadeInAndOut 0.5s;
+        opacity: 1;
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+        animation: fadeInAndOut 0.5s 1;
     }
 
     .loading-btn {
@@ -53,13 +57,7 @@
 }
 
 @keyframes fadeInAndOut {
-    0% {
-        opacity: 1;
-        width: 50px;
-        height: 50px;
-        font-size: 1.8rem;
-    }
-    100% {
+    to {
         opacity: 0;
         width: 100px;
         height: 100px;

@@ -1,54 +1,65 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClockRotateLeft, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import { showCenterBtn } from '../playerSlice';
+import { coverPlayerSelector } from '~/redux/selectors';
 import style from './Cover.module.scss';
 import images from '~/assets/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClockRotateLeft, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(style);
 
-function Cover({
-    loading,
-    playing,
-    animBtnShow,
-    animLeftBtnShow,
-    animRightBtnShow,
-    handleMouseMove,
-    handlePlayPause,
-    handleClickFullscreen,
-}) {
+function Cover({ handleMouseMove, handlePlayPause, handleClickFullscreen }) {
+    let y;
+    const coverState = useSelector(coverPlayerSelector);
+
+    const dispatch = useDispatch();
+
+    const handleAnimBtnClick = () => {
+        clearTimeout(y);
+        dispatch(showCenterBtn(true));
+
+        y = setTimeout(function () {
+            dispatch(showCenterBtn(false));
+        }, 500);
+    };
+
     return (
         <div
             className={cx('player-cover')}
             onMouseMove={handleMouseMove}
-            onClick={handlePlayPause}
+            onClick={() => {
+                handlePlayPause();
+                handleAnimBtnClick();
+            }}
             onDoubleClick={handleClickFullscreen}
         >
             <div
                 className={cx('center-btn', {
-                    'loading-btn': loading,
+                    'loading-btn': coverState.loading,
                 })}
             >
                 <img className={cx('loading-img')} src={images.logo} alt="" />
             </div>
             <div
                 className={cx('center-btn', {
-                    'animation-btn': animBtnShow,
+                    'animation-btn': coverState.centerBtn,
                 })}
             >
-                {!playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                {!coverState.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
             </div>
             <div
                 className={cx('center-btn', 'left-btn', {
-                    'animation-btn': animLeftBtnShow,
+                    'animation-btn': coverState.leftBtn,
                 })}
             >
                 <FontAwesomeIcon icon={faClockRotateLeft} />
             </div>
             <div
                 className={cx('center-btn', 'right-btn', {
-                    'animation-btn': animRightBtnShow,
+                    'animation-btn': coverState.rightBtn,
                 })}
             >
                 <FontAwesomeIcon icon={faClockRotateLeft} flip="horizontal" />
@@ -58,11 +69,6 @@ function Cover({
 }
 
 Cover.propTypes = {
-    loading: PropTypes.bool.isRequired,
-    playing: PropTypes.bool.isRequired,
-    animBtnShow: PropTypes.bool.isRequired,
-    animLeftBtnShow: PropTypes.bool.isRequired,
-    animRightBtnShow: PropTypes.bool.isRequired,
     handleMouseMove: PropTypes.func.isRequired,
     handlePlayPause: PropTypes.func.isRequired,
     handleClickFullscreen: PropTypes.func.isRequired,
