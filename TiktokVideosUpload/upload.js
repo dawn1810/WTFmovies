@@ -7,7 +7,7 @@ const fs = require("fs");
 // sessionid_ads= 49aec6dd1283b4f8214dd2b1bbee2358
 
 let currentCookie =
-	"csrftoken=AWWs1qYouQ21AP8rXNc6H9qpO4KeM6fh;sessionid_ss_ads=9b9ca8eaeac0fe631b39444bf239f6f7";
+	"csrftoken=AWWs1qYouQ21AP8rXNc6H9qpO4KeM6fh;sessionid_ss_ads=43ac076dc9aa271671a572486ff5b737";
 
 function updateCookie(currentCookie, newCookie) {
 	const currentCookies = currentCookie ? currentCookie.split(";") : [];
