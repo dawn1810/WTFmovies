@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 //header
 export const modalFaceSelector = (state) => state.header.modalFace;
 //player
+export const readySelector = (state) => state.player.ready;
 export const urlSelector = (state) => state.player.url;
 export const pipSelector = (state) => state.player.pip;
 export const playingSelector = (state) => state.player.playing;
@@ -105,6 +106,7 @@ export const coverPlayerSelector = createSelector(
 );
 
 export const contactPlayerSelector = createSelector(
+    readySelector,
     urlSelector,
     loadedSelector,
     playedSelector,
@@ -116,7 +118,8 @@ export const contactPlayerSelector = createSelector(
     currResolSelector,
     contactShowSelector,
     pipSelector,
-    (url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip) => ({
+    (ready, url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip) => ({
+        ready,
         url,
         loaded,
         played,

@@ -3,9 +3,10 @@ import { createSlice } from '@reduxjs/toolkit';
 export const playerSlice = createSlice({
     name: 'player',
     initialState: {
-        url: 'https://rurimeiko.pages.dev/demo.m3u8',
+        url: 'https://rurimeiko.pages.dev/Clear%20Sunny%20Day%20[JP]%20-%20cover%20by%20Xixi.m3u8',
         pip: false,
         playing: false,
+        ready: false,
         controls: false,
         light: false,
         volume: 0.8,
@@ -22,9 +23,12 @@ export const playerSlice = createSlice({
         leftBtnShow: false,
         rightBtnShow: false,
         currSpeed: '1',
-        currResol: '1080 (HD)',
+        currResol: 'N/A',
     },
     reducers: {
+        changeReady: (state, action) => {
+            state.ready = action.payload;
+        },
         changePlayPause: (state, action) => {
             state.playing = action.payload;
         },
@@ -79,6 +83,7 @@ export const playerSlice = createSlice({
 });
 
 export const {
+    changeReady,
     changePlayPause,
     changeVolume,
     toggleMuted,

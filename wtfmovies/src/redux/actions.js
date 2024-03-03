@@ -5,6 +5,13 @@ export const changeModalFace = (modalFace) => {
     };
 };
 
+export const changeReady = (ready) => {
+    return {
+        type: 'player/changeReady',
+        payload: ready,
+    };
+};
+
 export const changePlayPause = (playing) => {
     return {
         type: 'player/changePlayPause',

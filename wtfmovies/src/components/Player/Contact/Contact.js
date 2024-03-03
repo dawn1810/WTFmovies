@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { forwardRef, useCallback, useEffect } from 'react';
+import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -73,41 +73,6 @@ const VIDEO_SPEED = [
     },
 ];
 
-const RESOLUTION = [
-    {
-        icon: null,
-        title: '4K - VIP',
-    },
-    {
-        icon: null,
-        title: '2K - VIP',
-    },
-    {
-        icon: null,
-        title: '1080p (HD)',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCheck} />,
-        title: '720p',
-    },
-    {
-        icon: null,
-        title: '480p',
-    },
-    {
-        icon: null,
-        title: '360p',
-    },
-    {
-        icon: null,
-        title: '240p',
-    },
-    {
-        icon: null,
-        title: '144p',
-    },
-];
-
 const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause, handleMouseMove }, ref) => {
     let x, y, z;
 
@@ -119,6 +84,36 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
         dispatch(togglePIP(!contactState.pip));
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contactState.pip]);
+
+    const [resolution, setResolution] = useState([]);
+    const [resolutionKey, setResolutionKey] = useState(null);
+
+    const [hlsPlayer, setHlsPlayer] = useState({ nextLevel: null });
+
+    useEffect(() => {
+        if (contactState.ready) {
+            const hlsPlayer = playerRef.current.getInternalPlayer('hls');
+            setHlsPlayer(hlsPlayer);
+            const tempResolution = hlsPlayer.levels.toReversed().map((item, index) => ({
+                icon: hlsPlayer.currentLevel == index ? <FontAwesomeIcon icon={faCheck} /> : null,
+                title: item.height + 'p',
+            }));
+            tempResolution.push({
+                icon: hlsPlayer.autoLevelEnabled ? <FontAwesomeIcon icon={faCheck} /> : null,
+                title: `Tự động`,
+            });
+            if (hlsPlayer.autoLevelEnabled)
+                dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.loadLevel].height}p)`));
+            setResolutionKey('setResolution');
+            setResolution(tempResolution);
+        }
+    }, [contactState.ready]);
+
+    useEffect(() => {
+        if (contactState.ready && hlsPlayer.autoLevelEnabled) {
+            dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
+        }
+    }, [hlsPlayer.nextLevel]);
 
     useEffect(() => {
         const handleKeyPress = (e) => {
@@ -210,9 +205,12 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     };
 
     const handleResolSettingChange = (selectedResol) => {
-        RESOLUTION.forEach((menuItem) => {
-            if (menuItem.title === selectedResol.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
-            else menuItem.icon = null;
+        resolution.forEach((menuItem, index) => {
+            if (menuItem.title === selectedResol.title) {
+                menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
+                if (index === resolution.length - 1) hlsPlayer.currentLevel = -1;
+                else hlsPlayer.currentLevel = resolution.length - index - 2;
+            } else menuItem.icon = null;
         });
         dispatch(changeCurrentResolution(selectedResol.title));
     };
@@ -245,7 +243,6 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
             // setAnimRightBtnShow(false);
         }, 500);
     };
-
     return (
         <div ref={ref} className={cx('player-contact-wrapper', { 'contact-show': contactState.contactShow })}>
             <div className={cx('progress-bar')}>
@@ -330,8 +327,9 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                         <button className={cx('action-btn', 'action2-btn')}>x {contactState.currSpeed}</button>
                     </Menu>
                     <Menu
+                        key={resolutionKey}
                         playerMenu
-                        items={RESOLUTION}
+                        items={resolution}
                         title="Chất lượng"
                         placement="top"
                         delay={0}

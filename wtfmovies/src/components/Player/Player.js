@@ -36,7 +36,15 @@ import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
 
 import style from './Player.module.scss';
-import { changePlayPause, togglePIP, changeProgress, changeDuration, changeLoading, showContact } from './playerSlice';
+import {
+    changeReady,
+    changePlayPause,
+    togglePIP,
+    changeProgress,
+    changeDuration,
+    changeLoading,
+    showContact,
+} from './playerSlice';
 import { playerSelector } from '~/redux/selectors';
 import Contact from './Contact';
 import Cover from './Cover';
@@ -177,6 +185,9 @@ const Player = () => {
     //     dispatch(togglePIP(!state.pip));
     //     // eslint-disable-next-line react-hooks/exhaustive-deps
     // }, [state.pip]);
+    const handleReady = () => {
+        dispatch(changeReady(true));
+    };
 
     const handleEnablePIP = useCallback(() => console.log('onEnablePIP'), []);
 
@@ -322,8 +333,8 @@ const Player = () => {
                 playbackRate={state.playbackRate}
                 volume={state.volume}
                 muted={state.muted}
-                onReady={() => console.log('onReady')}
-                onStart={() => console.log('onStart')}
+                onReady={handleReady}
+                onStart={() => console.log('start')}
                 onPlay={handlePlay}
                 // onProgress
                 onBuffer={handleOnBuffer}
