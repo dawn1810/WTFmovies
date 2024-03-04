@@ -36,7 +36,7 @@
 
 // Menu item
 .menu-item {
-    color: var(--body-color);
+    color: var(--text-color);
     width: 100%;
     justify-content: flex-start;
     border-radius: 0;
@@ -61,6 +61,8 @@
 }
 
 .back-btn {
+    color: var(--text-color);
+
     width: 50px;
     height: 100%;
     background-color: transparent;
@@ -68,6 +70,7 @@
 }
 
 .header-title {
+    color: var(--text-color);
     font-weight: 600;
     position: absolute;
     top: 50%;

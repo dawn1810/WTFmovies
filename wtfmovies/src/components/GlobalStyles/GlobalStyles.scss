@@ -2,18 +2,29 @@
 @import '~bootstrap/scss/bootstrap';
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
 
+$primary: #1d1d1d;
+$primary-hover: #2e2e2e;
+$primary-active: #444242;
+$hrefEle-color: #aa2020;
+$text-color: #fff;
+$body-color: #000;
+$background-color: $body-color;
+$card-background-color: $primary-hover;
+$blur-background-color: transparentize($card-background-color, 0.60);
+$card-blur-color: transparentize($background-color, 0.25);
+
 :root {
     // color
-    --primary: #bb7676;
-    --primary-hover: #bb7676a3;
-    --primary-active: #ffffff9e;
-    --hrefEle-color: #6420aa;
-    --text-color: #fff;
-    --body-color: #000;
-    --card-background-color: #222831;
-    --blur-background-color: #2228317a;
-    --card-blur-color: #000000a7;
-    --background-color: #000;
+    --primary: #{$primary};
+    --primary-hover: #{$primary-hover};
+    --primary-active: #{$primary-active};
+    --hrefEle-color: #{$hrefEle-color};
+    --text-color: #{$text-color};
+    --body-color: #{$body-color};
+    --card-background-color: #{$card-background-color};
+    --blur-background-color: #{$blur-background-color};
+    --card-blur-color: #{$card-blur-color};
+    --background-color: #{$background-color};
     // fontD
     --font-family: 'Montserrat';
 

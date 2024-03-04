@@ -15,7 +15,7 @@
     justify-content: center;
     height: var(--default-layout-header-height);
     border-radius: 0 0 5px 5px;
-    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    box-shadow: var(--blur-background-color) 0px 1px 0px;
     background-color: var(--primary);
 }
 .header-btn {
@@ -60,7 +60,7 @@
     position: relative;
     display: flex;
     font-size: 2.2rem;
-    color: var(--body-color);
+    color: var(--text-color);
     background-color: transparent;
     padding: 4px 10px;
     cursor: pointer;
@@ -76,9 +76,9 @@
     border-radius: 10px;
     font-size: 1.4rem;
     font-weight: 600;
-    color: var(--body-color);
+    color: var(--text-color);
     font-family: var(--font-family);
-    background-color: var(--text-color);
+    background-color: var(--hrefEle-color);
 }
 
 .user-avatar {
