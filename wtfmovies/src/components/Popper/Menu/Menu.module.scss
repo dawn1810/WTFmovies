@@ -23,9 +23,14 @@
         color: var(--text-color);
         background-color: transparent;
         border: none;
-
+        backdrop-filter: none;
         &:hover {
-            background-color: var(--primary);
+            transition-duration: 300ms;
+            background-color: var(--primary-hover);
+        }
+        &:active {
+            color: var(--text-color);
+            transition-duration: 300ms;
         }
     }
 }
@@ -48,7 +53,12 @@
     }
 
     &:hover {
+        transition-duration: 300ms;
         background-color: var(--blur-background-color);
+    }
+    &:active {
+        transition-duration: 300ms;
+        background: var(--primary-active);
     }
 }
 

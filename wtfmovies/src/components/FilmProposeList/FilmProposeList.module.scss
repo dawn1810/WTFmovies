@@ -18,7 +18,8 @@
             z-index: 1;
 
             &:hover {
-                background-color: var(--blur-background-color);
+                transition-duration: 300ms;
+                background-color: var(--card-blur-color);
             }
         }
 

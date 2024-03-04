@@ -52,7 +52,7 @@
     backdrop-filter: blur(10px);
     &:hover {
         transition-duration: 300ms;
-        border-color: var(--primary);
+        // border-color: var(--primary);
         background: var(--primary-hover);
     }
     &:active {
