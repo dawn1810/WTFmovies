@@ -100,7 +100,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
             dispatch(changeCurrentResolution(currentResolution));
 
-            const newResolutions = hls.levels.map((item, index) => ({
+            const newResolutions = hls.levels.toReversed().map((item, index) => ({
                 icon: hls.currentLevel === index ? <FontAwesomeIcon icon={faCheck} /> : null,
                 title: item.height + 'p',
             }));
@@ -126,7 +126,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
-        if (hlsPlayer.nextLevel !== null) {
+        if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled) {
             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
         }
     }, [hlsPlayer.nextLevel]);
@@ -224,9 +224,10 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     const handleResolSettingChange = (selectedResol) => {
         resolution.forEach((menuItem, index) => {
             if (menuItem.title === selectedResol.title) {
+                console.log(hlsPlayer.levels, resolution.length - 2 - index, index);
                 menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
                 if (index === resolution.length - 1) hlsPlayer.currentLevel = -1;
-                else hlsPlayer.currentLevel = resolution.length - index - 2;
+                else hlsPlayer.currentLevel = resolution.length - 2 - index;
             } else menuItem.icon = null;
         });
         dispatch(changeCurrentResolution(selectedResol.title));
