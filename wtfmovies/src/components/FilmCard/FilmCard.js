@@ -1,6 +1,9 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import Button from '../Button';
 import images from '~/assets/image';
 import Image from '../Image';
 import style from './FilmCard.module.scss';
@@ -22,6 +25,18 @@ function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, r
             <div className={cx('episodes', { 'nooverlay-episodes': noOverlay, 'large-episodes': large })}>
                 <Image src={images.episodes} alt="episodes" />
                 <span>{episodes}</span>
+            </div>
+            <div className={cx('hover-btn-list')}>
+                <Button primary leftIcon={<FontAwesomeIcon icon={faPlay} />} className={cx('hover-btn', 'watch-btn')}>
+                    Xem phim
+                </Button>
+                <Button
+                    primary
+                    leftIcon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
+                    className={cx('hover-btn', 'info-btn')}
+                >
+                    Thông tin
+                </Button>
             </div>
         </div>
     );

@@ -88,33 +88,52 @@ export const showContact = (contactShow) => {
         payload: contactShow,
     };
 };
+
 export const showCenterBtn = (centerBtnShow) => {
     return {
         type: 'player/showCenterBtn',
         payload: centerBtnShow,
     };
 };
+
 export const showLeftBtn = (leftBtnShow) => {
     return {
         type: 'player/showLeftBtn',
         payload: leftBtnShow,
     };
 };
+
 export const showRightBtn = (rightBtnShow) => {
     return {
         type: 'player/showRightBtn',
         payload: rightBtnShow,
     };
 };
+
 export const changeCurrentSpeed = (currSpeed) => {
     return {
         type: 'player/changeCurrentSpeed',
         payload: currSpeed,
     };
 };
+
 export const changeCurrentResolution = (currResol) => {
     return {
         type: 'player/changeCurrentResolution',
         payload: currResol,
+    };
+};
+
+export const changePlayerResolution = (resolution) => {
+    return {
+        type: 'player/changePlayerResolution',
+        payload: resolution,
+    };
+};
+
+export const changeHlsPlayer = (hlsPlayer) => {
+    return {
+        type: 'player/changeHlsPlayer',
+        payload: hlsPlayer,
     };
 };

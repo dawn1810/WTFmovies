@@ -359,6 +359,7 @@ const Player = () => {
                     },
                 }}
             />
+
             <Contact
                 ref={contactRef}
                 playerRef={playerRef}
@@ -366,6 +367,7 @@ const Player = () => {
                 handleClickFullscreen={handleClickFullscreen}
                 handleMouseMove={handleMouseMove}
             />
+
             <Cover
                 handleMouseMove={handleMouseMove}
                 handlePlayPause={handlePlayPause}

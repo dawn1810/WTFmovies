@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { forwardRef, useCallback, useEffect } from 'react';
 import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -29,6 +29,8 @@ import {
     showCenterBtn,
     showLeftBtn,
     showRightBtn,
+    changeHlsPlayer,
+    changePlayerResolution,
 } from '../playerSlice';
 import { contactPlayerSelector } from '~/redux/selectors';
 import style from './Contact.module.scss';
@@ -85,36 +87,85 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contactState.pip]);
 
-    const [resolution, setResolution] = useState([]);
-    const [resolutionKey, setResolutionKey] = useState(null);
+    // const [resolution, setResolution] = useState([]);
 
-    const [hlsPlayer, setHlsPlayer] = useState({ nextLevel: null });
+    // const [hlsPlayer, setHlsPlayer] = useState({ levels: null, nextLevel: null });
+
+    // useEffect(() => {
+    //     if (contactState.ready) {
+    //         const hlsPlayer = playerRef.current.getInternalPlayer('hls');
+    //         setHlsPlayer(hlsPlayer);
+    //         const tempResolution = hlsPlayer.levels.toReversed().map((item, index) => ({
+    //             icon: hlsPlayer.currentLevel === index ? <FontAwesomeIcon icon={faCheck} /> : null,
+    //             title: item.height + 'p',
+    //         }));
+    //         tempResolution.push({
+    //             icon: hlsPlayer.autoLevelEnabled ? <FontAwesomeIcon icon={faCheck} /> : null,
+    //             title: `Tự động`,
+    //         });
+    //         if (hlsPlayer.autoLevelEnabled)
+    //             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.loadLevel].height}p)`));
+    //         setResolutionKey('setResolution');
+    //         setResolution(tempResolution);
+    //     }
+    // }, [contactState.ready]);
+
+    // useEffect(() => {
+    //     if (contactState.ready && hlsPlayer.autoLevelEnabled) {
+    //         dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
+    //     }
+    // }, [hlsPlayer.nextLevel]);
+
+    // const [hlsPlayer, setHlsPlayer] = useState({
+    //     levels: null,
+    //     nextLevel: null,
+    //     currentLevel: null,
+    //     autoLevelEnabled: false,
+    // });
 
     useEffect(() => {
-        if (contactState.ready) {
-            const hlsPlayer = playerRef.current.getInternalPlayer('hls');
-            setHlsPlayer(hlsPlayer);
-            const tempResolution = hlsPlayer.levels.toReversed().map((item, index) => ({
-                icon: hlsPlayer.currentLevel == index ? <FontAwesomeIcon icon={faCheck} /> : null,
+        const updateHlsPlayerInfo = (hls) => {
+            const hasAutoLevel = hls && hls.autoLevelEnabled;
+            const currentResolution = hasAutoLevel ? `Tự động (${hls.levels[hls.nextLoadLevel].height}p)` : '';
+
+            dispatch(changeCurrentResolution(currentResolution));
+
+            const newResolutions = hls.levels.map((item, index) => ({
+                icon: hls.currentLevel === index ? <FontAwesomeIcon icon={faCheck} /> : null,
                 title: item.height + 'p',
             }));
-            tempResolution.push({
-                icon: hlsPlayer.autoLevelEnabled ? <FontAwesomeIcon icon={faCheck} /> : null,
-                title: `Tự động`,
-            });
-            if (hlsPlayer.autoLevelEnabled)
-                dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.loadLevel].height}p)`));
-            setResolutionKey('setResolution');
-            setResolution(tempResolution);
-        }
-    }, [contactState.ready]);
 
+            if (hasAutoLevel) {
+                newResolutions.push({
+                    icon: <FontAwesomeIcon icon={faCheck} />,
+                    title: `Tự động`,
+                });
+            }
+
+            dispatch(changePlayerResolution(newResolutions));
+        };
+
+        if (contactState.ready && playerRef.current) {
+            const internalHlsPlayer = playerRef.current.getInternalPlayer('hls');
+            if (internalHlsPlayer) {
+                dispatch(changeHlsPlayer(internalHlsPlayer));
+                updateHlsPlayerInfo(internalHlsPlayer);
+            }
+        }
+    }, [contactState.ready, dispatch]);
+
+    // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
-        if (contactState.ready && hlsPlayer.autoLevelEnabled) {
-            dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
+        if (contactState.hlsPlayer.nextLevel !== null) {
+            dispatch(
+                changeCurrentResolution(
+                    `Tự động (${contactState.hlsPlayer.levels[contactState.hlsPlayer.nextLoadLevel].height}p)`,
+                ),
+            );
         }
-    }, [hlsPlayer.nextLevel]);
+    }, [contactState.hlsPlayer.nextLevel]);
 
+    // short-cut
     useEffect(() => {
         const handleKeyPress = (e) => {
             const currTime = playerRef.current.getCurrentTime();
@@ -205,11 +256,11 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     };
 
     const handleResolSettingChange = (selectedResol) => {
-        resolution.forEach((menuItem, index) => {
+        contactState.resolution.forEach((menuItem, index) => {
             if (menuItem.title === selectedResol.title) {
                 menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
-                if (index === resolution.length - 1) hlsPlayer.currentLevel = -1;
-                else hlsPlayer.currentLevel = resolution.length - index - 2;
+                if (index === contactState.resolution.length - 1) contactState.hlsPlayer.currentLevel = -1;
+                else contactState.hlsPlayer.currentLevel = contactState.resolution.length - index - 2;
             } else menuItem.icon = null;
         });
         dispatch(changeCurrentResolution(selectedResol.title));
@@ -327,9 +378,9 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                         <button className={cx('action-btn', 'action2-btn')}>x {contactState.currSpeed}</button>
                     </Menu>
                     <Menu
-                        key={resolutionKey}
+                        key={contactState.currResol}
                         playerMenu
-                        items={resolution}
+                        items={contactState.resolution}
                         title="Chất lượng"
                         placement="top"
                         delay={0}
@@ -359,7 +410,7 @@ Contact.propTypes = {
     // handleSeekMouseDown: PropTypes.func.isRequired,
     // handleSeekMouseUp: PropTypes.func.isRequired,
     // handleSeekChange: PropTypes.func.isRequired,
-    playerRef: PropTypes.node.isRequired,
+    playerRef: PropTypes.any.isRequired,
     handlePlayPause: PropTypes.func.isRequired,
     handleClickFullscreen: PropTypes.func.isRequired,
     handleMouseMove: PropTypes.func.isRequired,

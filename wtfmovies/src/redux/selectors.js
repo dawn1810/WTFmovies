@@ -23,6 +23,8 @@ export const leftBtnShowSelector = (state) => state.player.leftBtnShow;
 export const rightBtnShowSelector = (state) => state.player.rightBtnShow;
 export const currSpeedSelector = (state) => state.player.currSpeed;
 export const currResolSelector = (state) => state.player.currResol;
+export const playerResolutionSelector = (state) => state.player.playerResolution;
+export const hlsPlayerSelector = (state) => state.player.hlsPlayer;
 
 export const playerSelector = createSelector(
     urlSelector,
@@ -118,7 +120,9 @@ export const contactPlayerSelector = createSelector(
     currResolSelector,
     contactShowSelector,
     pipSelector,
-    (ready, url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip) => ({
+    playerResolutionSelector,
+    hlsPlayerSelector,
+    (
         ready,
         url,
         loaded,
@@ -131,5 +135,22 @@ export const contactPlayerSelector = createSelector(
         currResol,
         contactShow,
         pip,
+        playerResolution,
+        hlsPlayer,
+    ) => ({
+        ready,
+        url,
+        loaded,
+        played,
+        playing,
+        muted,
+        volume,
+        duration,
+        currSpeed,
+        currResol,
+        contactShow,
+        pip,
+        playerResolution,
+        hlsPlayer,
     }),
 );
