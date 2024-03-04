@@ -10,9 +10,9 @@ $lighten-primary-color: transparentize($primary-active, 0.9);
 $text-color: #ffffff;
 $body-color: #000000;
 $background-color: #0f0f0f;
-$card-blur-color: transparentize($background-color, 0.25);
-$card-background-color: $primary-hover;
-$blur-background-color: transparentize($card-background-color, 0.60);
+$card-blur-color: transparentize($background-color, 0.2);
+$card-background-color: #272727;
+$blur-background-color: transparentize($card-background-color, 0.8);
 
 :root {
     // color
@@ -35,7 +35,7 @@ $blur-background-color: transparentize($card-background-color, 0.60);
     --default-layout-width: 1250px;
     --default-layout-horizontal-spacer: 24px;
     //
-    --bs-link-hover-color: var(--primary);
+    --bs-link-hover-color: var(--highlight-color);
 }
 
 * {

@@ -46,28 +46,28 @@
     }
 }
 
-
-
 .primary {
     color: var(--text-color);
-    background-color: var(--primary);
-    border-color: var(--primary);
-
+    background-color: var(--lighten-primary-color);
+    backdrop-filter: blur(10px);
     &:hover {
+        transition-duration: 300ms;
         border-color: var(--primary);
         background: var(--primary-hover);
     }
     &:active {
+        transition-duration: 300ms;
+        color: var(--body-color);
         background: var(--primary-active);
     }
 }
-
 
 .outline {
     color: var(--primary);
     border-color: currentColor;
 
     &:hover {
+        transition-duration: 300ms;
         border-color: currentColor;
         background-color: rgba(254, 44, 85, 0.06);
     }
@@ -75,6 +75,7 @@
 
 .text {
     &:hover {
+        transition-duration: 300ms;
         text-decoration: underline;
         background-color: transparent;
     }
