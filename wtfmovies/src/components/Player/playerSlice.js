@@ -24,13 +24,6 @@ export const playerSlice = createSlice({
         rightBtnShow: false,
         currSpeed: '1',
         currResol: 'N/A',
-        playerResolution: [],
-        hlsPlayer: {
-            levels: null,
-            nextLevel: null,
-            currentLevel: null,
-            autoLevelEnabled: false,
-        },
     },
     reducers: {
         changeReady: (state, action) => {
@@ -86,12 +79,6 @@ export const playerSlice = createSlice({
         changeCurrentResolution: (state, action) => {
             state.currResol = action.payload;
         },
-        changePlayerResolution: (state, action) => {
-            state.playerResolution = action.payload;
-        },
-        changeHlsPlayer: (state, action) => {
-            state.hlsPlayer = action.payload;
-        },
     },
 });
 
@@ -113,8 +100,6 @@ export const {
     showRightBtn,
     changeCurrentSpeed,
     changeCurrentResolution,
-    changePlayerResolution,
-    changeHlsPlayer,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

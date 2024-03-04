@@ -120,9 +120,7 @@ export const contactPlayerSelector = createSelector(
     currResolSelector,
     contactShowSelector,
     pipSelector,
-    playerResolutionSelector,
-    hlsPlayerSelector,
-    (
+    (ready, url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip) => ({
         ready,
         url,
         loaded,
@@ -135,22 +133,5 @@ export const contactPlayerSelector = createSelector(
         currResol,
         contactShow,
         pip,
-        playerResolution,
-        hlsPlayer,
-    ) => ({
-        ready,
-        url,
-        loaded,
-        played,
-        playing,
-        muted,
-        volume,
-        duration,
-        currSpeed,
-        currResol,
-        contactShow,
-        pip,
-        playerResolution,
-        hlsPlayer,
     }),
 );

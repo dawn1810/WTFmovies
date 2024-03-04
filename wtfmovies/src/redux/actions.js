@@ -123,17 +123,3 @@ export const changeCurrentResolution = (currResol) => {
         payload: currResol,
     };
 };
-
-export const changePlayerResolution = (resolution) => {
-    return {
-        type: 'player/changePlayerResolution',
-        payload: resolution,
-    };
-};
-
-export const changeHlsPlayer = (hlsPlayer) => {
-    return {
-        type: 'player/changeHlsPlayer',
-        payload: hlsPlayer,
-    };
-};

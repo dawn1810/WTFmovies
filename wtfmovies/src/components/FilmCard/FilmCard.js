@@ -3,7 +3,6 @@ import { faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import Button from '../Button';
 import images from '~/assets/image';
 import Image from '../Image';
 import style from './FilmCard.module.scss';
@@ -13,7 +12,9 @@ const cx = classNames.bind(style);
 function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, rating, episodes }) {
     return (
         <div className={cx('wrapper', { 'nooverlay-wrapper': noOverlay, 'large-wrapper': large })}>
-            <Image className={cx({ 'nooverlay-img': noOverlay })} src={imgSrc} alt={filmName} />
+            <div className={cx('image-box')}>
+                <Image className={cx('film-img', { 'nooverlay-img': noOverlay })} src={imgSrc} alt={filmName} />
+            </div>
             <div className={cx('info', { 'nooverlay-info': noOverlay, 'large-info': large })}>
                 <h4>{filmName}</h4>
                 <h5>Lượt xem: {views}</h5>
@@ -27,16 +28,12 @@ function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, r
                 <span>{episodes}</span>
             </div>
             <div className={cx('hover-btn-list')}>
-                <Button primary leftIcon={<FontAwesomeIcon icon={faPlay} />} className={cx('hover-btn', 'watch-btn')}>
-                    Xem phim
-                </Button>
-                <Button
-                    primary
-                    leftIcon={<FontAwesomeIcon icon={faMagnifyingGlass} />}
-                    className={cx('hover-btn', 'info-btn')}
-                >
-                    Thông tin
-                </Button>
+                <button className={cx('hover-btn', 'watch-btn')}>
+                    <FontAwesomeIcon icon={faPlay} />
+                </button>
+                <button className={cx('hover-btn', 'review-btn')}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                </button>
             </div>
         </div>
     );

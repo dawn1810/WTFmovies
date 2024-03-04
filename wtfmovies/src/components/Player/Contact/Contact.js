@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { forwardRef, useCallback, useEffect } from 'react';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
 import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -29,8 +29,6 @@ import {
     showCenterBtn,
     showLeftBtn,
     showRightBtn,
-    changeHlsPlayer,
-    changePlayerResolution,
 } from '../playerSlice';
 import { contactPlayerSelector } from '~/redux/selectors';
 import style from './Contact.module.scss';
@@ -87,41 +85,13 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contactState.pip]);
 
-    // const [resolution, setResolution] = useState([]);
-
-    // const [hlsPlayer, setHlsPlayer] = useState({ levels: null, nextLevel: null });
-
-    // useEffect(() => {
-    //     if (contactState.ready) {
-    //         const hlsPlayer = playerRef.current.getInternalPlayer('hls');
-    //         setHlsPlayer(hlsPlayer);
-    //         const tempResolution = hlsPlayer.levels.toReversed().map((item, index) => ({
-    //             icon: hlsPlayer.currentLevel === index ? <FontAwesomeIcon icon={faCheck} /> : null,
-    //             title: item.height + 'p',
-    //         }));
-    //         tempResolution.push({
-    //             icon: hlsPlayer.autoLevelEnabled ? <FontAwesomeIcon icon={faCheck} /> : null,
-    //             title: `Tự động`,
-    //         });
-    //         if (hlsPlayer.autoLevelEnabled)
-    //             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.loadLevel].height}p)`));
-    //         setResolutionKey('setResolution');
-    //         setResolution(tempResolution);
-    //     }
-    // }, [contactState.ready]);
-
-    // useEffect(() => {
-    //     if (contactState.ready && hlsPlayer.autoLevelEnabled) {
-    //         dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
-    //     }
-    // }, [hlsPlayer.nextLevel]);
-
-    // const [hlsPlayer, setHlsPlayer] = useState({
-    //     levels: null,
-    //     nextLevel: null,
-    //     currentLevel: null,
-    //     autoLevelEnabled: false,
-    // });
+    const [resolution, setResolution] = useState([]);
+    const [hlsPlayer, setHlsPlayer] = useState({
+        levels: null,
+        nextLevel: null,
+        currentLevel: null,
+        autoLevelEnabled: false,
+    });
 
     useEffect(() => {
         const updateHlsPlayerInfo = (hls) => {
@@ -142,13 +112,13 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                 });
             }
 
-            dispatch(changePlayerResolution(newResolutions));
+            setResolution(newResolutions);
         };
 
         if (contactState.ready && playerRef.current) {
             const internalHlsPlayer = playerRef.current.getInternalPlayer('hls');
             if (internalHlsPlayer) {
-                dispatch(changeHlsPlayer(internalHlsPlayer));
+                setHlsPlayer(internalHlsPlayer);
                 updateHlsPlayerInfo(internalHlsPlayer);
             }
         }
@@ -156,14 +126,10 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
-        if (contactState.hlsPlayer.nextLevel !== null) {
-            dispatch(
-                changeCurrentResolution(
-                    `Tự động (${contactState.hlsPlayer.levels[contactState.hlsPlayer.nextLoadLevel].height}p)`,
-                ),
-            );
+        if (hlsPlayer.nextLevel !== null) {
+            dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
         }
-    }, [contactState.hlsPlayer.nextLevel]);
+    }, [hlsPlayer.nextLevel]);
 
     // short-cut
     useEffect(() => {
@@ -256,11 +222,11 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     };
 
     const handleResolSettingChange = (selectedResol) => {
-        contactState.resolution.forEach((menuItem, index) => {
+        resolution.forEach((menuItem, index) => {
             if (menuItem.title === selectedResol.title) {
                 menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
-                if (index === contactState.resolution.length - 1) contactState.hlsPlayer.currentLevel = -1;
-                else contactState.hlsPlayer.currentLevel = contactState.resolution.length - index - 2;
+                if (index === resolution.length - 1) hlsPlayer.currentLevel = -1;
+                else hlsPlayer.currentLevel = resolution.length - index - 2;
             } else menuItem.icon = null;
         });
         dispatch(changeCurrentResolution(selectedResol.title));
@@ -287,11 +253,9 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     const handleAnimRightBtnClick = () => {
         clearTimeout(x);
         dispatch(showRightBtn(true));
-        // setAnimRightBtnShow(true);
 
         x = setTimeout(function () {
             dispatch(showRightBtn(false));
-            // setAnimRightBtnShow(false);
         }, 500);
     };
     return (
@@ -380,7 +344,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                     <Menu
                         key={contactState.currResol}
                         playerMenu
-                        items={contactState.resolution}
+                        items={resolution}
                         title="Chất lượng"
                         placement="top"
                         delay={0}
