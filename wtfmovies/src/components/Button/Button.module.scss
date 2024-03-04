@@ -48,7 +48,7 @@
 
 .primary {
     color: var(--text-color);
-    background-color: var(--lighten-primary-color);
+    background-color: var(--lighten-primary-active-color);
     backdrop-filter: blur(10px);
     &:hover {
         transition-duration: 300ms;
