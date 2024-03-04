@@ -41,7 +41,7 @@
         }
     }
     .mailtoEle {
-        color: var(--hrefEle-color);
+        color: var(--highlight-color);
     }
 }
 
@@ -60,7 +60,7 @@
     .action-btn {
         display: flex;
         font-size: 2.2rem;
-        color: var(--body-color);
+        color: var(--text-color);
         background-color: transparent;
         padding: 4px 10px;
         cursor: pointer;

@@ -78,7 +78,7 @@
     font-weight: 600;
     color: var(--text-color);
     font-family: var(--font-family);
-    background-color: var(--hrefEle-color);
+    background-color: var(--highlight-color);
 }
 
 .user-avatar {
@@ -102,6 +102,8 @@
     white-space: nowrap;
 
     &:hover {
-        background-color: var(--primary);
+        transition-duration: 300ms;
+        color: var(--background-color);
+        background-color: var(--primary-active);
     }
 }
