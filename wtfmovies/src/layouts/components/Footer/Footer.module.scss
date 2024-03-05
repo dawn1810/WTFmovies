@@ -66,3 +66,34 @@
         cursor: pointer;
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        height: auto;
+    }
+
+    .inner {
+        flex-direction: column;
+        align-items: flex-start;
+
+        .logo-link {
+            align-self: center;
+            height: 180px;
+
+            .logo {
+                transform: scale(0.8);
+            }
+        }
+
+        .about-tag {
+            padding: 10px 0;
+        }
+    }
+
+    .bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        margin-bottom: 80px;
+    }
+}

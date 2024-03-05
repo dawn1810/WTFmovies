@@ -3,7 +3,6 @@
     display: grid;
     grid-template-columns: auto auto;
     grid-template-rows: auto auto;
-    gap: 0px 0px;
     grid-template-areas:
         'title .'
         'tabbox sidebox';
@@ -13,5 +12,21 @@
     .film-classify-title {
         grid-area: title;
         width: 30%;
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        grid-template-columns: auto;
+        grid-template-rows: auto auto auto;
+        gap: 18px;
+        grid-template-areas:
+            'title'
+            'tabbox'
+            'sidebox';
+
+        .film-classify-title {
+            width: 60%;
+        }
     }
 }

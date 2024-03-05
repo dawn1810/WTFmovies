@@ -1,18 +1,18 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp91, faCat, faFeather, faPlay } from '@fortawesome/free-solid-svg-icons';
-import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
+import { faArrowUp91, faCat, faFeather } from '@fortawesome/free-solid-svg-icons';
 import { Carousel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
-import Button from '../Button';
+import { useViewport } from '~/hooks';
 import Image from '../Image';
 import style from './FilmCarousel.module.scss';
+import Captions from './Captions';
 const cx = classNames.bind(style);
 
 const items = [
     {
         imgSrc: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
-        filmTitle: 'Jujutsu Kaisen',
+        filmTitle: 'Jujutsu Kaisen0',
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
         infoList: [
@@ -23,7 +23,7 @@ const items = [
     },
     {
         imgSrc: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
-        filmTitle: 'Jujutsu Kaisen',
+        filmTitle: 'Jujutsu Kaisen1',
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
         infoList: [
@@ -34,7 +34,7 @@ const items = [
     },
     {
         imgSrc: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
-        filmTitle: 'Jujutsu Kaisen',
+        filmTitle: 'Jujutsu Kaisen2',
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
         infoList: [
@@ -46,41 +46,24 @@ const items = [
 ];
 
 function FilmCarousel() {
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 1024;
+
     return (
         <div className={cx('home-slider')}>
-            <Carousel>
+            <Carousel touch indicators={!isMobile}>
                 {items.map((item, index) => (
                     <Carousel.Item key={index}>
                         <Image className="d-block w-100" src={item.imgSrc} alt={item.filmTitle} />
-                        <Carousel.Caption className={cx('carousel-caption')}>
-                            <div className={cx('film-info')}>
-                                <h3 className={cx('film-title')}>{item.filmTitle}</h3>
-                                <div className={cx('film-content')}>{item.filmContent}</div>
+                        {isMobile ? (
+                            <div className={cx('carousel-caption')}>
+                                <Captions item={item} />
                             </div>
-                            <div className={cx('film-detail')}>
-                                <ul className={cx('info-list')}>
-                                    {item.infoList.map((info, index) => (
-                                        <li key={index}>
-                                            <span>{info.icon}</span>
-                                            <span className={cx('info-title')}>
-                                                <span>{info.title}:</span> {info.info}
-                                            </span>
-                                        </li>
-                                    ))}
-                                </ul>
-                                <div className={cx('btn-group')}>
-                                    <Button primary leftIcon={<FontAwesomeIcon icon={faPlay} />}>
-                                        Xem phim
-                                    </Button>
-                                    <button className={cx('action-btn')}>
-                                        <FontAwesomeIcon icon={faHeart} />
-                                    </button>
-                                    <button className={cx('action-btn')}>
-                                        <FontAwesomeIcon icon={faShareFromSquare} />
-                                    </button>
-                                </div>
-                            </div>
-                        </Carousel.Caption>
+                        ) : (
+                            <Carousel.Caption className={cx('carousel-caption')}>
+                                <Captions item={item} />
+                            </Carousel.Caption>
+                        )}
                     </Carousel.Item>
                 ))}
             </Carousel>

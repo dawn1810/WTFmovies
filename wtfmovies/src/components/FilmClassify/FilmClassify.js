@@ -134,21 +134,21 @@ const tabs = [
         eventKey: 'winterTo2024',
         content: films,
     },
-    {
-        title: '#PHIM BỘ',
-        eventKey: 'phimBo',
-        content: films,
-    },
-    {
-        title: '#PHIM LẺ',
-        eventKey: 'phimLe',
-        content: films,
-    },
-    {
-        title: '#KHÔNG GÌ CẢ',
-        eventKey: 'nothing',
-        content: films,
-    },
+    // {
+    //     title: '#PHIM BỘ',
+    //     eventKey: 'phimBo',
+    //     content: films,
+    // },
+    // {
+    //     title: '#PHIM LẺ',
+    //     eventKey: 'phimLe',
+    //     content: films,
+    // },
+    // {
+    //     title: '#KHÔNG GÌ CẢ',
+    //     eventKey: 'nothing',
+    //     content: films,
+    // },
 ];
 
 function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extraIcon }) {

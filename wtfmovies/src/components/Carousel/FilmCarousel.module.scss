@@ -1,7 +1,8 @@
 // Carousel
 .home-slider {
-    width: var(--default-layout-width);
-    padding: 18px;
+    // width: var(--default-layout-width);
+    width: 100%;
+    padding: 25px;
     background-color: var(--card-background-color);
     border-radius: 5px;
 
@@ -18,79 +19,15 @@
     }
 }
 
-.film-info {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .home-slider {
+        padding: 10px;
 
-    .film-title {
-        width: 80%;
-        font-size: 2.8rem;
-
-        /* Does the magic */
-        overflow: hidden;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        text-align: start;
-    }
-
-    .film-content {
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        font-size: 1.4rem;
-        text-align: justify;
-        text-justify: inter-word;
-    }
-}
-
-.film-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-
-    .btn-group {
-        display: flex;
-        justify-content: flex-end;
-        gap: 10px;
-        z-index: 2;
-
-        .action-btn {
-            display: flex;
-            align-items: center;
-            border-radius: 999px;
-            font-size: 2.2rem;
+        .carousel-caption {
             color: var(--text-color);
-            background-color: var(--card-blur-color);
-            padding: 4px 10px;
-            cursor: pointer;
-        }
-    }
-
-    .info-list {
-        list-style: none;
-
-        li {
-            display: grid;
-            grid-template-columns: 32px auto;
-            grid-template-rows: auto;
-            gap: 0px 0px;
-            grid-auto-flow: row;
-            justify-items: flex-start;
-            grid-template-areas: '. title';
-
-            .icon {
-                grid-area: icon;
-            }
-
-            .info-title {
-                grid-area: title;
-
-                span {
-                    font-weight: 600;
-                }
-            }
+            width: 100%;
+            // background-color: aqua;
         }
     }
 }

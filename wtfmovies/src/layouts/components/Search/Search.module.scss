@@ -37,7 +37,6 @@
 .wrapper {
     width: 500px;
     display: flex;
-    border-radius: 999px;
     height: 40px;
 
     .search-input {
@@ -64,6 +63,7 @@
     .search-btn-w-bg {
         width: 15%;
         position: relative;
+
         .search-btn {
             height: 100%;
             z-index: 1;
@@ -218,5 +218,11 @@
                 opacity: 0.7;
             }
         }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        width: 100%;
     }
 }

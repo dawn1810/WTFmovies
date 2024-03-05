@@ -4,17 +4,22 @@ import { Carousel } from '@trendyol-js/react-carousel';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import { useViewport } from '~/hooks';
 import FilmCard from '../FilmCard';
 import style from './FilmProposeList.module.scss';
 
 const cx = classNames.bind(style);
 
 function FilmProposeList({ films, className }) {
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 1024;
+
     return (
         <div className={cx('wrapper', className)}>
             <Carousel
-                show={6.5}
-                slide={3}
+                show={isMobile ? 2.3 : 6.1}
+                slide={isMobile ? 2 : 6}
+                swiping
                 leftArrow={
                     <button className={cx('left-btn')}>
                         <FontAwesomeIcon icon={faChevronLeft} />
@@ -26,7 +31,6 @@ function FilmProposeList({ films, className }) {
                     </button>
                 }
                 className={cx('carousel')}
-                swiping
             >
                 {films.map((film, index) => (
                     <FilmCard

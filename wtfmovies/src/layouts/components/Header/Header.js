@@ -2,13 +2,14 @@ import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
+    faArrowLeft,
     faBell,
     faCircleQuestion,
     faCrown,
     faEarthAsia,
     faEllipsisVertical,
     faGear,
-    faKeyboard,
+    faMagnifyingGlass,
     faRightToBracket,
     faSignOut,
     faUser,
@@ -17,6 +18,7 @@ import { Link } from 'react-router-dom';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
+import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
 import config from '~/config';
@@ -26,6 +28,7 @@ import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import Image from '~/components/Image';
 import Search from '../Search';
+
 const cx = classNames.bind(styles);
 
 const MENU_ITEMS = [
@@ -54,8 +57,14 @@ const MENU_ITEMS = [
         to: '/feedbacks',
     },
     {
-        icon: <FontAwesomeIcon icon={faKeyboard} />,
-        title: 'Bàn phím & phím tắt',
+        icon: <FontAwesomeIcon icon={faCrown} />,
+        title: 'Nâng cấp VIP',
+        to: '/vip',
+    },
+    {
+        icon: <FontAwesomeIcon icon={faGear} />,
+        title: 'Cài đặt',
+        to: '/settings',
     },
 ];
 
@@ -65,11 +74,7 @@ const userMenu = [
         title: 'Thông tin tài khoản',
         to: '/@hoaa',
     },
-    {
-        icon: <FontAwesomeIcon icon={faGear} />,
-        title: 'Cài đặt',
-        to: '/settings',
-    },
+
     ...MENU_ITEMS,
     {
         icon: <FontAwesomeIcon icon={faSignOut} />,
@@ -106,6 +111,10 @@ const genres = [
 function Header() {
     const currentUser = true;
     const [modalShow, setModalShow] = useState(false);
+    const [searchShow, setSearchShow] = useState(false);
+
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 1024;
 
     // Handle logic
     const handleMenuChange = (menuItem) => {
@@ -118,6 +127,9 @@ function Header() {
         }
     };
 
+    const handleSearchClose = () => setSearchShow(false);
+    const handleSearchShow = () => setSearchShow(true);
+
     return (
         <header className={cx('wrapper')}>
             <div className={cx('header')}>
@@ -126,16 +138,27 @@ function Header() {
                         <img src={images.logo} alt="wtfmovies" />
                     </Link>
 
-                    <Search />
+                    {isMobile ? (
+                        <div className={cx('search-box', { 'search-box-show': searchShow })}>
+                            <button className={cx('back-btn')} onClick={handleSearchClose}>
+                                <FontAwesomeIcon icon={faArrowLeft} />
+                            </button>
+                            <Search />
+                        </div>
+                    ) : (
+                        <Search />
+                    )}
 
                     <div className={cx('actions')}>
                         {currentUser ? (
                             <>
-                                <Tippy delay={[0, 50]} content="VIP" placement="bottom">
-                                    <button className={cx('action-btn')}>
-                                        <FontAwesomeIcon icon={faCrown} />
-                                    </button>
-                                </Tippy>
+                                {isMobile && (
+                                    <Tippy delay={[0, 50]} content="Search" placement="bottom">
+                                        <button className={cx('action-btn')} onClick={handleSearchShow}>
+                                            <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                        </button>
+                                    </Tippy>
+                                )}
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
                                     <button className={cx('action-btn')}>
                                         <FontAwesomeIcon icon={faBell} />

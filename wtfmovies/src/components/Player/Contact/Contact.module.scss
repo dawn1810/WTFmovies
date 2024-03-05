@@ -46,7 +46,7 @@
             height: 15px;
             opacity: 0;
             border-radius: 50%;
-            background: var(--primary);
+            background: var(--highlight-color);
             cursor: grab;
             -webkit-transition: 0.2s;
             transition: opacity 0.2s;
@@ -78,7 +78,7 @@
         height: 5px;
 
         &::-webkit-progress-value {
-            background-color: var(--primary);
+            background-color: var(--highlight-color);
         }
 
         &::-webkit-progress-bar {

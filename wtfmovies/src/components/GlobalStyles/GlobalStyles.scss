@@ -27,6 +27,7 @@ $blur-background-color: transparentize($card-background-color, 0.8);
     --blur-background-color: #{$blur-background-color};
     --card-blur-color: #{$card-blur-color};
     --background-color: #{$background-color};
+
     // fontD
     --font-family: 'Montserrat';
 
@@ -107,5 +108,12 @@ body {
 
     .tippy-box[data-placement^='bottom'] > .tippy-arrow:before {
         top: -8px;
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    :root {
+        --default-layout-width: 100%;
     }
 }

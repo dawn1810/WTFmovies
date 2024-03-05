@@ -20,3 +20,9 @@
 .more-btn {
     grid-area: button;
 }
+
+@media screen and (max-width: 1024px) {
+    .content-info {
+        grid-template-columns: auto;
+    }
+}
