@@ -15,6 +15,9 @@ $card-background-color: #272727;
 $blur-background-color: transparentize($card-background-color, 0.8);
 
 :root {
+    //color search btn
+    --color-bg1: rgb(108, 0, 162);
+    --color-bg2: rgb(0, 17, 82);
     // color
     --primary: #{$primary};
     --primary-hover: #{$primary-hover};
