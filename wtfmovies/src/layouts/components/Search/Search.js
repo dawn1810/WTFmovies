@@ -9,11 +9,11 @@ const cx = classNames.bind(styles);
 
 function Search() {
     const interactiveRef = useRef(null);
-    const btnContainerRef = useRef(null); // Tạo một ref mới cho container
+    const btnContainerRef = useRef(null); 
 
     useEffect(() => {
         const interBubble = interactiveRef.current;
-        const btnContainer = btnContainerRef.current; // Tham chiếu tới phần tử container
+        const btnContainer = btnContainerRef.current; 
 
         let curX = 0;
         let curY = 0;
