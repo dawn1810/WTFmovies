@@ -14,11 +14,6 @@ function Search() {
     useEffect(() => {
         const interBubble = interactiveRef.current;
         const btnContainer = btnContainerRef.current; // Tham chiếu tới phần tử container
-        if (!btnContainer) {
-            // Nếu không có tham chiếu tới phần tử DOM, đừng thêm event listener
-            console.error('Button container is not available.');
-            return;
-        }
 
         let curX = 0;
         let curY = 0;
@@ -32,7 +27,6 @@ function Search() {
             if (interBubble) {
                 interBubble.style.transform = `translate(${Math.round(curX)}px, ${Math.round(curY)}px)`;
             }
-
             requestAnimationFrame(move);
         };
 
@@ -45,7 +39,7 @@ function Search() {
             }
         };
 
-        // Thêm event listener vào container thay vì window
+        // Thêm event listener vào container
         btnContainer.addEventListener('mousemove', handleMouseMove);
 
         move();
