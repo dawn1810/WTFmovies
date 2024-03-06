@@ -18,7 +18,7 @@
 @media screen and (max-width: 1024px) {
     .wrapper {
         grid-template-columns: auto;
-        grid-template-rows: auto auto auto;
+        grid-template-rows: auto auto;
         gap: 18px;
         grid-template-areas:
             'title'
@@ -27,6 +27,11 @@
 
         .film-classify-title {
             width: 60%;
+        }
+
+        .tab-box {
+            width: var(--default-layout-width);
+            color: var(--text-color);
         }
     }
 }

@@ -197,7 +197,7 @@ function Watch() {
             <TabsBox
                 tabs={proposeFilmsTabs}
                 listContent
-                textContent
+                // textContent
                 defaultActiveKey="like"
                 className={cx('tab-box')}
             />

@@ -84,14 +84,14 @@ function SideBox({ to, title, icon }) {
                 <div className={cx('side-films-top')}>
                     <FilmCard
                         large
-                        imgSrc={firstOne.imgSrc}
-                        filmName={firstOne.filmName}
-                        views={firstOne.views}
-                        rating={firstOne.rating}
-                        episodes={firstOne.episodes}
+                        imgSrc={films[0].imgSrc}
+                        filmName={films[0].filmName}
+                        views={films[0].views}
+                        rating={films[0].rating}
+                        episodes={films[0].episodes}
                     />
                 </div>
-                {films.map((film, index) => (
+                {films.slice(1).map((film, index) => (
                     <FilmCard
                         key={index}
                         imgSrc={film.imgSrc}

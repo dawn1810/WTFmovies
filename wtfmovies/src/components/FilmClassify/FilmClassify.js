@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import { useViewport } from '~/hooks';
 import SideBox from './SideBox';
-import TabBox from '~/components/TabsBox';
+import TabsBox from '~/components/TabsBox';
 import Button from '~/components/Button';
 import style from './FilmClassify.module.scss';
 
@@ -152,13 +153,24 @@ const tabs = [
 ];
 
 function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extraIcon }) {
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 1024;
+
     return (
         <div className={cx('wrapper')}>
             <Button primary large to={mainDir} leftIcon={mainIcon} className={cx('film-classify-title')}>
                 {mainTitle}
             </Button>
-            <TabBox tabs={tabs} defaultActiveKey="all" gridContent />
-            <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
+            {isMobile ? (
+                <div>
+                    {/* <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} /> */}
+                </div>
+            ) : (
+                <>
+                    <TabsBox tabs={tabs} defaultActiveKey="all" gridContent />
+                    <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
+                </>
+            )}
         </div>
     );
 }

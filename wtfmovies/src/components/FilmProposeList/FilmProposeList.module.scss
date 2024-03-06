@@ -11,6 +11,7 @@
         .left-btn,
         .right-btn {
             position: absolute;
+            top: 0;
             height: 100%;
             width: 50px;
             background-color: transparent;
@@ -30,6 +31,21 @@
 
         .right-btn {
             right: 0;
+        }
+    }
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        padding: 10px;
+        .carousel {
+            .left-btn,
+            .right-btn {
+                &:hover {
+                    transition-duration: 300ms;
+                    background-color: transparent;
+                }
+            }
         }
     }
 }

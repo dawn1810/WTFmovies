@@ -5,8 +5,7 @@
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    // width: var(--default-layout-width);
-    // margin-bottom: 60px;
+
     .tabs {
         --bs-nav-tabs-border-width: none;
         --bs-nav-tabs-link-active-color: var(--text-color);
@@ -59,7 +58,7 @@
         background-color: var(--card-background-color);
     }
 
-    .tab-content {
+    .text-content {
         padding: 28px;
         color: var(--text-color);
     }
