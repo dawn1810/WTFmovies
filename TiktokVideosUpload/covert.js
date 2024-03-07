@@ -88,7 +88,6 @@ async function tiktokUpload(tsDirPath, m3u8FilePath) {
 				`Đã xử lý: ${percentageCompleted.toFixed(2)}% (${processedFiles}/${totalFiles})`
 			);
 		}
-		console.log("File xuất ra:", listPng);
 		makeM3U8(m3u8FilePath, listPng, m3u8FilePath);
 	} catch (error) {
 		console.error("Lỗi:", error);
@@ -115,30 +114,62 @@ async function runFFmpegCommand(inputFile, outputDir) {
 		fs.mkdirSync(outputDirPath, { recursive: true });
 		// Kiểm tra thông tin video
 		const ffprobePath = path.join(__dirname, "ffmpeg/bin/ffprobe.exe");
-		const ffprobeCommand = `${ffprobePath} -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -of default=noprint_wrappers=1:nokey=1 "${inputFile}"`;
+		const ffprobeCommand = `${ffprobePath} -v error -select_streams v:0 -show_entries stream=width,height,r_frame_rate -show_format -of default=noprint_wrappers=1:nokey=0 "${inputFile}"`;
 		const { stdout: ffprobeStdout } = await execPromise(ffprobeCommand);
-		const videoInfoArray = ffprobeStdout
-			.trim()
-			.split("\n")
-			.map((item) => {
-				const cleanedItem = item.replace(/\r/g, "");
-				if (cleanedItem.includes("/")) {
-					const [numerator, denominator] = cleanedItem.split("/").map(Number);
-					return Math.round(numerator / denominator); // Trả về giá trị số sau khi chia
-				}
-				return Number(cleanedItem);
-			});
+		const lines = ffprobeStdout.trim().split("\n");
+		const videoInfo = {};
+		lines.forEach((line) => {
+			const data_stamp = ["width", "height", "r_frame_rate", "bit_rate"];
+			const [key, value] = line.split("=");
+			if (!data_stamp.includes(key)) return;
+			const formattedKey = key.includes(":") ? key.replace(":", "_") : key;
+			if (value.includes("/"))
+				return (videoInfo[formattedKey] = Math.round(eval(value.trim())));
+			return (videoInfo[formattedKey] = Number(value.trim()));
+		});
+		function calculateEncodingSettings(sourceVideo) {
+			const { bit_rate, height, width } = sourceVideo;
 
-		const videoInfo = {
-			width: videoInfoArray[0],
-			height: videoInfoArray[1],
-			fps: videoInfoArray[2],
-		};
+			// Lọc ra những độ phân giải không vượt quá video nguồn và tạo một đối tượng mới để lưu các độ phân giải đã tính toán
+			const calculatedResolutions = Object.entries(resolutions)
+				.filter(
+					([key, value]) => height >= value.video.height && width >= value.video.width
+				)
+				.reduce((acc, [key, value]) => {
+					// Tính toán maxrate và bufsize nếu cần
+					const resHeight = parseInt(value.video.height);
+					const bitrateInKbps = bit_rate / 1000;
+					let maxrate;
+					let bufsize;
+					if (bitrateInKbps <= parseInt(value.video.maxrate.slice(0,-1))) {
+						maxrate = `${Math.round(bitrateInKbps * (resHeight / height))}k`;
+						bufsize = `${Math.round(bitrateInKbps * (resHeight / height) * 1.5)}k`;
+					} else {
+						maxrate = value.video.maxrate;
+						bufsize = value.video.bufsize;
+					}
+
+					// Thêm độ phân giải đó vào đối tượng accumulator
+					acc[key] = {
+						video: {
+							height: value.video.height,
+							width: value.video.width,
+							maxrate: maxrate,
+							bufsize: bufsize,
+						},
+						audio: {
+							// Giả định rằng audio không thay đổi, chỉ lấy giá trị từ resolutions gốc
+							bitrate: value.audio.bitrate,
+						},
+					};
+
+					return acc;
+				}, {});
+
+			return calculatedResolutions;
+		}
 		///////////////////////////////////////////////////
-		const validResolutions = Object.entries(resolutions).filter(
-			([key, value]) =>
-				videoInfo.width >= value.video.width && videoInfo.height >= value.video.height
-		);
+		const validResolutions = Object.entries(calculateEncodingSettings(videoInfo));
 		// In ra các phân giải hợp lệ
 		let gpuEncoder = "";
 		const gpuDetectionCommand = "wmic path win32_VideoController get name";
@@ -157,9 +188,9 @@ async function runFFmpegCommand(inputFile, outputDir) {
 		const videoEncoder = gpuEncoder ? gpuEncoder : "libx264"; // Fallback to libx264 if no GPU encoder is found
 		command +=
 			"-map 0:v:0 -map 0:a:0 ".repeat(validResolutions.length) +
-			`-c:v ${videoEncoder} -profile:v main -crf 20 -sc_threshold 0 -g ${
-				videoInfo.fps * 2
-			} -keyint_min ${videoInfo.fps * 2} -c:a aac -ar 48000 `;
+			`-c:v ${videoEncoder} -profile:v main -sc_threshold 0 -g ${
+				videoInfo.r_frame_rate * 2
+			} -keyint_min ${videoInfo.r_frame_rate * 2} -c:a aac -ar 48000 `;
 		let var_stream_map = ``;
 		validResolutions.forEach(([key, { video, audio }], index) => {
 			const m3u8FilePath = path.join(outputDirPath, "v" + key, "index.m3u8");
@@ -168,10 +199,12 @@ async function runFFmpegCommand(inputFile, outputDir) {
 			command += `-filter:v:${index} scale=w=${video.width}:h=${video.height}:force_original_aspect_ratio=decrease -maxrate:v:${index} ${video.maxrate} -bufsize:v:${index} ${video.bufsize} -b:a:${index} ${audio.bitrate} `;
 		});
 
-		command += `-var_stream_map "${var_stream_map}" -master_pl_name "master.m3u8" -f hls -hls_time 10 -hls_playlist_type vod -hls_list_size 0 -hls_segment_filename "${outputDirPath}/v%v/segment%d.ts" "${outputDirPath}/v%v/index.m3u8" `;
+		command += `-var_stream_map "${var_stream_map}" -master_pl_name "master.m3u8" -f hls -hls_time 4 -hls_playlist_type vod -hls_list_size 0 -hls_segment_filename "${outputDirPath}/v%v/segment%d.ts" "${outputDirPath}/v%v/index.m3u8" `;
 		// Thực thi lệnh ffmpeg
+		console.log(`Command`, command);
+
 		const { stdout, stderr } = await execPromise(command);
-		await fullresTiktokupload(listPathM3U8);
+		// await fullresTiktokupload(listPathM3U8);
 		console.log(`Command Output for ${inputFile}:`, stdout);
 		console.error(`Command Errors for ${inputFile}:`, stderr);
 		// Thông báo hoàn thành

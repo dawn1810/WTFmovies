@@ -7,18 +7,18 @@ const resolutions = {
 			bufsize: "1200k",
 		},
 		audio: {
-			bitrate: "96k",
+			bitrate: "64k",
 		},
 	},
 	"540p": {
 		video: {
 			height: "540",
 			width: "960",
-			maxrate: "1498k",
+			maxrate: "1198k",
 			bufsize: "2100k",
 		},
 		audio: {
-			bitrate: "128k",
+			bitrate: "96k",
 		},
 	},
 	"720p": {
@@ -37,7 +37,7 @@ const resolutions = {
 			height: "1080",
 			width: "1920",
 			maxrate: "5350k",
-			bufsize: "7500k",
+			bufsize: "8500k",
 		},
 		audio: {
 			bitrate: "192k",
@@ -47,8 +47,8 @@ const resolutions = {
 		video: {
 			height: "1440",
 			width: "2560",
-			maxrate: "8000k",
-			bufsize: "12000k",
+			maxrate: "8600k",
+			bufsize: "12500k",
 		},
 		audio: {
 			bitrate: "192k",
