@@ -61,7 +61,7 @@ body {
     text-rendering: optimizespeed;
     background-color: var(--background-color);
     color: var(--body-color);
-    overflow-y: overlay;
+    overflow-y: auto;
 }
 
 // Scrollbar CSS

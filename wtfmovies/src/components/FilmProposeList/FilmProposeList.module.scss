@@ -6,7 +6,9 @@
     background-color: var(--card-background-color);
 
     .carousel {
+        width: 100%;
         position: relative;
+        overflow: hidden;
 
         .left-btn,
         .right-btn {
@@ -38,6 +40,7 @@
 @media screen and (max-width: 1024px) {
     .wrapper {
         padding: 10px;
+
         .carousel {
             .left-btn,
             .right-btn {

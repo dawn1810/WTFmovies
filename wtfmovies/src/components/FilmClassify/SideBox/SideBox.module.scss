@@ -27,3 +27,38 @@
         }
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        justify-content: center;
+        align-items: center;
+
+        .title {
+            align-self: flex-start;
+        }
+
+        .side-films {
+            gap: 0;
+            padding: 10px;
+
+            .side-films-top {
+                width: 100%;
+                margin-bottom: 18px;
+            }
+
+            .show-films {
+                margin-bottom: 18px;
+            }
+
+            .hidden-films {
+                margin-bottom: 0;
+                height: 0;
+                opacity: 0;
+            }
+        }
+
+        .more-btn {
+            width: 90%;
+        }
+    }
+}

@@ -9,9 +9,9 @@ import style from './FilmCard.module.scss';
 
 const cx = classNames.bind(style);
 
-function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, rating, episodes }) {
+function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, rating, episodes, className }) {
     return (
-        <div className={cx('wrapper', { 'nooverlay-wrapper': noOverlay, 'large-wrapper': large })}>
+        <div className={cx('wrapper', className, { 'nooverlay-wrapper': noOverlay, 'large-wrapper': large })}>
             <div className={cx('image-box')}>
                 <Image className={cx('film-img', { 'nooverlay-img': noOverlay })} src={imgSrc} alt={filmName} />
             </div>
@@ -47,6 +47,7 @@ FilmCard.propTypes = {
     views: PropTypes.string.isRequired,
     rating: PropTypes.string.isRequired,
     episodes: PropTypes.string.isRequired,
+    className: PropTypes.string,
 };
 
 export default FilmCard;

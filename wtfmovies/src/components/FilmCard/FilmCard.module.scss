@@ -8,6 +8,7 @@
     justify-content: center;
     border-radius: 5px;
     background-color: var(--body-color);
+    transition: 0.2s ease-out;
 
     .image-box {
         position: relative;
@@ -184,4 +185,15 @@
 
 .large-wrapper {
     width: 100%;
+}
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        width: 160px;
+        height: 230px;
+    }
+
+    .large-wrapper {
+        width: 100%;
+    }
 }

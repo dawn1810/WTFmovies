@@ -5,7 +5,6 @@ import Slider from 'react-slick';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-// import { useViewport } from '~/hooks';
 import { useViewport } from '~/hooks';
 import FilmCard from '../FilmCard';
 import style from './FilmProposeList.module.scss';
@@ -13,7 +12,7 @@ import style from './FilmProposeList.module.scss';
 const cx = classNames.bind(style);
 
 function NextArrow(props) {
-    const { className, style, onClick } = props;
+    const { onClick } = props;
     return (
         <button className={cx('right-btn')} onClick={onClick}>
             <FontAwesomeIcon icon={faChevronRight} />
@@ -22,7 +21,7 @@ function NextArrow(props) {
 }
 
 function PrevArrow(props) {
-    const { className, style, onClick } = props;
+    const { onClick } = props;
     return (
         <button className={cx('left-btn')} onClick={onClick}>
             <FontAwesomeIcon icon={faChevronLeft} />
@@ -33,7 +32,7 @@ function PrevArrow(props) {
 function FilmProposeList({ films, className }) {
     const viewPort = useViewport();
     // const isMobile = viewPort.width;
-    console.log((viewPort.width - 20) / 180 - 0.1);
+    // console.log((viewPort.width - 20) / 180 - 0.1);
 
     const settings = {
         className: cx('carousel'),
@@ -42,7 +41,7 @@ function FilmProposeList({ films, className }) {
         slidesToScroll: 2,
         infinite: true,
         autoplay: true,
-        autoplaySpeed: 2000,
+        autoplaySpeed: 3000,
         swipeToSlide: true,
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
@@ -50,7 +49,7 @@ function FilmProposeList({ films, className }) {
             {
                 breakpoint: 1024,
                 settings: {
-                    slidesToShow: (viewPort.width - 20) / 180 - 0.1,
+                    slidesToShow: (viewPort.width - 20) / 160 - 0.1,
                     slidesToScroll: 1,
                     infinite: true,
                 },
@@ -73,8 +72,8 @@ function FilmProposeList({ films, className }) {
                 ))}
             </Slider>
             {/* <Carousel
-                show={isMobile ? 2.3 : 6.1}
-                slide={isMobile ? 2 : 6}
+                show={6.3}
+                slide={6}
                 swiping
                 leftArrow={
                     <button className={cx('left-btn')}>
@@ -87,8 +86,18 @@ function FilmProposeList({ films, className }) {
                     </button>
                 }
                 className={cx('carousel')}
-            > */}
-            {/* </Carousel> */}
+            >
+                {films.map((film, index) => (
+                    <FilmCard
+                        key={index}
+                        imgSrc={film.imgSrc}
+                        filmName={film.filmName}
+                        views={film.views}
+                        rating={film.rating}
+                        episodes={film.episodes}
+                    />
+                ))}
+            </Carousel> */}
         </div>
     );
 }

@@ -6,6 +6,7 @@ import SideBox from './SideBox';
 import TabsBox from '~/components/TabsBox';
 import Button from '~/components/Button';
 import style from './FilmClassify.module.scss';
+import FilmProposeList from '../FilmProposeList';
 
 const cx = classNames.bind(style);
 
@@ -162,9 +163,14 @@ function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extr
                 {mainTitle}
             </Button>
             {isMobile ? (
-                <div>
-                    {/* <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} /> */}
-                </div>
+                <>
+                    {/* <FilmProposeList films={films} className={cx('films-list')} /> */}
+                    <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} />
+                    {/* <Button primary large to={extraDir} leftIcon={extraIcon} className={cx('film-classify-title')}>
+                        {extraTitle}
+                    </Button> */}
+                    <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
+                </>
             ) : (
                 <>
                     <TabsBox tabs={tabs} defaultActiveKey="all" gridContent />
