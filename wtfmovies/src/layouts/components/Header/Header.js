@@ -138,6 +138,7 @@ function Header() {
                         <img src={images.logo} alt="wtfmovies" />
                     </Link>
 
+                    {/* search */}
                     {isMobile ? (
                         <div className={cx('search-box', { 'search-box-show': searchShow })}>
                             <button className={cx('back-btn')} onClick={handleSearchClose}>

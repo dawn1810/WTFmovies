@@ -7,16 +7,17 @@ import FilmCard from '~/components/FilmCard';
 import Button from '~/components/Button';
 import style from './SideBox.module.scss';
 import { useState } from 'react';
+import { useViewport } from '~/hooks';
 
 const cx = classNames.bind(style);
 
-const firstOne = {
-    imgSrc: 'https://www.hindustantimes.com/ht-img/img/2023/09/05/1600x900/jjk_shibuya_incident_arc_1693914044447_1693914064181.jpg',
-    filmName: 'asdfasd',
-    views: '1.000.000',
-    rating: '4.8',
-    episodes: '10199',
-};
+// const firstOne = {
+//     imgSrc: 'https://www.hindustantimes.com/ht-img/img/2023/09/05/1600x900/jjk_shibuya_incident_arc_1693914044447_1693914064181.jpg',
+//     filmName: 'asdfasd',
+//     views: '1.000.000',
+//     rating: '4.8',
+//     episodes: '10199',
+// };
 
 const films = [
     {
@@ -85,6 +86,9 @@ const films = [
 ];
 
 function SideBox({ to, title, icon }) {
+    const viewPort = useViewport();
+    const isMobile = viewPort.width <= 1024;
+
     const [filmHide, setFilmHide] = useState(true);
 
     const handleMoreFilmClick = () => {
@@ -133,14 +137,16 @@ function SideBox({ to, title, icon }) {
                         ),
                     )}
             </div>
-            <Button
-                primary
-                rightIcon={<FontAwesomeIcon icon={filmHide ? faAngleDown : faAngleUp} />}
-                className={cx('more-btn')}
-                onClick={handleMoreFilmClick}
-            >
-                {filmHide ? 'Xem thêm' : 'Ẩn bớt'}
-            </Button>
+            {isMobile && (
+                <Button
+                    primary
+                    rightIcon={<FontAwesomeIcon icon={filmHide ? faAngleDown : faAngleUp} />}
+                    className={cx('more-btn')}
+                    onClick={handleMoreFilmClick}
+                >
+                    {filmHide ? 'Xem thêm' : 'Ẩn bớt'}
+                </Button>
+            )}
         </div>
     );
 }

@@ -149,5 +149,14 @@
 @media screen and (max-width: 1024px) {
     .wrapper {
         position: relative;
+        .inner {
+            .logo-link {
+                width: calc((100% - 24px) / 2);
+            }
+
+            .actions {
+                width: calc((100% - 24px) / 2);
+            }
+        }
     }
 }

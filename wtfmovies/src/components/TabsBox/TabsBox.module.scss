@@ -85,3 +85,19 @@
         background-color: var(--card-background-color);
     }
 }
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        .cmt-tabs {
+            button {
+                padding: 5px 10px;
+            }
+        }
+
+        .cmt-content {
+            padding: 28px 18px;
+            border-radius: 5px;
+        }
+    }
+}

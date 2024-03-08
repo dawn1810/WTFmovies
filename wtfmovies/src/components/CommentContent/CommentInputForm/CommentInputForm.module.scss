@@ -16,7 +16,14 @@
         }
 
         .user-name {
+            width: 250px;
             text-align: center;
+
+            /* Does the magic */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-align: start;
         }
     }
 
@@ -46,6 +53,44 @@
 
             input {
                 width: 280px;
+            }
+        }
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        gap: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .user-info {
+            flex-direction: row;
+            gap: 18px;
+
+            .avatar {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        .form {
+            --bs-body-color: var(--text-color);
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .form-bottom {
+                display: flex;
+                justify-content: space-between;
+                gap: 10px;
+
+                input {
+                    flex: 1;
+                }
             }
         }
     }

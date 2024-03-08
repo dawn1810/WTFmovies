@@ -15,9 +15,6 @@
             height: 100px;
             border-radius: 50%;
         }
-        .user-name {
-            text-align: center;
-        }
     }
 
     .content {
@@ -26,5 +23,35 @@
         display: flex;
         flex-direction: column;
         gap: 18px;
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        gap: 18px;
+        flex-direction: column;
+        align-items: flex-start;
+
+        .user-info {
+            flex-direction: row;
+            gap: 18px;
+
+            .avatar {
+                width: 50px;
+                height: 50px;
+            }
+
+            .user-name {
+                width: 250px;
+                text-align: center;
+
+                /* Does the magic */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: start;
+            }
+        }
     }
 }

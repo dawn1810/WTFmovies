@@ -15,3 +15,21 @@
         overflow-y: auto;
     }
 }
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        gap: 30px;
+
+        .comment-list {
+            height: 700px;
+            display: flex;
+            flex-direction: column;
+            gap: 50px;
+            padding: 20px;
+            border-radius: 5px;
+            background-color: var(--background-color);
+            overflow-y: auto;
+        }
+    }
+}

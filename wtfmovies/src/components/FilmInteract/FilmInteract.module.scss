@@ -11,3 +11,21 @@
         text-overflow: ellipsis;
     }
 }
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        flex-direction: column;
+        gap: 18px;
+
+        .server-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            button {
+                margin-left: 0;
+            }
+        }
+    }
+}
