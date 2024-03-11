@@ -4,6 +4,32 @@
     justify-content: space-between;
     align-items: center;
 
+    .server-list {
+        width: 250px;
+        height: 100%;
+        padding: 9px 16px;
+        border: none;
+        background-color: var(--card-background-color);
+        color: var(--text-color);
+        font-size: 1.6rem;
+        font-weight: 600;
+        background-image: none;
+
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+    }
+
+    .report-btn {
+        background-color: var(--highlight-color);
+        transition: 0.1s linear;
+
+        &:hover {
+            opacity: 0;
+            cursor: not-allowed;
+        }
+    }
+
     button span {
         width: 127px;
         overflow: hidden;
@@ -17,15 +43,5 @@
     .wrapper {
         flex-direction: column;
         gap: 18px;
-
-        .server-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-
-            button {
-                margin-left: 0;
-            }
-        }
     }
 }

@@ -3,6 +3,7 @@
     flex-wrap: wrap;
     gap: 15px;
     padding: auto;
+    overflow-x: auto;
 
     .expisode {
         position: relative;
@@ -18,6 +19,17 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
+        }
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        .expisode {
+            height: 50px;
+            width: 50px;
+            font-size: 1.4rem;
         }
     }
 }
