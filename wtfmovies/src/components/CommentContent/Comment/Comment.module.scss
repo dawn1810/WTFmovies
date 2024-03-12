@@ -15,6 +15,10 @@
             height: 100px;
             border-radius: 50%;
         }
+
+        .user-name {
+            width: 250px;
+        }
     }
 
     .content {
@@ -23,6 +27,16 @@
         display: flex;
         flex-direction: column;
         gap: 18px;
+
+        h3 {
+            width: 250px;
+
+            /* Does the magic */
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            text-align: start;
+        }
     }
 }
 
@@ -44,7 +58,7 @@
 
             .user-name {
                 width: 250px;
-                text-align: center;
+                text-align: start;
 
                 /* Does the magic */
                 overflow: hidden;

@@ -20,7 +20,6 @@ function TabGridContent({ films }) {
                 {films.map((film, index) => (
                     <FilmCard
                         key={index}
-                        noOverlay={!isMobile}
                         large={isMobile}
                         imgSrc={film.imgSrc}
                         filmName={film.filmName}

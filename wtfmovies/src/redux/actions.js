@@ -5,6 +5,13 @@ export const changeModalFace = (modalFace) => {
     };
 };
 
+export const changeUrl = (url) => {
+    return {
+        type: 'player/changeUrl',
+        payload: url,
+    };
+};
+
 export const changeReady = (ready) => {
     return {
         type: 'player/changeReady',

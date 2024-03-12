@@ -29,8 +29,9 @@
 
 // export default Player;
 // import Tippy from '@tippyjs/react';
+import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
-import { useRef, useCallback } from 'react';
+import { useRef, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
@@ -44,6 +45,7 @@ import {
     changeDuration,
     changeLoading,
     showContact,
+    changeUrl,
 } from './playerSlice';
 import { playerSelector } from '~/redux/selectors';
 import Contact from './Contact';
@@ -51,11 +53,11 @@ import Cover from './Cover';
 
 const cx = classNames.bind(style);
 
-const Player = () => {
+const Player = ({ url }) => {
     let i;
 
+    // redux
     const state = useSelector(playerSelector);
-
     const dispatch = useDispatch();
 
     // State hooks
@@ -133,6 +135,9 @@ const Player = () => {
     const wrapperRef = useRef(null);
     const contactRef = useRef(null);
 
+    useEffect(() => {
+        dispatch(changeUrl(url));
+    }, [state.url]);
     // Callback hooks
     // const load = useCallback((url) => {
     //     setState((state) => ({ ...state, url, played: 0, loaded: 0, pip: false }));
@@ -219,18 +224,15 @@ const Player = () => {
             }
         },
         [state.seeking],
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         // [state.seeking, state],
     );
 
     const handleEnded = useCallback(() => {
         dispatch(changePlayPause(state.loop));
-        // setState((state) => ({ ...state, playing: state.loop }));
     }, []);
 
     const handleDuration = useCallback((duration) => {
         dispatch(changeDuration(duration));
-        // setState((state) => ({ ...state, duration }));
     }, []);
 
     const handleClickFullscreen = useCallback(() => {
@@ -239,22 +241,18 @@ const Player = () => {
 
     const handleOnBuffer = () => {
         dispatch(changeLoading(true));
-        // setState((state) => ({ ...state, loading: true }));
     };
 
     const handlePlay = () => {
         dispatch(changeLoading(false));
-        // setState((state) => ({ ...state, loading: false }));
     };
 
     const handleMouseMove = () => {
         clearTimeout(i);
         dispatch(showContact(true));
-        // setContactShow(true);
 
         i = setTimeout(function () {
             dispatch(showContact(false));
-            // setContactShow(false);
         }, 3000);
     };
 

@@ -1,0 +1,23 @@
+.film-classify-title {
+    grid-area: title;
+    display: flex;
+    align-items: center;
+    // width: 30%;
+    color: var(--text-color);
+
+    .title-sign {
+        height: 50px;
+        width: 10px;
+        margin-right: 18px;
+        background-color: var(--highlight-color);
+    }
+
+    .title {
+        font-size: 2.4rem;
+        font-weight: 600;
+    }
+
+    .left-icon {
+        margin-left: 18px;
+    }
+}

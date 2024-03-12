@@ -1,5 +1,3 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp91, faCat, faFeather } from '@fortawesome/free-solid-svg-icons';
 import { Carousel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -16,9 +14,11 @@ const items = [
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
         infoList: [
-            { icon: <FontAwesomeIcon icon={faFeather} />, title: 'Tác giả', info: 'Gege Akutami' },
-            { icon: <FontAwesomeIcon icon={faCat} />, title: 'Thể loại', info: 'Shonen manga, Dark fantasy' },
-            { icon: <FontAwesomeIcon icon={faArrowUp91} />, title: 'Số tập', info: '36/36' },
+            { title: 'Tác giả', info: ['Gege Akutami'], type: 'searchAble' },
+            { title: 'Thể loại', info: ['Shonen manga', 'Dark fantasy'], type: 'searchAble' },
+            { title: 'Số tập', info: '36/36' },
+            { title: 'Lượt xem', info: '100M' },
+            { title: 'Đánh giá', info: '4.9' },
         ],
     },
     {
@@ -27,9 +27,11 @@ const items = [
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
         infoList: [
-            { icon: <FontAwesomeIcon icon={faFeather} />, title: 'Tác giả', info: 'Gege Akutami' },
-            { icon: <FontAwesomeIcon icon={faCat} />, title: 'Thể loại', info: 'Shonen manga, Dark fantasy' },
-            { icon: <FontAwesomeIcon icon={faArrowUp91} />, title: 'Số tập', info: '36/36' },
+            { title: 'Tác giả', info: ['Gege Akutami'], type: 'searchAble' },
+            { title: 'Thể loại', info: ['Shonen manga', 'Dark fantasy'], type: 'searchAble' },
+            { title: 'Số tập', info: '36/36' },
+            { title: 'Lượt xem', info: '100M' },
+            { title: 'Đánh giá', info: '4.9' },
         ],
     },
     {
@@ -38,9 +40,11 @@ const items = [
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
         infoList: [
-            { icon: <FontAwesomeIcon icon={faFeather} />, title: 'Tác giả', info: 'Gege Akutami' },
-            { icon: <FontAwesomeIcon icon={faCat} />, title: 'Thể loại', info: 'Shonen manga, Dark fantasy' },
-            { icon: <FontAwesomeIcon icon={faArrowUp91} />, title: 'Số tập', info: '36/36' },
+            { title: 'Tác giả', info: ['Gege Akutami'], type: 'searchAble' },
+            { title: 'Thể loại', info: ['Shonen manga', 'Dark fantasy'], type: 'searchAble' },
+            { title: 'Số tập', info: '36/36' },
+            { title: 'Lượt xem', info: '100M' },
+            { title: 'Đánh giá', info: '4.9' },
         ],
     },
 ];

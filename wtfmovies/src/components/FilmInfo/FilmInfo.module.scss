@@ -11,6 +11,7 @@
     }
 
     .film-left-container {
+        position: relative;
         width: 55%;
         display: flex;
         flex-direction: column;
@@ -24,30 +25,90 @@
 }
 
 .film-info {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 10px;
 
     .film-title {
-        width: 80%;
+        max-width: 80%;
+        width: fit-content;
         font-size: 2.8rem;
-
+        font-weight: 700;
+        text-decoration: underline;
+        cursor: pointer;
+        transition: linear 0.1s;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
         /* Does the magic */
         overflow: hidden;
         white-space: nowrap;
         text-overflow: ellipsis;
         text-align: start;
+
+        &:active {
+            color: var(--highlight-color);
+        }
     }
 
     .film-content {
+        height: 100px;
         width: 100%;
-        display: -webkit-box;
-        -webkit-line-clamp: 5;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
+        overflow-y: auto;
+        // display: -webkit-box;
+        // -webkit-line-clamp: 5;
+        // -webkit-box-orient: vertical;
+        // overflow: hidden;
         font-size: 1.4rem;
         text-align: justify;
-        text-justify: inter-word;
+        // text-justify: inter-word;s
+    }
+
+    .rating {
+        position: absolute;
+        top: -5px;
+        right: 60px;
+        height: 50px;
+        width: 50px;
+
+        img {
+            height: 100%;
+            width: 100%;
+            opacity: 0.7;
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-color);
+            font-weight: 600;
+        }
+    }
+
+    .episodes {
+        position: absolute;
+        top: -5px;
+        right: 5px;
+        height: 50px;
+        width: 50px;
+
+        img {
+            height: 100%;
+            width: 100%;
+            opacity: 0.7;
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-color);
+            font-weight: 600;
+        }
     }
 }
 
@@ -55,7 +116,7 @@
     display: flex;
     flex-direction: column;
     gap: 18px;
-    padding: 10px;
+    padding: 10px 0;
 
     .btn-group {
         display: flex;
@@ -76,6 +137,7 @@
     }
 
     .info-list {
+        padding: 0;
         list-style: none;
 
         li {
@@ -85,7 +147,9 @@
             gap: 0px 0px;
             grid-auto-flow: row;
             justify-items: flex-start;
+            align-items: center;
             grid-template-areas: '. title';
+            line-height: 1.8;
 
             .icon {
                 grid-area: icon;
@@ -96,8 +160,56 @@
 
                 span {
                     font-weight: 600;
+                    line-height: normal;
                 }
             }
+
+            .high-light {
+                color: #b5e745;
+            }
+
+            .search-able {
+                color: #7fa7ff;
+                transition: 0.1s linear;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            .episodes-btn {
+                height: fit-content;
+                min-width: auto;
+                margin-left: 5px;
+                padding: 5px;
+                border-radius: 5px;
+                background-color: var(--highlight-color);
+                color: var(--text-color);
+                transition-duration: 0.3s;
+
+                &:hover {
+                    background-color: var(--highlight-color);
+                    opacity: 0.5;
+                }
+            }
+        }
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        flex-direction: column;
+        padding: 0;
+
+        .film-image {
+            width: 100%;
+        }
+
+        .film-left-container {
+            gap: 10px;
+            width: 100%;
+            padding: 10px;
         }
     }
 }

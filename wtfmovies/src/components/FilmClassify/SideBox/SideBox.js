@@ -8,6 +8,7 @@ import Button from '~/components/Button';
 import style from './SideBox.module.scss';
 import { useState } from 'react';
 import { useViewport } from '~/hooks';
+import Title from '../Title';
 
 const cx = classNames.bind(style);
 
@@ -97,9 +98,10 @@ function SideBox({ to, title, icon }) {
 
     return (
         <div className={cx('wrapper')}>
-            <Button primary large to={to} leftIcon={icon} className={cx('title')}>
+            {/* <Button primary large to={to} leftIcon={icon} className={cx('title')}>
                 {title}
-            </Button>
+            </Button> */}
+            <Title title={title} icon={icon} />
             <div className={cx('side-films')}>
                 <div className={cx('side-films-top')}>
                     <FilmCard

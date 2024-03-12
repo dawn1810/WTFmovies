@@ -1,12 +1,12 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
+import Title from './Title';
 import { useViewport } from '~/hooks';
 import SideBox from './SideBox';
 import TabsBox from '~/components/TabsBox';
-import Button from '~/components/Button';
+// import Button from '~/components/Button';
 import style from './FilmClassify.module.scss';
-import FilmProposeList from '../FilmProposeList';
 
 const cx = classNames.bind(style);
 
@@ -159,16 +159,10 @@ function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extr
 
     return (
         <div className={cx('wrapper')}>
-            <Button primary large to={mainDir} leftIcon={mainIcon} className={cx('film-classify-title')}>
-                {mainTitle}
-            </Button>
+            <Title title={mainTitle} icon={mainIcon} />
             {isMobile ? (
                 <>
-                    {/* <FilmProposeList films={films} className={cx('films-list')} /> */}
                     <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} />
-                    {/* <Button primary large to={extraDir} leftIcon={extraIcon} className={cx('film-classify-title')}>
-                        {extraTitle}
-                    </Button> */}
                     <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
                 </>
             ) : (

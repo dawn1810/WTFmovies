@@ -26,6 +26,9 @@ export const playerSlice = createSlice({
         currResol: 'N/A',
     },
     reducers: {
+        changeUrl: (state, action) => {
+            state.url = action.payload;
+        },
         changeReady: (state, action) => {
             state.ready = action.payload;
         },
@@ -83,6 +86,7 @@ export const playerSlice = createSlice({
 });
 
 export const {
+    changeUrl,
     changeReady,
     changePlayPause,
     changeVolume,

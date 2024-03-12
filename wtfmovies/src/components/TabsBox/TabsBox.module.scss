@@ -13,9 +13,12 @@
         --bs-nav-tabs-link-hover-border-color: transparent;
         --bs-nav-tabs-link-active-bg: var(--card-background-color);
 
-        height: 60px;
-        gap: 10px;
+        gap: 0 10px;
         font-weight: 600;
+
+        li {
+            height: 60px;
+        }
 
         button {
             height: 100%;

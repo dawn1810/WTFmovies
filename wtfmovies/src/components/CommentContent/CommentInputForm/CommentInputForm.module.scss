@@ -16,14 +16,13 @@
         }
 
         .user-name {
-            width: 250px;
+            width: 150px;
             text-align: center;
 
             /* Does the magic */
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
-            text-align: start;
         }
     }
 
@@ -73,10 +72,15 @@
                 width: 50px;
                 height: 50px;
             }
+
+            .user-name {
+                text-align: start;
+            }
         }
 
         .form {
             --bs-body-color: var(--text-color);
+
             width: 100%;
             flex: 1;
             display: flex;

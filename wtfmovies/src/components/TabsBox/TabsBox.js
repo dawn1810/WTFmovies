@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { Tabs, Tab, Row, Col, Nav } from 'react-bootstrap';
+import { Tabs, Tab } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
 import TabGridContent from './TabGridContent';

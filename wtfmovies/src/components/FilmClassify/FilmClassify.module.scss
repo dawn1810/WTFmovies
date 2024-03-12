@@ -8,11 +8,6 @@
         'tabbox sidebox';
     gap: 30px;
     margin-bottom: 80px;
-
-    .film-classify-title {
-        grid-area: title;
-        width: 30%;
-    }
 }
 
 @media screen and (max-width: 1024px) {
