@@ -74,7 +74,13 @@ function Modals({ ...props }) {
                                 <Form.Label column sm={2}>
                                     Email
                                 </Form.Label>
-                                <Form.Control className={cx('text-input')} type="email" placeholder="Email" required />
+                                <Form.Control
+                                    className={cx('text-input')}
+                                    type="email"
+                                    placeholder="Email"
+                                    required
+                                    autoFocus
+                                />
                             </Form.Group>
 
                             <Form.Group className="mb-3" controlId="formHorizontalPassword">
@@ -95,7 +101,7 @@ function Modals({ ...props }) {
                             <Form.Group className="mb-5" controlId="formHorizontalCheck">
                                 <Form.Text id="passwordHelpBlock">
                                     Bạn chưa có tài khoản?{' '}
-                                    <Link to="" onClick={handleSignUp}>
+                                    <Link className={cx('switch-page')} to="" onClick={handleSignUp}>
                                         Đăng kí tài khoản.
                                     </Link>
                                 </Form.Text>
@@ -124,6 +130,7 @@ function Modals({ ...props }) {
                                         type="text"
                                         placeholder="Họ và tên"
                                         required
+                                        autoFocus
                                     />
                                 </Form.Group>
 
@@ -221,7 +228,7 @@ function Modals({ ...props }) {
                             <Form.Group className="mb-5" controlId="formHorizontalCheck">
                                 <Form.Text id="passwordHelpBlock">
                                     Bạn đã có tài khoản?{' '}
-                                    <Link to="" onClick={handleSignIn}>
+                                    <Link to="" className={cx('switch-page')} onClick={handleSignIn}>
                                         Đăng nhập.
                                     </Link>
                                 </Form.Text>

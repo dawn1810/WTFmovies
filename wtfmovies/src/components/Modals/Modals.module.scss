@@ -21,6 +21,17 @@
 
         .submit {
             margin-left: 0;
+            background-color: var(--highlight-color);
+            opacity: 0.8;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &:active {
+                opacity: 0.8;
+                color: var(--text-color);
+            }
         }
     }
 
@@ -33,6 +44,24 @@
 
         button {
             margin-left: 0;
+            background-color: var(--card-blur-color);
+
+            &:hover {
+                background-color: var(--primary);
+            }
+
+            &:active {
+                background-color: var(--card-blur-color);
+                color: var(--text-color);
+            }
+        }
+    }
+
+    .switch-page {
+        color: var(--highlight-color);
+
+        &:hover {
+            text-decoration: underline;
         }
     }
 

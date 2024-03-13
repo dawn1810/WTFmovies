@@ -109,7 +109,7 @@ const genres = [
 ];
 
 function Header() {
-    const currentUser = true;
+    const currentUser = false;
     const [modalShow, setModalShow] = useState(false);
     const [searchShow, setSearchShow] = useState(false);
 
@@ -170,7 +170,6 @@ function Header() {
                         ) : (
                             <>
                                 <Button
-                                    className={cx('header-btn')}
                                     primary
                                     leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
                                     onClick={() => setModalShow(true)}

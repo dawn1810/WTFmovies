@@ -19,13 +19,6 @@
     background-color: var(--primary);
 }
 
-.header-btn {
-    color: var(--body-color);
-    &:active {
-        background-color: var(--blur-background-color);
-    }
-}
-
 .inner {
     height: 100%;
     width: var(--default-layout-width);
@@ -90,7 +83,7 @@
     margin-left: 28px;
     padding: 4px 8px;
     background-color: transparent;
-    color: var(--body-color);
+    color: var(--text-color);
 }
 
 .action-btn {

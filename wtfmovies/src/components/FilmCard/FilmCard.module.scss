@@ -25,8 +25,15 @@
         }
     }
 
-    .nooverlay-img {
-        border-radius: 5px 5px 0 0;
+    .nooverlay-img-box {
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+
+        .nooverlay-img {
+            width: 100px;
+            height: 100px;
+        }
     }
 
     .info {
@@ -61,9 +68,19 @@
 
     .nooverlay-info {
         position: static;
-        height: 20%;
-        border-radius: 0 0 5px 5px;
-        background-color: var(--primary);
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        height: 100%;
+        border-radius: 0 5px 5px 0;
+        padding: 15px;
+        text-align: start;
+        background-color: var(--card-blur-color);
+
+        .nooverlay-subinfo-list {
+            display: flex;
+            gap: 10px;
+        }
     }
 
     .large-info {
@@ -92,6 +109,13 @@
             color: var(--text-color);
             font-weight: 600;
         }
+    }
+
+    .nooverlay-rating {
+        left: unset;
+        right: 60px;
+        top: unset;
+        bottom: 5px;
     }
 
     .large-rating {
@@ -124,7 +148,7 @@
 
     .nooverlay-episodes {
         top: unset;
-        bottom: 22%;
+        bottom: 5px;
     }
 
     .large-episodes {
@@ -180,7 +204,10 @@
 }
 
 .nooverlay-wrapper {
-    height: auto;
+    width: 100%;
+    height: 100px;
+    flex-direction: row;
+    border-radius: 5px;
 }
 
 .large-wrapper {
@@ -191,6 +218,12 @@
     .wrapper {
         width: 160px;
         height: 230px;
+    }
+
+    .nooverlay-wrapper {
+        width: 100%;
+        height: 100px;
+        flex-direction: row;
     }
 
     .large-wrapper {

@@ -98,9 +98,6 @@ function SideBox({ to, title, icon }) {
 
     return (
         <div className={cx('wrapper')}>
-            {/* <Button primary large to={to} leftIcon={icon} className={cx('title')}>
-                {title}
-            </Button> */}
             <Title title={title} icon={icon} />
             <div className={cx('side-films')}>
                 <div className={cx('side-films-top')}>
@@ -119,6 +116,7 @@ function SideBox({ to, title, icon }) {
                         index < 2 ? (
                             <FilmCard
                                 key={index}
+                                noOverlay
                                 imgSrc={film.imgSrc}
                                 filmName={film.filmName}
                                 views={film.views}
@@ -129,6 +127,7 @@ function SideBox({ to, title, icon }) {
                         ) : (
                             <FilmCard
                                 key={index}
+                                noOverlay
                                 imgSrc={film.imgSrc}
                                 filmName={film.filmName}
                                 views={film.views}

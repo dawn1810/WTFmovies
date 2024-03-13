@@ -12,10 +12,10 @@
     .side-films {
         height: 100%;
         display: grid;
-        grid-template-columns: auto auto;
-        grid-template-rows: auto auto;
+        grid-template-columns: auto;
+        grid-template-rows: auto;
         gap: 10px;
-        grid-template-areas: 'one one';
+        grid-template-areas: 'one';
         justify-items: center;
         padding: 18px;
         border-radius: 5px;

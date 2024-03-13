@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faCalendar, faClock, faEye, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -12,14 +12,28 @@ const cx = classNames.bind(style);
 function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, rating, episodes, className }) {
     return (
         <div className={cx('wrapper', className, { 'nooverlay-wrapper': noOverlay, 'large-wrapper': large })}>
-            <div className={cx('image-box')}>
+            <div className={cx('image-box', { 'nooverlay-img-box': noOverlay })}>
                 <Image className={cx('film-img', { 'nooverlay-img': noOverlay })} src={imgSrc} alt={filmName} />
             </div>
             <div className={cx('info', { 'nooverlay-info': noOverlay, 'large-info': large })}>
                 <h4>{filmName}</h4>
-                <h5>Lượt xem: {views}</h5>
+                {noOverlay ? (
+                    <div className={cx('nooverlay-subinfo-list')}>
+                        <h5>
+                            <FontAwesomeIcon icon={faEye} /> {views}
+                        </h5>
+                        <h5>
+                            <FontAwesomeIcon icon={faClock} /> {'10/25'}
+                        </h5>
+                        <h5>
+                            <FontAwesomeIcon icon={faCalendar} /> {'2021'}
+                        </h5>
+                    </div>
+                ) : (
+                    <h5>Lượt xem: {views}</h5>
+                )}
             </div>
-            <div className={cx('rating', { 'large-rating': large })}>
+            <div className={cx('rating', { 'nooverlay-rating': noOverlay, 'large-rating': large })}>
                 <Image src={images.star} alt="rating" />
                 <span>{rating}</span>
             </div>
