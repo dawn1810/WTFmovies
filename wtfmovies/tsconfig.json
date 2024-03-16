@@ -1,6 +1,10 @@
 {
     "compilerOptions": {
-        "lib": ["dom", "dom.iterable", "esnext"],
+        "lib": [
+            "dom",
+            "dom.iterable",
+            "esnext"
+        ],
         "allowJs": true,
         "skipLibCheck": true,
         "strict": true,
@@ -18,10 +22,23 @@
             }
         ],
         "paths": {
-            "~/*": ["./*"]
+            "~/*": [
+                "./*"
+            ]
         },
-        "types": ["@cloudflare/workers-types/2023-07-01"]
+        "types": [
+            "@cloudflare/workers-types/2023-07-01"
+        ]
     },
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "app/layout.jsx"],
-    "exclude": ["node_modules"]
+    "include": [
+        "next-env.d.ts",
+        "**/*.ts",
+        "**/*.tsx",
+        ".next/types/**/*.ts",
+        "app/layout.jsx",
+        "app/review/Review.js"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }
