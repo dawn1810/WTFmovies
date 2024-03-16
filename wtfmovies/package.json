@@ -1,67 +1,57 @@
 {
-    "name": "wtfmovies",
-    "version": "0.1.0",
-    "private": true,
-    "dependencies": {
-        "@fortawesome/fontawesome-svg-core": "^6.5.1",
-        "@fortawesome/free-brands-svg-icons": "^6.5.1",
-        "@fortawesome/free-regular-svg-icons": "^6.5.1",
-        "@fortawesome/free-solid-svg-icons": "^6.5.1",
-        "@fortawesome/react-fontawesome": "^0.2.0",
-        "@reduxjs/toolkit": "^2.2.1",
-        "@testing-library/jest-dom": "^5.17.0",
-        "@testing-library/react": "^13.4.0",
-        "@testing-library/user-event": "^13.5.0",
-        "@tippyjs/react": "^4.2.6",
-        "@trendyol-js/react-carousel": "^3.0.2",
-        "bootstrap": "^5.3.2",
-        "classnames": "^2.5.1",
-        "normalize.css": "^8.0.1",
-        "react": "^18.2.0",
-        "react-app-rewired": "^2.2.1",
-        "react-bootstrap": "^2.10.0",
-        "react-dom": "^18.2.0",
-        "react-player": "^2.14.1",
-        "react-redux": "^9.1.0",
-        "react-router-dom": "^6.22.0",
-        "react-scripts": "5.0.1",
-        "react-select": "^5.8.0",
-        "react-slick": "^0.30.2",
-        "redux": "^5.0.1",
-        "slick-carousel": "^1.8.1",
-        "web-vitals": "^2.1.4"
-    },
-    "devDependencies": {
-        "babel-plugin-module-resolver": "^5.0.0",
-        "customize-cra": "^1.0.0",
-        "sass": "^1.70.0",
-        "screenfull": "^6.0.2",
-        "wrangler": "^3.26.0"
-    },
-    "scripts": {
-        "start": "react-app-rewired start",
-        "build": "react-app-rewired build",
-        "test": "react-app-rewired test",
-        "eject": "react-app-rewired eject",
-        "dev": "wrangler pages dev --compatibility-date=2024-01-29 --port 3000 -- npm start",
-        "deploy": "npm run build && wrangler pages deploy ./build"
-    },
-    "eslintConfig": {
-        "extends": [
-            "react-app",
-            "react-app/jest"
-        ]
-    },
-    "browserslist": {
-        "production": [
-            ">0.2%",
-            "not dead",
-            "not op_mini all"
-        ],
-        "development": [
-            "last 1 chrome version",
-            "last 1 firefox version",
-            "last 1 safari version"
-        ]
-    }
+  "name": "wtfmovies",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "pages:build": "npx @cloudflare/next-on-pages",
+    "preview": "npm run pages:build && wrangler pages dev .vercel/output/static",
+    "deploy": "npm run pages:build && wrangler pages deploy .vercel/output/static"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.5.1",
+    "@fortawesome/free-brands-svg-icons": "^6.5.1",
+    "@fortawesome/free-regular-svg-icons": "^6.5.1",
+    "@fortawesome/free-solid-svg-icons": "^6.5.1",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@reduxjs/toolkit": "^2.2.1",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "@tippyjs/react": "^4.2.6",
+    "@trendyol-js/react-carousel": "^3.0.2",
+    "bootstrap": "^5.3.2",
+    "classnames": "^2.5.1",
+    "next": "14.1.0",
+    "normalize.css": "^8.0.1",
+    "react": "^18",
+    "react-app-rewired": "^2.2.1",
+    "react-bootstrap": "^2.10.0",
+    "react-dom": "^18",
+    "react-player": "^2.14.1",
+    "react-redux": "^9.1.0",
+    "react-router-dom": "^6.22.0",
+    "react-select": "^5.8.0",
+    "react-slick": "^0.30.2",
+    "redux": "^5.0.1",
+    "slick-carousel": "^1.8.1",
+    "web-vitals": "^2.1.4"
+  },
+  "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.10.0",
+    "@cloudflare/workers-types": "^4.20240314.0",
+    "@types/node": "^20",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "babel-plugin-module-resolver": "^5.0.0",
+    "customize-cra": "^1.0.0",
+    "sass": "^1.70.0",
+    "screenfull": "^6.0.2",
+    "typescript": "^5",
+    "vercel": "^33.6.0",
+    "wrangler": "^3.34.2"
+  }
 }
