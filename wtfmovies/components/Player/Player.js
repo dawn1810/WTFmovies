@@ -158,7 +158,7 @@ const Player = ({ url }) => {
                 handleClickFullscreen={handleClickFullscreen}
             />
 
-        </div> : <div>Loading Player</div>
+        </div> : <div className={cx('wrapper')}>Loading Player</div>
     );
 };
 
