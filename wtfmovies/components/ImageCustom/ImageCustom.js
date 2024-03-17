@@ -17,7 +17,7 @@ const ImageCustom = forwardRef(({ src, alt, className, fallback: customFallback 
     <img
       className={classNames(styles.wrapper, className)}
       ref={ref}
-      src={fallback.src || src}
+      src={fallback || src}
       alt={alt}
 
       {...props}
