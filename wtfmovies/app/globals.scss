@@ -93,6 +93,10 @@ input,
 a {
     color: var(--body-color);
     text-decoration: none;
+
+    &:hover {
+        text-decoration: none;
+    }
 }
 
 // Custom tippy tooltip

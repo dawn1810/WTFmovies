@@ -1,8 +1,13 @@
 import type { Metadata } from "next";
+import Head from 'next/head';
+
 import "./globals.scss";
 export const metadata: Metadata = {
-  title: "WTF movies",
+  title: "WTFmovies",
   description: "Nơi thoả sức đam mê phim ảnh",
+  applicationName: "WTFmovies",
+  authors: { name: "WTF dev", url: "https://wtfdev.com" },
+  icons: "/favicon.svg"
 };
 
 export default function RootLayout({

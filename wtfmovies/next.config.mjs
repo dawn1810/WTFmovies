@@ -15,8 +15,6 @@ const nextConfig = {
 
   webpack(config, options) {
     config.resolve.alias['~'] = './'; // này sẽ thêm alias '~' để đề cập đến thư mục root của dự án
-
-    // Bạn cần thêm `import path from 'path'` ở phía trên của file nếu chưa có
     return config;
   }
 };
