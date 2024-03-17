@@ -7,7 +7,7 @@ import classNames from 'classnames/bind';
 import FilmCarousel from '~/components/Carousel/FilmCarousel';
 import FilmProposeList from '~/components/FilmProposeList';
 import FilmClassify from '~/components/FilmClassify';
-import style from './Home.module.scss';
+import style from './page.module.scss';
 
 const cx = classNames.bind(style);
 
