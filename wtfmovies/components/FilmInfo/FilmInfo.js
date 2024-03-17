@@ -42,7 +42,7 @@ const icons = [
 ];
 
 const infoList = {
-    image: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
+    image: '/jjk-wallpaper-3.jpg',
     title: 'Jujutsu Kaisen',
     rating: '4.9',
     episodes: '100M',

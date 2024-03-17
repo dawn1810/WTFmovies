@@ -5,7 +5,7 @@ import Link from 'next/link';
 import classNames from 'classnames/bind';
 import Image from 'next/image'
 
-import config from '~/app/config';
+import config from '~/config';
 import style from './Footer.module.scss';
 import images from '~/assets/image';
 
@@ -16,7 +16,7 @@ function Footer() {
         <footer className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link href={config.routes.home} className={cx('logo-link')}>
-                    <Image src={images.logo} alt="wtfmovies" className={cx('logo')} />
+                    <img src={images.logo} alt="wtfmovies" className={cx('logo')} />
                 </Link>
                 <div className={cx('about-tag')}>
                     <h3 className={cx('title')}>Về WTFdev</h3>

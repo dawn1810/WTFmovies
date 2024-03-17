@@ -29,10 +29,9 @@
 
 // export default Player;
 // import Tippy from '@tippyjs/react';
-import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { useRef, useCallback, useEffect } from 'react';
-import ReactPlayer from 'react-player';
+import ReactPlayer from 'react-player/file';
 import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
 

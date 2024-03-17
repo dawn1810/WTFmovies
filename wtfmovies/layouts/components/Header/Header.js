@@ -24,10 +24,10 @@ import 'tippy.js/dist/tippy.css';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
-import config from '~/app/config';
+import config from '~/config';
 import Button from '~/components/Button';
 import styles from './Header.module.scss';
-import images from '~/app/assets/image';
+import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
@@ -138,7 +138,7 @@ function Header() {
             <div className={cx('header')}>
                 <div className={cx('inner')}>
                     <Link href={config.routes.home} className={cx('logo-link')}>
-                        <Image src={images.logo} alt="wtfmovies" />
+                        <img src={images.logo} alt="wtfmovies" />
                     </Link>
 
                     {/* search */}

@@ -8,29 +8,29 @@ import images from '~/assets/image';
 import styles from './Image.module.scss';
 
 const ImageCustom = forwardRef(({ src, alt, className, fallback: customFallback = images.itatory, ...props }, ref) => {
-    const [fallback, setFallback] = useState('');
+  const [fallback, setFallback] = useState('');
 
-    const handleError = () => {
-        setFallback(customFallback);
-    };
+  const handleError = () => {
+    setFallback(customFallback);
+  };
+  return (
+    <img
+      className={classNames(styles.wrapper, className)}
+      ref={ref}
+      src={fallback.src || src}
+      alt={alt}
 
-    return (
-        <Image
-            className={classNames(styles.wrapper, className)}
-            ref={ref}
-            src={fallback || src}
-            alt={alt}
-            {...props}
-            onError={handleError}
-        />
-    );
+      {...props}
+      onError={handleError}
+    />
+  );
 });
 
 ImageCustom.propTypes = {
-    src: PropTypes.string,
-    alt: PropTypes.string,
-    className: PropTypes.string,
-    fallback: PropTypes.string,
+  src: PropTypes.string,
+  alt: PropTypes.string,
+  className: PropTypes.string,
+  fallback: PropTypes.string,
 };
 
 export default ImageCustom;

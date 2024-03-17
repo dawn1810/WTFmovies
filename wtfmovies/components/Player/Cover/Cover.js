@@ -42,7 +42,7 @@ function Cover({ handleMouseMove, handlePlayPause, handleClickFullscreen }) {
                     'loading-btn': coverState.loading,
                 })}
             >
-                <Image className={cx('loading-img')} src={images.logo} alt="" />
+                <img className={cx('loading-img')} src={images.logo} alt="" />
             </div>
             <div
                 className={cx('center-btn', {

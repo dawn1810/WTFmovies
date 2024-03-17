@@ -10,7 +10,7 @@ const cx = classNames.bind(style);
 
 const items = [
     {
-        imgSrc: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
+        imgSrc: '/jjk-wallpaper-3.jpg',
         filmTitle: 'Jujutsu Kaisen0',
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
@@ -23,7 +23,7 @@ const items = [
         ],
     },
     {
-        imgSrc: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
+        imgSrc: '/jjk-wallpaper-3.jpg',
         filmTitle: 'Jujutsu Kaisen1',
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
@@ -36,7 +36,7 @@ const items = [
         ],
     },
     {
-        imgSrc: 'https://www.enwallpaper.com/wp-content/uploads/2023/11/jjk-wallpaper-3.jpg',
+        imgSrc: '/jjk-wallpaper-3.jpg',
         filmTitle: 'Jujutsu Kaisen2',
         filmContent:
             "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",

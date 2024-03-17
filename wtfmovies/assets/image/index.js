@@ -1,9 +1,15 @@
+// Trong file quản lý assets của bạn
+import logoImage from '~/assets/image/logo.svg';
+import itadoryImage from '~/assets/image/Itadory.jpg';
+import starImage from '~/assets/image/rating.png';
+import episodesImage from '~/assets/image/episodes.png';
+
 const images = {
-    logo: require('~/assets/image/logo.svg').default,
-    itatory: require('~/assets/image/Itadory.jpg'),
-    star: require('~/assets/image/rating.png'),
-    episodes: require('~/assets/image/episodes.png'),
-    preload: require('~/assets/image/preloadvideo.png'),
+    logo: logoImage.src,
+    itadory: itadoryImage.src,
+    star: starImage.src,
+    episodes: episodesImage.src,
 };
 
 export default images;
+

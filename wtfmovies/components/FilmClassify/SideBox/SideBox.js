@@ -14,7 +14,7 @@ import Title from '../Title';
 const cx = classNames.bind(style);
 
 // const firstOne = {
-//     imgSrc: 'https://www.hindustantimes.com/ht-img/img/2023/09/05/1600x900/jjk_shibuya_incident_arc_1693914044447_1693914064181.jpg',
+//     imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
 //     filmName: 'asdfasd',
 //     views: '1.000.000',
 //     rating: '4.8',
@@ -23,63 +23,63 @@ const cx = classNames.bind(style);
 
 const films = [
     {
-        imgSrc: 'https://www.hindustantimes.com/ht-img/img/2023/09/05/1600x900/jjk_shibuya_incident_arc_1693914044447_1693914064181.jpg',
+        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
-        imgSrc: 'https://i.redd.it/zdwfbkt301n51.jpg',
+        imgSrc: '/zdwfbkt301n51.jpg',
         filmName: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
