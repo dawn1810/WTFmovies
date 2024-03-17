@@ -1,13 +1,10 @@
-import type { Metadata } from "next";
-import Head from 'next/head';
+import './globals.scss';
+import type { Metadata } from 'next';
+import { montserrat } from './font';
 
-import "./globals.scss";
 export const metadata: Metadata = {
-  title: "WTFmovies",
+  title: "WTF movies",
   description: "Nơi thoả sức đam mê phim ảnh",
-  applicationName: "WTFmovies",
-  authors: { name: "WTF dev", url: "https://wtfdev.com" },
-  icons: "/favicon.svg"
 };
 
 export default function RootLayout({
@@ -17,7 +14,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body className={montserrat.className}>{children}</body>
     </html>
   );
 }
