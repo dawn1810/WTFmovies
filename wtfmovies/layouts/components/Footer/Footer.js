@@ -1,4 +1,4 @@
-'use client';
+;
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
@@ -50,9 +50,9 @@ function Footer() {
                     <ul>
                         <li>
                             Liên hệ:{' '}
-                            <a className={cx('mailtoEle')} href="mailto:mail@wtfdev.pages.dev">
+                            <Link className={cx('mailtoEle')} href="mailto:mail@wtfdev.pages.dev">
                                 mail@wtfdev.pages.dev
-                            </a>
+                            </Link>
                         </li>
                         <li>Ngày thành lập: 31/01/2024</li>
                         <li>Lĩnh vực: Công nghệ, WTFdev xây dựng những ứng dụng giải trí dành cho người dùng</li>

@@ -1,6 +1,5 @@
 {
   "dependencies": {
-    "create-cloudflare": "^2.11.0",
-    "screenfull": "^6.0.2"
+    "create-cloudflare": "^2.11.0"
   }
 }
