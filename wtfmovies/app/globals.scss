@@ -2,7 +2,7 @@
 @import '~bootstrap/scss/bootstrap';
 @import 'slick-carousel/slick/slick.css';
 @import 'slick-carousel/slick/slick-theme.css';
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
+// @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Roboto:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap');
 
 $primary: #0f0f0f;
 $primary-active: #ffffff;
@@ -36,7 +36,7 @@ $blur-background-color: transparentize($card-background-color, 0.8);
     --background-color: #{$background-color};
 
     // fontD
-    --font-family: 'Montserrat';
+    --font-family: var(--font-montserrat);
 
     // layout
     --default-layout-header-height: 80px;
