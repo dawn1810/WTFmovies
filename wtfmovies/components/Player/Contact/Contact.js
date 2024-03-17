@@ -82,6 +82,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     const handleTogglePIP = useCallback(() => {
         dispatch(togglePIP(!contactState.pip));
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contactState.pip]);
 
@@ -259,6 +260,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
             dispatch(showRightBtn(false));
         }, 500);
     };
+
     return (
         <div ref={ref} className={cx('player-contact-wrapper', { 'contact-show': contactState.contactShow })}>
             <div className={cx('progress-bar')}>
