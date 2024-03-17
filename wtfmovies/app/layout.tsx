@@ -3,8 +3,11 @@ import type { Metadata } from 'next';
 import { montserrat } from './font';
 
 export const metadata: Metadata = {
-  title: "WTF movies",
-  description: "Nơi thoả sức đam mê phim ảnh",
+  title: 'WTFmovies',
+  description: 'Nơi thoả sức đam mê phim ảnh',
+  applicationName: 'WTFmovies',
+  authors: { name: 'WTF dev', url: 'https://wtfdev.com/' },
+  icons: '/favicon.svg',
 };
 
 export default function RootLayout({
