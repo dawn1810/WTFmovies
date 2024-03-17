@@ -7,6 +7,11 @@ import { setupDevPlatform } from '@cloudflare/next-on-pages/next-dev';
 if (process.env.NODE_ENV === 'development') {
   await setupDevPlatform();
 }
+import withBundleAnalyzer from '@next/bundle-analyzer';
+
+const bundleAnalyzerConfig = {
+  enabled: process.env.ANALYZE === 'true',
+};
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -17,11 +22,11 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     // Cấu hình giải quyết module
     if (!isServer) {
-      config.resolve.alias['~'] = './src';
+      config.resolve.alias['~'] = './';
     }
 
     return config;
   }
 };
 
-export default nextConfig;
+export default withBundleAnalyzer(bundleAnalyzerConfig)(nextConfig);
