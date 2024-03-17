@@ -3,6 +3,7 @@ import { faClockRotateLeft, faPause, faPlay } from '@fortawesome/free-solid-svg-
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
+import Image from 'next/image'
 
 import { showCenterBtn } from '../playerSlice';
 import { coverPlayerSelector } from '~/redux/selectors';
@@ -41,7 +42,7 @@ function Cover({ handleMouseMove, handlePlayPause, handleClickFullscreen }) {
                     'loading-btn': coverState.loading,
                 })}
             >
-                <img className={cx('loading-img')} src={images.logo} alt="" />
+                <Image className={cx('loading-img')} src={images.logo} alt="" />
             </div>
             <div
                 className={cx('center-btn', {

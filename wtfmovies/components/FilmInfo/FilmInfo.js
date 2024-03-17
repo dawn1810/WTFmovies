@@ -18,7 +18,7 @@ import {
 import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 import classNames from 'classnames/bind';
 
-import Image from '../Image';
+import ImageCustom from '../ImageCustom';
 import style from './FilmInfo.module.scss';
 import Button from '../Button';
 import Link from 'next/link';
@@ -83,7 +83,7 @@ function FilmInfo() {
 
     return (
         <div className={cx('wrapper')}>
-            <Image className={cx('film-image')} src={infoList.image} alt={infoList.title} />
+            <ImageCustom className={cx('film-image')} src={infoList.image} alt={infoList.title} />
             <div className={cx('film-left-container')}>
                 <div className={cx('film-info')}>
                     <Tippy content="Copied" placement="top" arrow={false} trigger="click">
@@ -93,11 +93,11 @@ function FilmInfo() {
                     </Tippy>
                     <div className={cx('film-content')}>{infoList.decript}</div>
                     <div className={cx('rating')}>
-                        <Image src={images.star} alt="rating" />
+                        <ImageCustom src={images.star} alt="rating" />
                         <span>{infoList.rating}</span>
                     </div>
                     <div className={cx('episodes')}>
-                        <Image src={images.episodes} alt="episodes" />
+                        <ImageCustom src={images.episodes} alt="episodes" />
                         <span>{infoList.episodes}</span>
                     </div>
                 </div>

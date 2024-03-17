@@ -2,7 +2,7 @@
 import classNames from 'classnames/bind';
 
 import { useViewport } from '~/hooks';
-import Image from '~/components/Image';
+import ImageCustom from '~/components/ImageCustom';
 import style from './Comment.module.scss';
 
 const cx = classNames.bind(style);
@@ -14,7 +14,7 @@ function Comment({ avatar, commentOwner, commentContent }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <Image className={cx('avatar')} src={avatar} alt={commentOwner} />
+                <ImageCustom className={cx('avatar')} src={avatar} alt={commentOwner} />
                 {isMobile && <div className={cx('user-name')}>{commentOwner}</div>}
             </div>
             <div className={cx('content')}>

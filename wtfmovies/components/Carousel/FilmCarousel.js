@@ -3,7 +3,7 @@ import { Carousel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
 import { useViewport } from '~/hooks';
-import Image from '../Image';
+import ImageCustom from '../ImageCustom';
 import style from './FilmCarousel.module.scss';
 import Captions from './Captions';
 const cx = classNames.bind(style);
@@ -59,7 +59,7 @@ function FilmCarousel() {
             <Carousel touch indicators={!isMobile}>
                 {items.map((item, index) => (
                     <Carousel.Item key={index}>
-                        <Image className="d-block w-100" src={item.imgSrc} alt={item.filmTitle} />
+                        <ImageCustom className="d-block w-100" src={item.imgSrc} alt={item.filmTitle} />
                         {isMobile ? (
                             <div className={cx('carousel-caption')}>
                                 <Captions item={item} />

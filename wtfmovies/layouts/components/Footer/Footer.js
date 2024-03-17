@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 import classNames from 'classnames/bind';
+import Image from 'next/image'
 
 import config from '~/app/config';
 import style from './Footer.module.scss';
@@ -15,7 +16,7 @@ function Footer() {
         <footer className={cx('wrapper')}>
             <div className={cx('inner')}>
                 <Link href={config.routes.home} className={cx('logo-link')}>
-                    <img src={images.logo} alt="wtfmovies" className={cx('logo')} />
+                    <Image src={images.logo} alt="wtfmovies" className={cx('logo')} />
                 </Link>
                 <div className={cx('about-tag')}>
                     <h3 className={cx('title')}>Về WTFdev</h3>

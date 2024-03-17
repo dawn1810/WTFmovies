@@ -1,5 +1,7 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image'
+
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -27,7 +29,7 @@ import Button from '~/components/Button';
 import styles from './Header.module.scss';
 import images from '~/app/assets/image';
 import Menu from '~/components/Popper/Menu';
-import Image from '~/components/Image';
+import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
 
 const cx = classNames.bind(styles);
@@ -136,7 +138,7 @@ function Header() {
             <div className={cx('header')}>
                 <div className={cx('inner')}>
                     <Link href={config.routes.home} className={cx('logo-link')}>
-                        <img src={images.logo} alt="wtfmovies" />
+                        <Image src={images.logo} alt="wtfmovies" />
                     </Link>
 
                     {/* search */}
@@ -187,7 +189,7 @@ function Header() {
                             onChange={handleMenuChange}
                         >
                             {currentUser ? (
-                                <Image className={cx('user-avatar')} src="" alt="Itadory" />
+                                <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
                             ) : (
                                 <button className={cx('more-btn')}>
                                     <FontAwesomeIcon icon={faEllipsisVertical} />

@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import images from '~/assets/image';
-import Image from '../Image';
+import ImageCustom from '../ImageCustom';
 import style from './FilmCard.module.scss';
 
 const cx = classNames.bind(style);
@@ -13,7 +13,7 @@ function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, r
     return (
         <div className={cx('wrapper', className, { 'nooverlay-wrapper': noOverlay, 'large-wrapper': large })}>
             <div className={cx('image-box', { 'nooverlay-img-box': noOverlay })}>
-                <Image className={cx('film-img', { 'nooverlay-img': noOverlay })} src={imgSrc} alt={filmName} />
+                <ImageCustom className={cx('film-img', { 'nooverlay-img': noOverlay })} src={imgSrc} alt={filmName} />
             </div>
             <div className={cx('info', { 'nooverlay-info': noOverlay, 'large-info': large })}>
                 <h4>{filmName}</h4>
@@ -34,11 +34,11 @@ function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, r
                 )}
             </div>
             <div className={cx('rating', { 'nooverlay-rating': noOverlay, 'large-rating': large })}>
-                <Image src={images.star} alt="rating" />
+                <ImageCustom src={images.star} alt="rating" />
                 <span>{rating}</span>
             </div>
             <div className={cx('episodes', { 'nooverlay-episodes': noOverlay, 'large-episodes': large })}>
-                <Image src={images.episodes} alt="episodes" />
+                <ImageCustom src={images.episodes} alt="episodes" />
                 <span>{episodes}</span>
             </div>
             <div className={cx('hover-btn-list')}>
