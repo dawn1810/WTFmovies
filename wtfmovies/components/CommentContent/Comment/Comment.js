@@ -1,4 +1,3 @@
-"use client"
 import classNames from 'classnames/bind';
 
 import { useViewport } from '~/hooks';

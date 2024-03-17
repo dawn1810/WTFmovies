@@ -1,4 +1,3 @@
-"use client"
 import { Carousel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
