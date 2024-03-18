@@ -1,6 +1,9 @@
 import './globals.scss';
 import type { Metadata } from 'next';
 import { montserrat } from './font';
+import ReduxProvider from "~/redux/redux-provider";
+import DefaultLayout from "~/layouts/DefaultLayout";
+
 
 export const metadata: Metadata = {
   title: 'WTFmovies',
@@ -16,8 +19,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={montserrat.className}>{children} </body>
-    </html>
+    <ReduxProvider>
+      <html lang="en">
+        <body className={montserrat.className}>
+          <DefaultLayout>{children}</DefaultLayout>
+        </body>
+      </html>
+    </ReduxProvider>
   );
 }

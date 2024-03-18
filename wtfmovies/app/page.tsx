@@ -1,5 +1,4 @@
 "use client";
-import DefaultLayout from '../layouts/DefaultLayout';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faEye, faFire, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
@@ -72,30 +71,28 @@ const films = [
 
 function Home() {
     return (
-        <DefaultLayout>
-            <div className={cx('wrapper')}>
-                <div className={cx('home-top')}>
-                    <FilmCarousel />
-                    <FilmProposeList films={films} />
-                </div>
-                <FilmClassify
-                    mainDir="/new_update"
-                    extraDir="/most_views"
-                    mainTitle="MỚI CẬP NHẬT"
-                    extraTitle="XEM NHIỀU NHẤT"
-                    mainIcon={<FontAwesomeIcon icon={faClock} />}
-                    extraIcon={<FontAwesomeIcon icon={faEye} />}
-                />
-                <FilmClassify
-                    mainDir="/hot"
-                    extraDir="/most_likes"
-                    mainTitle="PHIM HOT"
-                    extraTitle="YÊU THÍCH NHẤT"
-                    mainIcon={<FontAwesomeIcon icon={faFire} />}
-                    extraIcon={<FontAwesomeIcon icon={faHeart} />}
-                />
+        <div className={cx('wrapper')}>
+            <div className={cx('home-top')}>
+                <FilmCarousel />
+                <FilmProposeList films={films} />
             </div>
-        </DefaultLayout>
+            <FilmClassify
+                mainDir="/new_update"
+                extraDir="/most_views"
+                mainTitle="MỚI CẬP NHẬT"
+                extraTitle="XEM NHIỀU NHẤT"
+                mainIcon={<FontAwesomeIcon icon={faClock} />}
+                extraIcon={<FontAwesomeIcon icon={faEye} />}
+            />
+            <FilmClassify
+                mainDir="/hot"
+                extraDir="/most_likes"
+                mainTitle="PHIM HOT"
+                extraTitle="YÊU THÍCH NHẤT"
+                mainIcon={<FontAwesomeIcon icon={faFire} />}
+                extraIcon={<FontAwesomeIcon icon={faHeart} />}
+            />
+        </div>
     );
 }
 
