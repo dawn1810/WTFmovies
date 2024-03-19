@@ -112,10 +112,12 @@
     }
 
     .nooverlay-rating {
-        left: unset;
-        right: 60px;
+        left: 85px;
         top: unset;
         bottom: 5px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
     }
 
     .large-rating {
@@ -147,8 +149,13 @@
     }
 
     .nooverlay-episodes {
+        left: 125px;
+        right: unset;
         top: unset;
         bottom: 5px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
     }
 
     .large-episodes {
@@ -192,6 +199,50 @@
         }
     }
 
+    .noOverlay-btn-list {
+        position: absolute;
+        top: 50%;
+        right: 0;
+        transform: translate(0, -50%);
+        width: 15%;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        transition: linear 0.2s;
+
+        .hover-btn {
+            width: 100%;
+            height: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.4rem;
+            background-color: transparent;
+            color: var(--text-color);
+            padding: 10px;
+            cursor: pointer;
+            transition: linear 0.2s;
+
+            &:hover {
+                opacity: 1;
+                color: var(--highlight-color);
+                font-size: 2.8rem;
+            }
+        }
+
+        .watch-btn {
+            border-radius: 0 5px 0 0;
+            opacity: .2;
+        }
+
+        .review-btn {
+            border-radius: 0 0 5px 0;
+            opacity: .2;
+        }
+    }
+
     &:hover {
         .film-img {
             transform: scale(1.1);
@@ -208,6 +259,21 @@
     height: 100px;
     flex-direction: row;
     border-radius: 5px;
+
+    &:hover {
+        background-color: var(--primary-hover);
+
+        .nooverlay-img {
+            transform: unset;
+        }
+
+        .noOverlay-btn-list {
+
+            .hover-btn {
+                opacity: 0.8;
+            }
+        }
+    }
 }
 
 .large-wrapper {

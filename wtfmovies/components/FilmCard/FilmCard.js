@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCalendar, faClock, faEye, faMagnifyingGlass, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faBookOpen, faCalendar, faClock, faEye, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
@@ -41,15 +41,23 @@ function FilmCard({ large = false, noOverlay = false, imgSrc, filmName, views, r
                 <ImageCustom src={images.episodes} alt="episodes" />
                 <span>{episodes}</span>
             </div>
-            <div className={cx('hover-btn-list')}>
+            {noOverlay ? <div className={cx('noOverlay-btn-list')}>
                 <button className={cx('hover-btn', 'watch-btn')}>
                     <FontAwesomeIcon icon={faPlay} />
                 </button>
                 <button className={cx('hover-btn', 'review-btn')}>
-                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                    <FontAwesomeIcon icon={faBookOpen} />
                 </button>
-            </div>
-        </div>
+            </div> : <div className={cx('hover-btn-list')}>
+                <button className={cx('hover-btn', 'watch-btn')}>
+                    <FontAwesomeIcon icon={faPlay} />
+                </button>
+                <button className={cx('hover-btn', 'review-btn')}>
+                    <FontAwesomeIcon icon={faBookOpen} />
+                </button>
+            </div>}
+
+        </div >
     );
 }
 

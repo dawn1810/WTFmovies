@@ -1,4 +1,4 @@
-"use client";
+'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faEye, faFire, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';

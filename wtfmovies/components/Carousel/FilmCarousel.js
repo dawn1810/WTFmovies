@@ -1,3 +1,5 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import { Carousel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -49,13 +51,26 @@ const items = [
     },
 ];
 
+const NextButton = () => {
+    return <button className={cx('slide-btn')}>
+        <FontAwesomeIcon icon={faAngleRight} />
+    </button>
+}
+
+const PrevButton = () => {
+    return <button className={cx('slide-btn')}>
+        <FontAwesomeIcon icon={faAngleLeft} />
+    </button>
+}
+
+
 function FilmCarousel() {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
     return (
         <div className={cx('home-slider')}>
-            <Carousel touch indicators={!isMobile}>
+            <Carousel touch indicators={!isMobile} nextIcon={<NextButton />} prevIcon={<PrevButton />}>
                 {items.map((item, index) => (
                     <Carousel.Item key={index}>
                         <ImageCustom className="d-block w-100" src={item.imgSrc} alt={item.filmTitle} />
@@ -71,7 +86,7 @@ function FilmCarousel() {
                     </Carousel.Item>
                 ))}
             </Carousel>
-        </div>
+        </div >
     );
 }
 

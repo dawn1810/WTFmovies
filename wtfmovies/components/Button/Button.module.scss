@@ -13,7 +13,7 @@
     border: 1px solid transparent;
     user-select: none;
 
-    + .wrapper {
+    +.wrapper {
         margin-left: 8px;
     }
 
@@ -21,10 +21,11 @@
         pointer-events: none;
         opacity: 0.5;
     }
+
 }
 
-.icon + .title,
-.title + .icon {
+.icon+.title,
+.title+.icon {
     margin-left: 8px;
 }
 
@@ -50,11 +51,13 @@
     color: var(--text-color);
     background-color: var(--lighten-primary-active-color);
     backdrop-filter: blur(10px);
+
     &:hover {
         transition-duration: 300ms;
         // border-color: var(--primary);
         background: var(--primary-hover);
     }
+
     &:active {
         transition-duration: 300ms;
         color: var(--body-color);

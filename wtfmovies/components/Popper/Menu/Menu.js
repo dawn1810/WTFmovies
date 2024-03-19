@@ -7,10 +7,9 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import Header from './Header';
 import MenuItem from './MenuItem';
 import styles from './Menu.module.scss';
-import { propTypes } from 'react-bootstrap/esm/Image';
 
 const cx = classNames.bind(styles);
-const defaultFn = () => {};
+const defaultFn = () => { };
 
 function Menu({
     playerMenu = false,
