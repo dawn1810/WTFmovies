@@ -2,7 +2,6 @@ import './globals.scss';
 import type { Metadata } from 'next';
 import { montserrat } from './font';
 import ReduxProvider from '~/redux/redux-provider';
-import DefaultLayout from '~/layouts/DefaultLayout';
 
 export const metadata: Metadata = {
     title: 'WTFmovies',
@@ -21,7 +20,7 @@ export default function RootLayout({
         <ReduxProvider>
             <html lang="en">
                 <body className={montserrat.className}>
-                    <DefaultLayout>{children}</DefaultLayout>
+                    {children}
                 </body>
             </html>
         </ReduxProvider>

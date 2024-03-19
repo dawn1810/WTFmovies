@@ -1,4 +1,3 @@
-'use client';
 import classNames from 'classnames/bind';
 
 import FilmInfo from '~/components/FilmInfo/FilmInfo';
@@ -7,6 +6,7 @@ import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
 import FilmInteract from '~/components/FilmInteract';
 import Player from '~/components/Player';
+import DefaultLayout from '~/layouts/DefaultLayout';
 
 const cx = classNames.bind(style);
 
@@ -189,33 +189,35 @@ const commentTabs = [
 
 function Watch() {
     return (
-        <div className={cx('wrapper')}>
-            <h1 className={cx('title')}>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
-            <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-            <Player url={'https://rurimeiko.pages.dev/demo3.m3u8'} />
-            <FilmInteract />
-            <TabsBox
-                tabs={episodesTabs}
-                flexContent
-                textContent
-                defaultActiveKey="visub"
-                className={cx('tab-box')}
-            />
-            <TabsBox
-                tabs={proposeFilmsTabs}
-                listContent
-                // textContent
-                defaultActiveKey="like"
-                className={cx('tab-box')}
-            />
-            <TabsBox
-                tabs={commentTabs}
-                commentContent
-                textContent
-                defaultActiveKey="comment"
-                className={cx('cmt-tab-box')}
-            />
-        </div>
+        <DefaultLayout>
+            <div className={cx('wrapper')}>
+                <h1 className={cx('title')}>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
+                <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
+                <Player url={'https://rurimeiko.pages.dev/demo3.m3u8'} />
+                <FilmInteract />
+                <TabsBox
+                    tabs={episodesTabs}
+                    flexContent
+                    textContent
+                    defaultActiveKey="visub"
+                    className={cx('tab-box')}
+                />
+                <TabsBox
+                    tabs={proposeFilmsTabs}
+                    listContent
+                    // textContent
+                    defaultActiveKey="like"
+                    className={cx('tab-box')}
+                />
+                <TabsBox
+                    tabs={commentTabs}
+                    commentContent
+                    textContent
+                    defaultActiveKey="comment"
+                    className={cx('cmt-tab-box')}
+                />
+            </div>
+        </DefaultLayout>
     );
 }
 
