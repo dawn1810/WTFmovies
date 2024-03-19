@@ -1,3 +1,4 @@
+'use client';
 import { useDispatch, useSelector } from 'react-redux';
 import { modalFaceSelector } from '~/redux/selectors';
 import Select from 'react-select';

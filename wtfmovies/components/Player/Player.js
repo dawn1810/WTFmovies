@@ -1,4 +1,5 @@
 // import Tippy from '@tippyjs/react';
+'use client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import ReactPlayer from 'react-player/file';

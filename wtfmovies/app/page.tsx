@@ -1,4 +1,3 @@
-'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faEye, faFire, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
@@ -6,7 +5,7 @@ import classNames from 'classnames/bind';
 import FilmCarousel from '~/components/Carousel/FilmCarousel';
 import FilmProposeList from '~/components/FilmProposeList';
 import FilmClassify from '~/components/FilmClassify';
-import style from './page.module.scss';
+import style from './home.module.scss'
 
 const cx = classNames.bind(style);
 

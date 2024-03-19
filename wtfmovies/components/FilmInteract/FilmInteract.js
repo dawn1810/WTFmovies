@@ -1,3 +1,4 @@
+'use client';
 import { Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 

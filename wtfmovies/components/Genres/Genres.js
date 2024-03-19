@@ -1,3 +1,4 @@
+'use client';
 import PropTypes from 'prop-types';
 import { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

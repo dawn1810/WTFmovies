@@ -1,3 +1,4 @@
+'use client';
 import PropTypes from 'prop-types';
 import { useState, forwardRef } from 'react';
 import classNames from 'classnames';

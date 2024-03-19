@@ -1,3 +1,4 @@
+'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBookOpen, faCalendar, faClock, faEye, faPlay } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';

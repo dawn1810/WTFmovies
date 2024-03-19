@@ -1,3 +1,4 @@
+'use client';
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
