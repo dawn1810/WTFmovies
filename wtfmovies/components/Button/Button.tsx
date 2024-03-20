@@ -1,9 +1,9 @@
 'use client';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Link from 'next/link';
 
 import styles from './Button.module.scss';
+import React from 'react';
 
 const cx = classNames.bind(styles);
 
@@ -23,9 +23,24 @@ function Button({
     className,
     onClick,
     ...passProps
+}: {
+    to?: string;
+    href?: string;
+    primary?: boolean;
+    outline?: boolean;
+    text?: boolean;
+    rounded?: boolean;
+    disabled?: boolean;
+    small?: boolean;
+    large?: boolean;
+    leftIcon?: React.ReactNode;
+    rightIcon?: React.ReactNode;
+    children: React.ReactNode;
+    className?: any;
+    onClick?: () => void;
 }) {
-    let Comp = 'button';
-    const props = {
+    let Comp: any = 'button';
+    const props: any = {
         onClick,
         ...passProps,
     };
@@ -65,22 +80,5 @@ function Button({
         </Comp>
     );
 }
-
-Button.propTypes = {
-    to: PropTypes.string,
-    href: PropTypes.string,
-    primary: PropTypes.bool,
-    outline: PropTypes.bool,
-    text: PropTypes.bool,
-    rounded: PropTypes.bool,
-    disabled: PropTypes.bool,
-    small: PropTypes.bool,
-    large: PropTypes.bool,
-    children: PropTypes.node.isRequired,
-    className: PropTypes.string,
-    leftIcon: PropTypes.node,
-    rightIcon: PropTypes.node,
-    onClick: PropTypes.func,
-};
 
 export default Button;

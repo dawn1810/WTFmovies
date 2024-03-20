@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons';
 import Link from 'next/link';
 import classNames from 'classnames/bind';
-import Image from 'next/image'
 
 import config from '~/config';
 import style from './Footer.module.scss';

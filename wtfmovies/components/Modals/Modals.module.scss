@@ -4,6 +4,7 @@
     --bs-modal-padding: 2rem !important;
     --bs-modal-bg: var(--text-color) !important;
 
+
     .title {
         font-size: 2.4rem;
     }
@@ -21,7 +22,7 @@
 
         .submit {
             margin-left: 0;
-            background-color: var(--highlight-color);
+            background-color: #0d6efd;
             opacity: 0.8;
 
             &:hover {
@@ -44,21 +45,24 @@
 
         button {
             margin-left: 0;
-            background-color: var(--card-blur-color);
+            color: var(--text-color);
+        }
 
-            &:hover {
-                background-color: var(--primary);
-            }
+        .gg-btn {
+            background-color: #e94235;
+        }
 
-            &:active {
-                background-color: var(--card-blur-color);
-                color: var(--text-color);
-            }
+        .fb-btn {
+            background-color: #0866ff;
+        }
+
+        .git-btn {
+            background-color: #010409;
         }
     }
 
     .switch-page {
-        color: var(--highlight-color);
+        color: #0d6efd;
 
         &:hover {
             text-decoration: underline;
@@ -88,6 +92,7 @@
     }
 
     .one-line {
+
         &:before,
         &:after {
             background: var(--primary);

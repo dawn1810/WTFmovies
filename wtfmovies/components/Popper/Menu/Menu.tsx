@@ -1,6 +1,5 @@
 'use client';
-import PropTypes from 'prop-types';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import classNames from 'classnames/bind';
 import Tippy from '@tippyjs/react/headless';
 
@@ -10,7 +9,7 @@ import MenuItem from './MenuItem';
 import styles from './Menu.module.scss';
 
 const cx = classNames.bind(styles);
-const defaultFn = () => { };
+const defaultFn = () => {};
 
 function Menu({
     playerMenu = false,
@@ -22,12 +21,22 @@ function Menu({
     delay,
     className,
     onChange = defaultFn,
+}: {
+    playerMenu?: boolean;
+    children: React.ReactElement;
+    items: any;
+    title?: string;
+    hideOnClick?: boolean;
+    placement: any;
+    delay: any;
+    className?: string;
+    onChange?: (item: any) => void;
 }) {
     const [history, setHistory] = useState([{ data: items }]);
-    const current = history[history.length - 1];
+    const current: any = history[history.length - 1];
 
     const renderItem = () => {
-        return current.data.map((item, index) => {
+        return current.data.map((item: any, index: number) => {
             const isParent = !!item.children;
 
             return (
@@ -50,7 +59,7 @@ function Menu({
         setHistory((prev) => prev.slice(0, -1));
     };
 
-    const renderResult = (attrs) => (
+    const renderResult = (attrs: any) => (
         <div className={cx('menu-list')} tabIndex="-1" {...attrs}>
             <PopperWrapper className={cx('menu-popper', { 'player-menu-popper': playerMenu })}>
                 {title && <h3 className={cx('menu-title')}>{title}</h3>}
@@ -79,16 +88,5 @@ function Menu({
         </Tippy>
     );
 }
-
-Menu.propTypes = {
-    children: PropTypes.node.isRequired,
-    playerMenu: PropTypes.bool,
-    title: PropTypes.string,
-    items: PropTypes.array,
-    hideOnClick: PropTypes.bool,
-    placement: PropTypes.string,
-    delay: PropTypes.oneOfType([PropTypes.array, PropTypes.number]),
-    onChange: PropTypes.func,
-};
 
 export default Menu;

@@ -1,6 +1,4 @@
 import { createSelector } from '@reduxjs/toolkit';
-//header
-export const modalFaceSelector = (state) => state.header.modalFace;
 //player
 export const readySelector = (state) => state.player.ready;
 export const urlSelector = (state) => state.player.url;

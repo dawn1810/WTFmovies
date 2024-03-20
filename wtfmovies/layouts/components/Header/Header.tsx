@@ -1,6 +1,5 @@
-"use client";
+'use client';
 import { useState } from 'react';
-import Image from 'next/image'
 
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -33,6 +32,12 @@ import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
 
 const cx = classNames.bind(styles);
+
+type MenuItem = {
+    type?: string;
+    code?: string;
+    title: string;
+};
 
 const MENU_ITEMS = [
     {
@@ -113,14 +118,14 @@ const genres = [
 
 function Header() {
     const currentUser = false;
-    const [modalShow, setModalShow] = useState(false);
-    const [searchShow, setSearchShow] = useState(false);
+    const [modalShow, setModalShow] = useState<boolean>(false);
+    const [searchShow, setSearchShow] = useState<boolean>(false);
 
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
     // Handle logic
-    const handleMenuChange = (menuItem) => {
+    const handleMenuChange = (menuItem: MenuItem) => {
         switch (menuItem.type) {
             case 'language':
                 console.log('aaaa');
@@ -130,8 +135,31 @@ function Header() {
         }
     };
 
+    const handleHide = () => setModalShow(false);
+
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);
+
+    const handleSubmit = async (event: any): Promise<void> => {
+        event.preventDefault();
+
+        const form = event.target;
+        const email = form.formEmail.value;
+        const password = form.formPassword.value;
+        const remember = form.formPassword.value;
+
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password, remember }),
+        });
+
+        if (response.ok) {
+            setModalShow(false); // hide modal
+        } else {
+            console.log('err me no luon');
+        }
+    };
 
     return (
         <header className={cx('wrapper')}>
@@ -206,7 +234,7 @@ function Header() {
                     </Link>
                 ))}
             </Genres>
-            <Modals show={modalShow} onHide={() => setModalShow(false)} />
+            {modalShow && <Modals show={modalShow} onHide={handleHide} onSubmit={handleSubmit} />}
         </header>
     );
 }

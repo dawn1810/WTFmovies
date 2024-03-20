@@ -1,9 +1,9 @@
 import type { NextRequest } from 'next/server';
-import { mongodb } from '~/libs/func';
+// import { mongodb } from '~/libs/func';
 
 export const runtime = 'edge';
-export async function GET(request: NextRequest) {
-    const text = await mongodb.db('film').collection('information').find();
+export async function POST(request: NextRequest) {
+    const data = request.json();
 
     // In the edge runtime you can use Bindings that are available in your application
     // (for more details see:
@@ -17,5 +17,5 @@ export async function GET(request: NextRequest) {
     // const suffix = await myKv.get('suffix')
     // responseText += suffix
 
-    return new Response(JSON.stringify(text, null, 2));
+    return new Response(JSON.stringify(data, null, 2));
 }

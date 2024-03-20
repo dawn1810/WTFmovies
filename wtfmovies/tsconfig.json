@@ -36,8 +36,10 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "components/ImageCustom/ImageCustom.js",
-    "components/ImageCustom/ImageCustom.js"
+    "components/ImageCustom/ImageCustom.tsx",
+    "components/ImageCustom/ImageCustom.tsx",
+    "layouts/components/Header/Header.ts",
+    "assets/image/index.js"
   ],
   "exclude": [
     "node_modules"
