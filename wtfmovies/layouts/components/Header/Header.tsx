@@ -135,8 +135,6 @@ function Header() {
         }
     };
 
-    const handleHide = () => setModalShow(false);
-
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);
 
@@ -146,12 +144,12 @@ function Header() {
         const form = event.target;
         const email = form.formEmail.value;
         const password = form.formPassword.value;
-        const remember = form.formPassword.value;
+        const remember = form.formRemember.checked;
 
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password, remember }),
+            body: JSON.stringify({ email, password }),
         });
 
         if (response.ok) {
@@ -234,7 +232,7 @@ function Header() {
                     </Link>
                 ))}
             </Genres>
-            {modalShow && <Modals show={modalShow} onHide={handleHide} onSubmit={handleSubmit} />}
+            <Modals show={modalShow} onHide={() => setModalShow(false)} onSubmit={handleSubmit} />
         </header>
     );
 }

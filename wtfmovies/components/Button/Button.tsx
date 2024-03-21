@@ -37,6 +37,7 @@ function Button({
     rightIcon?: React.ReactNode;
     children: React.ReactNode;
     className?: any;
+    type?: string;
     onClick?: () => void;
 }) {
     let Comp: any = 'button';

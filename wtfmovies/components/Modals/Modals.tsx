@@ -1,5 +1,4 @@
 'use client';
-import { useRef } from 'react';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -11,14 +10,24 @@ import style from './Modals.module.scss';
 
 const cx = classNames.bind(style);
 
-function Modals({ ...props }, handleSubmit) {
-
+function Modals({
+    show,
+    onHide,
+    onSubmit,
+    ...props
+}: {
+    show: boolean;
+    onHide: () => void;
+    onSubmit: (e: any) => void;
+}) {
     const handleSignUp = () => {
         console.log('sign up');
     };
 
     return (
         <Modal
+            show={show}
+            onHide={onHide}
             className={cx('wrapper')}
             {...props}
             aria-labelledby="contained-modal-title-vcenter"
@@ -47,7 +56,7 @@ function Modals({ ...props }, handleSubmit) {
 
                 <h3 className={cx('divider', 'line', 'one-line')}>Đăng nhập bằng tài khoản</h3>
 
-                <Form className={cx('login-form')} onSubmit={(e) => handleSubmit(e)}>
+                <Form className={cx('login-form')} onSubmit={(e) => onSubmit(e)}>
                     <Form.Group className="mb-3" controlId="formEmail">
                         <Form.Label column sm={2}>
                             Email
@@ -55,10 +64,15 @@ function Modals({ ...props }, handleSubmit) {
                         <Form.Control
                             className={cx('text-input')}
                             type="email"
+                            name="lastName"
                             placeholder="Email"
+                            aria-describedby="email-describe"
                             required
                             autoFocus
                         />
+                        <Form.Text id="email-describe" hidden>
+                            Your password must be 8-20 characters long
+                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formPassword">
@@ -69,14 +83,16 @@ function Modals({ ...props }, handleSubmit) {
                             className={cx('text-input')}
                             type="password"
                             placeholder="Password"
+                            aria-describedby="pass-describe"
                             required
                         />
+                        <Form.Text id="pass-describe">Your password must be 8-20 characters long</Form.Text>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formHorizontalCheck">
+                    <Form.Group className="mb-3" controlId="formRemember">
                         <Form.Check label="Ghi nhớ đăng nhập" />
                     </Form.Group>
-                    <Form.Group className="mb-5" controlId="formHorizontalCheck">
+                    <Form.Group className="mb-5">
                         <Form.Text id="passwordHelpBlock">
                             Bạn chưa có tài khoản?{' '}
                             <Link className={cx('switch-page')} href="/signup" onClick={handleSignUp}>
