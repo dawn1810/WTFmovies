@@ -138,7 +138,7 @@ function Header() {
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);
 
-    const handleSubmit = async (email: string, password: string): Promise<void> => {
+    const handleSubmit = async (email: string, password: string, remember: boolean): Promise<void> => {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },

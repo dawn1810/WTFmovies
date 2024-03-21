@@ -1,24 +1,20 @@
 export const changeEmailAlert = (emailAlert: boolean) => {
     return {
-        type: 'header/changeUrl',
+        type: 'header/changeEmailAlert',
         payload: emailAlert,
     };
 };
-export const changeEmailAlertContent = (emailAlertContent: string) => {
-    return {
-        type: 'header/changeUrl',
-        payload: emailAlertContent,
-    };
-};
+
 export const changePassAlert = (passAlert: boolean) => {
     return {
-        type: 'header/changeUrl',
+        type: 'header/changePassAlert',
         payload: passAlert,
     };
 };
+
 export const changePassAlertContent = (passAlertContent: string) => {
     return {
-        type: 'header/changeUrl',
+        type: 'header/changePassAlertContent',
         payload: passAlertContent,
     };
 };

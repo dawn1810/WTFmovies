@@ -1,6 +1,8 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { mongodb } from '~/libs/func';
+import { basename } from 'node:path/posix';
+import { beforeEach } from 'node:test';
+import { mongodb, comparePassWord } from '~/libs/func';
 
 type dataType = {
     email: string;
@@ -22,5 +24,5 @@ export async function POST(request: NextRequest) {
             },
         });
 
-    return new Response(JSON.stringify(userAuth, null, 2));
+    return new Response(JSON.stringify(comparePassWord(userAuth.password, data.password), null, 2));
 }

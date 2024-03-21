@@ -5,16 +5,12 @@ export const headerSlice = createSlice({
     name: 'player',
     initialState: {
         emailAlert: false,
-        emailAlertContent: '',
         passAlert: false,
-        passAlertContent: '',
+        passAlertContent: 'Invalid password!',
     },
     reducers: {
         changeEmailAlert: (state, action) => {
             state.emailAlert = action.payload;
-        },
-        changeEmailAlertContent: (state, action) => {
-            state.emailAlertContent = action.payload;
         },
         changePassAlert: (state, action) => {
             state.passAlert = action.payload;
@@ -25,7 +21,6 @@ export const headerSlice = createSlice({
     },
 });
 
-export const { changeEmailAlert, changeEmailAlertContent, changePassAlert, changePassAlertContent } =
-    headerSlice.actions;
+export const { changeEmailAlert, changePassAlert, changePassAlertContent } = headerSlice.actions;
 
 export default headerSlice.reducer;

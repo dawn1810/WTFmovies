@@ -32,12 +32,10 @@ export const currResolSelector = (state: reduxStateInterface) => state.player.cu
 
 export const headerSelector = createSelector(
     emailAlertSelector,
-    emailAlertContentSelector,
     passAlertSelector,
     passAlertContentSelector,
-    (emailAlert, emailAlertContent, passAlert, passAlertContent) => ({
+    (emailAlert, passAlert, passAlertContent) => ({
         emailAlert,
-        emailAlertContent,
         passAlert,
         passAlertContent,
     }),

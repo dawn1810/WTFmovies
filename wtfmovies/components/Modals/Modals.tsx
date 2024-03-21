@@ -6,12 +6,7 @@ import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-ico
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
-import {
-    changeEmailAlert,
-    changeEmailAlertContent,
-    changePassAlert,
-    changePassAlertContent,
-} from '~/layouts/components/Header/headerSlice';
+import { changeEmailAlert, changePassAlert, changePassAlertContent } from '~/layouts/components/Header/headerSlice';
 import { headerSelector } from '~/redux/selectors';
 import Button from '../Button';
 import style from './Modals.module.scss';
@@ -26,44 +21,89 @@ function Modals({
 }: {
     show: boolean;
     onHide: () => void;
-    onSubmit: (e: string, p: string) => void;
+    onSubmit: (e: string, p: string, r: boolean) => void;
 }) {
     // redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
     const validateEmail = (email: string) => {
-        return String(email)
-            .toLowerCase()
-            .match(
-                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            );
+        const emailRegex =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return !!email.toLowerCase().match(emailRegex);
     };
 
-    const validatePassword = (password: string): boolean => {
-        if (password.length < 8 || password.length > 50) {
-            return false;
+    const validatePassword = (password: string): number => {
+        // Check for empty string
+        if (password.length === 0) {
+            return 3; // Code 3 for empty password
         }
 
+        // Check password length (8 to 49 characters)
+        if (password.length < 8) {
+            return 1; // Code 1 for less than 8 characters
+        } else if (password.length > 50) {
+            return 2; // Code 2 for longer than 50 characters
+        }
+
+        // Regular expression for password complexity
         const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
 
-        return regex.test(password);
+        // Check for complexity requirements
+        if (!regex.test(password)) {
+            return 4; // Code 4 for lack of complexity
+        }
+
+        // Password is valid (no errors)
+        return 0;
     };
 
     const handleSubmit = (event: any): void => {
+        event.preventDefault();
+
         const form = event.target;
         const email = form.formEmail.value;
         const password = form.formPassword.value;
         const remember = form.formRemember.checked;
 
+        // email validate
         dispatch(changeEmailAlert(!validateEmail(email)));
-        dispatch(changeEmailAlert(!validateEmail(password)));
 
-        if (!validateEmail(email)) {
-        } else if (!validatePassword(password)) {
-        } else {
-            onSubmit(email, password);
+        // password validate
+        dispatch(changePassAlert(true));
+        switch (validatePassword(password)) {
+            case 0:
+                dispatch(changePassAlert(false));
+                break;
+            case 1:
+                dispatch(changePassAlertContent('Mật khẩu phải dài hơn 8 kí tự!'));
+                break;
+            case 2:
+                dispatch(changePassAlertContent('Mật khẩu phải nhỏ hơn 50 kí tự!'));
+                break;
+            case 3:
+                dispatch(changePassAlertContent('Mật khẩu trống!'));
+                break;
+            case 4:
+                dispatch(
+                    changePassAlertContent(
+                        'Mật khẩu phải bao gồm kí tự đặc biệt, chữ cái in thường, in hoa và chữ số!',
+                    ),
+                );
+                break;
+            default:
+                break;
         }
+
+        if (validateEmail(email) && validatePassword(password) === 0) {
+            onSubmit(email, password, remember);
+        }
+    };
+
+    const handleHide = () => {
+        dispatch(changeEmailAlert(false));
+        dispatch(changePassAlert(false));
+        onHide();
     };
 
     const handleSignUp = () => {
@@ -73,7 +113,7 @@ function Modals({
     return (
         <Modal
             show={show}
-            onHide={onHide}
+            onHide={handleHide}
             className={cx('wrapper')}
             {...props}
             aria-labelledby="contained-modal-title-vcenter"
@@ -116,8 +156,8 @@ function Modals({
                             required
                             autoFocus
                         />
-                        <Form.Text id="email-describe" hidden={state.emailAlert}>
-                            {state.emailAlertContent}
+                        <Form.Text id="email-describe" className={cx('alert')} hidden={!state.emailAlert}>
+                            Email không hợp lệ!
                         </Form.Text>
                     </Form.Group>
 
@@ -132,7 +172,7 @@ function Modals({
                             aria-describedby="pass-describe"
                             required
                         />
-                        <Form.Text id="pass-describe" hidden={state.passAlert}>
+                        <Form.Text id="pass-describe" className={cx('alert')} hidden={!state.passAlert}>
                             {state.passAlertContent}
                         </Form.Text>
                     </Form.Group>
