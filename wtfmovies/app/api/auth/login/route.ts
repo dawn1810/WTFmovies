@@ -9,7 +9,7 @@ type dataType = {
 
 export async function POST(request: NextRequest) {
     const data: dataType = await request.json();
-    const userAuth = await mongodb
+    const userAuth = await mongodb()
         .db('user')
         .collection('auth')
         .findOne({

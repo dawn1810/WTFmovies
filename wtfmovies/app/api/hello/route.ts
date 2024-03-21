@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { mongodb } from '~/libs/func';
 
 export async function GET(request: NextRequest) {
-    const text = await mongodb.db('film').collection('information').find();
+    const text = await mongodb().db('film').collection('information').find();
 
     // In the edge runtime you can use Bindings that are available in your application
     // (for more details see:
