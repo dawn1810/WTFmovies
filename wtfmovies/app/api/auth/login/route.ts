@@ -1,5 +1,5 @@
 import type { NextRequest } from 'next/server';
-// import { mongodb } from '~/libs/func';
+import { mongodb } from '~/libs/func';
 
 export const runtime = 'edge';
 export async function POST(request: NextRequest) {
