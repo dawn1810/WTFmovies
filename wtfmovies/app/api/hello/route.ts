@@ -1,7 +1,7 @@
+export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { mongodb } from '~/libs/func';
 
-export const runtime = 'edge';
 export async function GET(request: NextRequest) {
     const text = await mongodb.db('film').collection('information').find();
 

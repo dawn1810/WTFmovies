@@ -1,3 +1,5 @@
+export const runtime = 'edge';
+
 import { getRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
 

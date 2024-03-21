@@ -1,21 +1,26 @@
-import type { NextRequest } from 'next/server';
-// import { mongodb } from '~/libs/func';
-
 export const runtime = 'edge';
+import type { NextRequest } from 'next/server';
+import { mongodb } from '~/libs/func';
+
+type dataType = {
+    email: string;
+    password: string;
+};
+
 export async function POST(request: NextRequest) {
-    const data = request.json();
+    const data: dataType = await request.json();
+    const userAuth = await mongodb
+        .db('user')
+        .collection('auth')
+        .findOne({
+            filter: {
+                email: data.email,
+            },
+            projection: {
+                _id: 0,
+                password: 1,
+            },
+        });
 
-    // In the edge runtime you can use Bindings that are available in your application
-    // (for more details see:
-    //    - https://developers.cloudflare.com/pages/framework-guides/deploy-a-nextjs-site/#use-bindings-in-your-nextjs-application
-    //    - https://developers.cloudflare.com/pages/functions/bindings/
-    // )
-    //
-    // KV Example:
-    // const myKv = getRequestContext().env.MY_KV
-    // await myKv.put('suffix', ' from a KV store!')
-    // const suffix = await myKv.get('suffix')
-    // responseText += suffix
-
-    return new Response(JSON.stringify(data, null, 2));
+    return new Response(JSON.stringify(userAuth, null, 2));
 }

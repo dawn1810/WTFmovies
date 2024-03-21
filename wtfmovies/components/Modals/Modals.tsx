@@ -1,10 +1,18 @@
 'use client';
+import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
+import {
+    changeEmailAlert,
+    changeEmailAlertContent,
+    changePassAlert,
+    changePassAlertContent,
+} from '~/layouts/components/Header/headerSlice';
+import { headerSelector } from '~/redux/selectors';
 import Button from '../Button';
 import style from './Modals.module.scss';
 
@@ -18,8 +26,46 @@ function Modals({
 }: {
     show: boolean;
     onHide: () => void;
-    onSubmit: (e: any) => void;
+    onSubmit: (e: string, p: string) => void;
 }) {
+    // redux
+    const state = useSelector(headerSelector);
+    const dispatch = useDispatch();
+
+    const validateEmail = (email: string) => {
+        return String(email)
+            .toLowerCase()
+            .match(
+                /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            );
+    };
+
+    const validatePassword = (password: string): boolean => {
+        if (password.length < 8 || password.length > 50) {
+            return false;
+        }
+
+        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+
+        return regex.test(password);
+    };
+
+    const handleSubmit = (event: any): void => {
+        const form = event.target;
+        const email = form.formEmail.value;
+        const password = form.formPassword.value;
+        const remember = form.formRemember.checked;
+
+        dispatch(changeEmailAlert(!validateEmail(email)));
+        dispatch(changeEmailAlert(!validateEmail(password)));
+
+        if (!validateEmail(email)) {
+        } else if (!validatePassword(password)) {
+        } else {
+            onSubmit(email, password);
+        }
+    };
+
     const handleSignUp = () => {
         console.log('sign up');
     };
@@ -56,7 +102,7 @@ function Modals({
 
                 <h3 className={cx('divider', 'line', 'one-line')}>Đăng nhập bằng tài khoản</h3>
 
-                <Form className={cx('login-form')} onSubmit={(e) => onSubmit(e)}>
+                <Form noValidate className={cx('login-form')} onSubmit={(e) => handleSubmit(e)}>
                     <Form.Group className="mb-3" controlId="formEmail">
                         <Form.Label column sm={2}>
                             Email
@@ -70,8 +116,8 @@ function Modals({
                             required
                             autoFocus
                         />
-                        <Form.Text id="email-describe" hidden>
-                            Your password must be 8-20 characters long
+                        <Form.Text id="email-describe" hidden={state.emailAlert}>
+                            {state.emailAlertContent}
                         </Form.Text>
                     </Form.Group>
 
@@ -86,7 +132,9 @@ function Modals({
                             aria-describedby="pass-describe"
                             required
                         />
-                        <Form.Text id="pass-describe">Your password must be 8-20 characters long</Form.Text>
+                        <Form.Text id="pass-describe" hidden={state.passAlert}>
+                            {state.passAlertContent}
+                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formRemember">

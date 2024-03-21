@@ -138,20 +138,12 @@ function Header() {
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);
 
-    const handleSubmit = async (event: any): Promise<void> => {
-        event.preventDefault();
-
-        const form = event.target;
-        const email = form.formEmail.value;
-        const password = form.formPassword.value;
-        const remember = form.formRemember.checked;
-
+    const handleSubmit = async (email: string, password: string): Promise<void> => {
         const response = await fetch('/api/auth/login', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ email, password }),
         });
-
         if (response.ok) {
             setModalShow(false); // hide modal
         } else {
