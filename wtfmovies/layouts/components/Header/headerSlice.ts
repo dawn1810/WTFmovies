@@ -2,7 +2,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const headerSlice = createSlice({
-    name: 'player',
+    name: 'header',
     initialState: {
         emailAlert: false,
         passAlert: false,

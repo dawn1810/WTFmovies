@@ -28,4 +28,12 @@ export interface reduxStateInterface {
         passAlert: boolean;
         passAlertContent: string;
     };
+    signup: {
+        signupEmailAlert: boolean;
+        signupPassAlert: boolean;
+        signupPassAlertContent: string;
+        signupNameAlert: boolean;
+        signupBirthDateAlert: boolean;
+        currentForm: number;
+    };
 }

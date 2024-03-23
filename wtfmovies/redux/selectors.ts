@@ -1,11 +1,18 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
+//signup
+const signupEmailAlertSelector = (state: reduxStateInterface) => state.signup.signupEmailAlert;
+const signupPassAlertSelector = (state: reduxStateInterface) => state.signup.signupPassAlert;
+const signupPassAlertContentSelector = (state: reduxStateInterface) => state.signup.signupPassAlertContent;
+const signupNameAlertSelector = (state: reduxStateInterface) => state.signup.signupNameAlert;
+const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.signup.signupBirthDateAlert;
+const currentFormSelector = (state: reduxStateInterface) => state.signup.currentForm;
+
 //header
-export const emailAlertSelector = (state: reduxStateInterface) => state.header.emailAlert;
-export const emailAlertContentSelector = (state: reduxStateInterface) => state.header.emailAlertContent;
-export const passAlertSelector = (state: reduxStateInterface) => state.header.passAlert;
-export const passAlertContentSelector = (state: reduxStateInterface) => state.header.passAlertContent;
+const emailAlertSelector = (state: reduxStateInterface) => state.header.emailAlert;
+const passAlertSelector = (state: reduxStateInterface) => state.header.passAlert;
+const passAlertContentSelector = (state: reduxStateInterface) => state.header.passAlertContent;
 
 //player
 export const readySelector = (state: reduxStateInterface) => state.player.ready;
@@ -29,6 +36,30 @@ export const leftBtnShowSelector = (state: reduxStateInterface) => state.player.
 export const rightBtnShowSelector = (state: reduxStateInterface) => state.player.rightBtnShow;
 export const currSpeedSelector = (state: reduxStateInterface) => state.player.currSpeed;
 export const currResolSelector = (state: reduxStateInterface) => state.player.currResol;
+
+export const signupSelector = createSelector(
+    signupEmailAlertSelector,
+    signupPassAlertSelector,
+    signupPassAlertContentSelector,
+    signupNameAlertSelector,
+    signupBirthDateAlertSelector,
+    currentFormSelector,
+    (
+        signupEmailAlert,
+        signupPassAlert,
+        signupPassAlertContent,
+        signupNameAlert,
+        signupBirthDateAlert,
+        currentForm,
+    ) => ({
+        signupEmailAlert,
+        signupPassAlert,
+        signupPassAlertContent,
+        signupNameAlert,
+        signupBirthDateAlert,
+        currentForm,
+    }),
+);
 
 export const headerSelector = createSelector(
     emailAlertSelector,

@@ -1,3 +1,46 @@
+// signup
+const changeSignUpEmailAlert = (emailAlert: boolean) => {
+    return {
+        type: 'signup/changeEmailAlert',
+        payload: emailAlert,
+    };
+};
+
+const changeSignUpPassAlert = (passAlert: boolean) => {
+    return {
+        type: 'signup/changeEmailAlert',
+        payload: passAlert,
+    };
+};
+const changeSignUpPassAlertContent = (passAlertContent: string) => {
+    return {
+        type: 'signup/changeEmailAlert',
+        payload: passAlertContent,
+    };
+};
+
+const changeSignUpNameAlert = (nameAlert: boolean) => {
+    return {
+        type: 'signup/changeEmailAlert',
+        payload: nameAlert,
+    };
+};
+
+const changeSignUpBirthDateAlert = (birthDateAlert: boolean) => {
+    return {
+        type: 'signup/changeEmailAlert',
+        payload: birthDateAlert,
+    };
+};
+
+const changeCurrentForm = (currForm: number) => {
+    return {
+        type: 'header/changeEmailAlert',
+        payload: currForm,
+    };
+};
+
+// header
 export const changeEmailAlert = (emailAlert: boolean) => {
     return {
         type: 'header/changeEmailAlert',
@@ -7,7 +50,7 @@ export const changeEmailAlert = (emailAlert: boolean) => {
 
 export const changePassAlert = (passAlert: boolean) => {
     return {
-        type: 'header/changePassAlert',
+        type: 'signup/changePassAlert',
         payload: passAlert,
     };
 };
@@ -19,6 +62,7 @@ export const changePassAlertContent = (passAlertContent: string) => {
     };
 };
 
+// player
 export const changeUrl = (url: string) => {
     return {
         type: 'player/changeUrl',

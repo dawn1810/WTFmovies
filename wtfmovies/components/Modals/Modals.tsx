@@ -6,6 +6,7 @@ import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-ico
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
+import { validateEmail, validatePassword } from '~/libs/clientFunc';
 import { changeEmailAlert, changePassAlert, changePassAlertContent } from '~/layouts/components/Header/headerSlice';
 import { headerSelector } from '~/redux/selectors';
 import Button from '../Button';
@@ -27,37 +28,6 @@ function Modals({
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    const validateEmail = (email: string) => {
-        const emailRegex =
-            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return !!email.toLowerCase().match(emailRegex);
-    };
-
-    const validatePassword = (password: string): number => {
-        // Check for empty string
-        if (password.length === 0) {
-            return 3; // Code 3 for empty password
-        }
-
-        // Check password length (8 to 49 characters)
-        if (password.length < 8) {
-            return 1; // Code 1 for less than 8 characters
-        } else if (password.length > 50) {
-            return 2; // Code 2 for longer than 50 characters
-        }
-
-        // Regular expression for password complexity
-        const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
-
-        // Check for complexity requirements
-        if (!regex.test(password)) {
-            return 4; // Code 4 for lack of complexity
-        }
-
-        // Password is valid (no errors)
-        return 0;
-    };
-
     const handleSubmit = (event: any): void => {
         event.preventDefault();
 
@@ -66,36 +36,35 @@ function Modals({
         const password = form.formPassword.value;
         const remember = form.formRemember.checked;
 
-        // email validate
-        dispatch(changeEmailAlert(!validateEmail(email)));
-
-        // password validate
-        dispatch(changePassAlert(true));
-        switch (validatePassword(password)) {
-            case 0:
-                dispatch(changePassAlert(false));
-                break;
-            case 1:
-                dispatch(changePassAlertContent('Mật khẩu phải dài hơn 8 kí tự!'));
-                break;
-            case 2:
-                dispatch(changePassAlertContent('Mật khẩu phải nhỏ hơn 50 kí tự!'));
-                break;
-            case 3:
-                dispatch(changePassAlertContent('Mật khẩu trống!'));
-                break;
-            case 4:
-                dispatch(
-                    changePassAlertContent(
-                        'Mật khẩu phải bao gồm kí tự đặc biệt, chữ cái in thường, in hoa và chữ số!',
-                    ),
-                );
-                break;
-            default:
-                break;
-        }
-
-        if (validateEmail(email) && validatePassword(password) === 0) {
+        if (!validateEmail(email)) {
+            // email validate
+            dispatch(changeEmailAlert(true));
+        } else if (validatePassword(password) !== 0) {
+            // password validate
+            dispatch(changeEmailAlert(false));
+            dispatch(changePassAlert(true));
+            switch (validatePassword(password)) {
+                case 1:
+                    dispatch(changePassAlertContent('Mật khẩu phải dài hơn 8 kí tự!'));
+                    break;
+                case 2:
+                    dispatch(changePassAlertContent('Mật khẩu phải nhỏ hơn 50 kí tự!'));
+                    break;
+                case 3:
+                    dispatch(changePassAlertContent('Mật khẩu không hợp lệ!'));
+                    break;
+                case 4:
+                    dispatch(
+                        changePassAlertContent(
+                            'Mật khẩu phải bao gồm kí tự đặc biệt, chữ cái in thường, in hoa và chữ số!',
+                        ),
+                    );
+                    break;
+                default:
+                    break;
+            }
+        } else {
+            dispatch(changePassAlert(false));
             onSubmit(email, password, remember);
         }
     };
@@ -163,12 +132,12 @@ function Modals({
 
                     <Form.Group className="mb-3" controlId="formPassword">
                         <Form.Label column sm={2}>
-                            Password
+                            Mật khẩu
                         </Form.Label>
                         <Form.Control
                             className={cx('text-input')}
                             type="password"
-                            placeholder="Password"
+                            placeholder="Mật khẩu"
                             aria-describedby="pass-describe"
                             required
                         />
