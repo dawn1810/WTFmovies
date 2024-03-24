@@ -38,6 +38,18 @@
         .alert {
             color: var(--highlight-color);
         }
+
+        .pass-form {
+            position: relative;
+
+            .passEye {
+                position: absolute;
+                top: 58%;
+                right: 10px;
+                background-color: transparent;
+            }
+
+        }
     }
 
     .btn-group {

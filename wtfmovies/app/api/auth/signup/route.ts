@@ -5,6 +5,8 @@ import { mongodb, comparePassWord } from '~/libs/func';
 type dataType = {
     email: string;
     password: string;
+    name: string;
+    birthDate: Date;
 };
 
 export async function POST(request: NextRequest) {

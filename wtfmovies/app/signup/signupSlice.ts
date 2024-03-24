@@ -7,6 +7,7 @@ export const signupSlice = createSlice({
         signupEmailAlert: false,
         signupPassAlert: false,
         signupPassAlertContent: 'Mật khẩu không hợp lệ!',
+        signupAgainPassAlert: false,
         signupNameAlert: false,
         signupBirthDateAlert: false,
         currentForm: 0,
@@ -20,6 +21,9 @@ export const signupSlice = createSlice({
         },
         changeSignUpPassAlertContent: (state, action) => {
             state.signupPassAlertContent = action.payload;
+        },
+        changeSignupAgainPassAlert: (state, action) => {
+            state.signupAgainPassAlert = action.payload;
         },
         changeSignUpNameAlert: (state, action) => {
             state.signupNameAlert = action.payload;
@@ -37,6 +41,7 @@ export const {
     changeSignUpEmailAlert,
     changeSignUpPassAlert,
     changeSignUpPassAlertContent,
+    changeSignupAgainPassAlert,
     changeSignUpNameAlert,
     changeSignUpBirthDateAlert,
     changeCurrentForm,

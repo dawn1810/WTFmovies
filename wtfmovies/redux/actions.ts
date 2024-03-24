@@ -1,41 +1,49 @@
 // signup
-const changeSignUpEmailAlert = (emailAlert: boolean) => {
+export const changeSignUpEmailAlert = (emailAlert: boolean) => {
     return {
-        type: 'signup/changeEmailAlert',
+        type: 'signup/changeSignUpEmailAlert',
         payload: emailAlert,
     };
 };
 
-const changeSignUpPassAlert = (passAlert: boolean) => {
+export const changeSignUpPassAlert = (passAlert: boolean) => {
     return {
-        type: 'signup/changeEmailAlert',
+        type: 'signup/changeSignUpPassAlert',
         payload: passAlert,
     };
 };
-const changeSignUpPassAlertContent = (passAlertContent: string) => {
+
+export const changeSignUpPassAlertContent = (passAlertContent: string) => {
     return {
-        type: 'signup/changeEmailAlert',
+        type: 'signup/changeSignUpPassAlertContent',
         payload: passAlertContent,
     };
 };
 
-const changeSignUpNameAlert = (nameAlert: boolean) => {
+export const changeSignupAgainPassAlert = (againPassAlert: boolean) => {
     return {
-        type: 'signup/changeEmailAlert',
+        type: 'signup/changeSignupAgainPassAlert',
+        payload: againPassAlert,
+    };
+};
+
+export const changeSignUpNameAlert = (nameAlert: boolean) => {
+    return {
+        type: 'signup/changeSignUpNameAlert',
         payload: nameAlert,
     };
 };
 
-const changeSignUpBirthDateAlert = (birthDateAlert: boolean) => {
+export const changeSignUpBirthDateAlert = (birthDateAlert: boolean) => {
     return {
-        type: 'signup/changeEmailAlert',
+        type: 'signup/changeSignUpBirthDateAlert',
         payload: birthDateAlert,
     };
 };
 
-const changeCurrentForm = (currForm: number) => {
+export const changeCurrentForm = (currForm: number) => {
     return {
-        type: 'header/changeEmailAlert',
+        type: 'header/changeCurrentForm',
         payload: currForm,
     };
 };

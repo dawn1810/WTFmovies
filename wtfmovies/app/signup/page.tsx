@@ -1,7 +1,7 @@
 'use client';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import { faCheckCircle, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { DefaultLayout } from '~/layouts';
@@ -12,6 +12,7 @@ import {
     changeSignUpEmailAlert,
     changeCurrentForm,
     changeSignUpBirthDateAlert,
+    changeSignupAgainPassAlert,
     changeSignUpNameAlert,
     changeSignUpPassAlert,
     changeSignUpPassAlertContent,
@@ -21,8 +22,8 @@ import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './signup.module.scss';
 import Image from 'next/image';
-import { changePassAlertContent } from '~/redux/actions';
-import React from 'react';
+import React, { useState } from 'react';
+import { faEye } from '@fortawesome/free-regular-svg-icons';
 
 const cx = classNames.bind(style);
 
@@ -33,6 +34,8 @@ const gerneOption = [
 ];
 
 function SignUp() {
+    const [passEye, setPassEye] = useState(false);
+
     // redux
     const state = useSelector(signupSelector);
     const dispatch = useDispatch();
@@ -40,21 +43,37 @@ function SignUp() {
     const nextPage = () => dispatch(changeCurrentForm(state.currentForm + 1));
     const prevPage = () => dispatch(changeCurrentForm(state.currentForm - 1));
 
+    const handlePassEye = () => {
+        setPassEye((prev) => !prev);
+    };
+
+    const clearAllAlert = () => {
+        dispatch(changeSignUpEmailAlert(false));
+        dispatch(changeSignUpPassAlert(false));
+        dispatch(changeSignupAgainPassAlert(false));
+        dispatch(changeSignUpNameAlert(false));
+        dispatch(changeSignUpBirthDateAlert(false));
+    };
+
     const handleSubmit = (event: any): void => {
         event.preventDefault();
+        clearAllAlert();
 
         const form = event.target;
         const email = form.formEmail.value;
         const password = form.formPassword.value;
+        const againPassword = form.formAgainPassword.value;
         const formName = form.formName.value;
         const birthDate = form.formBỉrthDate.value;
+
+        const today = new Date();
+        const bd = new Date(birthDate);
 
         if (!validateEmail(email)) {
             // email validate
             dispatch(changeSignUpEmailAlert(true));
         } else if (validatePassword(password) !== 0) {
             // password validate
-            dispatch(changeSignUpEmailAlert(false));
             dispatch(changeSignUpPassAlert(true));
             switch (validatePassword(password)) {
                 case 1:
@@ -76,11 +95,11 @@ function SignUp() {
                 default:
                     break;
             }
+        } else if (againPassword !== password) {
+            dispatch(changeSignupAgainPassAlert(true));
         } else if (formName.trim().length === 0) {
-            dispatch(changeSignUpPassAlert(false));
             dispatch(changeSignUpNameAlert(true));
-        } else if (birthDate.trim().length === 0) {
-            dispatch(changeSignUpNameAlert(false));
+        } else if (bd.getTime() > today.getTime()) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
             nextPage();
@@ -101,36 +120,54 @@ function SignUp() {
                             </Form.Text>
                         </Form.Group>
 
-                        <Form.Group className="mb-3" controlId="formPassword">
+                        <Form.Group className={`mb-3 ${cx('pass-form')}`} controlId="formPassword">
                             <Form.Label column>Mật khẩu</Form.Label>
                             <Form.Control
                                 className={cx('text-input')}
-                                type="password"
+                                type={passEye ? 'text' : 'password'}
                                 placeholder="Mật khẩu"
-                                required
                             />
                             <Form.Text id="pass-describe" className={cx('alert')} hidden={!state.signupPassAlert}>
                                 {state.signupPassAlertContent}
                             </Form.Text>
+                            <button className={cx('passEye')} onClick={handlePassEye} type="button">
+                                {passEye ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                            </button>
+                        </Form.Group>
+
+                        <Form.Group className="mb-3" controlId="formAgainPassword">
+                            <Form.Label column>Nhập lại mật khẩu</Form.Label>
+                            <Form.Control
+                                className={cx('text-input')}
+                                type="password"
+                                placeholder="Nhập lại mật khẩu"
+                            />
+                            <Form.Text
+                                id="again-pass-describe"
+                                className={cx('alert')}
+                                hidden={!state.signupAgainPassAlert}
+                            >
+                                Mật khẩu không trùng khớp!
+                            </Form.Text>
                         </Form.Group>
 
                         <Form.Group className="mb-3" controlId="formName">
-                            <Form.Label column>Họ và tên</Form.Label>
-                            <Form.Control className={cx('text-input')} type="text" placeholder="Họ và tên" required />
+                            <Form.Label column>Tên hiễn thị</Form.Label>
+                            <Form.Control className={cx('text-input')} type="text" placeholder="Tên hiễn thị" />
                             <Form.Text id="name-describe" className={cx('alert')} hidden={!state.signupNameAlert}>
-                                Họ tên không thể bỏ trống!
+                                Tên hiễn thị không hợp lệ!
                             </Form.Text>
                         </Form.Group>
 
                         <Form.Group className="mb-5" controlId="formBỉrthDate">
                             <Form.Label column>Ngày sinh</Form.Label>
-                            <Form.Control className={cx('text-input')} type="date" placeholder="dd/mm/yyyy" required />
+                            <Form.Control className={cx('text-input')} type="date" placeholder="dd/mm/yyyy" />
                             <Form.Text
                                 id="birthdate-describe"
                                 className={cx('alert')}
                                 hidden={!state.signupBirthDateAlert}
                             >
-                                Ngày sinh không thể bỏ trống!
+                                Ngày sinh không hợp lệ!
                             </Form.Text>
                         </Form.Group>
 

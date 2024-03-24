@@ -1,8 +1,10 @@
 'use client';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
+import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -24,6 +26,7 @@ function Modals({
     onHide: () => void;
     onSubmit: (e: string, p: string, r: boolean) => void;
 }) {
+    const [passEye, setPassEye] = useState(false);
     // redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
@@ -79,6 +82,10 @@ function Modals({
         console.log('sign up');
     };
 
+    const handlePassEye = () => {
+        setPassEye((prev) => !prev);
+    };
+
     return (
         <Modal
             show={show}
@@ -130,7 +137,7 @@ function Modals({
                         </Form.Text>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formPassword">
+                    <Form.Group className={`mb-3 ${cx('pass-form')}`} controlId="formPassword">
                         <Form.Label column sm={2}>
                             Mật khẩu
                         </Form.Label>
@@ -144,6 +151,9 @@ function Modals({
                         <Form.Text id="pass-describe" className={cx('alert')} hidden={!state.passAlert}>
                             {state.passAlertContent}
                         </Form.Text>
+                        <button className={cx('passEye')} onClick={handlePassEye} type="button">
+                            {passEye ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                        </button>
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formRemember">
