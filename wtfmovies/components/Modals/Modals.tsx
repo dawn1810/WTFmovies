@@ -1,4 +1,5 @@
 'use client';
+import { useCookies } from 'next-client-cookies';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
@@ -8,8 +9,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
-import { encryptData } from '~/libs/clientFunc';
-import { validateEmail, validatePassword } from '~/libs/clientFunc';
+import { encryptData, fetchPublicKey } from '~/libs/clientFunc';
 import {
     changeCurrentUser,
     changeEmailAlert,
@@ -32,6 +32,8 @@ function Modals({
     onHide: () => void;
     setModalShow: (s: boolean) => void;
 }) {
+    const cookies = useCookies();
+
     const [passEye, setPassEye] = useState(false);
     // redux
     const state = useSelector(headerSelector);
@@ -51,52 +53,26 @@ function Modals({
         const password = form.formPassword.value;
         const remember = form.formRemember.checked;
 
-        if (!validateEmail(email)) {
-            // email validate
-            dispatch(changeEmailAlert(true));
-        } else if (validatePassword(password) !== 0) {
-            // password validate
+        // const PUBLIC_KEY = String(sessionStorage.getItem('publicKey'));
+        !!cookies.get('haha') && (await fetchPublicKey());
+        const PUBLIC_KEY = String(cookies.get('haha'));
+        const newPassword = await encryptData(PUBLIC_KEY, password);
+
+        const response = await fetch('/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password: newPassword, remember }),
+        });
+
+        if (response.ok) {
+            setModalShow(false);
+            sessionStorage.setItem('account', email);
+            dispatch(changeCurrentUser(true));
+        } else if (response.status === 404) {
             dispatch(changePassAlert(true));
-            switch (validatePassword(password)) {
-                case 1:
-                    dispatch(changePassAlertContent('Mật khẩu phải dài hơn 8 kí tự!'));
-                    break;
-                case 2:
-                    dispatch(changePassAlertContent('Mật khẩu phải nhỏ hơn 50 kí tự!'));
-                    break;
-                case 3:
-                    dispatch(changePassAlertContent('Mật khẩu không hợp lệ!'));
-                    break;
-                case 4:
-                    dispatch(
-                        changePassAlertContent(
-                            'Mật khẩu phải bao gồm kí tự đặc biệt, chữ cái in thường, in hoa và chữ số!',
-                        ),
-                    );
-                    break;
-                default:
-                    break;
-            }
-        } else {
-            const PUBLIC_KEY = String(sessionStorage.getItem('publicKey'));
-            const newPassword = await encryptData(PUBLIC_KEY, password);
-
-            const response = await fetch('/api/auth/login', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password: newPassword }),
-            });
-
-            if (response.ok) {
-                setModalShow(false);
-                sessionStorage.setItem('account', email);
-                dispatch(changeCurrentUser(true));
-            } else if (response.status === 404) {
-                dispatch(changePassAlert(true));
-                dispatch(changePassAlertContent('Mật khẩu không đúng!'));
-            } else if (response.status === 500) {
-                dispatch(changeEmailAlert(true));
-            }
+            dispatch(changePassAlertContent('Mật khẩu không đúng!'));
+        } else if (response.status === 500) {
+            dispatch(changeEmailAlert(true));
         }
     };
 
@@ -161,7 +137,7 @@ function Modals({
                             autoFocus
                         />
                         <Form.Text id="email-describe" className={cx('alert')} hidden={!state.emailAlert}>
-                            Email không hợp lệ!
+                            Email không tồn tại!
                         </Form.Text>
                     </Form.Group>
 

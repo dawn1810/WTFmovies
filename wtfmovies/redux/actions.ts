@@ -6,6 +6,13 @@ export const changeSignUpEmailAlert = (emailAlert: boolean) => {
     };
 };
 
+export const changeSignupEmailAlertContent = (emailAlertContent: boolean) => {
+    return {
+        type: 'signup/changeSignupEmailAlertContent',
+        payload: emailAlertContent,
+    };
+};
+
 export const changeSignUpPassAlert = (passAlert: boolean) => {
     return {
         type: 'signup/changeSignUpPassAlert',

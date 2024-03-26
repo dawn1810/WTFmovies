@@ -3,6 +3,7 @@ import { reduxStateInterface } from '~/libs/interfaces';
 
 //signup
 const signupEmailAlertSelector = (state: reduxStateInterface) => state.signup.signupEmailAlert;
+const signupEmailAlertContentSelector = (state: reduxStateInterface) => state.signup.signupEmailAlertContent;
 const signupPassAlertSelector = (state: reduxStateInterface) => state.signup.signupPassAlert;
 const signupPassAlertContentSelector = (state: reduxStateInterface) => state.signup.signupPassAlertContent;
 const signupAgainPassAlertSelector = (state: reduxStateInterface) => state.signup.signupAgainPassAlert;
@@ -41,6 +42,7 @@ export const currResolSelector = (state: reduxStateInterface) => state.player.cu
 
 export const signupSelector = createSelector(
     signupEmailAlertSelector,
+    signupEmailAlertContentSelector,
     signupPassAlertSelector,
     signupPassAlertContentSelector,
     signupAgainPassAlertSelector,
@@ -49,6 +51,7 @@ export const signupSelector = createSelector(
     currentFormSelector,
     (
         signupEmailAlert,
+        signupEmailAlertContent,
         signupPassAlert,
         signupPassAlertContent,
         signupAgainPassAlert,
@@ -57,6 +60,7 @@ export const signupSelector = createSelector(
         currentForm,
     ) => ({
         signupEmailAlert,
+        signupEmailAlertContent,
         signupPassAlert,
         signupPassAlertContent,
         signupAgainPassAlert,

@@ -1,4 +1,6 @@
 'use client';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'next-client-cookies';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,10 +11,10 @@ import Select from 'react-select';
 import { DefaultLayout } from '~/layouts';
 import classNames from 'classnames/bind';
 
-import { encryptData } from '~/libs/clientFunc';
-import { validateEmail, validatePassword } from '~/libs/clientFunc';
+import { validateEmail, validatePassword, encryptData, fetchPublicKey } from '~/libs/clientFunc';
 import {
     changeSignUpEmailAlert,
+    changeSignupEmailAlertContent,
     changeCurrentForm,
     changeSignUpBirthDateAlert,
     changeSignupAgainPassAlert,
@@ -35,6 +37,8 @@ const gerneOption = [
 ];
 
 function SignUp() {
+    const cookies = useCookies();
+
     const [passEye, setPassEye] = useState(false);
 
     // redux
@@ -73,6 +77,7 @@ function SignUp() {
         if (!validateEmail(email)) {
             // email validate
             dispatch(changeSignUpEmailAlert(true));
+            dispatch(changeSignupEmailAlertContent('Email không đúng định dạng!'));
         } else if (validatePassword(password) !== 0) {
             // password validate
             dispatch(changeSignUpPassAlert(true));
@@ -94,6 +99,7 @@ function SignUp() {
                     );
                     break;
                 default:
+                    dispatch(changeSignUpPassAlertContent('Mật khẩu không hợp lệ'));
                     break;
             }
         } else if (againPassword !== password) {
@@ -103,7 +109,8 @@ function SignUp() {
         } else if (bd.getTime() > today.getTime()) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            const PUBLIC_KEY = String(sessionStorage.getItem('publicKey'));
+            !!cookies.get('haha') && (await fetchPublicKey());
+            const PUBLIC_KEY = String(cookies.get('haha'));
             const newPassword = await encryptData(PUBLIC_KEY, password);
 
             const response = await fetch('/api/auth/signup', {
@@ -117,6 +124,7 @@ function SignUp() {
             }
             if (response.status === 500) {
                 dispatch(changeSignUpEmailAlert(true));
+                dispatch(changeSignupEmailAlertContent('Email đã tồn tại!'));
             }
         }
     };
@@ -348,11 +356,17 @@ function SignUp() {
         }
     };
 
-    return (
-        <DefaultLayout>
-            <div className={cx('wrapper')}>{renderForm(state.currentForm)}</div>
-        </DefaultLayout>
-    );
+    if (cookies.get('account')) {
+        const router = useRouter();
+        router.push('/');
+        return null;
+    } else {
+        return (
+            <DefaultLayout>
+                <div className={cx('wrapper')}>{renderForm(state.currentForm)}</div>
+            </DefaultLayout>
+        );
+    }
 }
 
 export default SignUp;

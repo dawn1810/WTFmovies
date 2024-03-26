@@ -1,7 +1,9 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { getRequestContext } from '@cloudflare/next-on-pages';
+import { cookies } from 'next/headers';
 
 export async function GET(request: NextRequest) {
-    return new Response(JSON.stringify(getRequestContext().env.publicKey, null, 2));
+    cookies().set('haha', getRequestContext().env.publicKey, { secure: true });
+    return new Response();
 }

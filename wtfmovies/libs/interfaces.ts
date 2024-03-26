@@ -30,6 +30,7 @@ export interface reduxStateInterface {
     };
     signup: {
         signupEmailAlert: boolean;
+        signupEmailAlertContent: string;
         signupPassAlert: boolean;
         signupPassAlertContent: string;
         signupAgainPassAlert: boolean;
