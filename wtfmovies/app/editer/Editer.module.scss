@@ -1,0 +1,132 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30px;
+
+    .home-top {
+        width: var(--default-layout-width);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 80px;
+
+        .info-content {
+            width: var(--default-layout-width);
+        }
+
+        .film-info-container {
+            display: flex;
+            width: var(--default-layout-width);
+            padding: 18px;
+            background-color: var(--blur-background-color);
+            border-radius: 5px;
+
+            .film-image {
+                width: 45%;
+                object-fit: cover;
+                background-position: center;
+            }
+
+            .film-left-container {
+                width: 55%;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+                padding: 28px;
+                border-radius: 5px;
+                background-color: var(--blur-background-color);
+                text-align: left;
+                color: var(--text-color);
+            }
+        }
+
+        .film-info {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+
+            .film-title {
+                width: 80%;
+                font-size: 2.8rem;
+
+                /* Does the magic */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: start;
+            }
+
+            .film-content {
+                width: 100%;
+                display: -webkit-box;
+                -webkit-line-clamp: 5;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                font-size: 1.4rem;
+                text-align: justify;
+                text-justify: inter-word;
+            }
+        }
+
+        .film-detail {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            padding: 10px;
+
+            .btn-group {
+                display: flex;
+                justify-content: flex-end;
+                gap: 10px;
+                z-index: 2;
+
+                .action-btn {
+                    display: flex;
+                    align-items: center;
+                    border-radius: 999px;
+                    font-size: 2.2rem;
+                    color: var(--text-color);
+                    background-color: var(--blur-background-color);
+                    padding: 4px 10px;
+                    cursor: pointer;
+                }
+            }
+
+            .info-list {
+                list-style: none;
+
+                li {
+                    display: grid;
+                    grid-template-columns: 32px auto;
+                    grid-template-rows: auto;
+                    gap: 0px 0px;
+                    grid-auto-flow: row;
+                    justify-items: flex-start;
+                    grid-template-areas: '. title';
+
+                    .icon {
+                        grid-area: icon;
+                    }
+
+                    .info-title {
+                        grid-area: title;
+
+                        span {
+                            font-weight: 600;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .tab-box {
+        width: var(--default-layout-width);
+        margin-bottom: 60px;
+        color: var(--text-color);
+    }
+}
