@@ -7,14 +7,15 @@ import ImageCustom from '../../ImageCustom';
 import Button from '../../Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import images from '~/assets/image';
 
 const cx = classNames.bind(style);
-
+const avt = null;
 function CommentInputForm() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <ImageCustom className={cx('avatar')} src="" alt="unknown" />
+                <ImageCustom className={cx('avatar')} src={avt ? avt : images.itadory} alt="unknown" />
                 <div className={cx('user-name')}>Người ẩn danh</div>
             </div>
             <Form className={cx('form')}>

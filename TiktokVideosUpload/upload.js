@@ -7,7 +7,7 @@ const fs = require("fs");
 // sessionid_ads= 49aec6dd1283b4f8214dd2b1bbee2358
 
 let currentCookie =
-	"csrftoken=AWWs1qYouQ21AP8rXNc6H9qpO4KeM6fh;sessionid_ss_ads=43ac076dc9aa271671a572486ff5b737";
+	"csrftoken=9BrXKhM5zk3UXppyxHP2EtgbdLWZJg9W;sessionid_ss_ads=2284b0aba16b60b8787735d51d594aca";
 
 function updateCookie(currentCookie, newCookie) {
 	const currentCookies = currentCookie ? currentCookie.split(";") : [];
@@ -53,7 +53,7 @@ async function uploadImagetoTiktok(file_path) {
 			headers.append("Cookie", currentCookie);
 		}
 
-		const response = await fetch("https://ads.tiktok.com/api/v2/i18n/material/image/upload/", {
+		const response = await fetch("https://ads.tiktok.com/api/v2/i18n/material/image/upload/?aadvid=7330641590375137282", {
 			method: "POST",
 			body: formData,
 			headers: headers,

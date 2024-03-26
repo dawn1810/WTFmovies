@@ -191,9 +191,9 @@ function Watch() {
     return (
         <DefaultLayout>
             <div className={cx('wrapper')}>
-                <h1 className={cx('title')}>CÔ GÁI ĐẾN TỪ TƯƠNG LAI</h1>
+                <h1 className={cx('title')}>@芊芊龙 酷酷龙也来Da一个~ #俄罗斯神曲 #马来西亚女孩 #dadada</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <Player url={'https://rurimeiko.pages.dev/demo3.m3u8'} />
+                <Player url={'https://rurimeiko.pages.dev/dadada.m3u8'} />
                 <FilmInteract />
                 <TabsBox
                     tabs={episodesTabs}

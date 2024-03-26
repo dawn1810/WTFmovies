@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import { useViewport } from '~/hooks';
 import ImageCustom from '~/components/ImageCustom';
 import style from './Comment.module.scss';
+import images from '~/assets/image';
 
 const cx = classNames.bind(style);
 
@@ -14,7 +15,7 @@ function Comment({ avatar, commentOwner, commentContent }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <ImageCustom className={cx('avatar')} src={avatar} alt={commentOwner} />
+                <ImageCustom className={cx('avatar')} src={avatar ? avatar : images.itadory} alt={commentOwner} />
                 {isMobile && <div className={cx('user-name')}>{commentOwner}</div>}
             </div>
             <div className={cx('content')}>
