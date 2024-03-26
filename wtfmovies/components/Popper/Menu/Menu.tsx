@@ -76,6 +76,7 @@ function Menu({
 
     return (
         <Tippy
+            key="18102003"
             interactive
             hideOnClick={hideOnClick}
             delay={delay}

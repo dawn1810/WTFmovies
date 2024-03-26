@@ -1,6 +1,7 @@
 export const runtime = 'edge';
+import { getRequestContext } from '@cloudflare/next-on-pages';
 import type { NextRequest } from 'next/server';
-import { mongodb, comparePassWord } from '~/libs/func';
+import { mongodb, comparePassWord, decryptData } from '~/libs/func';
 
 type dataType = {
     email: string;
@@ -9,6 +10,10 @@ type dataType = {
 
 export async function POST(request: NextRequest) {
     const data: dataType = await request.json();
+
+    const newPassword = await decryptData(getRequestContext().env.privateKey, data.password);
+
+    // check for first time login
     const userAuth = await mongodb()
         .db('user')
         .collection('auth')
@@ -18,9 +23,16 @@ export async function POST(request: NextRequest) {
             },
             projection: {
                 _id: 0,
-                password: 1,
             },
         });
 
-    return new Response(JSON.stringify(comparePassWord(userAuth.password, data.password), null, 2));
+    if (!!userAuth) {
+        // have user check password
+        const passAuth = await comparePassWord(userAuth.password, newPassword);
+
+        if (passAuth) return new Response();
+        else return new Response(JSON.stringify(userAuth.user_id, null, 2), { status: 404 });
+    } else {
+        return new Response(null, { status: 500 });
+    }
 }

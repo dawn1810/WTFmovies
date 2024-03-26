@@ -1,6 +1,6 @@
 'use client';
+import { useDispatch, useSelector } from 'react-redux';
 import { useState } from 'react';
-
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -20,6 +20,7 @@ import Link from 'next/link';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
+import { headerSelector } from '~/redux/selectors';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
@@ -30,6 +31,7 @@ import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
+import { changeCurrentUser } from './headerSlice';
 
 const cx = classNames.bind(styles);
 
@@ -87,7 +89,8 @@ const userMenu = [
     {
         icon: <FontAwesomeIcon icon={faSignOut} />,
         title: 'Đăng xuất',
-        to: '/logout',
+        type: 'logout',
+        to: '',
         separate: true,
     },
 ];
@@ -117,7 +120,10 @@ const genres = [
 ];
 
 function Header() {
-    const currentUser = false;
+    const state = useSelector(headerSelector);
+    const dispatch = useDispatch();
+
+    // const [currentUser, setCurrentUser] = useState(!!sessionStorage.getItem('account'));
     const [modalShow, setModalShow] = useState<boolean>(false);
     const [searchShow, setSearchShow] = useState<boolean>(false);
 
@@ -131,25 +137,17 @@ function Header() {
                 console.log('aaaa');
                 // Handle change language
                 break;
+            case 'logout':
+                sessionStorage.removeItem('account');
+                dispatch(changeCurrentUser(false));
+                // Handle change language
+                break;
             default:
         }
     };
 
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);
-
-    const handleSubmit = async (email: string, password: string, remember: boolean): Promise<void> => {
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password }),
-        });
-        if (response.ok) {
-            setModalShow(false); // hide modal
-        } else {
-            console.log('err me no luon');
-        }
-    };
 
     return (
         <header className={cx('wrapper')}>
@@ -172,7 +170,7 @@ function Header() {
                     )}
 
                     <div className={cx('actions')}>
-                        {currentUser ? (
+                        {state.currentUser ? (
                             <>
                                 {isMobile && (
                                     <Tippy delay={[0, 50]} content="Search" placement="bottom">
@@ -201,12 +199,12 @@ function Header() {
                         )}
 
                         <Menu
-                            items={currentUser ? userMenu : MENU_ITEMS}
+                            items={state.currentUser ? userMenu : MENU_ITEMS}
                             placement="bottom-end"
                             delay={[0, 500]}
                             onChange={handleMenuChange}
                         >
-                            {currentUser ? (
+                            {state.currentUser ? (
                                 <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
                             ) : (
                                 <button className={cx('more-btn')}>
@@ -224,7 +222,7 @@ function Header() {
                     </Link>
                 ))}
             </Genres>
-            <Modals show={modalShow} onHide={() => setModalShow(false)} onSubmit={handleSubmit} />
+            <Modals show={modalShow} onHide={() => setModalShow(false)} setModalShow={setModalShow} />
         </header>
     );
 }

@@ -24,9 +24,9 @@ export interface reduxStateInterface {
     };
     header: {
         emailAlert: boolean;
-        emailAlertContent: string;
         passAlert: boolean;
         passAlertContent: string;
+        currentUser: boolean;
     };
     signup: {
         signupEmailAlert: boolean;

@@ -70,6 +70,13 @@ export const changePassAlertContent = (passAlertContent: string) => {
     };
 };
 
+export const changeCurrentUser = (currentUser: string) => {
+    return {
+        type: 'header/changeCurrentUser',
+        payload: currentUser,
+    };
+};
+
 // player
 export const changeUrl = (url: string) => {
     return {

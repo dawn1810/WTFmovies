@@ -14,6 +14,7 @@ const currentFormSelector = (state: reduxStateInterface) => state.signup.current
 const emailAlertSelector = (state: reduxStateInterface) => state.header.emailAlert;
 const passAlertSelector = (state: reduxStateInterface) => state.header.passAlert;
 const passAlertContentSelector = (state: reduxStateInterface) => state.header.passAlertContent;
+const currentUserSelector = (state: reduxStateInterface) => state.header.currentUser;
 
 //player
 export const readySelector = (state: reduxStateInterface) => state.player.ready;
@@ -69,10 +70,12 @@ export const headerSelector = createSelector(
     emailAlertSelector,
     passAlertSelector,
     passAlertContentSelector,
-    (emailAlert, passAlert, passAlertContent) => ({
+    currentUserSelector,
+    (emailAlert, passAlert, passAlertContent, currentUser) => ({
         emailAlert,
         passAlert,
         passAlertContent,
+        currentUser,
     }),
 );
 

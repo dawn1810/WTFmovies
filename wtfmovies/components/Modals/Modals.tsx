@@ -8,8 +8,14 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
+import { encryptData } from '~/libs/clientFunc';
 import { validateEmail, validatePassword } from '~/libs/clientFunc';
-import { changeEmailAlert, changePassAlert, changePassAlertContent } from '~/layouts/components/Header/headerSlice';
+import {
+    changeCurrentUser,
+    changeEmailAlert,
+    changePassAlert,
+    changePassAlertContent,
+} from '~/layouts/components/Header/headerSlice';
 import { headerSelector } from '~/redux/selectors';
 import Button from '../Button';
 import style from './Modals.module.scss';
@@ -19,20 +25,26 @@ const cx = classNames.bind(style);
 function Modals({
     show,
     onHide,
-    onSubmit,
+    setModalShow,
     ...props
 }: {
     show: boolean;
     onHide: () => void;
-    onSubmit: (e: string, p: string, r: boolean) => void;
+    setModalShow: (s: boolean) => void;
 }) {
     const [passEye, setPassEye] = useState(false);
     // redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    const handleSubmit = (event: any): void => {
+    const clearAllAlert = () => {
+        dispatch(changeEmailAlert(false));
+        dispatch(changePassAlert(false));
+    };
+
+    const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
+        clearAllAlert();
 
         const form = event.target;
         const email = form.formEmail.value;
@@ -44,7 +56,6 @@ function Modals({
             dispatch(changeEmailAlert(true));
         } else if (validatePassword(password) !== 0) {
             // password validate
-            dispatch(changeEmailAlert(false));
             dispatch(changePassAlert(true));
             switch (validatePassword(password)) {
                 case 1:
@@ -67,8 +78,25 @@ function Modals({
                     break;
             }
         } else {
-            dispatch(changePassAlert(false));
-            onSubmit(email, password, remember);
+            const PUBLIC_KEY = String(sessionStorage.getItem('publicKey'));
+            const newPassword = await encryptData(PUBLIC_KEY, password);
+
+            const response = await fetch('/api/auth/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: newPassword }),
+            });
+
+            if (response.ok) {
+                setModalShow(false);
+                sessionStorage.setItem('account', email);
+                dispatch(changeCurrentUser(true));
+            } else if (response.status === 404) {
+                dispatch(changePassAlert(true));
+                dispatch(changePassAlertContent('Mật khẩu không đúng!'));
+            } else if (response.status === 500) {
+                dispatch(changeEmailAlert(true));
+            }
         }
     };
 
@@ -143,7 +171,7 @@ function Modals({
                         </Form.Label>
                         <Form.Control
                             className={cx('text-input')}
-                            type="password"
+                            type={passEye ? 'text' : 'password'}
                             placeholder="Mật khẩu"
                             aria-describedby="pass-describe"
                             required
@@ -152,7 +180,7 @@ function Modals({
                             {state.passAlertContent}
                         </Form.Text>
                         <button className={cx('passEye')} onClick={handlePassEye} type="button">
-                            {passEye ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                            {passEye ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                         </button>
                     </Form.Group>
 

@@ -1,12 +1,15 @@
 'use client';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { Form } from 'react-bootstrap';
 import Select from 'react-select';
 import { DefaultLayout } from '~/layouts';
 import classNames from 'classnames/bind';
 
+import { encryptData } from '~/libs/clientFunc';
 import { validateEmail, validatePassword } from '~/libs/clientFunc';
 import {
     changeSignUpEmailAlert,
@@ -22,8 +25,6 @@ import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './signup.module.scss';
 import Image from 'next/image';
-import React, { useState } from 'react';
-import { faEye } from '@fortawesome/free-regular-svg-icons';
 
 const cx = classNames.bind(style);
 
@@ -55,7 +56,7 @@ function SignUp() {
         dispatch(changeSignUpBirthDateAlert(false));
     };
 
-    const handleSubmit = (event: any): void => {
+    const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
 
@@ -102,7 +103,21 @@ function SignUp() {
         } else if (bd.getTime() > today.getTime()) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            nextPage();
+            const PUBLIC_KEY = String(sessionStorage.getItem('publicKey'));
+            const newPassword = await encryptData(PUBLIC_KEY, password);
+
+            const response = await fetch('/api/auth/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password: newPassword, formName, birthDate }),
+            });
+
+            if (response.ok) {
+                nextPage();
+            }
+            if (response.status === 500) {
+                dispatch(changeSignUpEmailAlert(true));
+            }
         }
     };
 
@@ -131,7 +146,7 @@ function SignUp() {
                                 {state.signupPassAlertContent}
                             </Form.Text>
                             <button className={cx('passEye')} onClick={handlePassEye} type="button">
-                                {passEye ? <FontAwesomeIcon icon={faEyeSlash} /> : <FontAwesomeIcon icon={faEye} />}
+                                {passEye ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                             </button>
                         </Form.Group>
 
