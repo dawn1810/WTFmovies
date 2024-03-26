@@ -5,6 +5,7 @@ export const signupSlice = createSlice({
     name: 'signup',
     initialState: {
         signupEmailAlert: false,
+        signupEmailAlertContent: 'Email không đúng định dạng!',
         signupPassAlert: false,
         signupPassAlertContent: 'Mật khẩu không hợp lệ!',
         signupAgainPassAlert: false,
@@ -15,6 +16,9 @@ export const signupSlice = createSlice({
     reducers: {
         changeSignUpEmailAlert: (state, action) => {
             state.signupEmailAlert = action.payload;
+        },
+        changeSignupEmailAlertContent: (state, action) => {
+            state.signupEmailAlertContent = action.payload;
         },
         changeSignUpPassAlert: (state, action) => {
             state.signupPassAlert = action.payload;
@@ -39,6 +43,7 @@ export const signupSlice = createSlice({
 
 export const {
     changeSignUpEmailAlert,
+    changeSignupEmailAlertContent,
     changeSignUpPassAlert,
     changeSignUpPassAlertContent,
     changeSignupAgainPassAlert,

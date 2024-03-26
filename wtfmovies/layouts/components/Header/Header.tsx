@@ -1,6 +1,8 @@
 'use client';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useCookies } from 'next-client-cookies';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -21,6 +23,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 import { headerSelector } from '~/redux/selectors';
+import { changeCurrentUser } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
@@ -31,7 +34,6 @@ import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
-import { changeCurrentUser } from './headerSlice';
 
 const cx = classNames.bind(styles);
 
@@ -90,7 +92,6 @@ const userMenu = [
         icon: <FontAwesomeIcon icon={faSignOut} />,
         title: 'Đăng xuất',
         type: 'logout',
-        to: '',
         separate: true,
     },
 ];
@@ -120,10 +121,15 @@ const genres = [
 ];
 
 function Header() {
+    const cookies = useCookies();
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    // const [currentUser, setCurrentUser] = useState(!!sessionStorage.getItem('account'));
+    useLayoutEffect(() => {
+        const currentUser = !!cookies.get('account');
+        dispatch(changeCurrentUser(currentUser));
+    }, []);
+
     const [modalShow, setModalShow] = useState<boolean>(false);
     const [searchShow, setSearchShow] = useState<boolean>(false);
 
@@ -138,9 +144,27 @@ function Header() {
                 // Handle change language
                 break;
             case 'logout':
-                sessionStorage.removeItem('account');
-                dispatch(changeCurrentUser(false));
-                // Handle change language
+                const Logout = async () => {
+                    try {
+                        const response = await fetch('/api/auth/logout', {
+                            method: 'GET',
+                            headers: { 'Content-Type': 'application/json' },
+                        });
+
+                        if (response.ok) {
+                            dispatch(changeCurrentUser(false));
+                            const pathname = usePathname();
+                            const router = useRouter();
+                            router.push(pathname);
+                        } else {
+                            throw new Error('Network response was not ok.');
+                        }
+                    } catch (error) {
+                        console.error('Error fetching public key:', error);
+                    }
+                };
+
+                Logout();
                 break;
             default:
         }
@@ -156,8 +180,6 @@ function Header() {
                     <Link href={config.routes.home} className={cx('logo-link')}>
                         <img src={images.logo} alt="wtfmovies" />
                     </Link>
-
-                    {/* search */}
                     {isMobile ? (
                         <div className={cx('search-box', { 'search-box-show': searchShow })}>
                             <button className={cx('back-btn')} onClick={handleSearchClose}>
@@ -197,21 +219,39 @@ function Header() {
                                 </Button>
                             </>
                         )}
-
-                        <Menu
-                            items={state.currentUser ? userMenu : MENU_ITEMS}
-                            placement="bottom-end"
-                            delay={[0, 500]}
-                            onChange={handleMenuChange}
-                        >
-                            {state.currentUser ? (
-                                <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
-                            ) : (
-                                <button className={cx('more-btn')}>
-                                    <FontAwesomeIcon icon={faEllipsisVertical} />
-                                </button>
-                            )}
-                        </Menu>
+                        {state.currentUser ? (
+                            <Menu
+                                key={String(state.currentUser)}
+                                items={state.currentUser ? userMenu : MENU_ITEMS}
+                                placement="bottom-end"
+                                delay={[0, 500]}
+                                onChange={handleMenuChange}
+                            >
+                                {state.currentUser ? (
+                                    <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
+                                ) : (
+                                    <button className={cx('more-btn')}>
+                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                    </button>
+                                )}
+                            </Menu>
+                        ) : (
+                            <Menu
+                                key={String(state.currentUser)}
+                                items={MENU_ITEMS}
+                                placement="bottom-end"
+                                delay={[0, 500]}
+                                onChange={handleMenuChange}
+                            >
+                                {state.currentUser ? (
+                                    <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
+                                ) : (
+                                    <button className={cx('more-btn')}>
+                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                    </button>
+                                )}
+                            </Menu>
+                        )}
                     </div>
                 </div>
             </div>

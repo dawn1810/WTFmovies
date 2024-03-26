@@ -7,7 +7,7 @@ export const headerSlice = createSlice({
         emailAlert: false,
         passAlert: false,
         passAlertContent: 'Invalid password!',
-        currentUser: !!sessionStorage.getItem('account'),
+        currentUser: false,
     },
     reducers: {
         changeEmailAlert: (state, action) => {
