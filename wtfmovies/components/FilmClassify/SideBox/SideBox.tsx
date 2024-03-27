@@ -1,25 +1,16 @@
 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import FilmCard from '~/components/FilmCard';
 import Button from '~/components/Button';
 import style from './SideBox.module.scss';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useViewport } from '~/hooks';
 import Title from '../Title';
 
 const cx = classNames.bind(style);
-
-// const firstOne = {
-//     imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-//     filmName: 'asdfasd',
-//     views: '1.000.000',
-//     rating: '4.8',
-//     episodes: '10199',
-// };
 
 const films = [
     {
@@ -87,7 +78,7 @@ const films = [
     },
 ];
 
-function SideBox({ to, title, icon }) {
+function SideBox({ to, title, icon }: { to: string; title: string; icon: any }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -99,7 +90,7 @@ function SideBox({ to, title, icon }) {
 
     return (
         <div className={cx('wrapper')}>
-            <Title title={title} icon={icon} />
+            <Title title={title} icon={icon} className={cx('title')} />
             <div className={cx('side-films')}>
                 <div className={cx('side-films-top')}>
                     <FilmCard
@@ -152,11 +143,5 @@ function SideBox({ to, title, icon }) {
         </div>
     );
 }
-
-SideBox.propTypes = {
-    to: PropTypes.string.isRequired,
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.node.isRequired,
-};
 
 export default SideBox;

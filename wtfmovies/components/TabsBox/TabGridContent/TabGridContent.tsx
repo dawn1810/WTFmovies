@@ -1,5 +1,4 @@
 'use client';
-import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
@@ -11,7 +10,15 @@ import { useViewport } from '~/hooks';
 
 const cx = classNames.bind(style);
 
-function TabGridContent({ films }) {
+type film = {
+    imgSrc: string;
+    filmName: string;
+    views: string;
+    rating: string;
+    episodes: string;
+};
+
+function TabGridContent({ films }: { films: film[] }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -36,9 +43,5 @@ function TabGridContent({ films }) {
         </div>
     );
 }
-
-TabGridContent.propTypes = {
-    films: PropTypes.array.isRequired,
-};
 
 export default TabGridContent;

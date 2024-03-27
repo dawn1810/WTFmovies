@@ -1,5 +1,4 @@
 'use client';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import Title from './Title';
@@ -154,7 +153,21 @@ const tabs = [
     // },
 ];
 
-function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extraIcon }) {
+function FilmClassify({
+    mainDir,
+    extraDir,
+    mainTitle,
+    extraTitle,
+    mainIcon,
+    extraIcon,
+}: {
+    mainDir: string;
+    extraDir: string;
+    mainTitle: string;
+    extraTitle: string;
+    mainIcon: any;
+    extraIcon: any;
+}) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -175,14 +188,5 @@ function FilmClassify({ mainDir, extraDir, mainTitle, extraTitle, mainIcon, extr
         </div>
     );
 }
-
-FilmClassify.propTypes = {
-    mainDir: PropTypes.string.isRequired,
-    extraDir: PropTypes.string.isRequired,
-    mainTitle: PropTypes.string.isRequired,
-    extraTitle: PropTypes.string.isRequired,
-    mainIcon: PropTypes.node.isRequired,
-    extraIcon: PropTypes.node.isRequired,
-};
 
 export default FilmClassify;

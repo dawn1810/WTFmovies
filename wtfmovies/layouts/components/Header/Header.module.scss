@@ -81,6 +81,11 @@
     align-items: center;
     justify-content: flex-end;
     width: 250px;
+
+    .mb-login-btn {
+        min-width: fit-content;
+        margin-left: 18px;
+    }
 }
 
 .more-btn {
@@ -157,6 +162,10 @@
             .actions {
                 width: calc((100% - 24px) / 2);
             }
+        }
+
+        .more-btn {
+            margin-left: 18px;
         }
     }
 }
