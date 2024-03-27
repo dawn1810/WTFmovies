@@ -27,6 +27,12 @@
     align-items: center;
     justify-content: space-between;
 
+    .tileDtB {
+        color: var(--text-color);
+        font-weight: 600;
+        pointer-events: none;
+    }
+
     .search-box {
         // display: none;
         position: absolute;

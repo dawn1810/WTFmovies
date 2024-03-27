@@ -1,5 +1,5 @@
 {
-    "name": "my-next-app",
+    "name": "wtfmovies",
     "version": "0.1.0",
     "private": true,
     "scripts": {
@@ -17,6 +17,7 @@
         "@fortawesome/free-regular-svg-icons": "^6.5.1",
         "@fortawesome/free-solid-svg-icons": "^6.5.1",
         "@fortawesome/react-fontawesome": "^0.2.0",
+        "@mui/x-data-grid": "^7.0.0",
         "@reduxjs/toolkit": "^2.2.1",
         "@tippyjs/react": "^4.2.6",
         "@trendyol-js/react-carousel": "^3.0.2",

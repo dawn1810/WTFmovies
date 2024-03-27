@@ -38,7 +38,7 @@ function Genres({ children }) {
     };
 
     return (
-        <div className={cx('wrapper')}>
+        <nav className={cx('wrapper')}>
             <button style={{ opacity: isAtStart ? 0 : 1 }} className={cx('left-btn')} onClick={() => scroll(-500)}>
                 <FontAwesomeIcon icon={faChevronLeft} />
             </button>
@@ -50,7 +50,7 @@ function Genres({ children }) {
             <button style={{ opacity: isAtEnd ? 0 : 1 }} className={cx('right-btn')} onClick={() => scroll(500)}>
                 <FontAwesomeIcon icon={faChevronRight} />
             </button>
-        </div>
+        </nav>
     );
 }
 

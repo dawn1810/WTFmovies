@@ -120,7 +120,7 @@ const genres = [
     { name: 'Tâm lý tội phạm', to: 'crime' },
 ];
 
-function Header() {
+function Header({ isDatabase = false, title }: { isDatabase?: boolean, title?: string }) {
     const cookies = useCookies();
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
@@ -177,9 +177,10 @@ function Header() {
         <header className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('inner')}>
-                    <Link href={config.routes.home} className={cx('logo-link')}>
+                    {!isDatabase ? <Link href={config.routes.home} className={cx('logo-link')}>
                         <img src={images.logo} alt="wtfmovies" />
-                    </Link>
+                    </Link> : <h1 className={cx('tileDtB')}>{title}</h1>}
+                    {/* search */}
                     {isMobile ? (
                         <div className={cx('search-box', { 'search-box-show': searchShow })}>
                             <button className={cx('back-btn')} onClick={handleSearchClose}>
@@ -242,13 +243,14 @@ function Header() {
                     </div>
                 </div>
             </div>
-            <Genres>
+            {!isDatabase ? <Genres>
                 {genres.map((genre, index) => (
                     <Link key={index} href={genre.to} className={cx('genre')}>
                         {genre.name}
                     </Link>
                 ))}
-            </Genres>
+            </Genres> : ""}
+
             <Modals show={modalShow} onHide={() => setModalShow(false)} setModalShow={setModalShow} />
         </header>
     );

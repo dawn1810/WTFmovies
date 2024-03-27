@@ -12,7 +12,7 @@ function DefaultLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className={cx('wrapper')}>
             <Header />
-            <div className={cx('main')}>{children}</div>
+            <section className={cx('main')}>{children}</section>
             <Footer />
         </div>
     );
