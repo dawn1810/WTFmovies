@@ -105,7 +105,7 @@ function SideBox({ to, title, icon }: { to: string; title: string; icon: any }) 
                 {films
                     .slice(1)
                     .map((film, index) =>
-                        index < 2 ? (
+                        index < 3 ? (
                             <FilmCard
                                 key={index}
                                 noOverlay

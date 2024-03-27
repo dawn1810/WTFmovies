@@ -1,5 +1,4 @@
 'use client';
-import { useRouter } from 'next/navigation';
 import { useCookies } from 'next-client-cookies';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -207,7 +206,7 @@ function SignUp() {
                             <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'var(--green-highlight-color)' }} />
                         </h1>
                         <Form.Group className="mb-5">
-                            <Form.Text>
+                            <Form.Text className={cx('notify-text')}>
                                 Chúc mừng bạn đã đăng kí tài khoản thành công!
                                 <br />
                                 Phần sau đây là những khảo sát sở thích xem phim của bạn, để đưa ra gợi ý và trải nghiệm
@@ -332,7 +331,7 @@ function SignUp() {
                             <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'var(--green-highlight-color)' }} />
                         </h1>
                         <Form.Group className="mb-5">
-                            <Form.Text>
+                            <Form.Text className={cx('notify-text')}>
                                 Cảm ơn bạn đã tham gia khảo sát!
                                 <br />
                                 Phần khảo sát đã giúp chúng tôi rất nhiều để mang đến cho người xem những trải nghiệm
@@ -356,17 +355,11 @@ function SignUp() {
         }
     };
 
-    if (cookies.get('account')) {
-        const router = useRouter();
-        router.push('/');
-        return null;
-    } else {
-        return (
-            <DefaultLayout>
-                <div className={cx('wrapper')}>{renderForm(state.currentForm)}</div>
-            </DefaultLayout>
-        );
-    }
+    return (
+        <DefaultLayout>
+            <div className={cx('wrapper')}>{renderForm(state.currentForm)}</div>
+        </DefaultLayout>
+    );
 }
 
 export default SignUp;

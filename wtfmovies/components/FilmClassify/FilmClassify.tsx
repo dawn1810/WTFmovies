@@ -7,6 +7,9 @@ import SideBox from './SideBox';
 import TabsBox from '~/components/TabsBox';
 // import Button from '~/components/Button';
 import style from './FilmClassify.module.scss';
+import Button from '../Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
 
 const cx = classNames.bind(style);
 
@@ -177,6 +180,9 @@ function FilmClassify({
             {isMobile ? (
                 <>
                     <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} />
+                    <Button primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
+                        Xem thêm
+                    </Button>
                     <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
                 </>
             ) : (

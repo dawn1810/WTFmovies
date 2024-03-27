@@ -2,11 +2,10 @@
 import { useDispatch, useSelector } from 'react-redux';
 import { useCookies } from 'next-client-cookies';
 import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
-    faArrowLeft,
     faBell,
     faCircleQuestion,
     faCrown,
@@ -17,6 +16,7 @@ import {
     faRightToBracket,
     faSignOut,
     faUser,
+    faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import Tippy from '@tippyjs/react';
@@ -120,12 +120,12 @@ const genres = [
     { name: 'Tâm lý tội phạm', to: 'crime' },
 ];
 
-function Header({ isDatabase = false, title }: { isDatabase?: boolean, title?: string }) {
+function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: string }) {
     const cookies = useCookies();
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         const currentUser = !!cookies.get('account');
         dispatch(changeCurrentUser(currentUser));
     }, []);
@@ -177,14 +177,18 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean, title?: s
         <header className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('inner')}>
-                    {!isDatabase ? <Link href={config.routes.home} className={cx('logo-link')}>
-                        <img src={images.logo} alt="wtfmovies" />
-                    </Link> : <h1 className={cx('tileDtB')}>{title}</h1>}
+                    {!isDatabase ? (
+                        <Link href={config.routes.home} className={cx('logo-link')}>
+                            <img src={images.logo} alt="wtfmovies" />
+                        </Link>
+                    ) : (
+                        <h1 className={cx('tileDtB')}>{title}</h1>
+                    )}
                     {/* search */}
                     {isMobile ? (
                         <div className={cx('search-box', { 'search-box-show': searchShow })}>
                             <button className={cx('back-btn')} onClick={handleSearchClose}>
-                                <FontAwesomeIcon icon={faArrowLeft} />
+                                <FontAwesomeIcon icon={faXmark} />
                             </button>
                             <Search />
                         </div>
@@ -243,13 +247,17 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean, title?: s
                     </div>
                 </div>
             </div>
-            {!isDatabase ? <Genres>
-                {genres.map((genre, index) => (
-                    <Link key={index} href={genre.to} className={cx('genre')}>
-                        {genre.name}
-                    </Link>
-                ))}
-            </Genres> : ""}
+            {!isDatabase ? (
+                <Genres>
+                    {genres.map((genre, index) => (
+                        <Link key={index} href={genre.to} className={cx('genre')}>
+                            {genre.name}
+                        </Link>
+                    ))}
+                </Genres>
+            ) : (
+                ''
+            )}
 
             <Modals show={modalShow} onHide={() => setModalShow(false)} setModalShow={setModalShow} />
         </header>

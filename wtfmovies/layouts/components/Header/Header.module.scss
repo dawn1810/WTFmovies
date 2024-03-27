@@ -84,7 +84,7 @@
 
     .mb-login-btn {
         min-width: fit-content;
-        margin-left: 18px;
+        background-color: transparent;
     }
 }
 
@@ -100,7 +100,7 @@
 .action-btn {
     position: relative;
     display: flex;
-    font-size: 2.2rem;
+    font-size: 1.8rem;
     color: var(--text-color);
     background-color: transparent;
     padding: 4px 10px;
@@ -165,7 +165,7 @@
         }
 
         .more-btn {
-            margin-left: 18px;
+            margin-left: 10px;
         }
     }
 }

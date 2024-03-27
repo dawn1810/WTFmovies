@@ -31,14 +31,9 @@ import Search from '../Search';
 
 const cx = classNames.bind(styles);
 
-
 function Leftbar() {
-
-
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
-
-
 
     return (
         <aside className={cx('wrapper')}>
@@ -64,8 +59,6 @@ function Leftbar() {
                     ) : (
                         <Search />
                     )} */}
-
-
             </div>
         </aside>
     );

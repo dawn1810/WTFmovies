@@ -307,6 +307,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                         delay={[0, 50]}
                         content={contactState.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'}
                         placement="top"
+
                         arrow={false}
                     >
                         <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>

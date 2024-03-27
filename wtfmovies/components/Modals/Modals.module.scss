@@ -2,7 +2,9 @@
     // Custom
     --bs-modal-header-padding: 1rem 2rem !important;
     --bs-modal-padding: 2rem !important;
-    --bs-modal-bg: var(--text-color) !important;
+    --bs-modal-bg: var(--card-background-color) !important;
+
+    color: var(--text-color);
 
 
     .title {
@@ -37,6 +39,7 @@
 
         .alert {
             color: var(--highlight-color);
+            font-weight: 700;
         }
 
         .pass-form {
@@ -44,7 +47,7 @@
 
             .passEye {
                 position: absolute;
-                top: 58%;
+                top: 42px;
                 right: 10px;
                 background-color: transparent;
             }
@@ -77,11 +80,17 @@
         }
     }
 
-    .switch-page {
-        color: var(--submit-color);
 
-        &:hover {
-            text-decoration: underline;
+
+    .switch-page {
+        color: var(--text-color);
+
+        a {
+            color: var(--submit-color);
+
+            &:hover {
+                text-decoration: underline;
+            }
         }
     }
 
@@ -111,7 +120,7 @@
 
         &:before,
         &:after {
-            background: var(--primary);
+            background: var(--text-color);
         }
     }
 }

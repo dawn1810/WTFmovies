@@ -86,7 +86,7 @@ function FilmInfo() {
             <ImageCustom className={cx('film-image')} src={infoList.image} alt={infoList.title} />
             <div className={cx('film-left-container')}>
                 <div className={cx('film-info')}>
-                    <Tippy content="Copied" placement="top" arrow={false} trigger="click">
+                    <Tippy content="Copied" placement="top" arrow={false} trigger="click" >
                         <h3 className={cx('film-title')} onClick={handleCopyTitle}>
                             {infoList.title}
                         </h3>

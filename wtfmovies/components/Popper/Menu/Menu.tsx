@@ -78,6 +78,7 @@ function Menu({
         <Tippy
             key="18102003"
             interactive
+            touch
             hideOnClick={hideOnClick}
             delay={delay}
             offset={[12, 8]}

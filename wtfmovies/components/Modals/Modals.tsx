@@ -92,14 +92,14 @@ function Modals({
     return (
         <Modal
             show={show}
-            onHide={handleHide}
-            className={cx('wrapper')}
-            {...props}
-            aria-labelledby="contained-modal-title-vcenter"
-            animation={false}
             centered
+            animation={false}
+            aria-labelledby="contained-modal-title-vcenter"
+            className={cx('wrapper')}
+            onHide={handleHide}
+            {...props}
         >
-            <Modal.Header closeButton>
+            <Modal.Header closeButton closeVariant="white">
                 <Modal.Title className={cx('title')} id="contained-modal-title-vcenter">
                     Đăng nhập
                 </Modal.Title>
@@ -163,9 +163,9 @@ function Modals({
                         <Form.Check label="Ghi nhớ đăng nhập" />
                     </Form.Group>
                     <Form.Group className="mb-5">
-                        <Form.Text id="passwordHelpBlock">
+                        <Form.Text id="passwordHelpBlock" className={cx('switch-page')}>
                             Bạn chưa có tài khoản?{' '}
-                            <Link className={cx('switch-page')} href="/signup" onClick={handleSignUp}>
+                            <Link href="/signup" onClick={handleSignUp}>
                                 Đăng kí tài khoản.
                             </Link>
                         </Form.Text>

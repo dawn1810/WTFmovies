@@ -8,6 +8,12 @@
         'tabbox sidebox';
     gap: 30px;
     margin-bottom: 80px;
+
+    .more-btn {
+        margin: 0 10px 0 auto;
+        width: fit-content;
+
+    }
 }
 
 @media screen and (max-width: 1024px) {
