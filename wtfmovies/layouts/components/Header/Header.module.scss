@@ -75,6 +75,11 @@
     align-items: center;
     justify-content: flex-end;
     width: 250px;
+
+    .mb-login-btn {
+        min-width: fit-content;
+        margin-left: 18px;
+    }
 }
 
 .more-btn {
@@ -142,6 +147,7 @@
 @media screen and (max-width: 1024px) {
     .wrapper {
         position: relative;
+
         .inner {
             .logo-link {
                 width: calc((100% - 24px) / 2);
@@ -150,6 +156,10 @@
             .actions {
                 width: calc((100% - 24px) / 2);
             }
+        }
+
+        .more-btn {
+            margin-left: 18px;
         }
     }
 }

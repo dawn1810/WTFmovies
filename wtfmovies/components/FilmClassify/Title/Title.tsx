@@ -1,12 +1,11 @@
 'use client';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import style from './Title.module.scss';
 
 const cx = classNames.bind(style);
 
-function Title({ title, icon }) {
+function Title({ title, icon, className }: { title: string; icon: any; className?: string | [] }) {
     return (
         <div className={cx('film-classify-title')}>
             <div className={cx('title-sign')} />
@@ -15,10 +14,5 @@ function Title({ title, icon }) {
         </div>
     );
 }
-
-Title.propTypes = {
-    title: PropTypes.string.isRequired,
-    icon: PropTypes.node.isRequired,
-};
 
 export default Title;

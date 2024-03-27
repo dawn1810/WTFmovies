@@ -1,5 +1,4 @@
 'use client';
-import PropTypes from 'prop-types';
 import { Tabs, Tab } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -10,6 +9,12 @@ import FilmProposeList from '../FilmProposeList';
 
 const cx = classNames.bind(style);
 
+type tab = {
+    eventKey: string;
+    title: string;
+    content: any;
+};
+
 function TabBox({
     commentContent = false,
     listContent = false,
@@ -19,6 +24,15 @@ function TabBox({
     tabs,
     defaultActiveKey,
     className,
+}: {
+    commentContent?: boolean;
+    listContent?: boolean;
+    flexContent?: boolean;
+    textContent?: boolean;
+    gridContent?: boolean;
+    tabs: tab[];
+    defaultActiveKey?: string;
+    className?: string | [];
 }) {
     return (
         <div className={cx('wrapper', className)}>
@@ -54,12 +68,5 @@ function TabBox({
         </div>
     );
 }
-
-TabBox.propTypes = {
-    tabs: PropTypes.array.isRequired,
-    defaultActiveKey: PropTypes.string,
-    gridContent: PropTypes.bool,
-    textContent: PropTypes.bool,
-};
 
 export default TabBox;

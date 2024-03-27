@@ -53,8 +53,7 @@ function Modals({
         const password = form.formPassword.value;
         const remember = form.formRemember.checked;
 
-        // const PUBLIC_KEY = String(sessionStorage.getItem('publicKey'));
-        !!cookies.get('haha') && (await fetchPublicKey());
+        !cookies.get('haha') && (await fetchPublicKey());
         const PUBLIC_KEY = String(cookies.get('haha'));
         const newPassword = await encryptData(PUBLIC_KEY, password);
 

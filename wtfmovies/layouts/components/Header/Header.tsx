@@ -192,66 +192,53 @@ function Header() {
                     )}
 
                     <div className={cx('actions')}>
-                        {state.currentUser ? (
-                            <>
-                                {isMobile && (
-                                    <Tippy delay={[0, 50]} content="Search" placement="bottom">
-                                        <button className={cx('action-btn')} onClick={handleSearchShow}>
-                                            <FontAwesomeIcon icon={faMagnifyingGlass} />
-                                        </button>
-                                    </Tippy>
-                                )}
-                                <Tippy delay={[0, 50]} content="Notify" placement="bottom">
-                                    <button className={cx('action-btn')}>
-                                        <FontAwesomeIcon icon={faBell} />
-                                        <span className={cx('badge')}>12</span>
-                                    </button>
-                                </Tippy>
-                            </>
-                        ) : (
-                            <>
-                                <Button
-                                    primary
-                                    leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
-                                    onClick={() => setModalShow(true)}
-                                >
-                                    Đăng Nhập
-                                </Button>
-                            </>
+                        {isMobile && (
+                            <Tippy delay={[0, 50]} content="Search" placement="bottom">
+                                <button className={cx('action-btn')} onClick={handleSearchShow}>
+                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                </button>
+                            </Tippy>
                         )}
                         {state.currentUser ? (
-                            <Menu
-                                key={String(state.currentUser)}
-                                items={state.currentUser ? userMenu : MENU_ITEMS}
-                                placement="bottom-end"
-                                delay={[0, 500]}
-                                onChange={handleMenuChange}
-                            >
-                                {state.currentUser ? (
-                                    <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
-                                ) : (
-                                    <button className={cx('more-btn')}>
-                                        <FontAwesomeIcon icon={faEllipsisVertical} />
-                                    </button>
-                                )}
-                            </Menu>
+                            <Tippy delay={[0, 50]} content="Notify" placement="bottom">
+                                <button className={cx('action-btn')}>
+                                    <FontAwesomeIcon icon={faBell} />
+                                    <span className={cx('badge')}>12</span>
+                                </button>
+                            </Tippy>
                         ) : (
-                            <Menu
-                                key={String(state.currentUser)}
-                                items={MENU_ITEMS}
-                                placement="bottom-end"
-                                delay={[0, 500]}
-                                onChange={handleMenuChange}
-                            >
-                                {state.currentUser ? (
-                                    <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
+                            <>
+                                {isMobile ? (
+                                    <Button primary className={cx('mb-login-btn')} onClick={() => setModalShow(true)}>
+                                        <FontAwesomeIcon icon={faRightToBracket} />
+                                    </Button>
                                 ) : (
-                                    <button className={cx('more-btn')}>
-                                        <FontAwesomeIcon icon={faEllipsisVertical} />
-                                    </button>
+                                    <Button
+                                        primary
+                                        leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
+                                        onClick={() => setModalShow(true)}
+                                    >
+                                        Đăng Nhập
+                                    </Button>
                                 )}
-                            </Menu>
+                            </>
                         )}
+
+                        <Menu
+                            key={String(state.currentUser)}
+                            items={state.currentUser ? userMenu : MENU_ITEMS}
+                            placement="bottom-end"
+                            delay={[0, 500]}
+                            onChange={handleMenuChange}
+                        >
+                            {state.currentUser ? (
+                                <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
+                            ) : (
+                                <button className={cx('more-btn')}>
+                                    <FontAwesomeIcon icon={faEllipsisVertical} />
+                                </button>
+                            )}
+                        </Menu>
                     </div>
                 </div>
             </div>

@@ -109,7 +109,7 @@ function SignUp() {
         } else if (bd.getTime() > today.getTime()) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            !!cookies.get('haha') && (await fetchPublicKey());
+            !cookies.get('haha') && (await fetchPublicKey());
             const PUBLIC_KEY = String(cookies.get('haha'));
             const newPassword = await encryptData(PUBLIC_KEY, password);
 
