@@ -39,7 +39,8 @@
     "components/ImageCustom/ImageCustom.tsx",
     "components/ImageCustom/ImageCustom.tsx",
     "layouts/components/Header/Header.ts",
-    "assets/image/index.js"
+    "assets/image/index.js",
+    "components/MenusSidebar/MenuSidebar.js"
   ],
   "exclude": [
     "node_modules"

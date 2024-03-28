@@ -1,36 +1,34 @@
 'use client';
-import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
-import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faArrowLeft,
-    faBell,
-    faCircleQuestion,
-    faCrown,
-    faEarthAsia,
-    faEllipsisVertical,
-    faGear,
-    faMagnifyingGlass,
-    faRightToBracket,
-    faSignOut,
-    faUser,
-} from '@fortawesome/free-solid-svg-icons';
-import Link from 'next/link';
-import Tippy from '@tippyjs/react';
-import 'tippy.js/dist/tippy.css';
-
-import { headerSelector } from '~/redux/selectors';
-import { useViewport } from '~/hooks';
-import Modals from '~/components/Modals';
-import config from '~/config';
-import Button from '~/components/Button';
 import styles from './Leftbar.module.scss';
-import images from '~/assets/image';
-import Search from '../Search';
-
 const cx = classNames.bind(styles);
-
+import classNames from 'classnames/bind';
+import { faChartSimple, faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
+import Link from 'next/link';
+import 'tippy.js/dist/tippy.css';
+import { useViewport } from '~/hooks';
+import config from '~/config';
+import MenuSidebar from '~/components/MenusSidebar';
+import images from '~/assets/image';
+function handleClickSidebar(scene: string) {
+    console.log(scene);
+}
+const menuItems = [
+    {
+        title: 'Tổng quan',
+        icon: faHouse,
+        scene: 'overview',
+    },
+    {
+        title: 'Quản lý phim',
+        icon: faFilm,
+        scene: 'film',
+    },
+    {
+        title: 'Thống kê',
+        icon: faChartSimple,
+        scene: 'chart',
+    },
+];
 function Leftbar() {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
@@ -44,9 +42,7 @@ function Leftbar() {
                     </Link>
                 </div>
                 <div>
-                    <Button primary className={cx('navBtn')}>
-                        Đăng ký
-                    </Button>
+                    <MenuSidebar menuItems={menuItems} handleClick={handleClickSidebar}></MenuSidebar>
                 </div>
 
                 {/* {isMobile ? (
