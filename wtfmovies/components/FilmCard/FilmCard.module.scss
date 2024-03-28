@@ -10,6 +10,8 @@
     background-color: var(--body-color);
     transition: 0.2s ease-out;
 
+    // imagebox  /////////////////////////////////////////////////////////////////////////
+
     .image-box {
         position: relative;
         margin: auto;
@@ -36,6 +38,19 @@
         }
     }
 
+    .large-nooverlay-img-box {
+        height: 50%;
+        display: flex;
+        align-items: center;
+        border-radius: 5px;
+
+        .large-nooverlay-img {
+            height: 400px;
+            aspect-ratio: 16/9;
+        }
+    }
+
+    // info /////////////////////////////////////////////////////////////////////////
     .info {
         position: absolute;
         bottom: 0;
@@ -68,10 +83,10 @@
 
     .nooverlay-info {
         position: static;
+        height: 100%;
         display: flex;
         align-items: flex-start;
         justify-content: flex-start;
-        height: 100%;
         border-radius: 0 5px 5px 0;
         padding: 15px;
         text-align: start;
@@ -88,6 +103,32 @@
         align-self: flex-end;
     }
 
+    .large-nooverlay-info {
+        height: 50%;
+
+        .large-title {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .large-nooverlay-subinfo-list {
+            width: 100%;
+            display: grid;
+            grid-template-columns: auto auto;
+            grid-template-rows: auto auto auto auto;
+            gap: 0px 18px;
+            grid-template-areas:
+                ". ."
+                ". ."
+                ". ."
+                ". .";
+            gap: 5px;
+            font-size: 1.8rem;
+            flex-direction: column;
+        }
+    }
+
+    // rating /////////////////////////////////////////////////////////////////////////
     .rating {
         position: absolute;
         top: 5px;
@@ -125,6 +166,16 @@
         bottom: 5px;
     }
 
+    .large-nooverlay-rating {
+        left: 5px;
+        top: unset;
+        bottom: 5px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+
+    // episodes /////////////////////////////////////////////////////////////////////////
     .episodes {
         position: absolute;
         top: 5px;
@@ -163,6 +214,18 @@
         bottom: 5px;
         left: 60px;
     }
+
+    .large-nooverlay-episodes {
+        left: 50px;
+        right: unset;
+        top: unset;
+        bottom: 5px;
+        width: 35px;
+        height: 35px;
+        font-size: 1.2rem;
+    }
+
+    // hover-btn-list /////////////////////////////////////////////////////////////////////////
 
     .hover-btn-list {
         position: absolute;
@@ -218,10 +281,11 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 2.4rem;
+            padding: 10px;
             background-color: transparent;
             color: var(--text-color);
-            padding: 10px;
+            opacity: .2;
+            font-size: 2.4rem;
             cursor: pointer;
             transition: linear 0.2s;
 
@@ -230,17 +294,19 @@
                 color: var(--highlight-color);
             }
         }
-
-        .watch-btn {
-            border-radius: 0 5px 0 0;
-            opacity: .2;
-        }
-
-        .review-btn {
-            border-radius: 0 0 5px 0;
-            opacity: .2;
-        }
     }
+
+    .large-noOverlay-btn-list {
+        width: fit-content;
+        height: fit-content;
+        flex-direction: row;
+        top: unset;
+        bottom: 0;
+        right: 0;
+        transform: translate(0, 0);
+
+    }
+
 
     &:hover {
         .film-img {
@@ -252,6 +318,8 @@
         }
     }
 }
+
+// wrapper /////////////////////////////////////////////////////////////////////////
 
 .nooverlay-wrapper {
     width: 100%;
@@ -277,6 +345,22 @@
 
 .large-wrapper {
     width: 100%;
+}
+
+.large-nooverlay-wrapper {
+    width: 100%;
+    height: 350px;
+
+    &:hover {
+        background-color: var(--primary-hover);
+
+        .noOverlay-btn-list {
+
+            .hover-btn {
+                opacity: 0.8;
+            }
+        }
+    }
 }
 
 @media screen and (max-width: 1024px) {
