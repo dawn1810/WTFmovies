@@ -22,8 +22,9 @@ const MenuSidebar = ({ menuItems, handleClick }: any) => {
           primary
           className={cx('navBtn', { active: activeMenu === item.scene })}
           onClick={() => handleButtonClick(item)}
+          leftIcon={<FontAwesomeIcon icon={item.icon} />}
         >
-          <FontAwesomeIcon icon={item.icon} className='icon' /> {item.title}
+          {item.title}
         </Button>
       ))}
     </>

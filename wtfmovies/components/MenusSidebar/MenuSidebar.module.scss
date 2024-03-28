@@ -8,14 +8,19 @@
         margin-left: 0px;
     }
 
+    .icon {
+        height: 1.6rem;
+    }
+
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 50px;
+
+
     &.active,
     &:disabled {
         background-color: var(--highlight-color);
         color: var(--text-color);
     }
 
-}
-
-.icon {
-    height: 60px;
 }

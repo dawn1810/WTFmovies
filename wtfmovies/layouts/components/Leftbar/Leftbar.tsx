@@ -1,10 +1,8 @@
 'use client';
 import styles from './Leftbar.module.scss';
-const cx = classNames.bind(styles);
 import classNames from 'classnames/bind';
 import { faChartSimple, faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import 'tippy.js/dist/tippy.css';
 import { useViewport } from '~/hooks';
 import config from '~/config';
 import MenuSidebar from '~/components/MenusSidebar';
@@ -12,6 +10,7 @@ import images from '~/assets/image';
 function handleClickSidebar(scene: string) {
     console.log(scene);
 }
+const cx = classNames.bind(styles);
 const menuItems = [
     {
         title: 'Tổng quan',

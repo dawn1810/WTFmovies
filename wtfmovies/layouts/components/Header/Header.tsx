@@ -201,16 +201,21 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                         <h1 className={cx('tileDtB')}>{title}</h1>
                     )}
                     {/* search */}
-                    {isMobile ? (
-                        <div className={cx('search-box', { 'search-box-show': searchShow })}>
-                            <button className={cx('back-btn')} onClick={handleSearchClose}>
-                                <FontAwesomeIcon icon={faXmark} />
-                            </button>
+                    {!isDatabase ? (
+                        isMobile ? (
+                            <div className={cx('search-box', { 'search-box-show': searchShow })}>
+                                <button className={cx('back-btn')} onClick={handleSearchClose}>
+                                    <FontAwesomeIcon icon={faXmark} />
+                                </button>
+                                <Search />
+                            </div>
+                        ) : (
                             <Search />
-                        </div>
+                        )
                     ) : (
-                        <Search />
+                        ""
                     )}
+
 
                     <div className={cx('actions')}>
                         {isMobile && (
