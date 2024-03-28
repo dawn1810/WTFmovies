@@ -27,6 +27,7 @@ export interface reduxStateInterface {
         passAlert: boolean;
         passAlertContent: string;
         currentUser: boolean;
+        query: string;
     };
     signup: {
         signupEmailAlert: boolean;

@@ -16,6 +16,7 @@ const emailAlertSelector = (state: reduxStateInterface) => state.header.emailAle
 const passAlertSelector = (state: reduxStateInterface) => state.header.passAlert;
 const passAlertContentSelector = (state: reduxStateInterface) => state.header.passAlertContent;
 const currentUserSelector = (state: reduxStateInterface) => state.header.currentUser;
+export const searchQuerySelector = (state: reduxStateInterface) => state.header.query;
 
 //player
 export const readySelector = (state: reduxStateInterface) => state.player.ready;
@@ -75,11 +76,13 @@ export const headerSelector = createSelector(
     passAlertSelector,
     passAlertContentSelector,
     currentUserSelector,
-    (emailAlert, passAlert, passAlertContent, currentUser) => ({
+    searchQuerySelector,
+    (emailAlert, passAlert, passAlertContent, currentUser, searchQuery) => ({
         emailAlert,
         passAlert,
         passAlertContent,
         currentUser,
+        searchQuery,
     }),
 );
 

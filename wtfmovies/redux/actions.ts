@@ -84,6 +84,13 @@ export const changeCurrentUser = (currentUser: string) => {
     };
 };
 
+export const changeSearchQuery = (query: string) => {
+    return {
+        type: 'header/changeSearchQuery',
+        payload: query,
+    };
+};
+
 // player
 export const changeUrl = (url: string) => {
     return {

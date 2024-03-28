@@ -4,7 +4,9 @@
     border-radius: 0;
     background-color: var(--primary);
 
-
+    +.navBtn {
+        margin-left: 0px;
+    }
 
     &.active,
     &:disabled {

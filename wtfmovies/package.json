@@ -44,6 +44,7 @@
         "react-dom": "^18"
     },
     "devDependencies": {
+        "@mui/x-data-grid-generator": "^7.0.0",
         "@cloudflare/next-on-pages": "^1.10.0",
         "@cloudflare/workers-types": "^4.20240314.0",
         "@types/classnames": "^2.3.1",

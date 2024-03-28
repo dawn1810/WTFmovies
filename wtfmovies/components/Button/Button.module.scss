@@ -13,9 +13,9 @@
     border: 1px solid transparent;
     user-select: none;
 
-    // +.wrapper {
-    //     margin-left: 8px;
-    // }
+    +.wrapper {
+        margin-left: 8px;
+    }
 
     &.disabled {
         pointer-events: none;

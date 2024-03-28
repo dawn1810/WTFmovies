@@ -3,18 +3,23 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useRef } from 'react';
 import classNames from 'classnames/bind';
-
+// Đảm bảo rằng hành động này được xác định trong các hành động Redux của bạn
+import { useSelector, useDispatch } from 'react-redux';
 import styles from './Search.module.scss';
+import { searchQuerySelector } from '~/redux/selectors';
+import { changeSearchQuery } from '~/layouts/components/Header/headerSlice';
 
 const cx = classNames.bind(styles);
 
 function Search() {
+    const searchQuery = useSelector(searchQuerySelector);
+    const dispatch = useDispatch();
+
     const interactiveRef = useRef(null);
     const btnContainerRef = useRef(null);
-
     useEffect(() => {
-        const interBubble = interactiveRef.current;
-        const btnContainer = btnContainerRef.current;
+        const interBubble: any = interactiveRef.current;
+        const btnContainer: any = btnContainerRef.current;
 
         let curX = 0;
         let curY = 0;
@@ -32,7 +37,7 @@ function Search() {
         };
 
         // Xác định sự kiện handleMouseMove trên container
-        const handleMouseMove = (event) => {
+        const handleMouseMove = (event: any) => {
             if (btnContainer && interBubble) {
                 const rect = btnContainer.getBoundingClientRect();
                 tgX = event.pageX - rect.left;
@@ -53,9 +58,14 @@ function Search() {
         };
     }, []);
 
+    const handleSearchQueryChange = (event: any) => {
+        dispatch(changeSearchQuery(event.target.value)); // Cập nhật trạng thái search trong redux
+
+    }
+
     return (
         <div className={cx('wrapper')}>
-            <input className={cx('search-input')} type="text" placeholder="Tìm kiếm" />
+            <input value={searchQuery} className={cx('search-input')} type="text" placeholder="Tìm kiếm" onChange={(e) => handleSearchQueryChange(e)} />
             <div className={cx('search-btn-w-bg')} ref={btnContainerRef}>
                 <button className={cx('search-btn')}>
                     <FontAwesomeIcon icon={faSearch} />

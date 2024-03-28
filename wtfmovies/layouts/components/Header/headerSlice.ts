@@ -8,6 +8,7 @@ export const headerSlice = createSlice({
         passAlert: false,
         passAlertContent: 'Invalid password!',
         currentUser: false,
+        query: ''
     },
     reducers: {
         changeEmailAlert: (state, action) => {
@@ -22,9 +23,12 @@ export const headerSlice = createSlice({
         changeCurrentUser: (state, action) => {
             state.currentUser = action.payload;
         },
+        changeSearchQuery: (state, action) => {
+            state.query = action.payload;
+        },
     },
 });
 
-export const { changeEmailAlert, changePassAlert, changePassAlertContent, changeCurrentUser } = headerSlice.actions;
+export const { changeEmailAlert, changePassAlert, changePassAlertContent, changeCurrentUser, changeSearchQuery } = headerSlice.actions;
 
 export default headerSlice.reducer;
