@@ -34,14 +34,24 @@ export async function POST(request: NextRequest) {
 
         if (passAuth) {
             const oneDay = 24 * 60 * 60 * 1000;
-            const encryptId1: string = await encryptData(getRequestContext().env.publicKey, 'haha' + userAuth.user_id);
-            const encryptId2: string = await encryptData(getRequestContext().env.publicKey, 'huhu' + userAuth.user_id);
 
             if (data.remember) {
+                const encryptId1: string = await encryptData(
+                    getRequestContext().env.publicKey,
+                    '18102003' + userAuth.user_id,
+                );
                 //store cookies forever
-                cookies().set('account', encryptId1, { expires: Date.now() + 30 * oneDay, secure: true });
+                cookies().set('account', encryptId1, {
+                    expires: Date.now() + 30 * oneDay,
+                    secure: true,
+                    httpOnly: true,
+                });
             } else {
-                cookies().set('account', encryptId2, { expires: Date.now() + oneDay, secure: true });
+                const encryptId2: string = await encryptData(
+                    getRequestContext().env.publicKey,
+                    '30020181' + userAuth.user_id,
+                );
+                cookies().set('account', encryptId2, { expires: Date.now() + oneDay, secure: true, httpOnly: true });
             }
             return new Response();
         } else return new Response(JSON.stringify(userAuth.user_id, null, 2), { status: 404 });

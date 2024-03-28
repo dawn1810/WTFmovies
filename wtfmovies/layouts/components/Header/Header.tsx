@@ -126,8 +126,24 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
     const dispatch = useDispatch();
 
     useEffect(() => {
-        const currentUser = !!cookies.get('account');
-        dispatch(changeCurrentUser(currentUser));
+        const updateCookies = async () => {
+            try {
+                const response = await fetch('/api/auth/updateUserCookies', {
+                    method: 'GET',
+                    headers: { 'Content-Type': 'application/json' },
+                });
+
+                if (response.status === 200) {
+                    dispatch(changeCurrentUser(true));
+                } else if (response.status === 204) {
+                    dispatch(changeCurrentUser(false));
+                }
+            } catch (error) {
+                console.error('Error fetching public key:', error);
+            }
+        };
+
+        updateCookies();
     }, []);
 
     const [modalShow, setModalShow] = useState<boolean>(false);
