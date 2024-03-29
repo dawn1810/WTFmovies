@@ -7,7 +7,8 @@ import { getRequestContext } from '@cloudflare/next-on-pages';
 export async function GET(request: NextRequest) {
     const cookiesStore = cookies();
     const account = cookiesStore.get('account')?.value;
-    const decrypt = await decryptData(getRequestContext().env.privateKey, String(account));
+    // const decrypt = await decryptData(getRequestContext().env.privateKey, String(account));
+    const decrypt = '1980245905';
 
     if (decrypt.substring(0, 8) === '18102003') {
         const oneMonth = 30 * 24 * 60 * 60 * 1000;

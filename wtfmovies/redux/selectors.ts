@@ -12,9 +12,9 @@ const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.signu
 const currentFormSelector = (state: reduxStateInterface) => state.signup.currentForm;
 
 //header
+const modalShowSelector = (state: reduxStateInterface) => state.header.modalShow;
 const emailAlertSelector = (state: reduxStateInterface) => state.header.emailAlert;
 const passAlertSelector = (state: reduxStateInterface) => state.header.passAlert;
-const passAlertContentSelector = (state: reduxStateInterface) => state.header.passAlertContent;
 const currentUserSelector = (state: reduxStateInterface) => state.header.currentUser;
 export const searchQuerySelector = (state: reduxStateInterface) => state.header.query;
 
@@ -76,15 +76,15 @@ export const signupSelector = createSelector(
 );
 
 export const headerSelector = createSelector(
+    modalShowSelector,
     emailAlertSelector,
     passAlertSelector,
-    passAlertContentSelector,
     currentUserSelector,
     searchQuerySelector,
-    (emailAlert, passAlert, passAlertContent, currentUser, searchQuery) => ({
+    (modalShow, emailAlert, passAlert, currentUser, searchQuery) => ({
+        modalShow,
         emailAlert,
         passAlert,
-        passAlertContent,
         currentUser,
         searchQuery,
     }),

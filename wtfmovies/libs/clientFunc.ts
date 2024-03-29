@@ -4,6 +4,7 @@ const bufferFromPEM = (pem: string) => {
     const b64Data = pem.replace(/(-----(BEGIN|END) (PUBLIC|PRIVATE) KEY-----|\s)/g, '');
     return Uint8Array.from(atob(b64Data), (c) => c.charCodeAt(0));
 };
+
 const bufferToBase64 = (buffer: any) => {
     return btoa(String.fromCharCode(...buffer));
 };
@@ -56,7 +57,7 @@ export const validatePassword = (password: string): number => {
     }
 
     // Regular expression for password complexity
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/;
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&\-]+$/;
 
     // Check for complexity requirements
     if (!regex.test(password)) {

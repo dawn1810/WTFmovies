@@ -23,6 +23,7 @@ export interface reduxStateInterface {
         currResol: string;
     };
     header: {
+        modalShow: boolean;
         emailAlert: boolean;
         passAlert: boolean;
         passAlertContent: string;
