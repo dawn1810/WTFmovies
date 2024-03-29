@@ -1,15 +1,15 @@
 export const runtime = 'edge';
-
-import { getRequestContext } from '@cloudflare/next-on-pages';
+import { getOptionalRequestContext } from "@cloudflare/next-on-pages";
 import Mongodb from 'mongodb-cloudflare';
-
+export const { env } = getOptionalRequestContext() ?? { env: { AUTH_SECRET: 'haha', APIKey: 'haha', URL_Endpoint: 'haha' } };
 export function mongodb(): Mongodb {
     return new Mongodb({
-        apiKey: getRequestContext().env.APIKey,
-        apiUrl: getRequestContext().env.URL_Endpoint,
+        apiKey: env.APIKey,
+        apiUrl: env.URL_Endpoint,
         dataSource: 'WTFmovies',
     });
 }
+
 
 // auth
 

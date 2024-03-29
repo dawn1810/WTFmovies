@@ -1,8 +1,9 @@
-export const runtime = 'edge';
 import { randomBytes, randomUUID } from 'crypto';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { comparePassWord, mongodb } from '~/libs/func';
+import { comparePassWord, env, mongodb } from '~/libs/func';
+
+
 
 const login = async (credentials: any) => {
     try {
@@ -40,6 +41,7 @@ const authOptions: NextAuthConfig = {
         strategy: 'jwt',
         updateAge: 24 * 60 * 60,
     },
+    secret: env.AUTH_SECRET,
     providers: [
         CredentialsProvider({
             name: 'credentials',
@@ -80,4 +82,3 @@ export const {
     auth,
 } = NextAuth(authOptions);
 
-// export { handler as GET, handler as POST };
