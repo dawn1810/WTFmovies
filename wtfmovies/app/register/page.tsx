@@ -1,5 +1,4 @@
 'use client';
-import { useCookies } from 'next-client-cookies';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -10,7 +9,7 @@ import Select from 'react-select';
 import { DefaultLayout } from '~/layouts';
 import classNames from 'classnames/bind';
 
-import { validateEmail, validatePassword, encryptData, fetchPublicKey } from '~/libs/clientFunc';
+import { validateEmail, validatePassword } from '~/libs/clientFunc';
 import {
     changeSignUpEmailAlert,
     changeSignupEmailAlertContent,
@@ -26,6 +25,7 @@ import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './signup.module.scss';
 import Image from 'next/image';
+import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 
 const cx = classNames.bind(style);
 
@@ -36,9 +36,9 @@ const gerneOption = [
 ];
 
 function SignUp() {
-    const cookies = useCookies();
-
     const [passEye, setPassEye] = useState(false);
+    const [pending, setPending] = useState(false);
+    const [info, setInfo] = useState({ email: '', password: '', againPass: '', name: '', birthDate: '' });
 
     // redux
     const state = useSelector(signupSelector);
@@ -59,16 +59,15 @@ function SignUp() {
         dispatch(changeSignUpBirthDateAlert(false));
     };
 
+    const handleInput = (event: any) => {
+        setInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
     const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
 
-        const form = event.target;
-        const email = form.formEmail.value;
-        const password = form.formPassword.value;
-        const againPassword = form.formAgainPassword.value;
-        const formName = form.formName.value;
-        const birthDate = form.formBỉrthDate.value;
+        const { email, password, againPass, name, birthDate } = info;
 
         const today = new Date();
         const bd = new Date(birthDate);
@@ -101,31 +100,34 @@ function SignUp() {
                     dispatch(changeSignUpPassAlertContent('Mật khẩu không hợp lệ'));
                     break;
             }
-        } else if (againPassword !== password) {
+        } else if (againPass !== password) {
             dispatch(changeSignupAgainPassAlert(true));
-        } else if (formName.trim().length === 0) {
+        } else if (name.trim().length === 0) {
             dispatch(changeSignUpNameAlert(true));
         } else if (bd.getTime() > today.getTime()) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            !cookies.get('haha') && (await fetchPublicKey());
-            const PUBLIC_KEY = String(cookies.get('haha'));
-            const newPassword = await encryptData(PUBLIC_KEY, password);
-
-            const response = await fetch('/api/auth/signup', {
+            setPending(true);
+            const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password: newPassword, formName, birthDate }),
+                body: JSON.stringify({ email, password, name, birthDate }),
             });
 
             if (response.ok) {
                 nextPage();
+                setPending(false);
             }
             if (response.status === 500) {
                 dispatch(changeSignUpEmailAlert(true));
                 dispatch(changeSignupEmailAlertContent('Email đã tồn tại!'));
+                setPending(false);
             }
         }
+    };
+
+    const handleToLogin = () => {
+        dispatch(changeModalShow(true));
     };
 
     const renderForm = (form: number): React.ReactNode => {
@@ -136,9 +138,16 @@ function SignUp() {
                         <h1 className={cx('title')}>Đăng ký tài khoản</h1>
                         <Form.Group className="mb-3" controlId="formEmail">
                             <Form.Label column>Email</Form.Label>
-                            <Form.Control className={cx('text-input')} type="email" placeholder="Email" autoFocus />
+                            <Form.Control
+                                className={cx('text-input')}
+                                type="email"
+                                placeholder="Email"
+                                autoFocus
+                                name="email"
+                                onChange={(e) => handleInput(e)}
+                            />
                             <Form.Text id="email-describe" className={cx('alert')} hidden={!state.signupEmailAlert}>
-                                Email không hợp lệ!
+                                {state.signupEmailAlertContent}
                             </Form.Text>
                         </Form.Group>
 
@@ -148,6 +157,8 @@ function SignUp() {
                                 className={cx('text-input')}
                                 type={passEye ? 'text' : 'password'}
                                 placeholder="Mật khẩu"
+                                name="password"
+                                onChange={(e) => handleInput(e)}
                             />
                             <Form.Text id="pass-describe" className={cx('alert')} hidden={!state.signupPassAlert}>
                                 {state.signupPassAlertContent}
@@ -163,6 +174,8 @@ function SignUp() {
                                 className={cx('text-input')}
                                 type="password"
                                 placeholder="Nhập lại mật khẩu"
+                                name="againPass"
+                                onChange={(e) => handleInput(e)}
                             />
                             <Form.Text
                                 id="again-pass-describe"
@@ -175,7 +188,13 @@ function SignUp() {
 
                         <Form.Group className="mb-3" controlId="formName">
                             <Form.Label column>Tên hiễn thị</Form.Label>
-                            <Form.Control className={cx('text-input')} type="text" placeholder="Tên hiễn thị" />
+                            <Form.Control
+                                className={cx('text-input')}
+                                type="text"
+                                placeholder="Tên hiễn thị"
+                                name="name"
+                                onChange={(e) => handleInput(e)}
+                            />
                             <Form.Text id="name-describe" className={cx('alert')} hidden={!state.signupNameAlert}>
                                 Tên hiễn thị không hợp lệ!
                             </Form.Text>
@@ -183,7 +202,13 @@ function SignUp() {
 
                         <Form.Group className="mb-5" controlId="formBỉrthDate">
                             <Form.Label column>Ngày sinh</Form.Label>
-                            <Form.Control className={cx('text-input')} type="date" placeholder="dd/mm/yyyy" />
+                            <Form.Control
+                                className={cx('text-input')}
+                                type="date"
+                                placeholder="dd/mm/yyyy"
+                                name="birthDate"
+                                onChange={(e) => handleInput(e)}
+                            />
                             <Form.Text
                                 id="birthdate-describe"
                                 className={cx('alert')}
@@ -194,7 +219,7 @@ function SignUp() {
                         </Form.Group>
 
                         <Button primary className={cx('submit')} type="submit">
-                            Đăng ký
+                            {pending ? 'Đang đăng ký' : 'Đăng ký'}
                         </Button>
                     </Form>
                 );
@@ -216,7 +241,7 @@ function SignUp() {
                             </Form.Text>
                         </Form.Group>
                         <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('skip')} type="button">
+                            <Button primary className={cx('skip')} type="button" onClick={handleToLogin}>
                                 Bỏ qua
                             </Button>
                             <Button primary className={cx('submit')} type="button" onClick={nextPage}>

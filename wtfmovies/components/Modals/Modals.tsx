@@ -1,4 +1,5 @@
 'use client';
+import { signIn } from 'next-auth/react';
 import { useCookies } from 'next-client-cookies';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,8 +14,8 @@ import { encryptData, fetchPublicKey } from '~/libs/clientFunc';
 import {
     changeCurrentUser,
     changeEmailAlert,
+    changeModalShow,
     changePassAlert,
-    changePassAlertContent,
 } from '~/layouts/components/Header/headerSlice';
 import { headerSelector } from '~/redux/selectors';
 import Button from '../Button';
@@ -22,19 +23,12 @@ import style from './Modals.module.scss';
 
 const cx = classNames.bind(style);
 
-function Modals({
-    show,
-    onHide,
-    setModalShow,
-    ...props
-}: {
-    show: boolean;
-    onHide: () => void;
-    setModalShow: (s: boolean) => void;
-}) {
+function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void }) {
     const cookies = useCookies();
 
     const [passEye, setPassEye] = useState(false);
+    const [info, setInfo] = useState({ email: '', password: '', remember: false });
+
     // redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
@@ -48,31 +42,36 @@ function Modals({
         event.preventDefault();
         clearAllAlert();
 
-        const form = event.target;
-        const email = form.formEmail.value;
-        const password = form.formPassword.value;
-        const remember = form.formRemember.checked;
+        const { email, password, remember } = info;
 
-        !cookies.get('haha') && (await fetchPublicKey());
-        const PUBLIC_KEY = String(cookies.get('haha'));
-        const newPassword = await encryptData(PUBLIC_KEY, password);
+        try {
+            const res = await signIn('credentials', {
+                email: email,
+                password: password,
+                remember: remember,
+                redirect: false,
+            });
 
-        const response = await fetch('/api/auth/login', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email, password: newPassword, remember }),
-        });
-
-        if (response.ok) {
-            setModalShow(false);
-            sessionStorage.setItem('account', email);
-            dispatch(changeCurrentUser(true));
-        } else if (response.status === 404) {
-            dispatch(changePassAlert(true));
-            dispatch(changePassAlertContent('Mật khẩu không đúng!'));
-        } else if (response.status === 500) {
-            dispatch(changeEmailAlert(true));
+            console.log('hahahaha');
+        } catch (err) {
+            console.log('Shomething went wrong!: ', err);
         }
+
+        // const response = await fetch('/api/auth/login', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({ email, password: newPassword, remember }),
+        // });
+
+        // if (response.ok) {
+        //     dispatch(changeModalShow(false));
+        //     sessionStorage.setItem('account', email);
+        //     dispatch(changeCurrentUser(true));
+        // } else if (response.status === 404) {
+        //     dispatch(changePassAlert(true));
+        // } else if (response.status === 500) {
+        //     dispatch(changeEmailAlert(true));
+        // }
     };
 
     const handleHide = () => {
@@ -82,11 +81,19 @@ function Modals({
     };
 
     const handleSignUp = () => {
-        console.log('sign up');
+        dispatch(changeModalShow(false));
     };
 
     const handlePassEye = () => {
         setPassEye((prev) => !prev);
+    };
+
+    const handleInput = (event: any) => {
+        setInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
+    const handleCheck = (event: any) => {
+        setInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.checked }));
     };
 
     return (
@@ -129,11 +136,12 @@ function Modals({
                         <Form.Control
                             className={cx('text-input')}
                             type="email"
-                            name="lastName"
                             placeholder="Email"
                             aria-describedby="email-describe"
                             required
                             autoFocus
+                            name="email"
+                            onChange={(e) => handleInput(e)}
                         />
                         <Form.Text id="email-describe" className={cx('alert')} hidden={!state.emailAlert}>
                             Email không tồn tại!
@@ -149,10 +157,11 @@ function Modals({
                             type={passEye ? 'text' : 'password'}
                             placeholder="Mật khẩu"
                             aria-describedby="pass-describe"
-                            required
+                            name="password"
+                            onChange={(e) => handleInput(e)}
                         />
                         <Form.Text id="pass-describe" className={cx('alert')} hidden={!state.passAlert}>
-                            {state.passAlertContent}
+                            Mật khẩu không đúng!
                         </Form.Text>
                         <button className={cx('passEye')} onClick={handlePassEye} type="button">
                             {passEye ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
@@ -160,12 +169,12 @@ function Modals({
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formRemember">
-                        <Form.Check label="Ghi nhớ đăng nhập" />
+                        <Form.Check label="Ghi nhớ đăng nhập" name="remember" onChange={(e) => handleCheck(e)} />
                     </Form.Group>
                     <Form.Group className="mb-5">
                         <Form.Text id="passwordHelpBlock" className={cx('switch-page')}>
                             Bạn chưa có tài khoản?{' '}
-                            <Link href="/signup" onClick={handleSignUp}>
+                            <Link href="/register" onClick={handleSignUp}>
                                 Đăng kí tài khoản.
                             </Link>
                         </Form.Text>

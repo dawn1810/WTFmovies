@@ -56,6 +56,13 @@ export const changeCurrentForm = (currForm: number) => {
 };
 
 // header
+export const changeModalShow = (modalShow: boolean) => {
+    return {
+        type: 'header/changeModalShow',
+        payload: modalShow,
+    };
+};
+
 export const changeEmailAlert = (emailAlert: boolean) => {
     return {
         type: 'header/changeEmailAlert',
@@ -67,13 +74,6 @@ export const changePassAlert = (passAlert: boolean) => {
     return {
         type: 'signup/changePassAlert',
         payload: passAlert,
-    };
-};
-
-export const changePassAlertContent = (passAlertContent: string) => {
-    return {
-        type: 'header/changePassAlertContent',
-        payload: passAlertContent,
     };
 };
 

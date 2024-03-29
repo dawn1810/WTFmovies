@@ -1,6 +1,5 @@
 'use client';
 import { useDispatch, useSelector } from 'react-redux';
-import { useCookies } from 'next-client-cookies';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
@@ -23,7 +22,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 import { headerSelector } from '~/redux/selectors';
-import { changeCurrentUser } from './headerSlice';
+import { changeModalShow, changeCurrentUser } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
@@ -121,7 +120,6 @@ const genres = [
 ];
 
 function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: string }) {
-    const cookies = useCookies();
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
@@ -146,7 +144,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
         updateCookies();
     }, []);
 
-    const [modalShow, setModalShow] = useState<boolean>(false);
+    // const [modalShow, setModalShow] = useState<boolean>(false);
     const [searchShow, setSearchShow] = useState<boolean>(false);
 
     const viewPort = useViewport();
@@ -193,16 +191,16 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
         <header className={cx('wrapper')}>
             <div className={cx('header')}>
                 <div className={cx('inner')}>
-                    {!isDatabase ? (
+                    {isDatabase ? (
+                        <h1 className={cx('tileDtB')}>{title}</h1>
+                    ) : (
                         <Link href={config.routes.home} className={cx('logo-link')}>
                             <img src={images.logo} alt="wtfmovies" />
                         </Link>
-                    ) : (
-                        <h1 className={cx('tileDtB')}>{title}</h1>
                     )}
                     {/* search */}
-                    {!isDatabase ? (
-                        isMobile ? (
+                    {isDatabase ||
+                        (isMobile ? (
                             <div className={cx('search-box', { 'search-box-show': searchShow })}>
                                 <button className={cx('back-btn')} onClick={handleSearchClose}>
                                     <FontAwesomeIcon icon={faXmark} />
@@ -211,11 +209,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                             </div>
                         ) : (
                             <Search />
-                        )
-                    ) : (
-                        ""
-                    )}
-
+                        ))}
 
                     <div className={cx('actions')}>
                         {isMobile && (
@@ -235,14 +229,18 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                         ) : (
                             <>
                                 {isMobile ? (
-                                    <Button primary className={cx('mb-login-btn')} onClick={() => setModalShow(true)}>
+                                    <Button
+                                        primary
+                                        className={cx('mb-login-btn')}
+                                        onClick={() => dispatch(changeModalShow(true))}
+                                    >
                                         <FontAwesomeIcon icon={faRightToBracket} />
                                     </Button>
                                 ) : (
                                     <Button
                                         primary
                                         leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
-                                        onClick={() => setModalShow(true)}
+                                        onClick={() => dispatch(changeModalShow(true))}
                                     >
                                         Đăng Nhập
                                     </Button>
@@ -268,7 +266,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                     </div>
                 </div>
             </div>
-            {!isDatabase ? (
+            {isDatabase || (
                 <Genres>
                     {genres.map((genre, index) => (
                         <Link key={index} href={genre.to} className={cx('genre')}>
@@ -276,11 +274,9 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                         </Link>
                     ))}
                 </Genres>
-            ) : (
-                ''
             )}
 
-            <Modals show={modalShow} onHide={() => setModalShow(false)} setModalShow={setModalShow} />
+            <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
         </header>
     );
 }

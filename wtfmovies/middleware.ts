@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import type { NextFetchEvent, NextRequest } from 'next/server';
+import type { NextRequest } from 'next/server';
 
-export async function middleware(request: NextRequest, event: NextFetchEvent) {
+export async function middleware(request: NextRequest) {
     const isLogged = request.cookies.has('account');
 
     if (isLogged && request.nextUrl.pathname.startsWith('/signup')) {
