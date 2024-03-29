@@ -18,6 +18,10 @@ const passAlertContentSelector = (state: reduxStateInterface) => state.header.pa
 const currentUserSelector = (state: reduxStateInterface) => state.header.currentUser;
 export const searchQuerySelector = (state: reduxStateInterface) => state.header.query;
 
+//AlertPOPUP
+export const alertStatusSelector = (state: reduxStateInterface) => state.dataGridCom.alertStatus;
+
+
 //player
 export const readySelector = (state: reduxStateInterface) => state.player.ready;
 export const urlSelector = (state: reduxStateInterface) => state.player.url;

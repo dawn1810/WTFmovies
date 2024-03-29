@@ -2,97 +2,66 @@
 import classNames from 'classnames/bind';
 import style from './Editer.module.scss';
 import DatabaseLayout from '~/layouts/DatabaseLayout';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useState } from 'react';
-import Button from '@mui/material/Button';
-import { DataGrid, GridToolbarQuickFilter, GridToolbarExport, GridToolbarFilterButton, GridRowSelectionModel, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector } from '@mui/x-data-grid';
-import { useDemoData } from '@mui/x-data-grid-generator';
-import { Box } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { viVN } from '@mui/x-data-grid/locales';
+import DataGridCom from '~/components/DataGridCom';
 
-
-
-const darkTheme = createTheme({
-
-    palette: {
-        mode: 'dark',
-
-    },
-    typography: {
-        fontFamily: 'var(--font-family)',
-        fontSize: 20,
-    },
-
-});
 const cx = classNames.bind(style);
 
-const VISIBLE_FIELDS = ['name', 'rating', 'country', 'dateCreated', 'isAdmin'];
-
 export default function Editer() {
-    const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel>([]);
 
-    function CustomToolbar() {
-        return (
-            <GridToolbarContainer>
-                <GridToolbarColumnsButton />
-                <GridToolbarFilterButton />
-                <GridToolbarDensitySelector
-                    slotProps={{ tooltip: { title: 'Change density' } }}
-                />
-                <Box sx={{ flexGrow: 1 }} />
-
-                <GridToolbarExport
-                    slotProps={{
-                        tooltip: { title: 'Export data' },
-                        button: { variant: 'outlined' },
-                    }}
-                />
-                <Button className={cx('btncustom')} disabled={rowSelectionModel.length === 0} variant='outlined' ><FontAwesomeIcon className={cx('iconBtn')} icon={faTrash} />Xoá</Button>
-                <Button className={cx('btncustom')} disabled={rowSelectionModel.length !== 1} variant='outlined'><FontAwesomeIcon className={cx('iconBtn')} icon={faPenToSquare} />Chỉnh sửa</Button>
-                <GridToolbarQuickFilter />
-
-            </GridToolbarContainer>
-        );
-    }
-    const { data } = useDemoData({
-        dataSet: 'Commodity',
-        rowLength: 10,
-        maxColumns: 6,
-    });
-
-
+    const colum = [
+        { title: "Film ID", field: "id", width: 280 },
+        { title: "Name", field: "name", width: 150 },
+        { title: "Description", field: "describe", width: 100 },
+        { title: "Status", field: "status", width: 100 },
+        { title: "Author", field: "author", width: 100 },
+        { title: "Genre", field: "gerne", width: 100 },
+        { title: "Director", field: "director", width: 100 },
+        { title: "Duration", field: "duration", width: 100 },
+        { title: "Video Types", field: "videoType", width: 100 },
+        { title: "Release Year", field: "releaseYear", width: 100 },
+        { title: "Country", field: "country", width: 100 },
+        { title: "Rating", field: "rating", width: 100 }
+    ];
+    const data = [
+        {
+            id: "d2beb81e-2c8f-489f-885c-1318377c87c4",
+            name: "Jujutsu no Kaisen",
+            describe: "Phim hay cực hay luôn akakakakkaakakkakakakakakakakakakakak",
+            status: "Đang re",
+            author: ['haha', 'dd'],
+            gerne: ['haha', 'dd'],
+            director: ['haha', 'dd'],
+            duration: 1800,
+            videoType: [
+                { title: "Subs", episode: [] },
+                { title: "Thuyết minh", episode: [] }
+            ].map(videoType => videoType.title),
+            releaseYear: "2020-05-18T14:10:30.000Z",
+            country: "Nhật Bổn",
+            rating: 4.5
+        },
+        {
+            id: "d2beb81e-2c8f-489f-885c-1318377c87c5",
+            name: "Jujutsu no Kaisen",
+            describe: "Phim hay cực hay luôn akakakakkaakakkakakakakakakakakakakak",
+            status: "Tạm dùng",
+            author: ['haha', 'dd'],
+            gerne: ['haha', 'dd'],
+            director: ['haha', 'dd'],
+            duration: 1800,
+            videoType: [
+                { title: "Subs", episode: [] },
+                { title: "Thuyết minh", episode: [] }
+            ].map(videoType => videoType.title),
+            releaseYear: "2020-05-18T14:10:30.000Z",
+            country: "Nhật Bổn",
+            rating: 4.5
+        }
+    ]
 
     return (
         <DatabaseLayout>
-            <ThemeProvider theme={darkTheme} >
-                <div className={cx('dataGrid')}>
-                    <h1 className={cx('title_name')}>Chọn phim</h1>
-                    <DataGrid {...data}
-                        localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
-                        checkboxSelection
-                        onRowSelectionModelChange={(newRowSelectionModel) => {
-                            setRowSelectionModel(newRowSelectionModel);
-                        }}
-                        rowSelectionModel={rowSelectionModel}
-                        slots={{ toolbar: CustomToolbar }}
-                        initialState={{
-                            filter: {
-                                filterModel: {
-                                    items: [],
-                                },
-                            },
-
-                        }}
-                        slotProps={{
-                            toolbar: {
-                                showQuickFilter: true,
-                            },
-                        }}
-                    />
-                </div>
-            </ThemeProvider>
+            <DataGridCom title_name='Tổng quan' colum={colum}>{data}</DataGridCom>
         </DatabaseLayout>
     );
 }

@@ -39,4 +39,8 @@ export interface reduxStateInterface {
         signupBirthDateAlert: boolean;
         currentForm: number;
     };
+    dataGridCom: {
+        alertStatus: { content: any; status: boolean };
+
+    }
 }

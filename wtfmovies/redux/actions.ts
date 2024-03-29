@@ -90,6 +90,14 @@ export const changeSearchQuery = (query: string) => {
         payload: query,
     };
 };
+//
+export const changeAlertStatus = (status: { content: any; status: boolean }) => {
+    return {
+        type: 'alertdialog/changeAlertStatus',
+        payload: status,
+    };
+};
+
 
 // player
 export const changeUrl = (url: string) => {

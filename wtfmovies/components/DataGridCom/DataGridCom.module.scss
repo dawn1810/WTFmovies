@@ -1,0 +1,24 @@
+.dataGrid {
+    .title_name {
+        color: var(--text-color);
+    }
+
+    display: flex;
+    padding: 30px;
+    gap: 30px;
+    flex-direction: column;
+    width: 100%;
+    font-size: '20px';
+    height: 80vh;
+
+}
+
+.btncustom {
+    height: 27.91167px;
+}
+
+.iconBtn {
+    margin-right: 8px;
+    margin-left: -2px;
+
+}
