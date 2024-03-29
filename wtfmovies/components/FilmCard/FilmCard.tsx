@@ -31,7 +31,7 @@ function FilmCard({
 }: {
     large?: boolean;
     noOverlay?: boolean;
-    largeNoOverlay: boolean;
+    largeNoOverlay?: boolean;
     imgSrc: string;
     filmName: string;
     views: string;
