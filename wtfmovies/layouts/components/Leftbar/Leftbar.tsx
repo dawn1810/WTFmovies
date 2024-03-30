@@ -1,7 +1,7 @@
 'use client';
 import styles from './Leftbar.module.scss';
 import classNames from 'classnames/bind';
-import { faChartSimple, faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
+import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import { useViewport } from '~/hooks';
 import config from '~/config';
@@ -11,24 +11,14 @@ function handleClickSidebar(scene: string) {
     console.log(scene);
 }
 const cx = classNames.bind(styles);
-const menuItems = [
-    {
-        title: 'Tổng quan',
-        icon: faHouse,
-        scene: 'overview',
-    },
-    {
-        title: 'Quản lý phim',
-        icon: faFilm,
-        scene: 'film',
-    },
-    {
-        title: 'Thống kê',
-        icon: faChartSimple,
-        scene: 'chart',
-    },
-];
-function Leftbar() {
+
+function Leftbar({ menuItems }: {
+    menuItems: {
+        title: string;
+        icon: IconDefinition,
+        scene: string,
+    }[]
+}) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 

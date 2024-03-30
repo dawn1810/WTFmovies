@@ -20,6 +20,7 @@ const MenuSidebar = ({ menuItems, handleClick }: any) => {
         <Button
           key={index}
           primary
+          to={item.scene}
           className={cx('navBtn', { active: activeMenu === item.scene })}
           onClick={() => handleButtonClick(item)}
           leftIcon={<FontAwesomeIcon icon={item.icon} />}
