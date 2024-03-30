@@ -1,35 +1,30 @@
 import { randomBytes, randomUUID } from 'crypto';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { comparePassWord, env, mongodb } from '~/libs/func';
-
-
+import { comparePassWord, env, mongodb, toError, toJSON } from '~/libs/func';
 
 const login = async (credentials: any) => {
-    try {
-        // check for first time login
-        const userAuth = await mongodb()
-            .db('user')
-            .collection('auth')
-            .findOne({
-                filter: {
-                    email: credentials.email,
-                },
-                projection: {
-                    _id: 0,
-                },
-            });
+    // check for first time login
+    const userAuth = await mongodb()
+        .db('user')
+        .collection('auth')
+        .findOne({
+            filter: {
+                email: credentials.email,
+            },
+            projection: {
+                _id: 0,
+            },
+        });
 
-        if (!userAuth) throw new Error('Email không tồn tại!');
-        // have user check password
-        const passAuth = await comparePassWord(userAuth.password, credentials.password);
+    if (!userAuth) throw new Error('Mật khẩu không chính xác');
 
-        if (!passAuth) throw new Error('Mật khẩu không chính xác!');
-        return userAuth;
-    } catch (error) {
-        console.log('Error while logging in');
-        throw new Error('Lỗi trong quá trình đăng nhập!');
-    }
+    // have user check password
+    const passAuth = await comparePassWord(userAuth.password, credentials.password);
+
+    if (!passAuth) throw new Error('Mật khẩu không chính xác');
+
+    return userAuth; // login successfull
 };
 
 const authOptions: NextAuthConfig = {
@@ -47,22 +42,25 @@ const authOptions: NextAuthConfig = {
             name: 'credentials',
             credentials: {},
             async authorize(credentials) {
-                try {
-                    const user = await login(credentials);
-                    return user;
-                } catch (error) {
-                    throw new Error('Đăng nhập thất bại!');
-                }
+                const user = await login(credentials);
+                return user;
             },
         }),
     ],
     callbacks: {
+        async signIn({ user, credentials }) {
+            if (user) {
+                return true;
+            }
+            // Return false to indicate failed authentication
+            // You can also return a custom error URL if needed
+            return false;
+        },
         async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
                 token.email = user.email;
                 token.password = user.password;
             }
-            console.log('token: ', token);
 
             return token;
         },
@@ -71,7 +69,6 @@ const authOptions: NextAuthConfig = {
                 session.user.email = token.email;
                 session.user.password = token.password;
             }
-            console.log('session: ', session);
             return session;
         },
     },
@@ -81,4 +78,3 @@ export const {
     handlers: { GET, POST },
     auth,
 } = NextAuth(authOptions);
-

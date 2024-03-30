@@ -52,7 +52,8 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                 redirect: false,
             });
 
-            console.log('hahahaha');
+            if (res?.error) console.log('aaa');
+            else console.log('bbb');
         } catch (err) {
             console.log('Shomething went wrong!: ', err);
         }

@@ -123,26 +123,26 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        const updateCookies = async () => {
-            try {
-                const response = await fetch('/api/auth/updateUserCookies', {
-                    method: 'GET',
-                    headers: { 'Content-Type': 'application/json' },
-                });
+    // useEffect(() => {
+    //     const updateCookies = async () => {
+    //         try {
+    //             const response = await fetch('/api/auth/updateUserCookies', {
+    //                 method: 'GET',
+    //                 headers: { 'Content-Type': 'application/json' },
+    //             });
 
-                if (response.status === 200) {
-                    dispatch(changeCurrentUser(true));
-                } else if (response.status === 204) {
-                    dispatch(changeCurrentUser(false));
-                }
-            } catch (error) {
-                console.error('Error fetching public key:', error);
-            }
-        };
+    //             if (response.status === 200) {
+    //                 dispatch(changeCurrentUser(true));
+    //             } else if (response.status === 204) {
+    //                 dispatch(changeCurrentUser(false));
+    //             }
+    //         } catch (error) {
+    //             console.error('Error fetching public key:', error);
+    //         }
+    //     };
 
-        updateCookies();
-    }, []);
+    //     updateCookies();
+    // }, []);
 
     // const [modalShow, setModalShow] = useState<boolean>(false);
     const [searchShow, setSearchShow] = useState<boolean>(false);
@@ -158,27 +158,27 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                 // Handle change language
                 break;
             case 'logout':
-                const Logout = async () => {
-                    try {
-                        const response = await fetch('/api/auth/logout', {
-                            method: 'GET',
-                            headers: { 'Content-Type': 'application/json' },
-                        });
+                // const Logout = async () => {
+                //     try {
+                //         const response = await fetch('/api/auth/logout', {
+                //             method: 'GET',
+                //             headers: { 'Content-Type': 'application/json' },
+                //         });
 
-                        if (response.ok) {
-                            dispatch(changeCurrentUser(false));
-                            const pathname = usePathname();
-                            const router = useRouter();
-                            router.push(pathname);
-                        } else {
-                            throw new Error('Network response was not ok.');
-                        }
-                    } catch (error) {
-                        console.error('Error fetching public key:', error);
-                    }
-                };
+                //         if (response.ok) {
+                //             dispatch(changeCurrentUser(false));
+                //             const pathname = usePathname();
+                //             const router = useRouter();
+                //             router.push(pathname);
+                //         } else {
+                //             throw new Error('Network response was not ok.');
+                //         }
+                //     } catch (error) {
+                //         console.error('Error fetching public key:', error);
+                //     }
+                // };
 
-                Logout();
+                // Logout();
                 break;
             default:
         }

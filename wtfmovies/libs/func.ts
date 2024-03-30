@@ -1,7 +1,9 @@
 export const runtime = 'edge';
-import { getOptionalRequestContext } from "@cloudflare/next-on-pages";
+import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
-export const { env } = getOptionalRequestContext() ?? { env: { AUTH_SECRET: 'haha', APIKey: 'haha', URL_Endpoint: 'haha' } };
+export const { env } = getOptionalRequestContext() ?? {
+    env: { AUTH_SECRET: 'haha', APIKey: 'haha', URL_Endpoint: 'haha' },
+};
 export function mongodb(): Mongodb {
     return new Mongodb({
         apiKey: env.APIKey,
@@ -9,7 +11,6 @@ export function mongodb(): Mongodb {
         dataSource: 'WTFmovies',
     });
 }
-
 
 // auth
 
@@ -106,3 +107,19 @@ export const generateUUIDv4 = (): string => {
         return v.toString(16);
     });
 };
+
+// response function
+export function toJSON(data: unknown, status = 200): Response {
+    let body = JSON.stringify(data, null, 2);
+    let headers = { 'content-type': 'application/json' };
+    return new Response(body, { headers, status });
+}
+
+export function toError(error: string | unknown, status = 400): Response {
+    return toJSON({ error }, status);
+}
+
+export function reply(output: any): Response {
+    if (output != null) return toJSON(output, 200);
+    return toError('Error with query', 500);
+}
