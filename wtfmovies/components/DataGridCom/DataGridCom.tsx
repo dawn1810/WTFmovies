@@ -1,3 +1,4 @@
+"use client"
 import style from './DataGridCom.module.scss';
 import classNames from 'classnames/bind';
 import { createTheme, ThemeProvider } from '@mui/material/styles';

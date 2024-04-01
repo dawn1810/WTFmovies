@@ -8,19 +8,29 @@
         margin-left: 0px;
     }
 
-    .icon {
-        height: 1.6rem;
-    }
+
 
     display: flex;
     justify-content: flex-start;
-    padding-left: 50px;
-
+    padding: 0 50px 0 50px;
 
     &.active,
     &:disabled {
         background-color: var(--highlight-color);
         color: var(--text-color);
+    }
+
+
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .navBtn {
+        padding: 0 30px 0 30px;
+
+        .title {
+            font-size: smaller;
+        }
     }
 
 }

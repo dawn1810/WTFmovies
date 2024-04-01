@@ -3,7 +3,6 @@ import styles from './Leftbar.module.scss';
 import classNames from 'classnames/bind';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
-import { useViewport } from '~/hooks';
 import config from '~/config';
 import MenuSidebar from '~/components/MenusSidebar';
 import images from '~/assets/image';
@@ -19,8 +18,6 @@ function Leftbar({ menuItems }: {
         scene: string,
     }[]
 }) {
-    const viewPort = useViewport();
-    const isMobile = viewPort.width <= 1024;
 
     return (
         <aside className={cx('wrapper')}>
@@ -34,16 +31,7 @@ function Leftbar({ menuItems }: {
                     <MenuSidebar menuItems={menuItems} handleClick={handleClickSidebar}></MenuSidebar>
                 </div>
 
-                {/* {isMobile ? (
-                        <div className={cx('search-box', { 'search-box-show': searchShow })}>
-                            <button className={cx('back-btn')} onClick={handleSearchClose}>
-                                <FontAwesomeIcon icon={faArrowLeft} />
-                            </button>
-                            <Search />
-                        </div>
-                    ) : (
-                        <Search />
-                    )} */}
+
             </div>
         </aside>
     );
