@@ -3,24 +3,33 @@
     height: 60px;
     border-radius: 0;
     background-color: var(--primary);
+    min-width: auto;
 
     +.navBtn {
         margin-left: 0px;
     }
 
-    .icon {
-        height: 1.6rem;
-    }
+
 
     display: flex;
     justify-content: flex-start;
-    padding-left: 50px;
-
+    padding: 0 50px 0 50px;
 
     &.active,
     &:disabled {
         background-color: var(--highlight-color);
         color: var(--text-color);
+    }
+
+
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1120px) {
+    .navBtn {
+        padding: 0 10px 0 10px;
+        justify-content: center;
+
     }
 
 }

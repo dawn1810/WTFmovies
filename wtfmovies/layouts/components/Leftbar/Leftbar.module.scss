@@ -4,6 +4,7 @@
     left: 0;
     width: 100%;
     height: 100%;
+    min-height: fit-content;
     z-index: 10;
     display: flex;
     flex-direction: column;
@@ -24,7 +25,6 @@
     padding: 0 var(--default-layout-horizontal-spacer);
     display: flex;
     align-items: flex-start;
-
     justify-content: center;
 
 
@@ -41,18 +41,11 @@
 
 
 /** Mobile layout **/
-@media screen and (max-width: 1024px) {
-    .wrapper {
-        position: relative;
-
-        .inner {
-            .logo-link {
-                width: calc((100% - 24px) / 2);
-            }
-
-            .actions {
-                width: calc((100% - 24px) / 2);
-            }
-        }
+@media screen and (max-width: 650px) {
+    .logo-link {
+        margin: 10px;
+        width: 50px;
+        height: 50px;
     }
+
 }
