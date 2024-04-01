@@ -16,7 +16,7 @@ const MenuSidebar = ({ menuItems, handleClick }: any) => {
     setActiveMenu(item.scene); // Set the active menu item based on scene
     handleClick(item.scene); // Call the passed handleClick function
   };
-  const isMobile = viewPort.width <= 1024;
+  const isMobile = viewPort.width <= 650;
 
   return (
     <>

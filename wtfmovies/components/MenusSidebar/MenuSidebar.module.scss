@@ -3,6 +3,7 @@
     height: 60px;
     border-radius: 0;
     background-color: var(--primary);
+    min-width: auto;
 
     +.navBtn {
         margin-left: 0px;
@@ -24,13 +25,11 @@
 }
 
 /** Mobile layout **/
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1120px) {
     .navBtn {
-        padding: 0 30px 0 30px;
+        padding: 0 10px 0 10px;
+        justify-content: center;
 
-        .title {
-            font-size: smaller;
-        }
     }
 
 }
