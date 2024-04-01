@@ -9,18 +9,13 @@ const signupPassAlertContentSelector = (state: reduxStateInterface) => state.sig
 const signupAgainPassAlertSelector = (state: reduxStateInterface) => state.signup.signupAgainPassAlert;
 const signupNameAlertSelector = (state: reduxStateInterface) => state.signup.signupNameAlert;
 const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.signup.signupBirthDateAlert;
-const currentFormSelector = (state: reduxStateInterface) => state.signup.currentForm;
 
 //header
 const modalShowSelector = (state: reduxStateInterface) => state.header.modalShow;
-const emailAlertSelector = (state: reduxStateInterface) => state.header.emailAlert;
-const passAlertSelector = (state: reduxStateInterface) => state.header.passAlert;
-const currentUserSelector = (state: reduxStateInterface) => state.header.currentUser;
 export const searchQuerySelector = (state: reduxStateInterface) => state.header.query;
 
 //AlertPOPUP
 export const alertStatusSelector = (state: reduxStateInterface) => state.dataGridCom.alertStatus;
-
 
 //player
 export const readySelector = (state: reduxStateInterface) => state.player.ready;
@@ -53,7 +48,6 @@ export const signupSelector = createSelector(
     signupAgainPassAlertSelector,
     signupNameAlertSelector,
     signupBirthDateAlertSelector,
-    currentFormSelector,
     (
         signupEmailAlert,
         signupEmailAlertContent,
@@ -62,7 +56,6 @@ export const signupSelector = createSelector(
         signupAgainPassAlert,
         signupNameAlert,
         signupBirthDateAlert,
-        currentForm,
     ) => ({
         signupEmailAlert,
         signupEmailAlertContent,
@@ -71,24 +64,13 @@ export const signupSelector = createSelector(
         signupAgainPassAlert,
         signupNameAlert,
         signupBirthDateAlert,
-        currentForm,
     }),
 );
 
-export const headerSelector = createSelector(
-    modalShowSelector,
-    emailAlertSelector,
-    passAlertSelector,
-    currentUserSelector,
-    searchQuerySelector,
-    (modalShow, emailAlert, passAlert, currentUser, searchQuery) => ({
-        modalShow,
-        emailAlert,
-        passAlert,
-        currentUser,
-        searchQuery,
-    }),
-);
+export const headerSelector = createSelector(modalShowSelector, searchQuerySelector, (modalShow, searchQuery) => ({
+    modalShow,
+    searchQuery,
+}));
 
 export const playerSelector = createSelector(
     urlSelector,

@@ -15,7 +15,7 @@ function Comment({ avatar, commentOwner, commentContent }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <ImageCustom className={cx('avatar')} src={avatar ? avatar : images.itadory} alt={commentOwner} />
+                <ImageCustom className={cx('avatar')} src={avatar ? avatar : images.logo} alt={commentOwner} />
                 {isMobile && <div className={cx('user-name')}>{commentOwner}</div>}
             </div>
             <div className={cx('content')}>

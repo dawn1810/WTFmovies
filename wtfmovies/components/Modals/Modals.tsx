@@ -1,8 +1,7 @@
 'use client';
 import { signIn } from 'next-auth/react';
-import { useCookies } from 'next-client-cookies';
+import { useDispatch } from 'react-redux';
 import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
@@ -10,32 +9,23 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
-import { encryptData, fetchPublicKey } from '~/libs/clientFunc';
-import {
-    changeCurrentUser,
-    changeEmailAlert,
-    changeModalShow,
-    changePassAlert,
-} from '~/layouts/components/Header/headerSlice';
-import { headerSelector } from '~/redux/selectors';
+// import { encryptData, fetchPublicKey } from '~/libs/clientFunc';
+import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import Button from '../Button';
 import style from './Modals.module.scss';
 
 const cx = classNames.bind(style);
 
 function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void }) {
-    const cookies = useCookies();
-
     const [passEye, setPassEye] = useState(false);
     const [info, setInfo] = useState({ email: '', password: '', remember: false });
+    const [alert, setAlert] = useState(false);
 
     // redux
-    const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
     const clearAllAlert = () => {
-        dispatch(changeEmailAlert(false));
-        dispatch(changePassAlert(false));
+        setAlert(false);
     };
 
     const handleSubmit = async (event: any): Promise<void> => {
@@ -52,32 +42,17 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                 redirect: false,
             });
 
-            if (res?.error) console.log('aaa');
-            else console.log('bbb');
+            if (res?.error) setAlert(true);
+            else {
+                dispatch(changeModalShow(false));
+            }
         } catch (err) {
-            console.log('Shomething went wrong!: ', err);
+            console.log('Something went wrong!: ', err);
         }
-
-        // const response = await fetch('/api/auth/login', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({ email, password: newPassword, remember }),
-        // });
-
-        // if (response.ok) {
-        //     dispatch(changeModalShow(false));
-        //     sessionStorage.setItem('account', email);
-        //     dispatch(changeCurrentUser(true));
-        // } else if (response.status === 404) {
-        //     dispatch(changePassAlert(true));
-        // } else if (response.status === 500) {
-        //     dispatch(changeEmailAlert(true));
-        // }
     };
 
     const handleHide = () => {
-        dispatch(changeEmailAlert(false));
-        dispatch(changePassAlert(false));
+        setAlert(false);
         onHide();
     };
 
@@ -130,6 +105,11 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                 <h3 className={cx('divider', 'line', 'one-line')}>Đăng nhập bằng tài khoản</h3>
 
                 <Form noValidate className={cx('login-form')} onSubmit={(e) => handleSubmit(e)}>
+                    <Form.Group className="mb-3">
+                        <Form.Text className={cx('alert')} hidden={!alert}>
+                            Thông tin đăng nhập không hợp lệ!
+                        </Form.Text>
+                    </Form.Group>
                     <Form.Group className="mb-3" controlId="formEmail">
                         <Form.Label column sm={2}>
                             Email
@@ -144,9 +124,6 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                             name="email"
                             onChange={(e) => handleInput(e)}
                         />
-                        <Form.Text id="email-describe" className={cx('alert')} hidden={!state.emailAlert}>
-                            Email không tồn tại!
-                        </Form.Text>
                     </Form.Group>
 
                     <Form.Group className={`mb-3 ${cx('pass-form')}`} controlId="formPassword">
@@ -161,9 +138,6 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                             name="password"
                             onChange={(e) => handleInput(e)}
                         />
-                        <Form.Text id="pass-describe" className={cx('alert')} hidden={!state.passAlert}>
-                            Mật khẩu không đúng!
-                        </Form.Text>
                         <button className={cx('passEye')} onClick={handlePassEye} type="button">
                             {passEye ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
                         </button>

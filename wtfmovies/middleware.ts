@@ -1,10 +1,11 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
+import { auth } from './app/api/auth/[...nextauth]/auth';
 
 export async function middleware(request: NextRequest) {
-    const isLogged = request.cookies.has('account');
+    const isLogged = await auth();
 
-    if (isLogged && request.nextUrl.pathname.startsWith('/signup')) {
+    if (isLogged && request.nextUrl.pathname.startsWith('/register')) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 

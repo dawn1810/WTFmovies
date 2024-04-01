@@ -1,9 +1,9 @@
 import './globals.scss';
 export const runtime = 'edge';
+import { SessionProvider } from 'next-auth/react';
 import type { Metadata } from 'next';
 import { montserrat } from './font';
 import ReduxProvider from '~/redux/redux-provider';
-import { CookiesProvider } from 'next-client-cookies/server';
 
 export const metadata: Metadata = {
     title: 'WTFmovies',
@@ -20,11 +20,11 @@ export default function RootLayout({
 }>) {
     return (
         <ReduxProvider>
-            <CookiesProvider>
+            <SessionProvider>
                 <html lang="en">
                     <body className={montserrat.className}>{children}</body>
                 </html>
-            </CookiesProvider>
+            </SessionProvider>
         </ReduxProvider>
     );
 }

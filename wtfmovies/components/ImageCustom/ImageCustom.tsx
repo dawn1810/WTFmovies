@@ -7,7 +7,7 @@ import images from '~/assets/image';
 import styles from './Image.module.scss';
 
 const ImageCustom = forwardRef(
-    ({ src, alt, className, fallback: customFallback = images.itadory, ...props }: any, ref) => {
+    ({ src, alt, className, fallback: customFallback = images.logo, ...props }: any, ref) => {
         const [fallback, setFallback] = useState('');
 
         const handleError = () => {

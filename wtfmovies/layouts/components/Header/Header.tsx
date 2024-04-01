@@ -1,7 +1,7 @@
 'use client';
+import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { usePathname, useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -22,7 +22,7 @@ import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
 
 import { headerSelector } from '~/redux/selectors';
-import { changeModalShow, changeCurrentUser } from './headerSlice';
+import { changeModalShow } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
@@ -120,33 +120,15 @@ const genres = [
 ];
 
 function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: string }) {
+    //redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //     const updateCookies = async () => {
-    //         try {
-    //             const response = await fetch('/api/auth/updateUserCookies', {
-    //                 method: 'GET',
-    //                 headers: { 'Content-Type': 'application/json' },
-    //             });
-
-    //             if (response.status === 200) {
-    //                 dispatch(changeCurrentUser(true));
-    //             } else if (response.status === 204) {
-    //                 dispatch(changeCurrentUser(false));
-    //             }
-    //         } catch (error) {
-    //             console.error('Error fetching public key:', error);
-    //         }
-    //     };
-
-    //     updateCookies();
-    // }, []);
+    // session
+    const { data: session } = useSession();
 
     // const [modalShow, setModalShow] = useState<boolean>(false);
     const [searchShow, setSearchShow] = useState<boolean>(false);
-
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -158,27 +140,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                 // Handle change language
                 break;
             case 'logout':
-                // const Logout = async () => {
-                //     try {
-                //         const response = await fetch('/api/auth/logout', {
-                //             method: 'GET',
-                //             headers: { 'Content-Type': 'application/json' },
-                //         });
-
-                //         if (response.ok) {
-                //             dispatch(changeCurrentUser(false));
-                //             const pathname = usePathname();
-                //             const router = useRouter();
-                //             router.push(pathname);
-                //         } else {
-                //             throw new Error('Network response was not ok.');
-                //         }
-                //     } catch (error) {
-                //         console.error('Error fetching public key:', error);
-                //     }
-                // };
-
-                // Logout();
+                signOut();
                 break;
             default:
         }
@@ -198,7 +160,6 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                             <img src={images.logo} alt="wtfmovies" />
                         </Link>
                     )}
-                    {/* search */}
                     {isDatabase ||
                         (isMobile ? (
                             <div className={cx('search-box', { 'search-box-show': searchShow })}>
@@ -219,13 +180,25 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                                 </button>
                             </Tippy>
                         )}
-                        {state.currentUser ? (
-                            <Tippy delay={[0, 50]} content="Notify" placement="bottom">
-                                <button className={cx('action-btn')}>
-                                    <FontAwesomeIcon icon={faBell} />
-                                    <span className={cx('badge')}>12</span>
-                                </button>
-                            </Tippy>
+                        {session && session.user ? (
+                            <>
+                                <Tippy delay={[0, 50]} content="Notify" placement="bottom">
+                                    <button className={cx('action-btn')}>
+                                        <FontAwesomeIcon icon={faBell} />
+                                        <span className={cx('badge')}>12</span>
+                                    </button>
+                                </Tippy>
+
+                                <Menu
+                                    key={session?.user?.email}
+                                    items={userMenu}
+                                    placement="bottom-end"
+                                    delay={[0, 500]}
+                                    onChange={handleMenuChange}
+                                >
+                                    <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
+                                </Menu>
+                            </>
                         ) : (
                             <>
                                 {isMobile ? (
@@ -245,24 +218,20 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                                         Đăng Nhập
                                     </Button>
                                 )}
+
+                                <Menu
+                                    key={session?.user?.email}
+                                    items={MENU_ITEMS}
+                                    placement="bottom-end"
+                                    delay={[0, 500]}
+                                    onChange={handleMenuChange}
+                                >
+                                    <button className={cx('more-btn')}>
+                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                    </button>
+                                </Menu>
                             </>
                         )}
-
-                        <Menu
-                            key={String(state.currentUser)}
-                            items={state.currentUser ? userMenu : MENU_ITEMS}
-                            placement="bottom-end"
-                            delay={[0, 500]}
-                            onChange={handleMenuChange}
-                        >
-                            {state.currentUser ? (
-                                <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
-                            ) : (
-                                <button className={cx('more-btn')}>
-                                    <FontAwesomeIcon icon={faEllipsisVertical} />
-                                </button>
-                            )}
-                        </Menu>
                     </div>
                 </div>
             </div>

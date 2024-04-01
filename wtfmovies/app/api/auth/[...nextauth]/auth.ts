@@ -1,7 +1,7 @@
 import { randomBytes, randomUUID } from 'crypto';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { comparePassWord, env, mongodb, toError, toJSON } from '~/libs/func';
+import { comparePassWord, env, mongodb } from '~/libs/func';
 
 const login = async (credentials: any) => {
     // check for first time login
@@ -48,18 +48,19 @@ const authOptions: NextAuthConfig = {
         }),
     ],
     callbacks: {
-        async signIn({ user, credentials }) {
-            if (user) {
-                return true;
-            }
-            // Return false to indicate failed authentication
-            // You can also return a custom error URL if needed
-            return false;
-        },
+        // async signIn({ user, credentials }) {
+        //     if (user) {
+        //         return true;
+        //     }
+        //     // Return false to indicate failed authentication
+        //     // You can also return a custom error URL if needed
+        //     return false;
+        // },
         async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
                 token.email = user.email;
                 token.password = user.password;
+                token.role = user.role;
             }
 
             return token;
@@ -68,6 +69,7 @@ const authOptions: NextAuthConfig = {
             if (token) {
                 session.user.email = token.email;
                 session.user.password = token.password;
+                session.user.role = token.role;
             }
             return session;
         },

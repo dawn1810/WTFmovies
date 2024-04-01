@@ -1,5 +1,5 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
@@ -13,7 +13,6 @@ import { validateEmail, validatePassword } from '~/libs/clientFunc';
 import {
     changeSignUpEmailAlert,
     changeSignupEmailAlertContent,
-    changeCurrentForm,
     changeSignUpBirthDateAlert,
     changeSignupAgainPassAlert,
     changeSignUpNameAlert,
@@ -21,21 +20,19 @@ import {
     changeSignUpPassAlertContent,
 } from './signupSlice';
 import { signupSelector } from '~/redux/selectors';
-import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './signup.module.scss';
-import Image from 'next/image';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
+
+type OptionType = {
+    label: string;
+    value: string;
+};
 
 const cx = classNames.bind(style);
 
-const gerneOption = [
-    { value: 'chocolate', label: 'Chocolate' },
-    { value: 'strawberry', label: 'Strawberry' },
-    { value: 'vanilla', label: 'Vanilla' },
-];
-
 function SignUp() {
+    const [currForm, setCurrForm] = useState(0);
     const [passEye, setPassEye] = useState(false);
     const [pending, setPending] = useState(false);
     const [info, setInfo] = useState({ email: '', password: '', againPass: '', name: '', birthDate: '' });
@@ -44,8 +41,7 @@ function SignUp() {
     const state = useSelector(signupSelector);
     const dispatch = useDispatch();
 
-    const nextPage = () => dispatch(changeCurrentForm(state.currentForm + 1));
-    const prevPage = () => dispatch(changeCurrentForm(state.currentForm - 1));
+    const nextPage = () => setCurrForm((prev) => prev + 1);
 
     const handlePassEye = () => {
         setPassEye((prev) => !prev);
@@ -244,133 +240,8 @@ function SignUp() {
                             <Button primary className={cx('skip')} type="button" onClick={handleToLogin}>
                                 Bỏ qua
                             </Button>
-                            <Button primary className={cx('submit')} type="button" onClick={nextPage}>
+                            <Button primary to="/survey" className={cx('submit')} type="button">
                                 Tiếp tục
-                            </Button>
-                        </Form.Group>
-                    </Form>
-                );
-            case 2:
-                return (
-                    <Form className={cx('login-form')}>
-                        <h1 className={cx('title')}>Thể loại phim bạn yêu thích?</h1>
-                        <Image className={cx('quest-image')} width={300} height={252} src={images.gerne} alt="gerne" />
-                        <Form.Group className="mb-5" controlId="formHorizontalLoveGerne">
-                            <Select
-                                isMulti
-                                defaultValue={[gerneOption[2], gerneOption[3]]}
-                                name="colors"
-                                options={gerneOption}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                            />
-                        </Form.Group>
-                        <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('submit')} type="button" onClick={prevPage}>
-                                Trở lại
-                            </Button>
-                            <Button primary className={cx('submit')} type="button" onClick={nextPage}>
-                                Tiếp tục
-                            </Button>
-                        </Form.Group>
-                    </Form>
-                );
-            case 3:
-                return (
-                    <Form className={cx('login-form')}>
-                        <h1 className={cx('title')}>Đạo diễn bạn yêu thích?</h1>
-                        <Image
-                            className={cx('quest-image')}
-                            width={320}
-                            height={252}
-                            src={images.director}
-                            alt="gerne"
-                        />
-                        <Form.Group className="mb-5" controlId="formHorizontalActor">
-                            <Form.Control className={cx('text-input')} type="text" placeholder="Tên đạo diễn" />
-                        </Form.Group>
-                        <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('submit')} type="button" onClick={prevPage}>
-                                Trở lại
-                            </Button>
-                            <Button primary className={cx('submit')} type="button" onClick={nextPage}>
-                                Tiếp tục
-                            </Button>
-                        </Form.Group>
-                    </Form>
-                );
-            case 4:
-                return (
-                    <Form className={cx('login-form')}>
-                        <h1 className={cx('title')}>Diễn viên bạn yêu thích?</h1>
-                        <Image className={cx('quest-image')} width={300} height={252} src={images.actor} alt="gerne" />
-                        <Form.Group className="mb-5" controlId="formHorizontalActor">
-                            <Form.Control className={cx('text-input')} type="text" placeholder="Tên diễn viên" />
-                        </Form.Group>
-                        <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('submit')} type="button" onClick={prevPage}>
-                                Trở lại
-                            </Button>
-                            <Button primary className={cx('submit')} type="button" onClick={nextPage}>
-                                Tiếp tục
-                            </Button>
-                        </Form.Group>
-                    </Form>
-                );
-            case 5:
-                return (
-                    <Form className={cx('login-form')}>
-                        <h1 className={cx('title')}>Ngôn ngữ phim bạn yêu thích?</h1>
-                        <Image
-                            className={cx('quest-image')}
-                            width={500}
-                            height={252}
-                            src={images.language}
-                            alt="gerne"
-                        />
-                        <Form.Group className="mb-5">
-                            <Select
-                                isMulti
-                                defaultValue={[gerneOption[2], gerneOption[3]]}
-                                name="colors"
-                                options={gerneOption}
-                                className="basic-multi-select"
-                                classNamePrefix="select"
-                            />
-                        </Form.Group>
-                        <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('submit')} type="button" onClick={prevPage}>
-                                Trở lại
-                            </Button>
-                            <Button primary className={cx('submit')} type="button" onClick={nextPage}>
-                                Tiếp tục
-                            </Button>
-                        </Form.Group>
-                    </Form>
-                );
-            case 6:
-                return (
-                    <Form className={cx('login-form')}>
-                        <h1 className={cx('title')}>
-                            Hoàn thành khảo sát{' '}
-                            <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'var(--green-highlight-color)' }} />
-                        </h1>
-                        <Form.Group className="mb-5">
-                            <Form.Text className={cx('notify-text')}>
-                                Cảm ơn bạn đã tham gia khảo sát!
-                                <br />
-                                Phần khảo sát đã giúp chúng tôi rất nhiều để mang đến cho người xem những trải nghiệm
-                                tốt nhất
-                                <br />
-                                Chúc các bạn xem phim vui vẻ!
-                            </Form.Text>
-                        </Form.Group>
-                        <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('submit')} type="button" onClick={prevPage}>
-                                Trở lại
-                            </Button>
-                            <Button primary className={cx('submit')} type="button">
-                                Quay lại xem phim
                             </Button>
                         </Form.Group>
                     </Form>
@@ -382,7 +253,7 @@ function SignUp() {
 
     return (
         <DefaultLayout>
-            <div className={cx('wrapper')}>{renderForm(state.currentForm)}</div>
+            <div className={cx('wrapper')}>{renderForm(currForm)}</div>
         </DefaultLayout>
     );
 }

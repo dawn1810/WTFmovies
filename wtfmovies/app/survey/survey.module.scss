@@ -90,22 +90,6 @@
             }
         }
 
-        .alert {
-            color: var(--highlight-color);
-            font-weight: 600;
-        }
-
-        .pass-form {
-            position: relative;
-
-            .passEye {
-                position: absolute;
-                top: 42px;
-                right: 10px;
-                background-color: transparent;
-            }
-
-        }
 
         .notify-text {
             color: var(--text-color);

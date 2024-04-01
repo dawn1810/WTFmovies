@@ -48,39 +48,11 @@ export const changeSignUpBirthDateAlert = (birthDateAlert: boolean) => {
     };
 };
 
-export const changeCurrentForm = (currForm: number) => {
-    return {
-        type: 'header/changeCurrentForm',
-        payload: currForm,
-    };
-};
-
 // header
 export const changeModalShow = (modalShow: boolean) => {
     return {
         type: 'header/changeModalShow',
         payload: modalShow,
-    };
-};
-
-export const changeEmailAlert = (emailAlert: boolean) => {
-    return {
-        type: 'header/changeEmailAlert',
-        payload: emailAlert,
-    };
-};
-
-export const changePassAlert = (passAlert: boolean) => {
-    return {
-        type: 'signup/changePassAlert',
-        payload: passAlert,
-    };
-};
-
-export const changeCurrentUser = (currentUser: string) => {
-    return {
-        type: 'header/changeCurrentUser',
-        payload: currentUser,
     };
 };
 
@@ -97,7 +69,6 @@ export const changeAlertStatus = (status: { content: any; status: boolean }) => 
         payload: status,
     };
 };
-
 
 // player
 export const changeUrl = (url: string) => {

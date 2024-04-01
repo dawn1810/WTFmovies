@@ -24,10 +24,6 @@ export interface reduxStateInterface {
     };
     header: {
         modalShow: boolean;
-        emailAlert: boolean;
-        passAlert: boolean;
-        passAlertContent: string;
-        currentUser: boolean;
         query: string;
     };
     signup: {
@@ -38,10 +34,8 @@ export interface reduxStateInterface {
         signupAgainPassAlert: boolean;
         signupNameAlert: boolean;
         signupBirthDateAlert: boolean;
-        currentForm: number;
     };
     dataGridCom: {
         alertStatus: { content: any; status: boolean };
-
-    }
+    };
 }

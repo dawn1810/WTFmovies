@@ -11,7 +11,6 @@ export const signupSlice = createSlice({
         signupAgainPassAlert: false,
         signupNameAlert: false,
         signupBirthDateAlert: false,
-        currentForm: 0,
     },
     reducers: {
         changeSignUpEmailAlert: (state, action) => {
@@ -35,9 +34,6 @@ export const signupSlice = createSlice({
         changeSignUpBirthDateAlert: (state, action) => {
             state.signupBirthDateAlert = action.payload;
         },
-        changeCurrentForm: (state, action) => {
-            state.currentForm = action.payload;
-        },
     },
 });
 
@@ -49,7 +45,6 @@ export const {
     changeSignupAgainPassAlert,
     changeSignUpNameAlert,
     changeSignUpBirthDateAlert,
-    changeCurrentForm,
 } = signupSlice.actions;
 
 export default signupSlice.reducer;

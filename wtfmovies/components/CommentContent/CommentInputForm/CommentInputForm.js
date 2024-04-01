@@ -15,7 +15,7 @@ function CommentInputForm() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <ImageCustom className={cx('avatar')} src={avt ? avt : images.itadory} alt="unknown" />
+                <ImageCustom className={cx('avatar')} src={avt ? avt : images.logo} alt="unknown" />
                 <div className={cx('user-name')}>Người ẩn danh</div>
             </div>
             <Form className={cx('form')}>
