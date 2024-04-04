@@ -7,7 +7,7 @@ export default function NotFound() {
     return (
         <>
             <DefaultLayout>
-                <title>404: This page could not be found.</title>
+                <title>404: Trang không tìm thấy.</title>
                 <div style={styles.error}>
                     <div>
                         <style
@@ -19,7 +19,7 @@ export default function NotFound() {
                             404
                         </h1>
                         <div style={styles.desc}>
-                            <h2 style={styles.h2}>This page could not be found.</h2>
+                            <h2 style={styles.h2}>Trang không tìm thấy.</h2>
                         </div>
                     </div>
                 </div>

@@ -6,17 +6,14 @@ import Link from 'next/link';
 import config from '~/config';
 import MenuSidebar from '~/components/MenusSidebar';
 import images from '~/assets/image';
-function handleClickSidebar(scene: string) {
-    console.log(scene);
-}
 const cx = classNames.bind(styles);
 
-function Leftbar({ menuItems }: {
+function Leftbar({ menuItems, scene }: {
     menuItems: {
         title: string;
         icon: IconDefinition,
         scene: string,
-    }[]
+    }[], scene: string
 }) {
 
     return (
@@ -28,7 +25,7 @@ function Leftbar({ menuItems }: {
                     </Link>
                 </div>
                 <div>
-                    <MenuSidebar menuItems={menuItems} handleClick={handleClickSidebar}></MenuSidebar>
+                    <MenuSidebar menuItems={menuItems} scene={scene}></MenuSidebar>
                 </div>
 
 

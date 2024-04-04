@@ -2,7 +2,7 @@
 import style from './DataGridCom.module.scss';
 import classNames from 'classnames/bind';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { AwaitedReactNode, JSXElementConstructor, Key, ReactElement, ReactNode, useState } from 'react';
+import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { DataGrid, GridToolbarQuickFilter, GridToolbarExport, GridToolbarFilterButton, GridRowSelectionModel, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridColDef } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
@@ -40,7 +40,6 @@ export default function DataGridCom({ colum, children, title_name }: {
     function handleDelete() {
         setOpen(true);
     }
-    console.log(status);
 
 
     function CustomToolbar() {

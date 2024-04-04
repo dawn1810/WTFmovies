@@ -8,16 +8,14 @@ import { useViewport } from '~/hooks';
 
 const cx = classNames.bind(styles);
 
-const MenuSidebar = ({ menuItems, handleClick }: any) => {
-  const [activeMenu, setActiveMenu] = useState(null);
+const MenuSidebar = ({ menuItems, scene }: any) => {
+  const [activeMenu, setActiveMenu] = useState(scene);
 
   const viewPort = useViewport();
   const handleButtonClick = (item: any) => {
     setActiveMenu(item.scene); // Set the active menu item based on scene
-    handleClick(item.scene); // Call the passed handleClick function
   };
   const isMobile = viewPort.width <= 650;
-
   return (
     <>
       {isMobile ? (
