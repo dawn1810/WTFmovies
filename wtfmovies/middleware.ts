@@ -6,7 +6,7 @@ export async function middleware(request: NextRequest) {
     const isLogged = await auth();
 
     if (isLogged && request.nextUrl.pathname.startsWith('/register')) {
-        return NextResponse.redirect(new URL('/', request.url));
+        return NextResponse.redirect(new URL('/survey', request.url));
     }
 
     return NextResponse.next();

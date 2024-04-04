@@ -1,3 +1,5 @@
+import { User } from 'next-auth';
+
 export interface reduxStateInterface {
     player: {
         url: string;
@@ -38,4 +40,9 @@ export interface reduxStateInterface {
     dataGridCom: {
         alertStatus: { content: any; status: boolean };
     };
+}
+
+export interface ExtendedUser extends User {
+    user_id: string; // Use the appropriate type for user_id.
+    first: boolean;
 }

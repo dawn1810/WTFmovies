@@ -1,5 +1,6 @@
 'use client';
-import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { getSession, signIn } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -9,7 +10,7 @@ import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
-// import { encryptData, fetchPublicKey } from '~/libs/clientFunc';
+import { ExtendedUser } from '~/libs/interfaces';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import Button from '../Button';
 import style from './Modals.module.scss';
@@ -17,6 +18,9 @@ import style from './Modals.module.scss';
 const cx = classNames.bind(style);
 
 function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void }) {
+    const router = useRouter();
+
+    const [pending, setPending] = useState(false);
     const [passEye, setPassEye] = useState(false);
     const [info, setInfo] = useState({ email: '', password: '', remember: false });
     const [alert, setAlert] = useState(false);
@@ -44,6 +48,11 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
 
             if (res?.error) setAlert(true);
             else {
+                const session = await getSession();
+                if ((session?.user as ExtendedUser)?.first) {
+                    router.push('/survey');
+                    sessionStorage.setItem('prev', window.location.href);
+                }
                 dispatch(changeModalShow(false));
             }
         } catch (err) {
@@ -155,8 +164,8 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                         </Form.Text>
                     </Form.Group>
 
-                    <Button primary className={cx('submit')} type="submit">
-                        Đăng nhập
+                    <Button primary disabled={pending} className={cx('submit')} type="submit">
+                        {pending ? 'Đang đăng nhập' : 'Đăng nhập'}
                     </Button>
                 </Form>
             </Modal.Body>

@@ -1,4 +1,5 @@
 'use client';
+import { useSession } from 'next-auth/react';
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
@@ -7,22 +8,30 @@ import Select from 'react-select';
 import { DefaultLayout } from '~/layouts';
 import classNames from 'classnames/bind';
 
+import { ExtendedUser } from '~/libs/interfaces';
 import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './survey.module.scss';
 import Image from 'next/image';
-type OptionType = {
-    label: string;
-    value: string;
-};
+import { useRouter } from 'next/navigation';
+
+// type OptionType = {
+//     label: string;
+//     value: string;
+// };
 
 const cx = classNames.bind(style);
 
 function Survey() {
+    const router = useRouter();
+    const prevPath = sessionStorage.getItem('prev');
+
+    const { data: session } = useSession();
+
     const [info, setInfo] = useState({ genres: [], directors: '', actors: '', languages: [] });
 
-    const [genreOption, setGenreOption] = useState<OptionType[]>([]);
-    const [languageOption, setLanguageOption] = useState<OptionType[]>([]);
+    const [genreOption, setGenreOption] = useState<any[]>([]);
+    const [languageOption, setLanguageOption] = useState<any[]>([]);
     const [currForm, setCurrForm] = useState(0);
 
     useEffect(() => {
@@ -62,7 +71,41 @@ function Survey() {
         setInfo((prev: any) => ({ ...prev, [actionMeta.name]: options }));
     };
 
-    console.log(info);
+    const handleSubmit = async () => {
+        const userID = (session?.user as ExtendedUser)?.user_id;
+
+        const response = await fetch('/api/updateSurveyInfo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userID, info }),
+        });
+
+        if (response.ok) {
+            if (prevPath) {
+                router.push(prevPath);
+            } else {
+                router.push('/');
+            }
+        }
+    };
+
+    const handleSkip = async () => {
+        const userID = (session?.user as ExtendedUser)?.user_id;
+
+        const response = await fetch('/api/updateSurveyInfo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userID, info: false }),
+        });
+
+        if (response.ok) {
+            if (prevPath) {
+                router.push(prevPath);
+            } else {
+                router.push('/');
+            }
+        }
+    };
 
     const renderForm = (form: number): React.ReactNode => {
         switch (form) {
@@ -75,6 +118,7 @@ function Survey() {
                             <Select
                                 isMulti
                                 name="genres"
+                                defaultValue={info.genres}
                                 options={genreOption}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
@@ -82,8 +126,8 @@ function Survey() {
                             />
                         </Form.Group>
                         <Form.Group className={cx('btn-group')}>
-                            <Button primary className={cx('submit')} type="button" onClick={prevPage}>
-                                Trở lại
+                            <Button primary className={cx('skip')} type="button" onClick={handleSkip}>
+                                Bỏ qua
                             </Button>
                             <Button primary className={cx('submit')} type="button" onClick={nextPage}>
                                 Tiếp tục
@@ -102,11 +146,12 @@ function Survey() {
                             src={images.director}
                             alt="gerne"
                         />
-                        <Form.Group className="mb-5" controlId="formHorizontalActor">
+                        <Form.Group className="mb-5" controlId="formHorizontalDirector">
                             <Form.Control
+                                value={info.directors}
                                 className={cx('text-input')}
                                 type="text"
-                                name="dỉrectors"
+                                name="directors"
                                 placeholder="Tên đạo diễn"
                                 onChange={(e) => {
                                     handleInfoChange(e);
@@ -130,6 +175,7 @@ function Survey() {
                         <Image className={cx('quest-image')} width={300} height={252} src={images.actor} alt="gerne" />
                         <Form.Group className="mb-5" controlId="formHorizontalActor">
                             <Form.Control
+                                value={info.actors}
                                 className={cx('text-input')}
                                 type="text"
                                 name="actors"
@@ -164,6 +210,7 @@ function Survey() {
                             <Select
                                 isMulti
                                 name="languages"
+                                defaultValue={info.languages}
                                 options={languageOption}
                                 className="basic-multi-select"
                                 classNamePrefix="select"
@@ -201,8 +248,8 @@ function Survey() {
                             <Button primary className={cx('submit')} type="button" onClick={prevPage}>
                                 Trở lại
                             </Button>
-                            <Button primary className={cx('submit')} type="button">
-                                Quay lại xem phim
+                            <Button primary className={cx('submit')} type="button" onClick={handleSubmit}>
+                                Hoàn thành khảo sát
                             </Button>
                         </Form.Group>
                     </Form>
