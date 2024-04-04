@@ -28,8 +28,7 @@ export async function POST(request: NextRequest) {
             password: hashPassword,
             email: email,
             role: 'none',
-            name: name,
-            birthDate: birthDate,
+            first: true,
         });
 
         // insert data to user/information

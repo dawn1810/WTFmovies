@@ -17,7 +17,7 @@ const login = async (credentials: any) => {
             },
         });
 
-    if (!userAuth) throw new Error('Mật khẩu không chính xác');
+    if (!userAuth) throw new Error('Email không tồn tại');
 
     // have user check password
     const passAuth = await comparePassWord(userAuth.password, credentials.password);
@@ -58,18 +58,22 @@ const authOptions: NextAuthConfig = {
         // },
         async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
+                token.user_id = user.user_id;
                 token.email = user.email;
-                token.password = user.password;
+                // token.password = user.password;
                 token.role = user.role;
+                token.first = user.first;
             }
 
             return token;
         },
         async session({ session, token }: { session: any; token: any }) {
             if (token) {
+                session.user.user_id = token.user_id;
                 session.user.email = token.email;
-                session.user.password = token.password;
+                // session.user.password = token.password;
                 session.user.role = token.role;
+                session.user.first = token.first;
             }
             return session;
         },
