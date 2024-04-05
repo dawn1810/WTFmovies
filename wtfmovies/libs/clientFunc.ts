@@ -67,15 +67,3 @@ export const validatePassword = (password: string): number => {
     // Password is valid (no errors)
     return 0;
 };
-
-// set public key
-export const fetchPublicKey = async () => {
-    try {
-        await fetch('/api/auth/getPublicKey', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-    } catch (error) {
-        console.error('Error fetching public key:', error);
-    }
-};

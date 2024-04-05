@@ -6,6 +6,7 @@ import TabBox from '~/components/TabsBox/TabsBox';
 import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 import DefaultLayout from '~/layouts/DefaultLayout';
+import { auth } from '../api/auth/[...nextauth]/auth';
 
 const cx = classNames.bind(style);
 
@@ -76,9 +77,11 @@ const commentTabs = [
     },
 ];
 
-function Review() {
+async function Review() {
+    const session = await auth();
+
     return (
-        <DefaultLayout>
+        <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
                 <div className={cx('home-top')}>
                     <div className={cx('info-content')}>

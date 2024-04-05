@@ -1,17 +1,18 @@
 'use client';
 import PropTypes from 'prop-types';
-import { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
 import style from './Genres.module.scss';
 import { ScrollingCarousel } from '@trendyol-js/react-carousel';
+import { Item } from '@trendyol-js/react-carousel/dist/types/types/carousel';
 
 const cx = classNames.bind(style);
 
-function Genres({ children }) {
-    const genresRef = useRef(null);
+function Genres({ children }: { children: Item[] }) {
+    const genresRef: any = useRef(null);
     const [isAtStart, setIsAtStart] = useState(true);
     const [isAtEnd, setIsAtEnd] = useState(false);
 
@@ -30,7 +31,7 @@ function Genres({ children }) {
         return () => currentGenresRef.removeEventListener('scroll', checkScrollPosition);
     }, []);
 
-    const scroll = (scrollOffset) => {
+    const scroll = (scrollOffset: number) => {
         genresRef.current.querySelector('.styles-module_slider__o0fqa').scrollTo({
             left: genresRef.current.querySelector('.styles-module_slider__o0fqa').scrollLeft + scrollOffset,
             behavior: 'smooth',

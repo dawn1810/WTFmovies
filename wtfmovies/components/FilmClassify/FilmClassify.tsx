@@ -10,6 +10,7 @@ import style from './FilmClassify.module.scss';
 import Button from '../Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { FilmClassifyInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -156,39 +157,25 @@ const tabs = [
     // },
 ];
 
-function FilmClassify({
-    mainDir,
-    extraDir,
-    mainTitle,
-    extraTitle,
-    mainIcon,
-    extraIcon,
-}: {
-    mainDir: string;
-    extraDir: string;
-    mainTitle: string;
-    extraTitle: string;
-    mainIcon: any;
-    extraIcon: any;
-}) {
+function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
     return (
         <div className={cx('wrapper')}>
-            <Title title={mainTitle} icon={mainIcon} />
+            <Title title={tags.mainTitle} icon={tags.mainIcon} />
             {isMobile ? (
                 <>
                     <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} />
                     <Button primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
                         Xem thêm
                     </Button>
-                    <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
+                    <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} />
                 </>
             ) : (
                 <>
                     <TabsBox tabs={tabs} defaultActiveKey="all" gridContent />
-                    <SideBox to={extraDir} title={extraTitle} icon={extraIcon} />
+                    <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} />
                 </>
             )}
         </div>

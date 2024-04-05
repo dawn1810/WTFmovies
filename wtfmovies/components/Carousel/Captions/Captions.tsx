@@ -1,14 +1,15 @@
 'use client';
+import Link from 'next/link';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowUp91, faCat, faEye, faFeather, faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
-import style from './Captions.module.scss';
+import { CaptionsItemInterface } from '~/libs/interfaces';
 import Button from '~/components/Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp91, faCat, faEye, faFeather, faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
-import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
-import Link from 'next/link';
+import style from './Captions.module.scss';
 
 const cx = classNames.bind(style);
 
@@ -20,7 +21,7 @@ const icons = [
     <FontAwesomeIcon icon={faStar} />,
 ];
 
-function Captions({ item }) {
+function Captions({ item }: { item: CaptionsItemInterface }) {
     return (
         <>
             <div className={cx('film-info')}>
@@ -35,13 +36,17 @@ function Captions({ item }) {
                             {item.type === 'searchAble' ? (
                                 <span className={cx('info-title')}>
                                     <span>{item.title}:</span>{' '}
-                                    {item.info.slice(0, -1).map((info, infoIndex) => (
-                                        <Fragment key={infoIndex}>
-                                            <Link href={'/result?search_query=' + info} className={cx('search-able')}>
-                                                {info + ','}
-                                            </Link>{' '}
-                                        </Fragment>
-                                    ))}
+                                    {typeof item.info === 'object' &&
+                                        item.info.slice(0, -1).map((info, infoIndex) => (
+                                            <Fragment key={infoIndex}>
+                                                <Link
+                                                    href={'/result?search_query=' + info}
+                                                    className={cx('search-able')}
+                                                >
+                                                    {info + ','}
+                                                </Link>{' '}
+                                            </Fragment>
+                                        ))}
                                     <Link
                                         key={-1}
                                         href={'/result?search_query=' + item.info.slice(-1)}

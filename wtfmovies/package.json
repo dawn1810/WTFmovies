@@ -53,6 +53,7 @@
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
+        "@types/react-slick": "^0.23.13",
         "sass": "^1.72.0",
         "typescript": "^5",
         "vercel": "^33.6.1",

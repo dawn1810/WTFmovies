@@ -45,4 +45,41 @@ export interface reduxStateInterface {
 export interface ExtendedUser extends User {
     user_id: string; // Use the appropriate type for user_id.
     first: boolean;
+    avatar: string;
+}
+
+export interface CaptionsItemInterface {
+    imgSrc: string;
+    filmTitle: string;
+    filmContent: string;
+    infoList: { title: string; info: string[] | string; type?: string }[];
+}
+
+interface films {
+    imgSrc: string;
+    filmName: string;
+    views: string;
+    rating: string;
+    episodes: string;
+}
+
+export interface FilmProposeListInterface {
+    films: films[];
+    className?: string;
+}
+
+export interface FilmClassifyInterface extends FilmProposeListInterface {
+    tabs: {
+        title: string;
+        eventKey: string;
+        content: films[];
+    }[];
+    tags: {
+        mainDir: string;
+        extraDir: string;
+        mainTitle: string;
+        extraTitle: string;
+        mainIcon: any;
+        extraIcon: any;
+    };
 }

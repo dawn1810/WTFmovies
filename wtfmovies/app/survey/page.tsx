@@ -259,11 +259,7 @@ function Survey() {
         }
     };
 
-    return (
-        <DefaultLayout>
-            <div className={cx('wrapper')}>{renderForm(currForm)}</div>
-        </DefaultLayout>
-    );
+    return <div className={cx('wrapper')}>{renderForm(currForm)}</div>;
 }
 
 export default Survey;

@@ -7,6 +7,7 @@ import TabsBox from '~/components/TabsBox';
 import FilmInteract from '~/components/FilmInteract';
 import Player from '~/components/Player';
 import DefaultLayout from '~/layouts/DefaultLayout';
+import { auth } from '../api/auth/[...nextauth]/auth';
 
 const cx = classNames.bind(style);
 
@@ -187,9 +188,10 @@ const commentTabs = [
     },
 ];
 
-function Watch() {
+async function Watch() {
+    const session = await auth();
     return (
-        <DefaultLayout>
+        <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
                 <h1 className={cx('title')}>@芊芊龙 酷酷龙也来Da一个~ #俄罗斯神曲 #马来西亚女孩 #dadada</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />

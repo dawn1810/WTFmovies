@@ -3,16 +3,16 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 // import { Carousel } from '@trendyol-js/react-carousel';
 import Slider from 'react-slick';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { useViewport } from '~/hooks';
 import FilmCard from '../FilmCard';
 import style from './FilmProposeList.module.scss';
+import { FilmProposeListInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
-function NextArrow(props) {
+function NextArrow(props: { onClick?: any }) {
     const { onClick } = props;
     return (
         <button className={cx('right-btn')} onClick={onClick}>
@@ -21,7 +21,7 @@ function NextArrow(props) {
     );
 }
 
-function PrevArrow(props) {
+function PrevArrow(props: { onClick?: any }) {
     const { onClick } = props;
     return (
         <button className={cx('left-btn')} onClick={onClick}>
@@ -30,7 +30,7 @@ function PrevArrow(props) {
     );
 }
 
-function FilmProposeList({ films, className }) {
+function FilmProposeList({ films, className }: FilmProposeListInterface) {
     const viewPort = useViewport();
     // const isMobile = viewPort.width;
     // console.log((viewPort.width - 20) / 180 - 0.1);
@@ -102,10 +102,5 @@ function FilmProposeList({ films, className }) {
         </div>
     );
 }
-
-FilmProposeList.propTypes = {
-    films: PropTypes.array.isRequired,
-    className: PropTypes.string,
-};
 
 export default FilmProposeList;

@@ -1,7 +1,7 @@
 'use client';
 import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -119,15 +119,22 @@ const genres = [
     { name: 'Tâm lý tội phạm', to: 'crime' },
 ];
 
-function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: string }) {
+function Header({
+    currentUser,
+    isDatabase = false,
+    title,
+}: {
+    currentUser?: boolean;
+    isDatabase?: boolean;
+    title?: string;
+}) {
+    // session
+    const { data: session } = useSession();
+
     //redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
-    // session
-    const { data: session } = useSession();
-
-    // const [modalShow, setModalShow] = useState<boolean>(false);
     const [searchShow, setSearchShow] = useState<boolean>(false);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
@@ -180,7 +187,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                                 </button>
                             </Tippy>
                         )}
-                        {session && session.user ? (
+                        {currentUser || (!!session && !!session.user) ? (
                             <>
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
                                     <button className={cx('action-btn')}>
@@ -190,7 +197,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                                 </Tippy>
 
                                 <Menu
-                                    key={session?.user?.email}
+                                    key="loginyet"
                                     items={userMenu}
                                     placement="bottom-end"
                                     delay={[0, 500]}
@@ -220,7 +227,7 @@ function Header({ isDatabase = false, title }: { isDatabase?: boolean; title?: s
                                 )}
 
                                 <Menu
-                                    key={session?.user?.email}
+                                    key="nologinyet"
                                     items={MENU_ITEMS}
                                     placement="bottom-end"
                                     delay={[0, 500]}

@@ -8,10 +8,10 @@ import styles from './DefaultLayout.module.scss';
 
 const cx = classNames.bind(styles);
 
-function DefaultLayout({ children }: { children: React.ReactNode }) {
+function DefaultLayout({ currentUser, children }: { currentUser?: boolean; children: React.ReactNode }) {
     return (
         <div className={cx('wrapper')}>
-            <Header />
+            <Header currentUser={currentUser} />
             <section className={cx('main')}>{children}</section>
             <Footer />
         </div>
