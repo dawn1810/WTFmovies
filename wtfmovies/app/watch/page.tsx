@@ -193,9 +193,9 @@ async function Watch() {
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
-                <h1 className={cx('title')}>@芊芊龙 酷酷龙也来Da一个~ #俄罗斯神曲 #马来西亚女孩 #dadada</h1>
+                <h1 className={cx('title')}>Inuyashiki (いぬやしき)</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <Player url={'https://rurimeiko.pages.dev/dadada.m3u8'} />
+                <Player url={'https://p21-ad-sg.ibyteimg.com/obj/ad-site-i18n-sg/202404075d0ddd9fdb8ed672411ea059?.m3u8'} />
                 <FilmInteract />
                 <TabsBox
                     tabs={episodesTabs}

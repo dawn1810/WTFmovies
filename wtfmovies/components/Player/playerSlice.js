@@ -4,7 +4,7 @@ import { createSlice } from '@reduxjs/toolkit';
 export const playerSlice = createSlice({
     name: 'player',
     initialState: {
-        url: 'https://rurimeiko.pages.dev/Clear%20Sunny%20Day%20[JP]%20-%20cover%20by%20Xixi.m3u8',
+        url: '',
         pip: false,
         playing: false,
         ready: false,

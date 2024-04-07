@@ -135,11 +135,41 @@ const Player = ({ url }) => {
                 onPlaybackQualityChange={(e) => console.log('onPlaybackQualityChange', e)}
                 config={{
                     file: {
+                        forceHLS: true,
                         hlsOptions: {
-                            autoStartLoad: true,
+                            // autoStartLoad: true,
                             // additional hls.js options
+                            pLoader: function (config) {
+                                let loader = new Hls.DefaultConfig.loader(config);
+                                Object.defineProperties(this, {
+                                    stats: {
+                                        get: () => loader.stats,
+                                    },
+                                    context: {
+                                        get: () => loader.context,
+                                    },
+                                });
+
+                                this.abort = () => loader.abort();
+                                this.destroy = () => loader.destroy();
+                                this.load = (context, config, callbacks) => {
+                                    console.log(context.type);
+                                    var onSuccess = callbacks.onSuccess;
+                                    callbacks.onSuccess = function (response, stats, context) {
+
+                                        response.data = response.data.slice(response.data.indexOf("#EXTM3U"));
+
+                                        onSuccess(response, stats, context);
+                                    };
+
+                                    loader.load(context, config, callbacks);
+                                };
+                            },
                         },
-                        hlsVersion: '0.14.16', // use the version you prefer
+
+
+
+                        hlsVersion: 'latest', // use the version you prefer
                     },
                 }}
             />
