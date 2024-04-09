@@ -193,7 +193,7 @@ async function Watch() {
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
-                <h1 className={cx('title')}>Inuyashiki (いぬやしき)</h1>
+                <h1 className={cx('title')}>Rabit hole</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
                 <Player url={'https://p21-ad-sg.ibyteimg.com/obj/ad-site-i18n-sg/202404085d0dd7ded2f8d41549d4b97a?.m3u8'} />
                 <FilmInteract />
