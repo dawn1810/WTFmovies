@@ -1,7 +1,8 @@
 'use client';
+import { ThemeProvider, createTheme } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -43,39 +44,40 @@ type MenuItem = {
 };
 
 const MENU_ITEMS = [
+    // {
+    //     icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    //     title: 'Tiếng Việt',
+    //     children: {
+    //         title: 'Ngôn ngữ',
+    //         data: [
+    //             {
+    //                 type: 'language',
+    //                 code: 'en',
+    //                 title: 'English',
+    //             },
+    //             {
+    //                 type: 'language',
+    //                 code: 'vi',
+    //                 title: 'Tiếng Việt',
+    //             },
+    //         ],
+    //     },
+    // },
+
+    // {
+    //     icon: <FontAwesomeIcon icon={faCrown} />,
+    //     title: 'Nâng cấp VIP',
+    //     to: '/vip',
+    // },
     {
-        icon: <FontAwesomeIcon icon={faEarthAsia} />,
-        title: 'Tiếng Việt',
-        children: {
-            title: 'Ngôn ngữ',
-            data: [
-                {
-                    type: 'language',
-                    code: 'en',
-                    title: 'English',
-                },
-                {
-                    type: 'language',
-                    code: 'vi',
-                    title: 'Tiếng Việt',
-                },
-            ],
-        },
+        icon: <FontAwesomeIcon icon={faGear} />,
+        title: 'Cài đặt',
+        to: '/settings',
     },
     {
         icon: <FontAwesomeIcon icon={faCircleQuestion} />,
         title: 'Trợ giúp & phản hồi',
         to: '/feedbacks',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCrown} />,
-        title: 'Nâng cấp VIP',
-        to: '/vip',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faGear} />,
-        title: 'Cài đặt',
-        to: '/settings',
     },
 ];
 

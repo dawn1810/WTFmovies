@@ -9,76 +9,11 @@ import style from './SideBox.module.scss';
 import React, { useState } from 'react';
 import { useViewport } from '~/hooks';
 import Title from '../Title';
+import { FilmsInterFace } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
-const films = [
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-];
-
-function SideBox({ to, title, icon }: { to: string; title: string; icon: any }) {
+function SideBox({ to, title, icon, films }: { to: string; title: string; icon: any; films: FilmsInterFace[] }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -95,8 +30,8 @@ function SideBox({ to, title, icon }: { to: string; title: string; icon: any }) 
                 <div className={cx('side-films-top')}>
                     <FilmCard
                         large
-                        imgSrc={films[0].imgSrc}
-                        filmName={films[0].filmName}
+                        imgSrc={films[0].img}
+                        filmName={films[0].name}
                         views={films[0].views}
                         rating={films[0].rating}
                         episodes={films[0].episodes}
@@ -109,8 +44,8 @@ function SideBox({ to, title, icon }: { to: string; title: string; icon: any }) 
                             <FilmCard
                                 key={index}
                                 noOverlay
-                                imgSrc={film.imgSrc}
-                                filmName={film.filmName}
+                                imgSrc={film.img}
+                                filmName={film.name}
                                 views={film.views}
                                 rating={film.rating}
                                 episodes={film.episodes}
@@ -120,8 +55,8 @@ function SideBox({ to, title, icon }: { to: string; title: string; icon: any }) 
                             <FilmCard
                                 key={index}
                                 noOverlay
-                                imgSrc={film.imgSrc}
-                                filmName={film.filmName}
+                                imgSrc={film.img}
+                                filmName={film.name}
                                 views={film.views}
                                 rating={film.rating}
                                 episodes={film.episodes}

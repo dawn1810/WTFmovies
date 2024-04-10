@@ -8,12 +8,12 @@
     .genres {
         display: flex;
         gap: 5px;
-        padding: 10px 0;
         overflow: hidden;
 
         .genres-carousel {
             display: flex;
             justify-content: center;
+
             div {
                 width: var(--default-layout-width);
                 display: flex;
@@ -37,6 +37,7 @@
         background: rgb(1, 0, 15);
         background: linear-gradient(90deg, rgba(1, 0, 15, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
     }
+
     .right-btn {
         right: 0;
         background: rgb(1, 0, 15);

@@ -9,8 +9,8 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/survey', request.url));
     }
 
-    const { device } = userAgent(request);
-    const viewport = device.type === 'mobile' ? 'mobile' : 'desktop';
+    // const { device } = userAgent(request);
+    // const viewport = device.type === 'mobile' ? 'mobile' : 'desktop';
 
     return NextResponse.next();
 }

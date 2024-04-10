@@ -64,41 +64,14 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
                 {films.map((film, index) => (
                     <FilmCard
                         key={index}
-                        imgSrc={film.imgSrc}
-                        filmName={film.filmName}
+                        imgSrc={film.img}
+                        filmName={film.name}
                         views={film.views}
                         rating={film.rating}
                         episodes={film.episodes}
                     />
                 ))}
             </Slider>
-            {/* <Carousel
-                show={6.3}
-                slide={6}
-                swiping
-                leftArrow={
-                    <button className={cx('left-btn')}>
-                        <FontAwesomeIcon icon={faChevronLeft} />
-                    </button>
-                }
-                rightArrow={
-                    <button className={cx('right-btn')}>
-                        <FontAwesomeIcon icon={faChevronRight} />
-                    </button>
-                }
-                className={cx('carousel')}
-            >
-                {films.map((film, index) => (
-                    <FilmCard
-                        key={index}
-                        imgSrc={film.imgSrc}
-                        filmName={film.filmName}
-                        views={film.views}
-                        rating={film.rating}
-                        episodes={film.episodes}
-                    />
-                ))}
-            </Carousel> */}
         </div>
     );
 }

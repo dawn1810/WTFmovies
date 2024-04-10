@@ -56,12 +56,6 @@ export const changeModalShow = (modalShow: boolean) => {
     };
 };
 
-export const changeSearchQuery = (query: string) => {
-    return {
-        type: 'header/changeSearchQuery',
-        payload: query,
-    };
-};
 //
 export const changeAlertStatus = (status: { content: any; status: boolean }) => {
     return {

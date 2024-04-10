@@ -16,6 +16,7 @@ const ImageCustom = forwardRef(
         return (
             <img
                 className={classNames(styles.wrapper, className)}
+                loading="lazy"
                 ref={ref}
                 src={fallback || src}
                 alt={alt}

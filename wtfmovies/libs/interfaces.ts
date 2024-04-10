@@ -49,31 +49,27 @@ export interface ExtendedUser extends User {
 }
 
 export interface CaptionsItemInterface {
-    imgSrc: string;
-    filmTitle: string;
-    filmContent: string;
-    infoList: { title: string; info: string[] | string; type?: string }[];
+    img: string;
+    name: string;
+    describe: string;
+    infoList: { title: string; info: string[] | string | number; type?: string }[];
 }
 
-interface films {
-    imgSrc: string;
-    filmName: string;
-    views: string;
-    rating: string;
-    episodes: string;
+export interface FilmsInterFace {
+    img: string;
+    name: string;
+    views: number;
+    rating: number;
+    episodes: number;
 }
 
 export interface FilmProposeListInterface {
-    films: films[];
+    films: FilmsInterFace[];
     className?: string;
 }
 
 export interface FilmClassifyInterface extends FilmProposeListInterface {
-    tabs: {
-        title: string;
-        eventKey: string;
-        content: films[];
-    }[];
+    tabs: TabInterface[];
     tags: {
         mainDir: string;
         extraDir: string;
@@ -82,4 +78,22 @@ export interface FilmClassifyInterface extends FilmProposeListInterface {
         mainIcon: any;
         extraIcon: any;
     };
+}
+
+export interface FilmCardInterface {
+    large?: boolean;
+    noOverlay?: boolean;
+    largeNoOverlay?: boolean;
+    imgSrc: string;
+    filmName: string;
+    views: number;
+    rating: number;
+    episodes: number;
+    className?: string | [] | undefined;
+}
+
+export interface TabInterface {
+    title: string;
+    eventKey: string;
+    content: FilmsInterFace[] | string;
 }
