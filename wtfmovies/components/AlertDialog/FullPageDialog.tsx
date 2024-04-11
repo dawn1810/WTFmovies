@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import Dialog from '@mui/material/Dialog';
-import AppBar from '@mui/material/AppBar';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { Autocomplete, IconButton, MenuItem, TextField, Toolbar } from '@mui/material';
+import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
-import { DatePicker, LocalizationProvider, MobileTimePicker, TimePicker } from '@mui/x-date-pickers';
+import { DatePicker, LocalizationProvider, MobileTimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import Chip from '@mui/material/Chip';
+import { Input, Button, AppBar, Tabs, Box, Tab, Dialog, Autocomplete, IconButton, MenuItem, TextField, Toolbar, } from "@mui/material";
+import ImageUpload from './ImageUpload';
+
 
 const darkTheme = createTheme({
     palette: {
@@ -35,7 +33,10 @@ function TabPanel(props: any) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
+                <Box sx={{
+                    p: 3, alignItems: "center",
+                    justifyContent: "center",
+                }}>
                     <div>{children}</div>
                 </Box>
             )}
@@ -45,243 +46,233 @@ function TabPanel(props: any) {
 }
 
 export default function MyDialogWithTabs() {
+    const statusMovies = [
+        {
+            value: 'going',
+            label: 'Đang ra',
+        },
+        {
+            value: 'pause',
+            label: 'Tạm dừng',
+        },
+        {
+            value: 'done',
+            label: 'Kết thúc',
+        },
+        {
+            value: 'will',
+            label: 'Sắp chiếu',
+        },
+    ];
+    const kuniMovies = [
+        {
+            value: 'jp',
+            label: 'Nhật bản',
+        },
+        {
+            value: 'en',
+            label: 'Anh',
+        },
+        {
+            value: 'cn',
+            label: 'Trung quốc',
+        },
+    ];
+    const options = [
+        { title: "Movie 1", year: 2020, firstLetter: "M" },
+        { title: "Movie 2", year: 2021, firstLetter: "M" },
+        { title: "Movie 4", year: 2021, firstLetter: "M" },
+        { title: "Movied", year: 2021, firstLetter: "M" },
+
+
+    ];
     const [open, setOpen] = useState(false);
     const [value, setValue] = useState(0);
+    const [valueAuto, setvalueAutof] = React.useState([options[0]]);
 
+
+    //============
+    const [selectedImage, setSelectedImage] = useState<string>('');
+
+    const handleImageChange = (event: any) => {
+        const file = event.target.files[0];
+        setSelectedImage(URL.createObjectURL(file));
+    };
+
+    const handleUploadClick = () => {
+        // Handle upload logic here
+        // You can access the selected image using the 'selectedImage' state
+    };
+    //==============
+    const handleChangeAuto = (event: any, newValue: any) => {
+        console.log(valueAuto);
+        setvalueAutof(newValue);
+
+    };
     const handleClickOpen = () => {
         setOpen(true);
     };
-
     const handleClose = () => {
         setOpen(false);
     };
-
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
     };
-    const currencies = [
-        {
-            value: 'USD',
-            label: '$',
-        },
-        {
-            value: 'EUR',
-            label: '€',
-        },
-        {
-            value: 'BTC',
-            label: '฿',
-        },
-        {
-            value: 'JPY',
-            label: '¥',
-        },
-    ];
-    // Top 100 films as rated by IMDb users. http://www.imdb.com/chart/top
-    const top100Films = [
-        { title: 'The Shawshank Redemption', year: 1994 },
-        { title: 'The Godfather', year: 1972 },
-        { title: 'The Godfather: Part II', year: 1974 },
-        { title: 'The Dark Knight', year: 2008 },
-        { title: '12 Angry Men', year: 1957 },
-        { title: "Schindler's List", year: 1993 },
-        { title: 'Pulp Fiction', year: 1994 },
-        {
-            title: 'The Lord of the Rings: The Return of the King',
-            year: 2003,
-        },
-        { title: 'The Good, the Bad and the Ugly', year: 1966 },
-        { title: 'Fight Club', year: 1999 },
-        {
-            title: 'The Lord of the Rings: The Fellowship of the Ring',
-            year: 2001,
-        },
-        {
-            title: 'Star Wars: Episode V - The Empire Strikes Back',
-            year: 1980,
-        },
-        { title: 'Forrest Gump', year: 1994 },
-        { title: 'Inception', year: 2010 },
-        {
-            title: 'The Lord of the Rings: The Two Towers',
-            year: 2002,
-        },
-        { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-        { title: 'Goodfellas', year: 1990 },
-        { title: 'The Matrix', year: 1999 },
-        { title: 'Seven Samurai', year: 1954 },
-        {
-            title: 'Star Wars: Episode IV - A New Hope',
-            year: 1977,
-        },
-        { title: 'City of God', year: 2002 },
-        { title: 'Se7en', year: 1995 },
-        { title: 'The Silence of the Lambs', year: 1991 },
-        { title: "It's a Wonderful Life", year: 1946 },
-        { title: 'Life Is Beautiful', year: 1997 },
-        { title: 'The Usual Suspects', year: 1995 },
-        { title: 'Léon: The Professional', year: 1994 },
-        { title: 'Spirited Away', year: 2001 },
-        { title: 'Saving Private Ryan', year: 1998 },
-        { title: 'Once Upon a Time in the West', year: 1968 },
-        { title: 'American History X', year: 1998 },
-        { title: 'Interstellar', year: 2014 },
-        { title: 'Casablanca', year: 1942 },
-        { title: 'City Lights', year: 1931 },
-        { title: 'Psycho', year: 1960 },
-        { title: 'The Green Mile', year: 1999 },
-        { title: 'The Intouchables', year: 2011 },
-        { title: 'Modern Times', year: 1936 },
-        { title: 'Raiders of the Lost Ark', year: 1981 },
-        { title: 'Rear Window', year: 1954 },
-        { title: 'The Pianist', year: 2002 },
-        { title: 'The Departed', year: 2006 },
-        { title: 'Terminator 2: Judgment Day', year: 1991 },
-        { title: 'Back to the Future', year: 1985 },
-        { title: 'Whiplash', year: 2014 },
-        { title: 'Gladiator', year: 2000 },
-        { title: 'Memento', year: 2000 },
-        { title: 'The Prestige', year: 2006 },
-        { title: 'The Lion King', year: 1994 },
-        { title: 'Apocalypse Now', year: 1979 },
-        { title: 'Alien', year: 1979 },
-        { title: 'Sunset Boulevard', year: 1950 },
-        {
-            title: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb',
-            year: 1964,
-        },
-        { title: 'The Great Dictator', year: 1940 },
-        { title: 'Cinema Paradiso', year: 1988 },
-        { title: 'The Lives of Others', year: 2006 },
-        { title: 'Grave of the Fireflies', year: 1988 },
-        { title: 'Paths of Glory', year: 1957 },
-        { title: 'Django Unchained', year: 2012 },
-        { title: 'The Shining', year: 1980 },
-        { title: 'WALL·E', year: 2008 },
-        { title: 'American Beauty', year: 1999 },
-        { title: 'The Dark Knight Rises', year: 2012 },
-        { title: 'Princess Mononoke', year: 1997 },
-        { title: 'Aliens', year: 1986 },
-        { title: 'Oldboy', year: 2003 },
-        { title: 'Once Upon a Time in America', year: 1984 },
-        { title: 'Witness for the Prosecution', year: 1957 },
-        { title: 'Das Boot', year: 1981 },
-        { title: 'Citizen Kane', year: 1941 },
-        { title: 'North by Northwest', year: 1959 },
-        { title: 'Vertigo', year: 1958 },
-        {
-            title: 'Star Wars: Episode VI - Return of the Jedi',
-            year: 1983,
-        },
-        { title: 'Reservoir Dogs', year: 1992 },
-        { title: 'Braveheart', year: 1995 },
-        { title: 'M', year: 1931 },
-        { title: 'Requiem for a Dream', year: 2000 },
-        { title: 'Amélie', year: 2001 },
-        { title: 'A Clockwork Orange', year: 1971 },
-        { title: 'Like Stars on Earth', year: 2007 },
-        { title: 'Taxi Driver', year: 1976 },
-        { title: 'Lawrence of Arabia', year: 1962 },
-        { title: 'Double Indemnity', year: 1944 },
-        {
-            title: 'Eternal Sunshine of the Spotless Mind',
-            year: 2004,
-        },
-        { title: 'Amadeus', year: 1984 },
-        { title: 'To Kill a Mockingbird', year: 1962 },
-        { title: 'Toy Story 3', year: 2010 },
-        { title: 'Logan', year: 2017 },
-        { title: 'Full Metal Jacket', year: 1987 },
-        { title: 'Dangal', year: 2016 },
-        { title: 'The Sting', year: 1973 },
-        { title: '2001: A Space Odyssey', year: 1968 },
-        { title: "Singin' in the Rain", year: 1952 },
-        { title: 'Toy Story', year: 1995 },
-        { title: 'Bicycle Thieves', year: 1948 },
-        { title: 'The Kid', year: 1921 },
-        { title: 'Inglourious Basterds', year: 2009 },
-        { title: 'Snatch', year: 2000 },
-        { title: '3 Idiots', year: 2009 },
-        { title: 'Monty Python and the Holy Grail', year: 1975 },
-    ];
-    const options = top100Films.map((option) => {
-        const firstLetter = option.title[0].toUpperCase();
-        return {
-            firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-            ...option,
-        };
-    });
+
+
+
+
+
     return (
         <ThemeProvider theme={darkTheme} >
             <LocalizationProvider dateAdapter={AdapterDayjs}>
+                <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                    Open dialog
+                </Button>
+                <Dialog maxWidth={'xl'} open={open} onClose={handleClose}>
+                    <AppBar position="static" >
+                        <Toolbar >
+                            <IconButton
+                                edge="start"
+                                color="inherit"
+                                onClick={handleClose}
+                                aria-label="close"
+                            >
+                                <CloseIcon />
+                            </IconButton>
+                            <Tabs
+                                value={value}
+                                onChange={handleChange}
+                                centered
+                            >
+                                <Tab icon={<InfoIcon />} iconPosition="start" label="Thông tin cơ bản" wrapped />
+                                <Tab icon={<ListAltIcon />} iconPosition="start" label="Thông tin tập phim" wrapped />
+                            </Tabs>
 
-                <div>
-                    <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                        Open dialog
-                    </Button>
-                    <Dialog fullScreen open={open} onClose={handleClose}>
-                        <AppBar position="static" >
-                            <Toolbar >
-                                <IconButton
-                                    edge="start"
-                                    color="inherit"
-                                    onClick={handleClose}
-                                    aria-label="close"
-                                >
-                                    <CloseIcon />
-                                </IconButton>
-                                <Tabs
-                                    value={value}
-                                    onChange={handleChange}
-                                    centered
-                                >
-                                    <Tab icon={<InfoIcon />} iconPosition="start" label="Thông tin cơ bản" wrapped />
-                                    <Tab icon={<ListAltIcon />} iconPosition="start" label="Thông tin tập phim" wrapped />
-                                </Tabs>
+                        </Toolbar>
 
-                            </Toolbar>
+                    </AppBar>
+                    <TabPanel value={value} index={0} >
 
-                        </AppBar>
-                        <TabPanel value={value} index={0} >
+                        <Box sx={{
+                            margin: '0 auto',
+                            padding: '1rem',
+                            height: '100%',
+                            display: 'flex'
+                        }}>
+
                             <Box
                                 component="form"
                                 sx={{
-                                    '& .MuiTextField-root': { m: 1, width: '25ch' },
-                                    '& .MuiFormHelperText-root': { marginLeft: 0 }
+                                    '& .MuiTextField-root': { m: 1 },
+                                    '& #movie-title': {
+                                        width: '50ch'
+                                    },
+                                    '& #movie-sumary': {
+                                        width: '50ch',
+                                    },
+                                    '& .MuiFormHelperText-root': { marginLeft: 0 },
+                                    display: 'flex',
+                                    alignItems: 'stretch',
+                                    gap: '1rem',
+                                    width: '100%',
+
+
                                 }}
                                 autoComplete="off"
                             >
-                                <div>
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    gap: 1,
+
+                                }}>
                                     <TextField
+
                                         required
-                                        id="outlined-required-title"
+                                        id="movie-title"
                                         label="Tựa phim"
                                         defaultValue="Rabit hole"
                                     />
+
+
                                     <TextField
+
                                         required
-                                        id="outlined-required-sumary"
+                                        id="movie-sumary"
                                         label="Mô tả"
                                         multiline
+                                        rows={12.5}
                                         defaultValue="Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole"
                                     />
-                                    <Autocomplete
-                                        id="grouped-tacgia"
-                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        groupBy={(option) => option.firstLetter}
-                                        getOptionLabel={(option) => option.title}
-                                        sx={{ width: 300 }}
-                                        defaultValue={undefined}
+                                </Box>
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
 
-                                        renderInput={(params) => <TextField required {...params} label="Tác giả" />}
+                                    width: '30vw',
+
+                                    gap: 1,
+
+                                }}>
+
+                                    <Autocomplete
+                                        limitTags={2}
+
+                                        multiple
+                                        id="movie-tacgia"
+                                        onChange={handleChangeAuto}
+                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                        getOptionLabel={(option) => option.title}
+                                        groupBy={(option) => option.firstLetter}
+                                        value={valueAuto}
+                                        isOptionEqualToValue={(option, value) => {
+                                            return option.title === value.title && option.year === value.year;
+                                        }}
+                                        renderTags={(tagValue, getTagProps) =>
+                                            tagValue.map((option, index) => (
+                                                <Chip
+                                                    {...getTagProps({ index })}
+                                                    key={option.title}
+                                                    label={option.title}
+                                                />
+                                            ))
+                                        }
+
+                                        filterSelectedOptions
+                                        renderInput={(params) => (
+                                            <TextField
+                                                required
+                                                {...params}
+                                                label="Tác giả"
+                                                placeholder="Chọn tác giả"
+                                            />
+                                        )}
                                     />
                                     <Autocomplete
+                                        limitTags={2}
+
                                         multiple
-                                        id="tags-outlined"
+                                        id="movie-theloai"
+                                        onChange={handleChangeAuto}
                                         options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                                         getOptionLabel={(option) => option.title}
                                         groupBy={(option) => option.firstLetter}
-                                        defaultValue={undefined}
+                                        value={valueAuto}
+                                        isOptionEqualToValue={(option, value) => {
+                                            return option.title === value.title && option.year === value.year;
+                                        }}
+                                        renderTags={(tagValue, getTagProps) =>
+                                            tagValue.map((option, index) => (
+                                                <Chip
+                                                    {...getTagProps({ index })}
+                                                    key={option.title}
+                                                    label={option.title}
+                                                />
+                                            ))
+                                        }
 
                                         filterSelectedOptions
                                         renderInput={(params) => (
@@ -294,11 +285,26 @@ export default function MyDialogWithTabs() {
                                         )}
                                     />
                                     <Autocomplete
+                                        limitTags={2}
+
                                         multiple
-                                        id="tags-outlined"
+                                        id="movie-daodien"
+                                        onChange={handleChangeAuto}
+
                                         options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        limitTags={5}
-                                        defaultValue={undefined}
+                                        value={valueAuto}
+                                        isOptionEqualToValue={(option, value) => {
+                                            return option.title === value.title && option.year === value.year;
+                                        }}
+                                        renderTags={(tagValue, getTagProps) =>
+                                            tagValue.map((option, index) => (
+                                                <Chip
+                                                    {...getTagProps({ index })}
+                                                    key={option.title}
+                                                    label={option.title}
+                                                />
+                                            ))
+                                        }
                                         groupBy={(option) => option.firstLetter}
                                         getOptionLabel={(option) => option.title}
                                         filterSelectedOptions
@@ -313,10 +319,24 @@ export default function MyDialogWithTabs() {
                                     />
                                     <Autocomplete
                                         multiple
-                                        id="tags-outlined"
+                                        limitTags={2}
+
+                                        id="movie-lang"
                                         options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        limitTags={5}
-                                        defaultValue={undefined}
+                                        onChange={handleChangeAuto}
+                                        value={valueAuto}
+                                        isOptionEqualToValue={(option, value) => {
+                                            return option.title === value.title && option.year === value.year;
+                                        }}
+                                        renderTags={(tagValue, getTagProps) =>
+                                            tagValue.map((option, index) => (
+                                                <Chip
+                                                    {...getTagProps({ index })}
+                                                    key={option.title}
+                                                    label={option.title}
+                                                />
+                                            ))
+                                        }
                                         groupBy={(option) => option.firstLetter}
                                         getOptionLabel={(option) => option.title}
                                         filterSelectedOptions
@@ -329,42 +349,30 @@ export default function MyDialogWithTabs() {
                                             />
                                         )}
                                     />
-                                    <DatePicker label="Năm sản xuất" />
-                                    <TextField
-                                        id="outlined-select-currency"
-                                        select
-                                        label="Nhãn"
-                                        defaultValue={undefined}
-                                        helperText="Please select your currency"
-                                    >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    <TextField
-                                        id="outlined-select-currency"
-                                        select
-                                        label="Quốc gia sản xuất"
-                                        defaultValue={undefined}
-                                        helperText="Please select your currency"
-                                    >
-                                        {currencies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
                                     <Autocomplete
                                         multiple
-                                        id="tags-outlined"
+                                        limitTags={2}
+
+                                        autoSelect
+                                        id="movie-actor"
+                                        onChange={handleChangeAuto}
+                                        value={valueAuto}
                                         options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        limitTags={5}
-                                        defaultValue={undefined}
                                         groupBy={(option) => option.firstLetter}
                                         getOptionLabel={(option) => option.title}
                                         filterSelectedOptions
+                                        isOptionEqualToValue={(option, value) => {
+                                            return option.title === value.title && option.year === value.year;
+                                        }}
+                                        renderTags={(tagValue, getTagProps) =>
+                                            tagValue.map((option, index) => (
+                                                <Chip
+                                                    {...getTagProps({ index })}
+                                                    key={option.title}
+                                                    label={option.title}
+                                                />
+                                            ))
+                                        }
                                         renderInput={(params) => (
                                             <TextField
                                                 required
@@ -374,33 +382,80 @@ export default function MyDialogWithTabs() {
                                             />
                                         )}
                                     />
-                                    <MobileTimePicker label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
+                                </Box>
+                                <Box sx={{
+                                    display: 'flex',
+                                    flexDirection: 'column',
+                                    justifyContent: 'space-between',
+                                    gap: 1,
+
+                                }}>
+
+
                                     <TextField
-                                        id="outlined-select-currency"
+                                        id="movie-kuni"
                                         select
-                                        label="Trạng thái"
-                                        defaultValue="EUR"
-                                        helperText="Please select your currency"
+                                        label="Quốc gia sản xuất"
+                                        value={undefined}
+                                    // helperText="Please select your currency"
                                     >
-                                        {currencies.map((option) => (
+                                        {kuniMovies.map((option) => (
                                             <MenuItem key={option.value} value={option.value}>
                                                 {option.label}
                                             </MenuItem>
                                         ))}
                                     </TextField>
-                                </div>
+                                    <DatePicker label="Năm sản xuất" />
+                                    <TextField
+                                        id="movie-tag"
+                                        select
+                                        label="Nhãn"
+                                        value={undefined}
+                                    // helperText="Please select your currency"
+                                    >
+                                        {statusMovies.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <MobileTimePicker label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
+                                    <TextField
+                                        id="movie-status"
+                                        select
+                                        label="Trạng thái"
+                                    // defaultValue="EUR"
+                                    // helperText="Please select your currency"
+                                    >
+                                        {statusMovies.map((option) => (
+                                            <MenuItem key={option.value} value={option.value}>
+                                                {option.label}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Box>
 
-                                <Button autoFocus variant="contained" onClick={handleClose}>
-                                    Lưu
-                                </Button>
+
+
                             </Box>
-                        </TabPanel>
-                        <TabPanel value={value} index={1}>
-                            Item Two
-                        </TabPanel>
-                    </Dialog>
-                </div>
+
+
+                            <ImageUpload></ImageUpload>
+                        </Box>
+
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                    </TabPanel>
+                    <DialogActions>
+                        <Button autoFocus variant="contained" onClick={handleClose}>
+                            Huỷ
+                        </Button>
+                        <Button autoFocus variant="contained" onClick={handleClose}>
+                            Lưu
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </LocalizationProvider>
-        </ThemeProvider>
+        </ThemeProvider >
     );
 }

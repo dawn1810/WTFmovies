@@ -1,3 +1,4 @@
+'use client'
 import classNames from 'classnames/bind';
 import style from './Editer.module.scss';
 import DataGridCom from '~/components/DataGridCom';
