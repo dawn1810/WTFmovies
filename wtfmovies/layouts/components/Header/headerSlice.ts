@@ -11,12 +11,9 @@ export const headerSlice = createSlice({
         changeModalShow: (state, action) => {
             state.modalShow = action.payload;
         },
-        changeSearchQuery: (state, action) => {
-            state.query = action.payload;
-        },
     },
 });
 
-export const { changeModalShow, changeSearchQuery } = headerSlice.actions;
+export const { changeModalShow } = headerSlice.actions;
 
 export default headerSlice.reducer;

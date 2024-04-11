@@ -25,28 +25,24 @@ function Captions({ item }: { item: CaptionsItemInterface }) {
     return (
         <>
             <div className={cx('film-info')}>
-                <h3 className={cx('film-title')}>{item.filmTitle}</h3>
-                <div className={cx('film-content')}>{item.filmContent}</div>
+                <h3 className={cx('film-title')}>{item.name}</h3>
+                <div className={cx('film-content')}>{item.describe}</div>
             </div>
             <div className={cx('film-detail')}>
                 <ul className={cx('info-list')}>
                     {item.infoList.map((item, index) => (
                         <li key={index}>
                             <span>{icons[index]}</span>
-                            {item.type === 'searchAble' ? (
+                            {item.type === 'searchAble' && typeof item.info === 'object' ? (
                                 <span className={cx('info-title')}>
                                     <span>{item.title}:</span>{' '}
-                                    {typeof item.info === 'object' &&
-                                        item.info.slice(0, -1).map((info, infoIndex) => (
-                                            <Fragment key={infoIndex}>
-                                                <Link
-                                                    href={'/result?search_query=' + info}
-                                                    className={cx('search-able')}
-                                                >
-                                                    {info + ','}
-                                                </Link>{' '}
-                                            </Fragment>
-                                        ))}
+                                    {item.info.slice(0, -1).map((info, infoIndex) => (
+                                        <Fragment key={infoIndex}>
+                                            <Link href={'/result?search_query=' + info} className={cx('search-able')}>
+                                                {info + ','}
+                                            </Link>{' '}
+                                        </Fragment>
+                                    ))}
                                     <Link
                                         key={-1}
                                         href={'/result?search_query=' + item.info.slice(-1)}
@@ -64,7 +60,11 @@ function Captions({ item }: { item: CaptionsItemInterface }) {
                     ))}
                 </ul>
                 <div className={cx('btn-group')}>
-                    <Button primary leftIcon={<FontAwesomeIcon icon={faPlay} />}>
+                    <Button
+                        to={`/review/${item.name.replaceAll(' ', '-')}`}
+                        primary
+                        leftIcon={<FontAwesomeIcon icon={faPlay} />}
+                    >
                         Xem phim
                     </Button>
                     <button className={cx('action-btn')}>

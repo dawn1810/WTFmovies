@@ -36,7 +36,7 @@ function FilmCarousel({ items }: { items: CaptionsItemInterface[] }) {
             <Carousel touch indicators={!isMobile} nextIcon={<NextButton />} prevIcon={<PrevButton />}>
                 {items.map((item, index) => (
                     <Carousel.Item key={index}>
-                        <ImageCustom className="d-block w-100" src={item.imgSrc} alt={item.filmTitle} />
+                        <ImageCustom className={`d-block w-100 ${cx('bg-img')}`} src={item.img} alt={item.name} />
                         {isMobile ? (
                             <div className={cx('carousel-caption')}>
                                 <Captions item={item} />

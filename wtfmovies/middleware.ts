@@ -13,8 +13,12 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/editer/overview', request.url));
     }
 
-    const { device } = userAgent(request);
-    const viewport = device.type === 'mobile' ? 'mobile' : 'desktop';
+    if (request.nextUrl.pathname.startsWith('/editer') && !editer_path.some(path => request.nextUrl.pathname.endsWith(path))) {
+        return NextResponse.redirect(new URL('/editer/overview', request.url));
+    }
+
+    // const { device } = userAgent(request);
+    // const viewport = device.type === 'mobile' ? 'mobile' : 'desktop';
 
     return NextResponse.next();
 }

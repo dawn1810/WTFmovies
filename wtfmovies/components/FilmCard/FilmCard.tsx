@@ -15,6 +15,7 @@ import classNames from 'classnames/bind';
 import images from '~/assets/image';
 import ImageCustom from '../ImageCustom';
 import style from './FilmCard.module.scss';
+import { FilmCardInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -28,17 +29,7 @@ function FilmCard({
     rating,
     episodes,
     className,
-}: {
-    large?: boolean;
-    noOverlay?: boolean;
-    largeNoOverlay?: boolean;
-    imgSrc: string;
-    filmName: string;
-    views: string;
-    rating: string;
-    episodes: string;
-    className?: string | [] | undefined;
-}) {
+}: FilmCardInterface) {
     return (
         <div
             className={cx('wrapper', className, {

@@ -12,7 +12,6 @@ const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.signu
 
 //header
 const modalShowSelector = (state: reduxStateInterface) => state.header.modalShow;
-export const searchQuerySelector = (state: reduxStateInterface) => state.header.query;
 
 //AlertPOPUP
 export const alertStatusSelector = (state: reduxStateInterface) => state.dataGridCom.alertStatus;
@@ -67,9 +66,8 @@ export const signupSelector = createSelector(
     }),
 );
 
-export const headerSelector = createSelector(modalShowSelector, searchQuerySelector, (modalShow, searchQuery) => ({
+export const headerSelector = createSelector(modalShowSelector, (modalShow) => ({
     modalShow,
-    searchQuery,
 }));
 
 export const playerSelector = createSelector(

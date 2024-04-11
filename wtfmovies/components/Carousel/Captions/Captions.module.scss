@@ -17,6 +17,7 @@
     }
 
     .film-content {
+        height: 100px;
         display: -webkit-box;
         -webkit-line-clamp: 5;
         -webkit-box-orient: vertical;
@@ -37,6 +38,10 @@
         justify-content: flex-end;
         gap: 10px;
         z-index: 2;
+
+        a {
+            width: auto;
+        }
 
         .action-btn {
             display: flex;
@@ -67,7 +72,14 @@
             }
 
             .info-title {
+                width: 100%;
                 grid-area: title;
+
+                /* Does the magic */
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-align: start;
 
                 span {
                     font-weight: 600;
@@ -81,6 +93,7 @@
             .search-able {
                 color: #7fa7ff;
                 transition: 0.1s linear;
+
 
                 &:hover {
                     text-decoration: underline;

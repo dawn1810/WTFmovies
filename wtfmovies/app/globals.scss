@@ -62,6 +62,7 @@ html {
 }
 
 body {
+    padding-top: 150px;
     font-family: var(--font-family);
     font-size: 1.6rem;
     line-height: 1.5;
@@ -140,5 +141,20 @@ body {
 @media screen and (max-width: 1024px) {
     :root {
         --default-layout-width: 100%;
+    }
+}
+
+// Animation
+@keyframes rotate {
+    0% {
+        transform: scale(0.9, 1.1);
+    }
+
+    50% {
+        transform: scale(1.1, 0.9);
+    }
+
+    100% {
+        transform: scale(0.9, 1.1);
     }
 }
