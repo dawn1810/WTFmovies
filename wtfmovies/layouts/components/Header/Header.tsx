@@ -164,9 +164,9 @@ function Header({
     const [scrollPosition, setScrollPosition] = useState(0);
     const [headerClass, setHeaderClass] = useState('wrapper-show');
     const [scrollSpeed, setScrollSpeed] = useState(0);
+    const [lastScrollTop, setLastScrollTop] = useState(0);
 
     useEffect(() => {
-        let lastScrollTop = 0;
         let ticking = false;
 
         const handleScroll = () => {
@@ -174,17 +174,16 @@ function Header({
 
             if (!ticking) {
                 window.requestAnimationFrame(() => {
-                    const distance = Math.abs(currentPosition - lastScrollTop);
+                    const distance = Math.abs(currentPosition - lastScrollTop) * 100;
                     const speed = distance / 60;
                     setScrollSpeed(speed);
 
-                    lastScrollTop = currentPosition;
+                    setLastScrollTop(currentPosition);
                     ticking = false;
                 });
 
                 ticking = true;
             }
-            console.log(scrollSpeed);
 
             if (currentPosition < scrollPosition - scrollSpeed) {
                 setHeaderClass('wrapper-show');
