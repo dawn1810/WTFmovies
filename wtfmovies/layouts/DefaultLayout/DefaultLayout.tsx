@@ -12,7 +12,7 @@ function DefaultLayout({ currentUser, children }: { currentUser?: boolean; child
         <div className={cx('wrapper')}>
             <Header currentUser={currentUser} />
             <section className={cx('main')}>{children}</section>
-            <BottomBar />
+            {/* <BottomBar /> */}
             <Footer />
         </div>
     );

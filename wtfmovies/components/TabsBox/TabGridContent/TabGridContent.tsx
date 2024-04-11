@@ -18,19 +18,23 @@ function TabGridContent({ films }: { films: FilmsInterFace[] }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content-info')}>
-                {films.map((film, index) => (
-                    <FilmCard
-                        key={index}
-                        large={isMobile}
-                        imgSrc={film.img}
-                        filmName={film.name}
-                        views={film.views}
-                        rating={film.rating}
-                        episodes={film.episodes}
-                    />
-                ))}
+                {films.length > 0 ? (
+                    films.map((film, index) => (
+                        <FilmCard
+                            key={index}
+                            large={isMobile}
+                            imgSrc={film.img}
+                            filmName={film.name}
+                            views={film.views}
+                            rating={film.rating}
+                            episodes={film.episodes}
+                        />
+                    ))
+                ) : (
+                    <div>Không có phim cho tabs này</div>
+                )}
             </div>
-            <Button primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
+            <Button to="/search" primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
                 Xem thêm
             </Button>
         </div>

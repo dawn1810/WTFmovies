@@ -155,7 +155,7 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
 export const getNewClassifyFilms = async (
     season: string,
     year: number,
-): Promise<{ tabs: TabInterface[]; films: FilmsInterFace[] }> => {
+): Promise<{ newFilmTabs: TabInterface[]; mostWatchFilms: FilmsInterFace[] }> => {
     let start, end;
 
     switch (season) {
@@ -196,7 +196,7 @@ export const getNewClassifyFilms = async (
 
     const mostWatchFilms = await getFilms(8, { views: -1, likes: -1, rating: -1 });
 
-    const tabs: TabInterface[] = [
+    const newFilmTabs: TabInterface[] = [
         {
             title: '#TẤT CẢ',
             eventKey: 'all',
@@ -219,5 +219,75 @@ export const getNewClassifyFilms = async (
         },
     ];
 
-    return { tabs, films: mostWatchFilms };
+    return { newFilmTabs, mostWatchFilms };
+};
+
+export const getHotClassifyFilms = async (
+    season: string,
+    year: number,
+): Promise<{ hotFilmTabs: TabInterface[]; mostLikeFilms: FilmsInterFace[] }> => {
+    let start, end;
+
+    switch (season) {
+        case 'winter':
+            start = new Date(`${year}-12-01`);
+            end = new Date(`${year + 1}-03-01`);
+            break;
+        case 'spring':
+            start = new Date(`${year}-03-01`);
+            end = new Date(`${year}-06-01`);
+            break;
+        case 'summer':
+            start = new Date(`${year}-06-01`);
+            end = new Date(`${year}-09-01`);
+            break;
+        case 'autumn':
+            start = new Date(`${year}-09-01`);
+            end = new Date(`${year}-12-01`);
+            break;
+    }
+
+    const allHotFilms = await getFilms(16, { views: -1, updateTime: -1, likes: -1, rating: -1 });
+    const currHotFilms = await getFilms(
+        16,
+        { views: -1, updateTime: -1, likes: -1, rating: -1 },
+        { updateTime: { $gte: start, $lt: end } },
+    );
+    const seriesHotFilms = await getFilms(
+        16,
+        { views: -1, updateTime: -1, likes: -1, rating: -1 },
+        { 'videoType.episode.1': { $exists: true } },
+    );
+    const movieHotFilms = await getFilms(
+        16,
+        { views: -1, updateTime: -1, likes: -1, rating: -1 },
+        { 'videoType.episode.1': { $exists: false } },
+    );
+
+    const mostLikeFilms = await getFilms(8, { likes: -1, views: -1, rating: -1 });
+
+    const hotFilmTabs: TabInterface[] = [
+        {
+            title: '#TẤT CẢ',
+            eventKey: 'all',
+            content: allHotFilms,
+        },
+        {
+            title: '#MÙA ĐÔNG - 2024',
+            eventKey: 'winterTo2024',
+            content: currHotFilms,
+        },
+        {
+            title: '#PHIM BỘ',
+            eventKey: 'phimBo',
+            content: seriesHotFilms,
+        },
+        {
+            title: '#PHIM LẺ',
+            eventKey: 'phimLe',
+            content: movieHotFilms,
+        },
+    ];
+
+    return { hotFilmTabs, mostLikeFilms };
 };

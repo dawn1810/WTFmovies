@@ -10,6 +10,7 @@
 }
 
 .content-info {
+    min-width: 785px;
     grid-area: content;
     display: grid;
     grid-template-columns: repeat(4, auto);

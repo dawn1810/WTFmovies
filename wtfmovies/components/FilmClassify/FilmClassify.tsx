@@ -24,7 +24,12 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
             {isMobile ? (
                 <>
                     <TabsBox tabs={tabs} listContent textContent defaultActiveKey="all" className={cx('tab-box')} />
-                    <Button primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
+                    <Button
+                        to={tags.mainDir}
+                        primary
+                        rightIcon={<FontAwesomeIcon icon={faAngleRight} />}
+                        className={cx('more-btn')}
+                    >
                         Xem thêm
                     </Button>
                     <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={films} />

@@ -67,7 +67,7 @@
         text-align: center;
 
         h4 {
-            width: 80%;
+            max-width: 80%;
             overflow: hidden;
             white-space: nowrap;
             text-overflow: ellipsis;
@@ -95,6 +95,10 @@
         .nooverlay-subinfo-list {
             display: flex;
             gap: 10px;
+        }
+
+        h4 {
+            width: 220px;
         }
     }
 
