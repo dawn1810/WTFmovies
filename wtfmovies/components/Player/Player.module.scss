@@ -1,6 +1,6 @@
 .wrapper {
     position: relative;
     width: var(--default-layout-width);
-    // height: 705px;
+    max-height: var(--default-max-height);
     aspect-ratio: 16 / 9;
 }

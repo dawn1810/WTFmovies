@@ -43,6 +43,8 @@ $blur-background-color: transparentize($card-background-color, 0.8);
     // layout
     --default-layout-header-height: 80px;
     --default-layout-width: 1250px;
+    --default-max-height: 705px;
+
     --default-layout-horizontal-spacer: 24px;
     //
     --bs-link-hover-color: var(--highlight-color);
