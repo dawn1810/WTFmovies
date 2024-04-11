@@ -6,7 +6,7 @@ import TabBox from '~/components/TabsBox/TabsBox';
 import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 import DefaultLayout from '~/layouts/DefaultLayout';
-import { auth } from '../api/auth/[...nextauth]/auth';
+import { auth } from '../../api/auth/[...nextauth]/auth';
 
 const cx = classNames.bind(style);
 
