@@ -1,5 +1,7 @@
 .wrapper {
-    width: var(--default-layout-width);
+    width: 100%;
+
+    // width: var(--default-layout-width);
     position: relative;
     display: flex;
     justify-content: center;
@@ -39,13 +41,28 @@
 
     .left-btn {
         left: 0;
-        background: linear-gradient(-90deg, rgb(255 255 255 / 0%) 0%, rgb(15 15 15) 100%);
+        width: 9%;
+        background: transparent;
+        transition: 0.3s;
 
+        &:hover {
+            color: var(--highlight-color);
+
+        }
     }
 
     .right-btn {
         right: 0;
-        background: linear-gradient(90deg, rgb(255 255 255 / 0%) 0%, rgb(15 15 15) 100%);
+        width: 9%;
+        background: transparent;
+        transition: 0.3s;
+
+        &:hover {
+            color: var(--highlight-color);
+
+        }
+
+
     }
 }
 

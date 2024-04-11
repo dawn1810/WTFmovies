@@ -290,7 +290,7 @@ function Header({
                 <Genres>
                     {genres.map((genre, index) => {
                         if (genre.special)
-                            return <div className={cx('special-genre')}>
+                            return <div key={index} className={cx('special-genre')}>
                                 <Link key={index} href={genre.to} className={cx('genre')}>
                                     {genre.name}
                                 </Link>
