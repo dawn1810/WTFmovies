@@ -14,7 +14,7 @@
 
     .image-box {
         position: relative;
-        margin: 2px;
+        // margin: auto;
         overflow: hidden;
         border-radius: 5px;
 
@@ -43,6 +43,8 @@
         display: flex;
         align-items: center;
         border-radius: 5px;
+
+
 
         .large-nooverlay-img {
             height: 400px;
@@ -233,9 +235,9 @@
 
     .hover-btn-list {
         position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
+        // top: 50%;
+        // left: 50%;
+        // transform: translate(-50%, -50%);
         width: 100%;
         height: 100%;
         display: flex;
@@ -350,6 +352,10 @@
 }
 
 .large-wrapper {
+    .image-box {
+        margin: auto;
+    }
+
     width: 100%;
 }
 
