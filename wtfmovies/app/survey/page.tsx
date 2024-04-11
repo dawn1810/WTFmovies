@@ -12,7 +12,6 @@ import { ExtendedUser } from '~/libs/interfaces';
 import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './survey.module.scss';
-import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 // type OptionType = {
@@ -113,7 +112,7 @@ function Survey() {
                 return (
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>Thể loại phim bạn yêu thích?</h1>
-                        <Image className={cx('quest-image')} width={300} height={252} src={images.gerne} alt="gerne" />
+                        <img className={cx('quest-image')} width={300} height={252} src={images.gerne} alt="gerne" />
                         <Form.Group className="mb-5" controlId="formHorizontalLoveGerne">
                             <Select
                                 isMulti
@@ -139,7 +138,7 @@ function Survey() {
                 return (
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>Đạo diễn bạn yêu thích?</h1>
-                        <Image
+                        <img
                             className={cx('quest-image')}
                             width={320}
                             height={252}
@@ -172,7 +171,7 @@ function Survey() {
                 return (
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>Diễn viên bạn yêu thích?</h1>
-                        <Image className={cx('quest-image')} width={300} height={252} src={images.actor} alt="gerne" />
+                        <img className={cx('quest-image')} width={300} height={252} src={images.actor} alt="gerne" />
                         <Form.Group className="mb-5" controlId="formHorizontalActor">
                             <Form.Control
                                 value={info.actors}
@@ -199,7 +198,7 @@ function Survey() {
                 return (
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>Ngôn ngữ phim bạn yêu thích?</h1>
-                        <Image
+                        <img
                             className={cx('quest-image')}
                             width={500}
                             height={252}
