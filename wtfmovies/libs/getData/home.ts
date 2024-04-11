@@ -66,7 +66,9 @@ export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
 
     const mappedFilms: CaptionsItemInterface[] = films.map((film): CaptionsItemInterface => {
         // Calculate the total number of episodes across all video types
-        const totalEpisodes = film.videoType.reduce((acc, type) => acc + type.episode.length, 0);
+        const subsType = film.videoType.find(type => type.title === 'Subs') as any;
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+
 
         return {
             img: film.poster,
@@ -104,8 +106,8 @@ export const getProposeListFilms = async (): Promise<FilmsInterFace[]> => {
 
     const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
         // Calculate the total number of episodes across all video types
-        const totalEpisodes = videoType.reduce((acc, type) => acc + type.episode.length, 0);
-
+        const subsType = videoType.find(type => type.title === 'Subs') as any;
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
         return {
             img,
             name,
@@ -138,8 +140,8 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
 
     const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
         // Calculate the total number of episodes across all video types
-        const totalEpisodes = videoType.reduce((acc, type) => acc + type.episode.length, 0);
-
+        const subsType = videoType.find(type => type.title === 'Subs') as any;
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
         return {
             img,
             name,

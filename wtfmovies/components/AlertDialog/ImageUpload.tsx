@@ -49,9 +49,9 @@ function ImageUpload() {
 
             <FilmCard key={selectedImage} imgSrc={selectedImage}
                 filmName={'Demo Image'}
-                views={'1309'}
-                rating={'4.9'}
-                episodes={'24'}
+                views={1309}
+                rating={4.9}
+                episodes={24}
             >
 
             </FilmCard>

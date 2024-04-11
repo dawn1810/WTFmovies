@@ -2,7 +2,7 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -138,6 +138,8 @@ function Header({
     const dispatch = useDispatch();
 
     const [searchShow, setSearchShow] = useState<boolean>(false);
+    const handleSearchClose = () => setSearchShow(false);
+    const handleSearchShow = () => setSearchShow(true);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -155,11 +157,25 @@ function Header({
         }
     };
 
-    const handleSearchClose = () => setSearchShow(false);
-    const handleSearchShow = () => setSearchShow(true);
 
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [headerClass, setHeaderClass] = useState('wrapper-show');
+
+    const offset = 10; // Tự điều chỉnh offset theo ý muốn
+
+    useEffect(() => {
+        window.onscroll = () => {
+            let currentPosition = window.pageYOffset;
+            if (currentPosition < scrollPosition - offset) {
+                setHeaderClass('wrapper-show');
+            } else if (currentPosition > scrollPosition + offset) {
+                setHeaderClass('wrapper-hide');
+            }
+            setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
+        }
+    }, [scrollPosition]);
     return (
-        <header className={cx('wrapper')}>
+        <header className={cx('wrapper', headerClass)}>
             <div className={cx('header')}>
                 <div className={cx('inner')}>
                     {isDatabase ? (

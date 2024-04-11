@@ -4,6 +4,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--card-blur-color);
+    backdrop-filter: blur(10px);
+    border-radius: 0px 0px 8px 8px;
 
     .genres {
         display: flex;
