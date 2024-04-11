@@ -17,11 +17,13 @@
             display: flex;
             justify-content: center;
 
-            div {
+            &>div {
                 width: var(--default-layout-width);
                 display: flex;
                 gap: 10px;
                 padding: 10px;
+                align-items: center;
+
             }
         }
     }

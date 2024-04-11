@@ -98,9 +98,9 @@ const userMenu = [
 ];
 
 const genres = [
-    { name: 'Tất cả', to: '/' },
-    { name: 'Thịnh hành', to: '/hot' },
-    { name: 'Mới', to: '/new' },
+    { name: 'Tất cả', to: '/', special: true },
+    { name: 'Thịnh hành', to: '/hot', special: true },
+    { name: 'Mới', to: '/new', special: true },
     { name: 'Hành động', to: '/action' },
     { name: 'Tình cảm', to: '/romance' },
     { name: 'Trinh thám', to: '/detective' },
@@ -288,11 +288,19 @@ function Header({
             </div>
             {isDatabase || (
                 <Genres>
-                    {genres.map((genre, index) => (
-                        <Link key={index} href={genre.to} className={cx('genre')}>
-                            {genre.name}
-                        </Link>
-                    ))}
+                    {genres.map((genre, index) => {
+                        if (genre.special)
+                            return <div className={cx('special-genre')}>
+                                <Link key={index} href={genre.to} className={cx('genre')}>
+                                    {genre.name}
+                                </Link>
+                            </div>;
+                        else
+                            return <Link key={index} href={genre.to} className={cx('genre')}>
+                                {genre.name}
+                            </Link>
+
+                    })}
                 </Genres>
             )}
 
