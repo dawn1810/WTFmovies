@@ -13,8 +13,8 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/editer/overview', request.url));
     }
 
-    if (request.nextUrl.pathname.startsWith('/editer') && !editer_path.some(path => request.nextUrl.pathname.endsWith(path))) {
-        return NextResponse.redirect(new URL('/editer/overview', request.url));
+    if (request.nextUrl.pathname.startsWith('/watch') && !request.nextUrl.pathname.endsWith('/tap1')) {
+        return NextResponse.redirect(new URL(request.nextUrl.pathname + '/tap1', request.url));
     }
 
     // const { device } = userAgent(request);

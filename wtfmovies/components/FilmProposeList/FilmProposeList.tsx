@@ -61,7 +61,8 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
     return (
         <div className={cx('wrapper', className)}>
             <Slider {...settings}>
-                {films.map((film, index) => (
+                {films.map((film, index) =>
+                (
                     <FilmCard
                         key={index}
                         imgSrc={film.img}
@@ -70,7 +71,8 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
                         rating={film.rating}
                         episodes={film.episodes}
                     />
-                ))}
+                )
+                )}
             </Slider>
         </div>
     );

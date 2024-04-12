@@ -15,56 +15,56 @@ const cx = classNames.bind(style);
 const films = [
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
     },
     {
         imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
+        name: 'Jujutsu Kaisen',
         views: '999.999',
         rating: '4.9',
         episodes: '1029',
@@ -155,20 +155,20 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
                     defaultActiveKey={filmData.videoType[0].title}
                     className={cx('tab-box')}
                 />
-                <TabsBox
+                {/* <TabsBox
                     tabs={proposeFilmsTabs}
                     listContent
                     // textContent
                     defaultActiveKey="like"
                     className={cx('tab-box')}
-                />
-                <TabsBox
+                /> */}
+                {/* <TabsBox
                     tabs={commentTabs}
                     commentContent
                     textContent
                     defaultActiveKey="comment"
                     className={cx('cmt-tab-box')}
-                />
+                /> */}
             </div>
         </DefaultLayout>
     );

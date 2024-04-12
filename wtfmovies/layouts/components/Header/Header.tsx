@@ -1,5 +1,4 @@
 'use client';
-import { ThemeProvider, createTheme } from '@mui/material';
 import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
