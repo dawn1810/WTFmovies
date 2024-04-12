@@ -12,129 +12,20 @@ import { getCaroselFilms, getHotClassifyFilms, getNewClassifyFilms, getProposeLi
 
 const cx = classNames.bind(style);
 
-// const filmClassifyFilms = [
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-//     {
-//         img: '/zdwfbkt301n51.jpg',
-//         name: 'Jujutsu Kaisen',
-//         views: 999999,
-//         rating: 4.9,
-//         episodes: 1029,
-//     },
-// ];
-
 async function Home() {
     const session = await auth();
 
     // get data
     const carouselItems = await getCaroselFilms();
     const proposeListFilms = await getProposeListFilms();
-    const { newFilmTabs, mostWatchFilms } = await getNewClassifyFilms('spring', 2024);
-    const { hotFilmTabs, mostLikeFilms } = await getHotClassifyFilms('spring', 2024);
+    const { allNewFilms, currNewFilms, seriesNewFilms, movieNewFilms, mostWatchFilms } = await getNewClassifyFilms(
+        'spring',
+        2024,
+    );
+    const { allHotFilms, currHotFilms, seriesHotFilms, movieHotFilms, mostLikeFilms } = await getHotClassifyFilms(
+        'spring',
+        2024,
+    );
 
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
@@ -145,7 +36,7 @@ async function Home() {
                 </div>
                 <FilmClassify
                     films={mostWatchFilms}
-                    tabs={newFilmTabs}
+                    tabs={[allNewFilms, currNewFilms, seriesNewFilms, movieNewFilms]}
                     tags={{
                         mainDir: '/new_update',
                         extraDir: '/most_views',
@@ -157,7 +48,7 @@ async function Home() {
                 />
                 <FilmClassify
                     films={mostLikeFilms}
-                    tabs={hotFilmTabs}
+                    tabs={[allHotFilms, currHotFilms, seriesHotFilms, movieHotFilms]}
                     tags={{
                         mainDir: '/hot',
                         extraDir: '/most_likes',

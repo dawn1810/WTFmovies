@@ -68,6 +68,7 @@ export interface FilmsInterFace {
     rating: number;
     episodes: number;
 }
+
 export interface ObjectMongo {
     $oid: string;
 }
@@ -115,12 +116,12 @@ export interface EpisodeInterFace {
     link: string;
 }
 export interface FilmProposeListInterface {
-    films: FilmsInterFace[];
+    films: FilmInfoInterface[];
     className?: string;
 }
 
 export interface FilmClassifyInterface extends FilmProposeListInterface {
-    tabs: TabInterface[];
+    tabs: FilmInfoInterface[][];
     tags: {
         mainDir: string;
         extraDir: string;
@@ -146,7 +147,7 @@ export interface FilmCardInterface {
 export interface TabInterface {
     title: string;
     eventKey: string;
-    content: FilmsInterFace[] | string;
+    content: FilmInfoInterface[] | string;
 }
 
 export interface FilmInfoInterface {

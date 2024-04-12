@@ -9,6 +9,7 @@ import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../api/auth/[...nextauth]/auth';
 import { useSearchParams } from 'next/navigation';
 import { getFilmReviewInfo } from '~/libs/getData/review';
+import { getProposeListFilms } from '~/libs/getData/home';
 
 const cx = classNames.bind(style);
 
@@ -84,6 +85,7 @@ async function Review({ params }: { params: { movie: string } }) {
     const { movie } = params;
 
     const filmReviewInfo = await getFilmReviewInfo(movie.replaceAll('-', ' '));
+    const proposeListFilms = await getProposeListFilms();
 
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
@@ -92,7 +94,7 @@ async function Review({ params }: { params: { movie: string } }) {
                     <div className={cx('info-content')}>
                         <FilmInfo filmInfo={filmReviewInfo} />
                     </div>
-                    <FilmProposeList films={films} />
+                    <FilmProposeList films={proposeListFilms} />
                 </div>
                 <TabBox
                     tabs={commentTabs}

@@ -23,8 +23,6 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
         setFilmHide((prev) => !prev);
     };
 
-    console.log(films[0]);
-
     return (
         <div className={cx('wrapper')}>
             <Title title={title} icon={icon} className={cx('title')} />

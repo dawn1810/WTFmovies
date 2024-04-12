@@ -8,7 +8,7 @@ import { useViewport } from '~/hooks';
 import ImageCustom from '../ImageCustom';
 import style from './FilmCarousel.module.scss';
 import Captions from './Captions';
-import { CaptionsItemInterface } from '~/libs/interfaces';
+import { CaptionsItemInterface, FilmInfoInterface } from '~/libs/interfaces';
 const cx = classNames.bind(style);
 
 const NextButton = () => {
@@ -27,14 +27,32 @@ const PrevButton = () => {
     );
 };
 
-function FilmCarousel({ items }: { items: CaptionsItemInterface[] }) {
+function FilmCarousel({ items }: { items: FilmInfoInterface[] }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
+
+    const mappedItems: CaptionsItemInterface[] = items.map((item): CaptionsItemInterface => {
+        const subsType = item.videoType.find((type) => type.title === 'Subs') as any;
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+
+        return {
+            img: item.poster,
+            name: item.name,
+            describe: item.describe,
+            infoList: [
+                { title: 'Tác giả', info: item.author, type: 'searchAble' },
+                { title: 'Thể loại', info: item.genre, type: 'searchAble' },
+                { title: 'Số tập', info: totalEpisodes },
+                { title: 'Lượt xem', info: item.views },
+                { title: 'Đánh giá', info: item.rating },
+            ],
+        };
+    });
 
     return (
         <div className={cx('home-slider')}>
             <Carousel touch indicators={!isMobile} nextIcon={<NextButton />} prevIcon={<PrevButton />}>
-                {items.map((item, index) => (
+                {mappedItems.map((item, index) => (
                     <Carousel.Item key={index}>
                         <ImageCustom className={`d-block w-100 ${cx('bg-img')}`} src={item.img} alt={item.name} />
                         {isMobile ? (

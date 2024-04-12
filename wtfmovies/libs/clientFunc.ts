@@ -1,4 +1,7 @@
 'use-client';
+
+import { FilmInfoInterface, FilmsInterFace } from './interfaces';
+
 const bufferFromPEM = (pem: string) => {
     // Remove the PEM headers and base64 decode the binary data
     const b64Data = pem.replace(/(-----(BEGIN|END) (PUBLIC|PRIVATE) KEY-----|\s)/g, '');
@@ -66,4 +69,24 @@ export const validatePassword = (password: string): number => {
 
     // Password is valid (no errors)
     return 0;
+};
+
+// map films data
+export const mapFilms = (films: FilmInfoInterface[]): FilmsInterFace[] => {
+    const mappedFilms: FilmsInterFace[] = films.map(
+        ({ img, name, videoType, views, rating, poster }): FilmsInterFace => {
+            // Calculate the total number of episodes across all video types
+            const subsType = videoType.find((type) => type.title === 'Subs') as any;
+            const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+            return {
+                img,
+                name,
+                views,
+                rating,
+                poster,
+                episodes: totalEpisodes,
+            };
+        },
+    );
+    return mappedFilms;
 };

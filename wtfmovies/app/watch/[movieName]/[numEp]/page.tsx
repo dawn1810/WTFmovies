@@ -116,19 +116,19 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
 
     if (!filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return 404;
 
-    const episodesTabs =
-        filmData.videoType.map(({ title, episode }) => {
-            if (!title || !episode) return {
+    const episodesTabs = filmData.videoType.map(({ title, episode }) => {
+        if (!title || !episode)
+            return {
                 title: 'title',
                 eventKey: 'title',
                 content: 'episode',
             }
-            return {
-                title: title,
-                eventKey: title,
-                content: episode,
-            }
-        })
+        return {
+            title: title,
+            eventKey: title,
+            content: episode,
+        }
+    })
 
     const notyfyTabs = [
         {

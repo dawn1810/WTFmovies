@@ -1,14 +1,13 @@
 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-// import { Carousel } from '@trendyol-js/react-carousel';
 import Slider from 'react-slick';
 import classNames from 'classnames/bind';
 
 import { useViewport } from '~/hooks';
 import FilmCard from '../FilmCard';
 import style from './FilmProposeList.module.scss';
-import { FilmProposeListInterface } from '~/libs/interfaces';
+import { FilmProposeListInterface, FilmsInterFace } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -33,7 +32,19 @@ function PrevArrow(props: { onClick?: any }) {
 function FilmProposeList({ films, className }: FilmProposeListInterface) {
     const viewPort = useViewport();
     // const isMobile = viewPort.width;
-    // console.log((viewPort.width - 20) / 180 - 0.1);
+
+    const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
+        const subsType = videoType.find((type) => type.title === 'Subs') as any;
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+
+        return {
+            img,
+            name,
+            views,
+            rating,
+            episodes: totalEpisodes,
+        };
+    });
 
     const settings = {
         className: cx('carousel'),
@@ -64,8 +75,7 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
     return (
         <div className={cx('wrapper', className)}>
             <Slider {...settings}>
-                {films.map((film, index) =>
-                (
+                {mappedFilms.map((film, index) => (
                     <FilmCard
                         key={index}
                         imgSrc={film.img}
@@ -74,8 +84,7 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
                         rating={film.rating}
                         episodes={film.episodes}
                     />
-                )
-                )}
+                ))}
             </Slider>
         </div>
     );

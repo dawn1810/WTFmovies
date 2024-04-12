@@ -1,24 +1,7 @@
 import { mongodb } from '~/libs/func';
-import { CaptionsItemInterface, FilmInfoInterface, FilmsInterFace, TabInterface } from '../interfaces';
+import { CaptionsItemInterface, FilmInfoInterface } from '../interfaces';
 
-interface EpisodeType {
-    title: string;
-    episode: any[];
-}
-
-interface FilmInfo {
-    name: string;
-    describe: string;
-    author: string[];
-    genre: string[];
-    videoType: EpisodeType[];
-    views: number;
-    rating: number;
-    poster: string;
-    img: string;
-}
-
-export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
+export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
     const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
@@ -66,30 +49,11 @@ export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
             ],
         });
 
-    const mappedFilms: CaptionsItemInterface[] = films.map((film): CaptionsItemInterface => {
-        // Calculate the total number of episodes across all video types
-        const subsType = film.videoType.find((type) => type.title === 'Subs') as any;
-        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-
-        return {
-            img: film.poster,
-            name: film.name,
-            describe: film.describe,
-            infoList: [
-                { title: 'Tác giả', info: film.author, type: 'searchAble' },
-                { title: 'Thể loại', info: film.genre, type: 'searchAble' },
-                { title: 'Số tập', info: totalEpisodes },
-                { title: 'Lượt xem', info: film.views },
-                { title: 'Đánh giá', info: film.rating },
-            ],
-        };
-    });
-
-    return mappedFilms;
+    return films;
 };
 
-export const getProposeListFilms = async (): Promise<FilmsInterFace[]> => {
-    const films: FilmInfo[] = await mongodb()
+export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
+    const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
         .find({
@@ -105,24 +69,11 @@ export const getProposeListFilms = async (): Promise<FilmsInterFace[]> => {
             sort: { likes: -1, views: -1, rating: -1 },
         });
 
-    const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
-        // Calculate the total number of episodes across all video types
-        const subsType = videoType.find((type) => type.title === 'Subs') as any;
-        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-        return {
-            img,
-            name,
-            views,
-            rating,
-            episodes: totalEpisodes,
-        };
-    });
-
-    return mappedFilms;
+    return films;
 };
 
-const getFilms = async (limit: number, sort: object, query?: object): Promise<FilmsInterFace[]> => {
-    const films: FilmInfo[] = await mongodb()
+const getFilms = async (limit: number, sort: object, query?: object): Promise<FilmInfoInterface[]> => {
+    const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
         .find({
@@ -140,29 +91,19 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
             sort: sort,
         });
 
-    const mappedFilms: FilmsInterFace[] = films.map(
-        ({ img, name, videoType, views, rating, poster }): FilmsInterFace => {
-            // Calculate the total number of episodes across all video types
-            const subsType = videoType.find((type) => type.title === 'Subs') as any;
-            const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-            return {
-                img,
-                name,
-                views,
-                rating,
-                poster,
-                episodes: totalEpisodes,
-            };
-        },
-    );
-
-    return mappedFilms;
+    return films;
 };
 
 export const getNewClassifyFilms = async (
     season: string,
     year: number,
-): Promise<{ newFilmTabs: TabInterface[]; mostWatchFilms: FilmsInterFace[] }> => {
+): Promise<{
+    allNewFilms: FilmInfoInterface[];
+    currNewFilms: FilmInfoInterface[];
+    seriesNewFilms: FilmInfoInterface[];
+    movieNewFilms: FilmInfoInterface[];
+    mostWatchFilms: FilmInfoInterface[];
+}> => {
     let start, end;
 
     switch (season) {
@@ -203,36 +144,19 @@ export const getNewClassifyFilms = async (
 
     const mostWatchFilms = await getFilms(8, { views: -1, likes: -1, rating: -1 });
 
-    const newFilmTabs: TabInterface[] = [
-        {
-            title: '#TẤT CẢ',
-            eventKey: 'all',
-            content: allNewFilms,
-        },
-        {
-            title: '#MÙA ĐÔNG - 2024',
-            eventKey: 'winterTo2024',
-            content: currNewFilms,
-        },
-        {
-            title: '#PHIM BỘ',
-            eventKey: 'phimBo',
-            content: seriesNewFilms,
-        },
-        {
-            title: '#PHIM LẺ',
-            eventKey: 'phimLe',
-            content: movieNewFilms,
-        },
-    ];
-
-    return { newFilmTabs, mostWatchFilms };
+    return { allNewFilms, currNewFilms, seriesNewFilms, movieNewFilms, mostWatchFilms };
 };
 
 export const getHotClassifyFilms = async (
     season: string,
     year: number,
-): Promise<{ hotFilmTabs: TabInterface[]; mostLikeFilms: FilmsInterFace[] }> => {
+): Promise<{
+    allHotFilms: FilmInfoInterface[];
+    currHotFilms: FilmInfoInterface[];
+    seriesHotFilms: FilmInfoInterface[];
+    movieHotFilms: FilmInfoInterface[];
+    mostLikeFilms: FilmInfoInterface[];
+}> => {
     let start, end;
 
     switch (season) {
@@ -273,28 +197,5 @@ export const getHotClassifyFilms = async (
 
     const mostLikeFilms = await getFilms(8, { likes: -1, views: -1, rating: -1 });
 
-    const hotFilmTabs: TabInterface[] = [
-        {
-            title: '#TẤT CẢ',
-            eventKey: 'all',
-            content: allHotFilms,
-        },
-        {
-            title: '#MÙA ĐÔNG - 2024',
-            eventKey: 'winterTo2024',
-            content: currHotFilms,
-        },
-        {
-            title: '#PHIM BỘ',
-            eventKey: 'phimBo',
-            content: seriesHotFilms,
-        },
-        {
-            title: '#PHIM LẺ',
-            eventKey: 'phimLe',
-            content: movieHotFilms,
-        },
-    ];
-
-    return { hotFilmTabs, mostLikeFilms };
+    return { allHotFilms, currHotFilms, seriesHotFilms, movieHotFilms, mostLikeFilms };
 };
