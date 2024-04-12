@@ -178,8 +178,8 @@
             }
 
             .episodes-btn {
-                height: fit-content;
-                min-width: auto;
+                height: 28px;
+                min-width: 28px;
                 margin-left: 5px;
                 padding: 5px;
                 border-radius: 5px;
@@ -192,6 +192,10 @@
                     opacity: 0.5;
                 }
             }
+        }
+
+        .info-icon {
+            align-self: self-start;
         }
     }
 }

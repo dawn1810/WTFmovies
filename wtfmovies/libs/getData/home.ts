@@ -32,6 +32,7 @@ export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
                         pipeline: [
                             { $match: { $expr: { $in: ['$_id', '$$authorIds'] } } }, // Match the author ids
                             { $project: { _id: 0, name: 1 } }, // Get name only
+                            { $limit: 3 },
                         ],
                         as: 'authorDetails',
                     },
@@ -43,6 +44,7 @@ export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
                         pipeline: [
                             { $match: { $expr: { $in: ['$_id', '$$genreIds'] } } }, // Match the genre ids
                             { $project: { _id: 0, name: 1 } }, // Get name only
+                            { $limit: 3 },
                         ],
                         as: 'genreDetails',
                     },

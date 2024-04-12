@@ -42,81 +42,44 @@ const icons = [
     <FontAwesomeIcon icon={faStar} />,
 ];
 
-// const infoList = {
-//     image: '/jjk-wallpaper-3.jpg',
-//     title: 'Jujutsu Kaisen',
-//     rating: '4.9',
-//     episodes: '100M',
-//     decript:
-//         "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
-//     info: [
-//         { title: 'Trạng thái', info: 'Hoàn thành', type: 'highLight' },
-//         { title: 'Tác giả', info: ['Gege Akutami'], type: 'searchAble' },
-//         { title: 'Thể loại', info: ['Shonen manga', 'Dark fantasy'], type: 'searchAble' },
-//         {
-//             title: 'Đạo diễn',
-//             info: ['Sunghoo Park (S1)', 'Shōta Goshozono (S2)'],
-//             type: 'searchAble',
-//         },
-//         { title: 'Thời lượng', info: '24 phút/tập' },
-//         { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
-//         { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
-//         { title: 'Năm sản xuất', info: '2021' },
-//         { title: 'Quốc gia sản xuất', info: 'Nhật Bản' },
-//         {
-//             title: 'Diển viên nổi bật',
-//             info: ['Kenjiro Tsuda', 'Yuichi Nakamura', 'Junya Enoki'],
-//             type: 'searchAble',
-//         },
+function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
+    const releaseYear = filmInfo.releaseYear ? new Date(filmInfo.releaseYear) : null;
+    const subsType = filmInfo.videoType.find((type) => type.title === 'Subs') as any;
+    const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+    const lastThreeEpisodes = subsType.episode.slice(Math.max(subsType.episode.length - 3, 1));
+    const infoList: FilmReviewInfoInterface = {
+        image: filmInfo.poster,
+        title: filmInfo.name,
+        rating: filmInfo.rating,
+        episodes: totalEpisodes,
+        describe: filmInfo.describe,
+        info: [
+            { title: 'Trạng thái', info: filmInfo.status, type: 'highLight' },
+            { title: 'Tác giả', info: filmInfo.author, type: 'searchAble' },
+            { title: 'Thể loại', info: filmInfo.genre, type: 'searchAble' },
+            {
+                title: 'Đạo diễn',
+                info: filmInfo.director,
+                type: 'searchAble',
+            },
+            { title: 'Thời lượng', info: filmInfo.duration ? filmInfo.duration / 60 + ' phút' : 'Unknown' },
+            // { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
+            { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
+            { title: 'Năm sản xuất', info: releaseYear?.getFullYear() },
+            { title: 'Quốc gia sản xuất', info: filmInfo.country },
+            {
+                title: 'Diễn viên',
+                info: filmInfo.actor,
+                type: 'searchAble',
+            },
 
-//         {
-//             title: 'Tập mới cập nhật',
-//             info: [29, 28, 27],
-//             type: 'watchAble',
-//         },
-//     ],
-// };
-
-function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface[] }) {
-    const infoList: FilmReviewInfoInterface[] = filmInfo.map((film): FilmReviewInfoInterface => {
-        // Calculate the total number of episodes across all video types
-        const subsType = film.videoType.find((type) => type.title === 'Subs') as any;
-        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-
-        return {
-            image: film.poster,
-            title: film.name,
-            rating: film.rating,
-            episodes: totalEpisodes,
-            describe: film.describe,
-            info: [
-                { title: 'Trạng thái', info: film.status, type: 'highLight' },
-                { title: 'Tác giả', info: film.author, type: 'searchAble' },
-                { title: 'Thể loại', info: film.genre, type: 'searchAble' },
-                {
-                    title: 'Đạo diễn',
-                    info: film.director,
-                    type: 'searchAble',
-                },
-                { title: 'Thời lượng', info: (film.duration ? film.duration / 60 : 24) + 'phút' },
-                // { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
-                { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
-                { title: 'Năm sản xuất', info: String(film.releaseYear?.getFullYear) },
-                { title: 'Quốc gia sản xuất', info: film.country },
-                {
-                    title: 'Diển viên',
-                    info: film.actor,
-                    type: 'searchAble',
-                },
-
-                {
-                    title: 'Tập mới cập nhật',
-                    info: [29, 28, 27],
-                    type: 'watchAble',
-                },
-            ],
-        };
-    });
+            {
+                title: 'Tập mới cập nhật',
+                info: lastThreeEpisodes,
+                type: 'watchAble',
+            },
+        ],
+    };
 
     const handleCopyTitle = () => {
         navigator.clipboard.writeText(infoList.title);
@@ -132,7 +95,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface[] }) {
                             {infoList.title}
                         </h3>
                     </Tippy>
-                    <div className={cx('film-content')}>{infoList.decript}</div>
+                    <div className={cx('film-content')}>{infoList.describe}</div>
                     <div className={cx('rating')}>
                         <ImageCustom src={images.star} alt="rating" />
                         <span>{infoList.rating}</span>
@@ -146,7 +109,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface[] }) {
                     <ul className={cx('info-list')}>
                         {infoList.info.map((info, index) => (
                             <li key={index}>
-                                <span>{icons[index]}</span>
+                                <span className={cx('info-icon')}>{icons[index]}</span>
                                 {info.type === 'searchAble' && typeof info.info === 'object' ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>{' '}
@@ -195,7 +158,11 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface[] }) {
                         ))}
                     </ul>
                     <div className={cx('btn-group')}>
-                        <Button primary leftIcon={<FontAwesomeIcon icon={faPlay} />}>
+                        <Button
+                            to={`/watch/${filmInfo.name.replaceAll(' ', '-')}`}
+                            primary
+                            leftIcon={<FontAwesomeIcon icon={faPlay} />}
+                        >
                             Xem phim
                         </Button>
                         <button className={cx('action-btn')}>

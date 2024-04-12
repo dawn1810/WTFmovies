@@ -69,11 +69,11 @@ export interface FilmsInterFace {
     episodes: number;
 }
 export interface ObjectMongo {
-    $oid: string
+    $oid: string;
 }
 
 export interface DateMongo {
-    $date: string
+    $date: string;
 }
 
 export interface FilmInfo {
@@ -87,7 +87,7 @@ export interface FilmInfo {
     duration?: number;
     videoType?: {
         title?: string;
-        episode?: number[]
+        episode?: number[];
     }[];
     tag?: string[];
     releaseYear?: Date;
@@ -99,7 +99,7 @@ export interface FilmInfo {
     img?: string;
     poster?: string;
     genre?: ObjectMongo[];
-    rating?: number
+    rating?: number;
 }
 
 export interface EpisodeInterFace {
