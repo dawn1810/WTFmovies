@@ -3,7 +3,6 @@ import classNames from 'classnames/bind';
 import style from './Editer.module.scss';
 import DatabaseLayout from '~/layouts/DatabaseLayout';
 import { faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
-import { redirect } from "next/navigation";
 import OverViewPage from "./overview";
 const cx = classNames.bind(style);
 const menuItems = [

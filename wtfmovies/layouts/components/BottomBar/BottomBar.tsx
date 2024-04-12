@@ -1,19 +1,15 @@
 'use client';
 import { useState } from 'react';
-import { BottomNavigation, BottomNavigationAction, Paper, ThemeProvider, createTheme } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faHeart, faHome, faUser } from '@fortawesome/free-solid-svg-icons';
 
 import { useViewport } from '~/hooks';
 import { useRouter } from 'next/navigation';
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-});
 
-function Footer() {
+
+function BottomBar() {
     const router = useRouter();
 
     const [value, setValue] = useState('/');
@@ -25,9 +21,9 @@ function Footer() {
         setValue(newValue);
         router.push(newValue);
     };
-    return (
-        <ThemeProvider theme={darkTheme}>
-            {isMobile && (
+    if (isMobile)
+        return (
+            (
                 <Paper sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 11 }} elevation={3}>
                     <BottomNavigation
                         value={value}
@@ -62,9 +58,9 @@ function Footer() {
                         />
                     </BottomNavigation>
                 </Paper>
-            )}
-        </ThemeProvider>
-    );
+            )
+
+        );
 }
 
-export default Footer;
+export default BottomBar;

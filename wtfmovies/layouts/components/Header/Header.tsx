@@ -160,46 +160,49 @@ function Header({
 
 
 
+    const [headerClass, setHeaderClass] = useState('wrapper-database');
+    if (!isDatabase) {
+        const [scrollPosition, setScrollPosition] = useState(0);
+        const [scrollSpeed, setScrollSpeed] = useState(0);
+        const [lastScrollTop, setLastScrollTop] = useState(0);
+        useEffect(() => {
+            setHeaderClass('wrapper-show')
+        }, []);
+        useEffect(() => {
+            let ticking = false;
 
-    const [scrollPosition, setScrollPosition] = useState(0);
-    const [headerClass, setHeaderClass] = useState('wrapper-show');
-    const [scrollSpeed, setScrollSpeed] = useState(0);
-    const [lastScrollTop, setLastScrollTop] = useState(0);
+            const handleScroll = () => {
+                const currentPosition = window.scrollY;
 
-    useEffect(() => {
-        let ticking = false;
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const distance = Math.abs(currentPosition - lastScrollTop) * 100;
+                        const speed = distance / 60;
+                        setScrollSpeed(speed);
 
-        const handleScroll = () => {
-            const currentPosition = window.scrollY;
+                        setLastScrollTop(currentPosition);
+                        ticking = false;
+                    });
 
-            if (!ticking) {
-                window.requestAnimationFrame(() => {
-                    const distance = Math.abs(currentPosition - lastScrollTop) * 100;
-                    const speed = distance / 60;
-                    setScrollSpeed(speed);
+                    ticking = true;
+                }
 
-                    setLastScrollTop(currentPosition);
-                    ticking = false;
-                });
+                if (currentPosition < scrollPosition - scrollSpeed) {
+                    setHeaderClass('wrapper-show');
+                } else if (currentPosition > scrollPosition + scrollSpeed) {
+                    setHeaderClass('wrapper-hide');
+                }
 
-                ticking = true;
-            }
+                setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
+            };
 
-            if (currentPosition < scrollPosition - scrollSpeed) {
-                setHeaderClass('wrapper-show');
-            } else if (currentPosition > scrollPosition + scrollSpeed) {
-                setHeaderClass('wrapper-hide');
-            }
+            window.addEventListener('scroll', handleScroll);
 
-            setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
-        };
-
-        window.addEventListener('scroll', handleScroll);
-
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-        };
-    }, [scrollPosition, scrollSpeed]);
+            return () => {
+                window.removeEventListener('scroll', handleScroll);
+            };
+        }, [scrollPosition, scrollSpeed]);
+    }
     return (
         <header className={cx('wrapper', headerClass)}>
             <div className={cx('header')}>
@@ -289,16 +292,9 @@ function Header({
             {isDatabase || (
                 <Genres>
                     {genres.map((genre, index) => {
-                        if (genre.special)
-                            return <div key={index} className={cx('special-genre')}>
-                                <Link key={index} href={genre.to} className={cx('genre')}>
-                                    {genre.name}
-                                </Link>
-                            </div>;
-                        else
-                            return <Link key={index} href={genre.to} className={cx('genre')}>
-                                {genre.name}
-                            </Link>
+                        return <Link key={index} href={genre.to} className={cx(genre.special && 'special-genre', 'genre')}>
+                            {genre.name}
+                        </Link>
 
                     })}
                 </Genres>
