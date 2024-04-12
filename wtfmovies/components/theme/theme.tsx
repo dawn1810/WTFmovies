@@ -9,7 +9,6 @@ const darkTheme = createTheme({
         fontFamily: 'var(--font-family)',
         fontSize: 20,
     },
-
 });
 
 

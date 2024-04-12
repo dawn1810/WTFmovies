@@ -68,11 +68,11 @@ export default function RatingMui({ rating }: { rating: number }) {
     return (
         <Box
             sx={{
-                width: 300,
+                width: 500,
                 display: 'flex',
-                alignItems: 'center',
+                alignItems: 'center', color: 'var(--text-color)'
             }}
-        >
+        > <Box sx={{ width: 150 }} >Đánh giá:</Box>
             <Rating
                 size="large"
                 name="hover-feedback"
@@ -88,7 +88,7 @@ export default function RatingMui({ rating }: { rating: number }) {
                 emptyIcon={<StarIcon style={{ opacity: 0.55 }} fontSize="inherit" />}
             />
             {value !== null && (
-                <Box sx={{ ml: 2 }}>{labels[hover !== -1 ? hover : value]}</Box>
+                <Box sx={{ ml: 2, color: 'var(--text-color)' }}>{labels[hover !== -1 ? hover : value]}</Box>
             )}
         </Box>
     );
