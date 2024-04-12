@@ -377,9 +377,20 @@
 
 @media screen and (max-width: 1024px) {
     .wrapper {
-        width: 160px;
-        height: 230px;
+        width: 140px;
+        height: 190px;
+
+        .info {
+            font-size: smaller;
+            height: 40%;
+
+        }
+
+        .nooverlay-info {
+            height: 100%
+        }
     }
+
 
     .nooverlay-wrapper {
         width: 100%;

@@ -100,6 +100,7 @@ export interface FilmInfo {
     poster?: string;
     genre?: ObjectMongo[];
     rating?: number;
+    notification?: { schedule: string; notification: string; }
 }
 
 export interface EpisodeInterFace {

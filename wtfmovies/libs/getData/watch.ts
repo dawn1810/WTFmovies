@@ -18,6 +18,7 @@ export const getFilmsInfo = async (movie_name?: string): Promise<FilmInfo | null
                 videoType: 1,
                 views: 1,
                 rating: 1,
+                notification: 1,
             },
         });
     // if (!films.videoType) return null

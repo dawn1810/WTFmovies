@@ -1,6 +1,5 @@
 import classNames from 'classnames/bind';
 import { getFilmsEpisode, getFilmsInfo } from '~/libs/getData/watch';
-
 import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
@@ -9,6 +8,8 @@ import FilmInteract from '~/components/FilmInteract';
 import Player from '~/components/Player';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../../api/auth/[...nextauth]/auth';
+import { getFilmReviewInfo } from '~/libs/getData/review';
+import NotFound from '~/app/not-found';
 
 const cx = classNames.bind(style);
 
@@ -71,19 +72,6 @@ const films = [
     },
 ];
 
-const notyfyTabs = [
-    {
-        title: 'LỊCH CHIẾU',
-        eventKey: 'celender',
-        content: 'LỊCH CHIẾU: Thứ 2 hàng tuần trên WTF movie.',
-    },
-    {
-        title: 'THÔNG BÁO',
-        eventKey: 'notify',
-        content:
-            'THÔNG BÁO: Tuần này do một vài lý do chúng mình sẽ ra bản Thuyết minh chậm hơn một chút mong mọi người thông cảm',
-    },
-];
 
 
 
@@ -105,25 +93,28 @@ const proposeFilmsTabs = [
     },
 ];
 
-const commentTabs = [
-    {
-        title: '#BÌNH LUẬN',
-        eventKey: 'comment',
-        content: <CommentContent />,
-    },
-    {
-        title: '#THÔNG TIN PHIM',
-        eventKey: 'film-info',
-        content: <FilmInfo />,
-    },
-];
 
 async function Watch({ params }: { params: { movieName: string, numEp: string } }) {
+    const { movieName, numEp } = params;
+    const filmReviewInfo = await getFilmReviewInfo(movieName.replaceAll('-', ' '));
 
-    const filmData = await getFilmsInfo(params.movieName);
+    const filmData = await getFilmsInfo(movieName.replaceAll('-', ' '));
     const filmEpisode = await getFilmsEpisode(filmData?.film_id);
 
-    if (!filmEpisode || !filmData || !filmData.videoType) return 'haha'
+    const commentTabs = [
+        {
+            title: '#BÌNH LUẬN',
+            eventKey: 'comment',
+            content: <CommentContent />,
+        },
+        {
+            title: '#THÔNG TIN PHIM',
+            eventKey: 'film-info',
+            content: <FilmInfo filmInfo={filmReviewInfo} />,
+        },
+    ];
+
+    if (!filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return 404;
 
     const episodesTabs =
         filmData.videoType.map(({ title, episode }) => {
@@ -138,6 +129,19 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
                 content: episode,
             }
         })
+
+    const notyfyTabs = [
+        {
+            title: 'LỊCH CHIẾU',
+            eventKey: 'celender',
+            content: filmData.notification?.schedule,
+        },
+        {
+            title: 'THÔNG BÁO',
+            eventKey: 'notify',
+            content: filmData.notification?.notification,
+        }
+    ];
 
     const session = await auth();
     return (
@@ -155,20 +159,20 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
                     defaultActiveKey={filmData.videoType[0].title}
                     className={cx('tab-box')}
                 />
-                {/* <TabsBox
+                <TabsBox
                     tabs={proposeFilmsTabs}
                     listContent
                     // textContent
                     defaultActiveKey="like"
                     className={cx('tab-box')}
-                /> */}
-                {/* <TabsBox
+                />
+                <TabsBox
                     tabs={commentTabs}
                     commentContent
                     textContent
                     defaultActiveKey="comment"
                     className={cx('cmt-tab-box')}
-                /> */}
+                />
             </div>
         </DefaultLayout>
     );

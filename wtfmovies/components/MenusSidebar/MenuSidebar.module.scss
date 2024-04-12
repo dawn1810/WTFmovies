@@ -5,7 +5,7 @@
     background-color: var(--primary);
     min-width: auto;
 
-    +.navBtn {
+    &+.navBtn {
         margin-left: 0px;
     }
 

@@ -1,5 +1,4 @@
 'use client';
-
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -37,6 +36,7 @@ import style from './Contact.module.scss';
 import Duration from '../Duration';
 import Menu from '~/components/Popper/Menu';
 import ReactPlayer from 'react-player';
+
 
 const cx = classNames.bind(style);
 
@@ -96,6 +96,10 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
         autoLevelEnabled: false,
     });
 
+
+
+    // Rest of your component
+
     useEffect(() => {
         const updateHlsPlayerInfo = (hls) => {
             const hasAutoLevel = hls && hls.autoLevelEnabled;
@@ -129,6 +133,8 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
+
+
         if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled) {
             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
         }

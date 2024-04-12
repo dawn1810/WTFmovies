@@ -44,6 +44,8 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
         autoplay: true,
         autoplaySpeed: 3000,
         swipeToSlide: true,
+        pauseOnHover: true,
+
         nextArrow: <NextArrow />,
         prevArrow: <PrevArrow />,
         responsive: [
@@ -53,6 +55,7 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
                     slidesToShow: (viewPort.width - 20) / 160 - 0.1,
                     slidesToScroll: 1,
                     infinite: true,
+
                 },
             },
         ],
