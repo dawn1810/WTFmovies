@@ -10,6 +10,11 @@
 
 }
 
+
+.wrapper-database {
+    position: static;
+}
+
 .wrapper-hide {
     top: -200px;
 }
@@ -146,19 +151,34 @@
 
 // Genre list
 
+
 .genre {
     width: fit-content;
     height: 32px;
     padding: 5px 10px;
     border-radius: 5px;
     color: var(--text-color);
-    background-color: var(--primary);
+    background-color: var(--lighten-primary-active-color);
     white-space: nowrap;
 
+    transition-duration: 300ms;
+
     &:hover {
-        transition-duration: 300ms;
-        // color: var(--background-color);
         background-color: var(--highlight-color);
+    }
+}
+
+
+.special-genre {
+    background-image: linear-gradient(40deg, var(--color-bg1), var(--color-bg2), var(--highlight-color));
+    font-weight: 600;
+    background-size: 200% 100%;
+    transition: background-position 0.5s ease;
+
+
+    &:hover {
+        background-position: right;
+
     }
 }
 

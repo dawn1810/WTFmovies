@@ -8,10 +8,10 @@ import style from './FilmInteract.module.scss';
 
 const cx = classNames.bind(style);
 
-function FilmInteract() {
+function FilmInteract({ rating }: { rating?: number }) {
     return (
         <div className={cx('wrapper')}>
-            <Rating />
+            <Rating rating={rating} />
             <Form.Select aria-label="Default select example" className={cx('server-list')}>
                 <option value="1">#Máy chủ miền Tây</option>
                 <option value="2">#Máy chủ miền Đất Hứa</option>

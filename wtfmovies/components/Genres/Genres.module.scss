@@ -1,5 +1,7 @@
 .wrapper {
-    width: var(--default-layout-width);
+    width: 100%;
+
+    // width: var(--default-layout-width);
     position: relative;
     display: flex;
     justify-content: center;
@@ -17,11 +19,13 @@
             display: flex;
             justify-content: center;
 
-            div {
+            &>div {
                 width: var(--default-layout-width);
                 display: flex;
                 gap: 10px;
                 padding: 10px;
+                align-items: center;
+
             }
         }
     }
@@ -37,14 +41,28 @@
 
     .left-btn {
         left: 0;
-        background: rgb(1, 0, 15);
-        background: linear-gradient(90deg, rgba(1, 0, 15, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        width: 9%;
+        background: transparent;
+        transition: 0.3s;
+
+        &:hover {
+            color: var(--highlight-color);
+
+        }
     }
 
     .right-btn {
         right: 0;
-        background: rgb(1, 0, 15);
-        background: linear-gradient(90deg, rgba(1, 0, 15, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+        width: 9%;
+        background: transparent;
+        transition: 0.3s;
+
+        &:hover {
+            color: var(--highlight-color);
+
+        }
+
+
     }
 }
 

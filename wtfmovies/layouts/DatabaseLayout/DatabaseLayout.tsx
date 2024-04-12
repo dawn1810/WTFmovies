@@ -1,14 +1,12 @@
 'use client';
 import React from 'react';
-import classNames from 'classnames/bind';
 import Header from '../components/Header';
 import Leftbar from '../components/Leftbar';
-import styles from './DatabaseLayout.module.scss';
+import './DatabaseLayout.scss';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
-const cx = classNames.bind(styles);
 
 function DatabaseLayout({ children, menuitem, scene }: {
     children: React.ReactNode, menuitem: {
@@ -18,7 +16,7 @@ function DatabaseLayout({ children, menuitem, scene }: {
     }[], scene: string
 }) {
     return (
-        <Container fluid className={cx('wrapper', 'p-0')}>
+        <Container fluid className='p-0' >
             <Row className="flex-nowrap g-0">
                 <Col xs={2} id="sidebar-container">
                     <Leftbar menuItems={menuitem} scene={scene} />

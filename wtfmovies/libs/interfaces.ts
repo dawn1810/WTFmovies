@@ -68,7 +68,51 @@ export interface FilmsInterFace {
     rating: number;
     episodes: number;
 }
+export interface ObjectMongo {
+    $oid: string
+}
 
+export interface DateMongo {
+    $date: string
+}
+
+export interface FilmInfo {
+    _id?: ObjectMongo;
+    film_id?: string;
+    name?: string;
+    describe?: string;
+    status?: string;
+    author?: ObjectMongo[];
+    director?: string[];
+    duration?: number;
+    videoType?: {
+        title?: string;
+        episode?: number[]
+    }[];
+    tag?: string[];
+    releaseYear?: Date;
+    country?: string;
+    updateTime?: Date;
+    actor?: string[];
+    views?: number;
+    likes?: number;
+    img?: string;
+    poster?: string;
+    genre?: ObjectMongo[];
+    rating?: number
+}
+
+export interface EpisodeInterFace {
+    _id: ObjectMongo;
+    film_id: string;
+    index: number;
+    name: string;
+    uploader_id: string;
+    upload_date: Date;
+    rating: number;
+    views: number;
+    link: string;
+}
 export interface FilmProposeListInterface {
     films: FilmsInterFace[];
     className?: string;

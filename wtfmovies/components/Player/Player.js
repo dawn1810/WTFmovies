@@ -153,7 +153,6 @@ const Player = ({ url }) => {
                                 this.abort = () => loader.abort();
                                 this.destroy = () => loader.destroy();
                                 this.load = (context, config, callbacks) => {
-                                    console.log(context.type);
                                     var onSuccess = callbacks.onSuccess;
                                     callbacks.onSuccess = function (response, stats, context) {
 

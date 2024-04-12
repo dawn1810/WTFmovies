@@ -98,9 +98,9 @@ const userMenu = [
 ];
 
 const genres = [
-    { name: 'Tất cả', to: '/' },
-    { name: 'Thịnh hành', to: '/hot' },
-    { name: 'Mới', to: '/new' },
+    { name: 'Tất cả', to: '/', special: true },
+    { name: 'Thịnh hành', to: '/hot', special: true },
+    { name: 'Mới', to: '/new', special: true },
     { name: 'Hành động', to: '/action' },
     { name: 'Tình cảm', to: '/romance' },
     { name: 'Trinh thám', to: '/detective' },
@@ -173,7 +173,6 @@ function Header({
             setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
         };
     }, [scrollPosition]);
-
     return (
         <header className={cx('wrapper', headerClass)}>
             <div className={cx('header')}>
@@ -262,11 +261,13 @@ function Header({
             </div>
             {isDatabase || (
                 <Genres>
-                    {genres.map((genre, index) => (
-                        <Link key={index} href={genre.to} className={cx('genre')}>
-                            {genre.name}
-                        </Link>
-                    ))}
+                    {genres.map((genre, index) => {
+                        return (
+                            <Link key={index} href={genre.to} className={cx(genre.special && 'special-genre', 'genre')}>
+                                {genre.name}
+                            </Link>
+                        );
+                    })}
                 </Genres>
             )}
 

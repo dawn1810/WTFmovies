@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { getFilmsEpisode, getFilmsInfo } from '~/libs/getData/watch';
 
 import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
@@ -7,7 +8,7 @@ import TabsBox from '~/components/TabsBox';
 import FilmInteract from '~/components/FilmInteract';
 import Player from '~/components/Player';
 import DefaultLayout from '~/layouts/DefaultLayout';
-import { auth } from '../api/auth/[...nextauth]/auth';
+import { auth } from '../../../api/auth/[...nextauth]/auth';
 
 const cx = classNames.bind(style);
 
@@ -84,78 +85,7 @@ const notyfyTabs = [
     },
 ];
 
-const episodesTabs = [
-    {
-        title: '#VIETSUB',
-        eventKey: 'visub',
-        content: [
-            'Trailer',
-            '1',
-            '2 + 3',
-            '4',
-            '5',
-            '6',
-            '6.1',
-            '7',
-            '8',
-            '9',
-            '10',
-            '11',
-            '12',
-            '13',
-            '14',
-            '15',
-            '16',
-            '17',
-            '18',
-            '19',
-            '20',
-            '21',
-            '22',
-            '23',
-            '24',
-            '25',
-            '26',
-            '27',
-            '28',
-        ],
-    },
-    {
-        title: '#THUYẾT MINH',
-        eventKey: 'present',
-        content: [
-            'Trailer',
-            '1',
-            '2 + 3',
-            '4',
-            '5',
-            '6',
-            '6.1',
-            '7',
-            '8',
-            '9',
-            '10',
-            '11',
-            '12',
-            '13',
-            '14',
-            '15',
-            '16',
-            '17',
-            '18',
-            '19',
-            '20',
-            '21',
-            '22',
-            '23',
-            '24',
-            '25',
-            '26',
-            '27',
-            '28',
-        ],
-    },
-];
+
 
 const proposeFilmsTabs = [
     {
@@ -188,20 +118,41 @@ const commentTabs = [
     },
 ];
 
-async function Watch() {
+async function Watch({ params }: { params: { movieName: string, numEp: string } }) {
+
+    const filmData = await getFilmsInfo(params.movieName);
+    const filmEpisode = await getFilmsEpisode(filmData?.film_id);
+
+    if (!filmEpisode || !filmData || !filmData.videoType) return 'haha'
+
+    const episodesTabs =
+        filmData.videoType.map(({ title, episode }) => {
+            if (!title || !episode) return {
+                title: 'title',
+                eventKey: 'title',
+                content: 'episode',
+            }
+            return {
+                title: title,
+                eventKey: title,
+                content: episode,
+            }
+        })
+
     const session = await auth();
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
-                <h1 className={cx('title')}>Rabit hole</h1>
+                <h1 className={cx('title')}>{filmData.name}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <Player url={'https://p21-ad-sg.ibyteimg.com/obj/ad-site-i18n-sg/202404085d0dd7ded2f8d41549d4b97a?.m3u8'} />
-                <FilmInteract />
+                <Player url={`${filmEpisode[0].link}?.m3u8`} />
+                <FilmInteract rating={filmData.rating} />
                 <TabsBox
                     tabs={episodesTabs}
+                    active_index={1}
                     flexContent
                     textContent
-                    defaultActiveKey="visub"
+                    defaultActiveKey={filmData.videoType[0].title}
                     className={cx('tab-box')}
                 />
                 <TabsBox

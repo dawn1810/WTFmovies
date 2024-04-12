@@ -22,6 +22,7 @@ function TabBox({
     textContent = false,
     gridContent = false,
     tabs,
+    active_index,
     defaultActiveKey,
     className,
 }: {
@@ -31,6 +32,7 @@ function TabBox({
     textContent?: boolean;
     gridContent?: boolean;
     tabs: tab[];
+    active_index?: number;
     defaultActiveKey?: string;
     className?: string | [];
 }) {
@@ -56,7 +58,7 @@ function TabBox({
                         {gridContent ? (
                             <TabGridContent films={tab.content} />
                         ) : flexContent ? (
-                            <TabFlexContent episodes={tab.content} />
+                            <TabFlexContent episodes={tab.content} active_index={active_index} />
                         ) : listContent ? (
                             <FilmProposeList films={tab.content} className={cx('films-list')} />
                         ) : (

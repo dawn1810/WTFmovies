@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
@@ -11,16 +10,7 @@ import { Input, Button, AppBar, Tabs, Box, Tab, Dialog, Autocomplete, IconButton
 import ImageUpload from './ImageUpload';
 
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-    typography: {
-        fontFamily: 'var(--font-family)',
-        fontSize: 20,
-    },
 
-});
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
 
@@ -124,338 +114,336 @@ export default function MyDialogWithTabs() {
 
 
     return (
-        <ThemeProvider theme={darkTheme} >
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                    Open dialog
-                </Button>
-                <Dialog maxWidth={'xl'} open={open} onClose={handleClose}>
-                    <AppBar position="static" >
-                        <Toolbar >
-                            <IconButton
-                                edge="start"
-                                color="inherit"
-                                onClick={handleClose}
-                                aria-label="close"
-                            >
-                                <CloseIcon />
-                            </IconButton>
-                            <Tabs
-                                value={value}
-                                onChange={handleChange}
-                                centered
-                            >
-                                <Tab icon={<InfoIcon />} iconPosition="start" label="Thông tin cơ bản" wrapped />
-                                <Tab icon={<ListAltIcon />} iconPosition="start" label="Thông tin tập phim" wrapped />
-                            </Tabs>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+                Open dialog
+            </Button>
+            <Dialog maxWidth={'xl'} open={open} onClose={handleClose}>
+                <AppBar position="static" >
+                    <Toolbar >
+                        <IconButton
+                            edge="start"
+                            color="inherit"
+                            onClick={handleClose}
+                            aria-label="close"
+                        >
+                            <CloseIcon />
+                        </IconButton>
+                        <Tabs
+                            value={value}
+                            onChange={handleChange}
+                            centered
+                        >
+                            <Tab icon={<InfoIcon />} iconPosition="start" label="Thông tin cơ bản" wrapped />
+                            <Tab icon={<ListAltIcon />} iconPosition="start" label="Thông tin tập phim" wrapped />
+                        </Tabs>
 
-                        </Toolbar>
+                    </Toolbar>
 
-                    </AppBar>
-                    <TabPanel value={value} index={0} >
+                </AppBar>
+                <TabPanel value={value} index={0} >
 
-                        <Box sx={{
-                            margin: '0 auto',
-                            padding: '1rem',
-                            height: '100%',
-                            display: 'flex'
-                        }}>
+                    <Box sx={{
+                        margin: '0 auto',
+                        padding: '1rem',
+                        height: '100%',
+                        display: 'flex'
+                    }}>
 
-                            <Box
-                                component="form"
-                                sx={{
-                                    '& .MuiTextField-root': { m: 1 },
-                                    '& #movie-title': {
-                                        width: '50ch'
-                                    },
-                                    '& #movie-sumary': {
-                                        width: '50ch',
-                                    },
-                                    '& .MuiFormHelperText-root': { marginLeft: 0 },
-                                    display: 'flex',
-                                    alignItems: 'stretch',
-                                    gap: '1rem',
-                                    width: '100%',
-
-
-                                }}
-                                autoComplete="off"
-                            >
-                                <Box sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    gap: 1,
-
-                                }}>
-                                    <TextField
-
-                                        required
-                                        id="movie-title"
-                                        label="Tựa phim"
-                                        defaultValue="Rabit hole"
-                                    />
+                        <Box
+                            component="form"
+                            sx={{
+                                '& .MuiTextField-root': { m: 1 },
+                                '& #movie-title': {
+                                    width: '50ch'
+                                },
+                                '& #movie-sumary': {
+                                    width: '50ch',
+                                },
+                                '& .MuiFormHelperText-root': { marginLeft: 0 },
+                                display: 'flex',
+                                alignItems: 'stretch',
+                                gap: '1rem',
+                                width: '100%',
 
 
-                                    <TextField
+                            }}
+                            autoComplete="off"
+                        >
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                gap: 1,
 
-                                        required
-                                        id="movie-sumary"
-                                        label="Mô tả"
-                                        multiline
-                                        rows={12.5}
-                                        defaultValue="Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole"
-                                    />
-                                </Box>
-                                <Box sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
+                            }}>
+                                <TextField
 
-                                    width: '30vw',
+                                    required
+                                    id="movie-title"
+                                    label="Tựa phim"
+                                    defaultValue="Rabit hole"
+                                />
 
-                                    gap: 1,
 
-                                }}>
+                                <TextField
 
-                                    <Autocomplete
-                                        limitTags={2}
+                                    required
+                                    id="movie-sumary"
+                                    label="Mô tả"
+                                    multiline
+                                    rows={12.5}
+                                    defaultValue="Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole"
+                                />
+                            </Box>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
 
-                                        multiple
-                                        id="movie-tacgia"
-                                        onChange={handleChangeAuto}
-                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        getOptionLabel={(option) => option.title}
-                                        groupBy={(option) => option.firstLetter}
-                                        value={valueAuto}
-                                        isOptionEqualToValue={(option, value) => {
-                                            return option.title === value.title && option.year === value.year;
-                                        }}
-                                        renderTags={(tagValue, getTagProps) =>
-                                            tagValue.map((option, index) => (
-                                                <Chip
-                                                    {...getTagProps({ index })}
-                                                    key={option.title}
-                                                    label={option.title}
-                                                />
-                                            ))
-                                        }
+                                width: '30vw',
 
-                                        filterSelectedOptions
-                                        renderInput={(params) => (
-                                            <TextField
-                                                required
-                                                {...params}
-                                                label="Tác giả"
-                                                placeholder="Chọn tác giả"
+                                gap: 1,
+
+                            }}>
+
+                                <Autocomplete
+                                    limitTags={2}
+
+                                    multiple
+                                    id="movie-tacgia"
+                                    onChange={handleChangeAuto}
+                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    getOptionLabel={(option) => option.title}
+                                    groupBy={(option) => option.firstLetter}
+                                    value={valueAuto}
+                                    isOptionEqualToValue={(option, value) => {
+                                        return option.title === value.title && option.year === value.year;
+                                    }}
+                                    renderTags={(tagValue, getTagProps) =>
+                                        tagValue.map((option, index) => (
+                                            <Chip
+                                                {...getTagProps({ index })}
+                                                key={option.title}
+                                                label={option.title}
                                             />
-                                        )}
-                                    />
-                                    <Autocomplete
-                                        limitTags={2}
+                                        ))
+                                    }
 
-                                        multiple
-                                        id="movie-theloai"
-                                        onChange={handleChangeAuto}
-                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        getOptionLabel={(option) => option.title}
-                                        groupBy={(option) => option.firstLetter}
-                                        value={valueAuto}
-                                        isOptionEqualToValue={(option, value) => {
-                                            return option.title === value.title && option.year === value.year;
-                                        }}
-                                        renderTags={(tagValue, getTagProps) =>
-                                            tagValue.map((option, index) => (
-                                                <Chip
-                                                    {...getTagProps({ index })}
-                                                    key={option.title}
-                                                    label={option.title}
-                                                />
-                                            ))
-                                        }
+                                    filterSelectedOptions
+                                    renderInput={(params) => (
+                                        <TextField
+                                            required
+                                            {...params}
+                                            label="Tác giả"
+                                            placeholder="Chọn tác giả"
+                                        />
+                                    )}
+                                />
+                                <Autocomplete
+                                    limitTags={2}
 
-                                        filterSelectedOptions
-                                        renderInput={(params) => (
-                                            <TextField
-                                                required
-                                                {...params}
-                                                label="Thể loại"
-                                                placeholder="Chọn thể loại"
+                                    multiple
+                                    id="movie-theloai"
+                                    onChange={handleChangeAuto}
+                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    getOptionLabel={(option) => option.title}
+                                    groupBy={(option) => option.firstLetter}
+                                    value={valueAuto}
+                                    isOptionEqualToValue={(option, value) => {
+                                        return option.title === value.title && option.year === value.year;
+                                    }}
+                                    renderTags={(tagValue, getTagProps) =>
+                                        tagValue.map((option, index) => (
+                                            <Chip
+                                                {...getTagProps({ index })}
+                                                key={option.title}
+                                                label={option.title}
                                             />
-                                        )}
-                                    />
-                                    <Autocomplete
-                                        limitTags={2}
+                                        ))
+                                    }
 
-                                        multiple
-                                        id="movie-daodien"
-                                        onChange={handleChangeAuto}
+                                    filterSelectedOptions
+                                    renderInput={(params) => (
+                                        <TextField
+                                            required
+                                            {...params}
+                                            label="Thể loại"
+                                            placeholder="Chọn thể loại"
+                                        />
+                                    )}
+                                />
+                                <Autocomplete
+                                    limitTags={2}
 
-                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        value={valueAuto}
-                                        isOptionEqualToValue={(option, value) => {
-                                            return option.title === value.title && option.year === value.year;
-                                        }}
-                                        renderTags={(tagValue, getTagProps) =>
-                                            tagValue.map((option, index) => (
-                                                <Chip
-                                                    {...getTagProps({ index })}
-                                                    key={option.title}
-                                                    label={option.title}
-                                                />
-                                            ))
-                                        }
-                                        groupBy={(option) => option.firstLetter}
-                                        getOptionLabel={(option) => option.title}
-                                        filterSelectedOptions
-                                        renderInput={(params) => (
-                                            <TextField
-                                                required
-                                                {...params}
-                                                label="Đạo diễn"
-                                                placeholder="Chọn đạo diễn"
+                                    multiple
+                                    id="movie-daodien"
+                                    onChange={handleChangeAuto}
+
+                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    value={valueAuto}
+                                    isOptionEqualToValue={(option, value) => {
+                                        return option.title === value.title && option.year === value.year;
+                                    }}
+                                    renderTags={(tagValue, getTagProps) =>
+                                        tagValue.map((option, index) => (
+                                            <Chip
+                                                {...getTagProps({ index })}
+                                                key={option.title}
+                                                label={option.title}
                                             />
-                                        )}
-                                    />
-                                    <Autocomplete
-                                        multiple
-                                        limitTags={2}
+                                        ))
+                                    }
+                                    groupBy={(option) => option.firstLetter}
+                                    getOptionLabel={(option) => option.title}
+                                    filterSelectedOptions
+                                    renderInput={(params) => (
+                                        <TextField
+                                            required
+                                            {...params}
+                                            label="Đạo diễn"
+                                            placeholder="Chọn đạo diễn"
+                                        />
+                                    )}
+                                />
+                                <Autocomplete
+                                    multiple
+                                    limitTags={2}
 
-                                        id="movie-lang"
-                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        onChange={handleChangeAuto}
-                                        value={valueAuto}
-                                        isOptionEqualToValue={(option, value) => {
-                                            return option.title === value.title && option.year === value.year;
-                                        }}
-                                        renderTags={(tagValue, getTagProps) =>
-                                            tagValue.map((option, index) => (
-                                                <Chip
-                                                    {...getTagProps({ index })}
-                                                    key={option.title}
-                                                    label={option.title}
-                                                />
-                                            ))
-                                        }
-                                        groupBy={(option) => option.firstLetter}
-                                        getOptionLabel={(option) => option.title}
-                                        filterSelectedOptions
-                                        renderInput={(params) => (
-                                            <TextField
-                                                required
-                                                {...params}
-                                                label="Ngôn ngữ"
-                                                placeholder="Chọn ngôn ngữ"
+                                    id="movie-lang"
+                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    onChange={handleChangeAuto}
+                                    value={valueAuto}
+                                    isOptionEqualToValue={(option, value) => {
+                                        return option.title === value.title && option.year === value.year;
+                                    }}
+                                    renderTags={(tagValue, getTagProps) =>
+                                        tagValue.map((option, index) => (
+                                            <Chip
+                                                {...getTagProps({ index })}
+                                                key={option.title}
+                                                label={option.title}
                                             />
-                                        )}
-                                    />
-                                    <Autocomplete
-                                        multiple
-                                        limitTags={2}
+                                        ))
+                                    }
+                                    groupBy={(option) => option.firstLetter}
+                                    getOptionLabel={(option) => option.title}
+                                    filterSelectedOptions
+                                    renderInput={(params) => (
+                                        <TextField
+                                            required
+                                            {...params}
+                                            label="Ngôn ngữ"
+                                            placeholder="Chọn ngôn ngữ"
+                                        />
+                                    )}
+                                />
+                                <Autocomplete
+                                    multiple
+                                    limitTags={2}
 
-                                        autoSelect
-                                        id="movie-actor"
-                                        onChange={handleChangeAuto}
-                                        value={valueAuto}
-                                        options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                        groupBy={(option) => option.firstLetter}
-                                        getOptionLabel={(option) => option.title}
-                                        filterSelectedOptions
-                                        isOptionEqualToValue={(option, value) => {
-                                            return option.title === value.title && option.year === value.year;
-                                        }}
-                                        renderTags={(tagValue, getTagProps) =>
-                                            tagValue.map((option, index) => (
-                                                <Chip
-                                                    {...getTagProps({ index })}
-                                                    key={option.title}
-                                                    label={option.title}
-                                                />
-                                            ))
-                                        }
-                                        renderInput={(params) => (
-                                            <TextField
-                                                required
-                                                {...params}
-                                                label="Diễn viên"
-                                                placeholder="Chọn diễn viên"
+                                    autoSelect
+                                    id="movie-actor"
+                                    onChange={handleChangeAuto}
+                                    value={valueAuto}
+                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    groupBy={(option) => option.firstLetter}
+                                    getOptionLabel={(option) => option.title}
+                                    filterSelectedOptions
+                                    isOptionEqualToValue={(option, value) => {
+                                        return option.title === value.title && option.year === value.year;
+                                    }}
+                                    renderTags={(tagValue, getTagProps) =>
+                                        tagValue.map((option, index) => (
+                                            <Chip
+                                                {...getTagProps({ index })}
+                                                key={option.title}
+                                                label={option.title}
                                             />
-                                        )}
-                                    />
-                                </Box>
-                                <Box sx={{
-                                    display: 'flex',
-                                    flexDirection: 'column',
-                                    justifyContent: 'space-between',
-                                    gap: 1,
+                                        ))
+                                    }
+                                    renderInput={(params) => (
+                                        <TextField
+                                            required
+                                            {...params}
+                                            label="Diễn viên"
+                                            placeholder="Chọn diễn viên"
+                                        />
+                                    )}
+                                />
+                            </Box>
+                            <Box sx={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                                gap: 1,
 
-                                }}>
-
-
-                                    <TextField
-                                        id="movie-kuni"
-                                        select
-                                        label="Quốc gia sản xuất"
-                                        value={undefined}
-                                    // helperText="Please select your currency"
-                                    >
-                                        {kuniMovies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    <DatePicker label="Năm sản xuất" />
-                                    <TextField
-                                        id="movie-tag"
-                                        select
-                                        label="Nhãn"
-                                        value={undefined}
-                                    // helperText="Please select your currency"
-                                    >
-                                        {statusMovies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                    <MobileTimePicker label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
-                                    <TextField
-                                        id="movie-status"
-                                        select
-                                        label="Trạng thái"
-                                    // defaultValue="EUR"
-                                    // helperText="Please select your currency"
-                                    >
-                                        {statusMovies.map((option) => (
-                                            <MenuItem key={option.value} value={option.value}>
-                                                {option.label}
-                                            </MenuItem>
-                                        ))}
-                                    </TextField>
-                                </Box>
+                            }}>
 
 
-
+                                <TextField
+                                    id="movie-kuni"
+                                    select
+                                    label="Quốc gia sản xuất"
+                                    value={undefined}
+                                // helperText="Please select your currency"
+                                >
+                                    {kuniMovies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <DatePicker label="Năm sản xuất" />
+                                <TextField
+                                    id="movie-tag"
+                                    select
+                                    label="Nhãn"
+                                    value={undefined}
+                                // helperText="Please select your currency"
+                                >
+                                    {statusMovies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
+                                <MobileTimePicker label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
+                                <TextField
+                                    id="movie-status"
+                                    select
+                                    label="Trạng thái"
+                                // defaultValue="EUR"
+                                // helperText="Please select your currency"
+                                >
+                                    {statusMovies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                             </Box>
 
 
-                            <ImageUpload></ImageUpload>
+
                         </Box>
 
-                    </TabPanel>
-                    <TabPanel value={value} index={1}>
-                    </TabPanel>
-                    <DialogActions>
-                        <Button autoFocus variant="contained" onClick={handleClose}>
-                            Huỷ
-                        </Button>
-                        <Button autoFocus variant="contained" onClick={handleClose}>
-                            Lưu
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-            </LocalizationProvider>
-        </ThemeProvider >
+
+                        <ImageUpload></ImageUpload>
+                    </Box>
+
+                </TabPanel>
+                <TabPanel value={value} index={1}>
+                </TabPanel>
+                <DialogActions>
+                    <Button autoFocus variant="contained" onClick={handleClose}>
+                        Huỷ
+                    </Button>
+                    <Button autoFocus variant="contained" onClick={handleClose}>
+                        Lưu
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </LocalizationProvider>
     );
 }

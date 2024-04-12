@@ -1,7 +1,6 @@
 "use client"
 import style from './DataGridCom.module.scss';
 import classNames from 'classnames/bind';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
 import { DataGrid, GridToolbarQuickFilter, GridToolbarExport, GridToolbarFilterButton, GridRowSelectionModel, GridToolbarColumnsButton, GridToolbarContainer, GridToolbarDensitySelector, GridColDef } from '@mui/x-data-grid';
@@ -14,16 +13,6 @@ import { useSelector } from 'react-redux';
 import { alertStatusSelector } from '~/redux/selectors';
 
 
-const darkTheme = createTheme({
-    palette: {
-        mode: 'dark',
-    },
-    typography: {
-        fontFamily: 'var(--font-family)',
-        fontSize: 20,
-    },
-
-});
 const cx = classNames.bind(style);
 export default function DataGridCom({ colum, children, title_name }: {
     colum: readonly GridColDef<{ any: any; }>[], children: any, title_name: string
@@ -80,32 +69,30 @@ export default function DataGridCom({ colum, children, title_name }: {
     }
 
     return (
-        <ThemeProvider theme={darkTheme} >
-            <div className={cx('dataGrid')}>
-                <h1 className={cx('title_name')}>{title_name}</h1>
-                <DataGrid columns={colum} rows={children}
-                    localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
-                    checkboxSelection
-                    onRowSelectionModelChange={(newRowSelectionModel) => {
-                        setRowSelectionModel(newRowSelectionModel);
-                    }}
-                    rowSelectionModel={rowSelectionModel}
-                    slots={{ toolbar: CustomToolbar }}
-                    initialState={{
-                        filter: {
-                            filterModel: {
-                                items: [],
-                            },
+        <div className={cx('dataGrid')}>
+            <h1 className={cx('title_name')}>{title_name}</h1>
+            <DataGrid columns={colum} rows={children}
+                localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
+                checkboxSelection
+                onRowSelectionModelChange={(newRowSelectionModel) => {
+                    setRowSelectionModel(newRowSelectionModel);
+                }}
+                rowSelectionModel={rowSelectionModel}
+                slots={{ toolbar: CustomToolbar }}
+                initialState={{
+                    filter: {
+                        filterModel: {
+                            items: [],
                         },
+                    },
 
-                    }}
-                    slotProps={{
-                        toolbar: {
-                            showQuickFilter: true,
-                        },
-                    }}
-                />
-            </div>
-        </ThemeProvider>
+                }}
+                slotProps={{
+                    toolbar: {
+                        showQuickFilter: true,
+                    },
+                }}
+            />
+        </div>
     );
 }
