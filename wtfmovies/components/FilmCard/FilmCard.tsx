@@ -16,6 +16,7 @@ import images from '~/assets/image';
 import ImageCustom from '../ImageCustom';
 import style from './FilmCard.module.scss';
 import { FilmCardInterface } from '~/libs/interfaces';
+import Link from 'next/link';
 
 const cx = classNames.bind(style);
 
@@ -109,21 +110,21 @@ function FilmCard({
             </div>
             {noOverlay || largeNoOverlay ? (
                 <div className={cx('noOverlay-btn-list', { 'large-noOverlay-btn-list': largeNoOverlay })}>
-                    <button className={cx('hover-btn')}>
+                    <Link href={`/watch/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn')}>
                         <FontAwesomeIcon icon={faPlay} />
-                    </button>
-                    <button className={cx('hover-btn')}>
+                    </Link>
+                    <Link href={`/review/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn')}>
                         <FontAwesomeIcon icon={faBookOpen} />
-                    </button>
+                    </Link>
                 </div>
             ) : (
                 <div className={cx('hover-btn-list')}>
-                    <button className={cx('hover-btn', 'watch-btn')}>
+                    <Link href={`/watch/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn', 'watch-btn')}>
                         <FontAwesomeIcon icon={faPlay} />
-                    </button>
-                    <button className={cx('hover-btn', 'review-btn')}>
+                    </Link>
+                    <Link href={`/review/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn', 'review-btn')}>
                         <FontAwesomeIcon icon={faBookOpen} />
-                    </button>
+                    </Link>
                 </div>
             )}
         </div>

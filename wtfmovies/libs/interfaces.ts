@@ -42,6 +42,11 @@ export interface reduxStateInterface {
     };
 }
 
+interface EpisodeType {
+    title: string;
+    episode: any[];
+}
+
 export interface ExtendedUser extends User {
     user_id: string; // Use the appropriate type for user_id.
     first: boolean;
@@ -49,14 +54,15 @@ export interface ExtendedUser extends User {
 }
 
 export interface CaptionsItemInterface {
-    img: string;
+    img?: string;
     name: string;
     describe: string;
     infoList: { title: string; info: string[] | string | number; type?: string }[];
 }
 
 export interface FilmsInterFace {
-    img: string;
+    poster?: string;
+    img?: string;
     name: string;
     views: number;
     rating: number;
@@ -128,7 +134,7 @@ export interface FilmCardInterface {
     large?: boolean;
     noOverlay?: boolean;
     largeNoOverlay?: boolean;
-    imgSrc: string;
+    imgSrc?: string;
     filmName: string;
     views: number;
     rating: number;
@@ -140,4 +146,32 @@ export interface TabInterface {
     title: string;
     eventKey: string;
     content: FilmsInterFace[] | string;
+}
+
+export interface FilmInfoInterface {
+    name: string;
+    describe: string;
+    status?: string;
+    author: string[];
+    genre: string[];
+    director?: string[];
+    duration?: number;
+    videoType: EpisodeType[];
+    tag?: string[];
+    releaseYear?: Date;
+    country?: string;
+    actor?: string[];
+    views: number;
+    rating: number;
+    poster?: string;
+    img?: string;
+}
+
+export interface FilmReviewInfoInterface {
+    image?: string;
+    title: string;
+    rating: number;
+    episodes: number;
+    describe: string;
+    info: { title: string; info?: string[] | string | number[] | number; type?: string }[];
 }

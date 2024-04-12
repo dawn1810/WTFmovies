@@ -157,52 +157,22 @@ function Header({
         }
     };
 
+    const [scrollPosition, setScrollPosition] = useState(0);
+    const [headerClass, setHeaderClass] = useState('wrapper-show');
 
+    const offset = 10; // Tự điều chỉnh offset theo ý muốn
 
-
-    const [headerClass, setHeaderClass] = useState('wrapper-database');
-    if (!isDatabase) {
-        const [scrollPosition, setScrollPosition] = useState(0);
-        const [scrollSpeed, setScrollSpeed] = useState(0);
-        const [lastScrollTop, setLastScrollTop] = useState(0);
-        useEffect(() => {
-            setHeaderClass('wrapper-show')
-        }, []);
-        useEffect(() => {
-            let ticking = false;
-
-            const handleScroll = () => {
-                const currentPosition = window.scrollY;
-
-                if (!ticking) {
-                    window.requestAnimationFrame(() => {
-                        const distance = Math.abs(currentPosition - lastScrollTop) * 100;
-                        const speed = distance / 60;
-                        setScrollSpeed(speed);
-
-                        setLastScrollTop(currentPosition);
-                        ticking = false;
-                    });
-
-                    ticking = true;
-                }
-
-                if (currentPosition < scrollPosition - scrollSpeed) {
-                    setHeaderClass('wrapper-show');
-                } else if (currentPosition > scrollPosition + scrollSpeed) {
-                    setHeaderClass('wrapper-hide');
-                }
-
-                setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
-            };
-
-            window.addEventListener('scroll', handleScroll);
-
-            return () => {
-                window.removeEventListener('scroll', handleScroll);
-            };
-        }, [scrollPosition, scrollSpeed]);
-    }
+    useEffect(() => {
+        window.onscroll = () => {
+            let currentPosition = window.pageYOffset;
+            if (currentPosition < scrollPosition - offset) {
+                setHeaderClass('wrapper-show');
+            } else if (currentPosition > scrollPosition + offset) {
+                setHeaderClass('wrapper-hide');
+            }
+            setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
+        };
+    }, [scrollPosition]);
     return (
         <header className={cx('wrapper', headerClass)}>
             <div className={cx('header')}>
@@ -292,10 +262,11 @@ function Header({
             {isDatabase || (
                 <Genres>
                     {genres.map((genre, index) => {
-                        return <Link key={index} href={genre.to} className={cx(genre.special && 'special-genre', 'genre')}>
-                            {genre.name}
-                        </Link>
-
+                        return (
+                            <Link key={index} href={genre.to} className={cx(genre.special && 'special-genre', 'genre')}>
+                                {genre.name}
+                            </Link>
+                        );
                     })}
                 </Genres>
             )}
