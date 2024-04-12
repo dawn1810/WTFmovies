@@ -146,9 +146,10 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
                 <h1 className={cx('title')}>{filmData.name}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
                 <Player url={`${filmEpisode[0].link}?.m3u8`} />
-                <FilmInteract />
+                <FilmInteract rating={filmData.rating} />
                 <TabsBox
                     tabs={episodesTabs}
+                    active_index={1}
                     flexContent
                     textContent
                     defaultActiveKey={filmData.videoType[0].title}

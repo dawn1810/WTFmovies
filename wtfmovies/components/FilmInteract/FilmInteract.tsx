@@ -8,7 +8,7 @@ import style from './FilmInteract.module.scss';
 
 const cx = classNames.bind(style);
 
-function FilmInteract({ rating }: { rating: number }) {
+function FilmInteract({ rating }: { rating?: number }) {
     return (
         <div className={cx('wrapper')}>
             <Rating rating={rating} />
