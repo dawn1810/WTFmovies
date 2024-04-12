@@ -7,19 +7,21 @@ import FilmCard from '~/components/FilmCard';
 import Button from '~/components/Button';
 import style from './TabGridContent.module.scss';
 import { useViewport } from '~/hooks';
-import { FilmsInterFace } from '~/libs/interfaces';
+import { FilmInfoInterface } from '~/libs/interfaces';
+import { mapFilms } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
-function TabGridContent({ films }: { films: FilmsInterFace[] }) {
+function TabGridContent({ films }: { films: FilmInfoInterface[] }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
+    const mappedFilms = mapFilms(films);
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('content-info')}>
-                {films.length > 0 ? (
-                    films.map((film, index) => (
+                {mappedFilms.length > 0 ? (
+                    mappedFilms.map((film, index) => (
                         <FilmCard
                             key={index}
                             large={isMobile}

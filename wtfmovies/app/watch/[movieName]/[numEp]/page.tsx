@@ -85,8 +85,6 @@ const notyfyTabs = [
     },
 ];
 
-
-
 const proposeFilmsTabs = [
     {
         title: '#CÓ THỂ BẠN SẼ THÍCH',
@@ -105,39 +103,38 @@ const proposeFilmsTabs = [
     },
 ];
 
-const commentTabs = [
-    {
-        title: '#BÌNH LUẬN',
-        eventKey: 'comment',
-        content: <CommentContent />,
-    },
-    {
-        title: '#THÔNG TIN PHIM',
-        eventKey: 'film-info',
-        content: <FilmInfo />,
-    },
-];
+// const commentTabs = [
+//     {
+//         title: '#BÌNH LUẬN',
+//         eventKey: 'comment',
+//         content: <CommentContent />,
+//     },
+//     {
+//         title: '#THÔNG TIN PHIM',
+//         eventKey: 'film-info',
+//         content: <FilmInfo />,
+//     },
+// ];
 
-async function Watch({ params }: { params: { movieName: string, numEp: string } }) {
-
+async function Watch({ params }: { params: { movieName: string; numEp: string } }) {
     const filmData = await getFilmsInfo(params.movieName);
     const filmEpisode = await getFilmsEpisode(filmData?.film_id);
 
-    if (!filmEpisode || !filmData || !filmData.videoType) return 'haha'
+    if (!filmEpisode || !filmData || !filmData.videoType) return 'haha';
 
-    const episodesTabs =
-        filmData.videoType.map(({ title, episode }) => {
-            if (!title || !episode) return {
+    const episodesTabs = filmData.videoType.map(({ title, episode }) => {
+        if (!title || !episode)
+            return {
                 title: 'title',
                 eventKey: 'title',
                 content: 'episode',
-            }
-            return {
-                title: title,
-                eventKey: title,
-                content: episode,
-            }
-        })
+            };
+        return {
+            title: title,
+            eventKey: title,
+            content: episode,
+        };
+    });
 
     const session = await auth();
     return (
