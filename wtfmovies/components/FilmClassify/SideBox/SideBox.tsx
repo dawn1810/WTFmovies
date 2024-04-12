@@ -23,6 +23,8 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
         setFilmHide((prev) => !prev);
     };
 
+    console.log(films[0]);
+
     return (
         <div className={cx('wrapper')}>
             <Title title={title} icon={icon} className={cx('title')} />
@@ -30,7 +32,7 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
                 <div className={cx('side-films-top')}>
                     <FilmCard
                         large
-                        imgSrc={films[0].img}
+                        imgSrc={films[0].poster || films[0].img}
                         filmName={films[0].name}
                         views={films[0].views}
                         rating={films[0].rating}

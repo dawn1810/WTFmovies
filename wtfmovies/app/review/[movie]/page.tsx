@@ -7,65 +7,67 @@ import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../api/auth/[...nextauth]/auth';
+import { useSearchParams } from 'next/navigation';
+import { getFilmReviewInfo } from '~/libs/getData/review';
 
 const cx = classNames.bind(style);
 
 const films = [
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
     {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        filmName: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
+        img: '/zdwfbkt301n51.jpg',
+        name: 'Jujutsu Kaisen',
+        views: 999999,
+        rating: 4.9,
+        episodes: 1029,
     },
 ];
 
@@ -77,15 +79,18 @@ const commentTabs = [
     },
 ];
 
-async function Review() {
+async function Review({ params }: { params: { movie: string } }) {
     const session = await auth();
+    const { movie } = params;
+
+    const filmReviewInfo = await getFilmReviewInfo(movie.replaceAll('-', ' '));
 
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
                 <div className={cx('home-top')}>
                     <div className={cx('info-content')}>
-                        <FilmInfo />
+                        <FilmInfo filmInfo={filmReviewInfo} />
                     </div>
                     <FilmProposeList films={films} />
                 </div>

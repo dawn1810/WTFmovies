@@ -24,6 +24,7 @@ import Button from '../Button';
 import Link from 'next/link';
 import images from '~/assets/image';
 import Tippy from '@tippyjs/react';
+import { FilmInfoInterface, FilmReviewInfoInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -41,42 +42,82 @@ const icons = [
     <FontAwesomeIcon icon={faStar} />,
 ];
 
-const infoList = {
-    image: '/jjk-wallpaper-3.jpg',
-    title: 'Jujutsu Kaisen',
-    rating: '4.9',
-    episodes: '100M',
-    decript:
-        "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
-    info: [
-        { title: 'Trạng thái', info: 'Hoàn thành', type: 'highLight' },
-        { title: 'Tác giả', info: ['Gege Akutami'], type: 'searchAble' },
-        { title: 'Thể loại', info: ['Shonen manga', 'Dark fantasy'], type: 'searchAble' },
-        {
-            title: 'Đạo diễn',
-            info: ['Sunghoo Park (S1)', 'Shōta Goshozono (S2)'],
-            type: 'searchAble',
-        },
-        { title: 'Thời lượng', info: '24 phút/tập' },
-        { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
-        { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
-        { title: 'Năm sản xuất', info: '2021' },
-        { title: 'Quốc gia sản xuất', info: 'Nhật Bản' },
-        {
-            title: 'Diển viên nổi bật',
-            info: ['Kenjiro Tsuda', 'Yuichi Nakamura', 'Junya Enoki'],
-            type: 'searchAble',
-        },
+// const infoList = {
+//     image: '/jjk-wallpaper-3.jpg',
+//     title: 'Jujutsu Kaisen',
+//     rating: '4.9',
+//     episodes: '100M',
+//     decript:
+//         "Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024Jujutsu Kaisen is a Japanese manga series written and illustrated by Gege Akutami. It has been serialized in Shueisha's shōnen manga magazine Weekly Shōnen Jump since March 2018, with its chapters collected and published in 25 tankōbon volumes as of January 2024",
+//     info: [
+//         { title: 'Trạng thái', info: 'Hoàn thành', type: 'highLight' },
+//         { title: 'Tác giả', info: ['Gege Akutami'], type: 'searchAble' },
+//         { title: 'Thể loại', info: ['Shonen manga', 'Dark fantasy'], type: 'searchAble' },
+//         {
+//             title: 'Đạo diễn',
+//             info: ['Sunghoo Park (S1)', 'Shōta Goshozono (S2)'],
+//             type: 'searchAble',
+//         },
+//         { title: 'Thời lượng', info: '24 phút/tập' },
+//         { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
+//         { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
+//         { title: 'Năm sản xuất', info: '2021' },
+//         { title: 'Quốc gia sản xuất', info: 'Nhật Bản' },
+//         {
+//             title: 'Diển viên nổi bật',
+//             info: ['Kenjiro Tsuda', 'Yuichi Nakamura', 'Junya Enoki'],
+//             type: 'searchAble',
+//         },
 
-        {
-            title: 'Tập mới cập nhật',
-            info: [29, 28, 27],
-            type: 'watchAble',
-        },
-    ],
-};
+//         {
+//             title: 'Tập mới cập nhật',
+//             info: [29, 28, 27],
+//             type: 'watchAble',
+//         },
+//     ],
+// };
 
-function FilmInfo() {
+function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface[] }) {
+    const infoList: FilmReviewInfoInterface[] = filmInfo.map((film): FilmReviewInfoInterface => {
+        // Calculate the total number of episodes across all video types
+        const subsType = film.videoType.find((type) => type.title === 'Subs') as any;
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+
+        return {
+            image: film.poster,
+            title: film.name,
+            rating: film.rating,
+            episodes: totalEpisodes,
+            describe: film.describe,
+            info: [
+                { title: 'Trạng thái', info: film.status, type: 'highLight' },
+                { title: 'Tác giả', info: film.author, type: 'searchAble' },
+                { title: 'Thể loại', info: film.genre, type: 'searchAble' },
+                {
+                    title: 'Đạo diễn',
+                    info: film.director,
+                    type: 'searchAble',
+                },
+                { title: 'Thời lượng', info: (film.duration ? film.duration / 60 : 24) + 'phút' },
+                // { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
+                { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
+                { title: 'Năm sản xuất', info: String(film.releaseYear?.getFullYear) },
+                { title: 'Quốc gia sản xuất', info: film.country },
+                {
+                    title: 'Diển viên',
+                    info: film.actor,
+                    type: 'searchAble',
+                },
+
+                {
+                    title: 'Tập mới cập nhật',
+                    info: [29, 28, 27],
+                    type: 'watchAble',
+                },
+            ],
+        };
+    });
+
     const handleCopyTitle = () => {
         navigator.clipboard.writeText(infoList.title);
     };
@@ -86,7 +127,7 @@ function FilmInfo() {
             <ImageCustom className={cx('film-image')} src={infoList.image} alt={infoList.title} />
             <div className={cx('film-left-container')}>
                 <div className={cx('film-info')}>
-                    <Tippy content="Copied" placement="top" arrow={false} trigger="click" >
+                    <Tippy content="Copied" placement="top" arrow={false} trigger="click">
                         <h3 className={cx('film-title')} onClick={handleCopyTitle}>
                             {infoList.title}
                         </h3>
@@ -106,12 +147,15 @@ function FilmInfo() {
                         {infoList.info.map((info, index) => (
                             <li key={index}>
                                 <span>{icons[index]}</span>
-                                {info.type === 'searchAble' ? (
+                                {info.type === 'searchAble' && typeof info.info === 'object' ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>{' '}
                                         {info.info.slice(0, -1).map((info, index) => (
                                             <Fragment key={index}>
-                                                <Link href={'/result?search_query=' + info} className={cx('search-able')}>
+                                                <Link
+                                                    href={'/result?search_query=' + info}
+                                                    className={cx('search-able')}
+                                                >
                                                     {info + ','}
                                                 </Link>{' '}
                                             </Fragment>
@@ -128,7 +172,7 @@ function FilmInfo() {
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span> <span className={cx('high-light')}>{info.info}</span>
                                     </span>
-                                ) : info.type === 'watchAble' ? (
+                                ) : info.type === 'watchAble' && typeof info.info === 'object' ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>
                                         {info.info.map((info, index) => (

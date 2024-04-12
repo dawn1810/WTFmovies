@@ -1,5 +1,5 @@
 import { mongodb } from '~/libs/func';
-import { CaptionsItemInterface, FilmsInterFace, TabInterface } from '../interfaces';
+import { CaptionsItemInterface, FilmInfoInterface, FilmsInterFace, TabInterface } from '../interfaces';
 
 interface EpisodeType {
     title: string;
@@ -19,7 +19,7 @@ interface FilmInfo {
 }
 
 export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
-    const films: FilmInfo[] = await mongodb()
+    const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
         .aggregate({
@@ -66,9 +66,8 @@ export const getCaroselFilms = async (): Promise<CaptionsItemInterface[]> => {
 
     const mappedFilms: CaptionsItemInterface[] = films.map((film): CaptionsItemInterface => {
         // Calculate the total number of episodes across all video types
-        const subsType = film.videoType.find(type => type.title === 'Subs') as any;
+        const subsType = film.videoType.find((type) => type.title === 'Subs') as any;
         const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-
 
         return {
             img: film.poster,
@@ -106,7 +105,7 @@ export const getProposeListFilms = async (): Promise<FilmsInterFace[]> => {
 
     const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
         // Calculate the total number of episodes across all video types
-        const subsType = videoType.find(type => type.title === 'Subs') as any;
+        const subsType = videoType.find((type) => type.title === 'Subs') as any;
         const totalEpisodes = subsType.episode[subsType.episode.length - 1];
         return {
             img,
@@ -133,23 +132,27 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
                 videoType: 1,
                 views: 1,
                 rating: 1,
+                poster: 1,
             },
             limit: limit,
             sort: sort,
         });
 
-    const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
-        // Calculate the total number of episodes across all video types
-        const subsType = videoType.find(type => type.title === 'Subs') as any;
-        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-        return {
-            img,
-            name,
-            views,
-            rating,
-            episodes: totalEpisodes,
-        };
-    });
+    const mappedFilms: FilmsInterFace[] = films.map(
+        ({ img, name, videoType, views, rating, poster }): FilmsInterFace => {
+            // Calculate the total number of episodes across all video types
+            const subsType = videoType.find((type) => type.title === 'Subs') as any;
+            const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+            return {
+                img,
+                name,
+                views,
+                rating,
+                poster,
+                episodes: totalEpisodes,
+            };
+        },
+    );
 
     return mappedFilms;
 };

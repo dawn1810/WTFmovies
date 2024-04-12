@@ -157,7 +157,6 @@ function Header({
         }
     };
 
-
     const [scrollPosition, setScrollPosition] = useState(0);
     const [headerClass, setHeaderClass] = useState('wrapper-show');
 
@@ -172,8 +171,9 @@ function Header({
                 setHeaderClass('wrapper-hide');
             }
             setScrollPosition(currentPosition <= 0 ? 0 : currentPosition);
-        }
+        };
     }, [scrollPosition]);
+
     return (
         <header className={cx('wrapper', headerClass)}>
             <div className={cx('header')}>
