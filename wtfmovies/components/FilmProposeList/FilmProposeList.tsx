@@ -33,18 +33,21 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
     const viewPort = useViewport();
     // const isMobile = viewPort.width;
 
-    const mappedFilms: FilmsInterFace[] = films.map(({ img, name, videoType, views, rating }): FilmsInterFace => {
-        const subsType = videoType.find((type) => type.title === 'Subs') as any;
-        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+    const mappedFilms: FilmsInterFace[] = films.map(
+        ({ img, name, searchName, videoType, views, rating }): FilmsInterFace => {
+            const subsType = videoType.find((type) => type.title === 'Subs') as any;
+            const totalEpisodes = subsType.episode[subsType.episode.length - 1];
 
-        return {
-            img,
-            name,
-            views,
-            rating,
-            episodes: totalEpisodes,
-        };
-    });
+            return {
+                img,
+                name,
+                searchName,
+                views,
+                rating,
+                episodes: totalEpisodes,
+            };
+        },
+    );
 
     const settings = {
         className: cx('carousel'),
@@ -66,7 +69,6 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
                     slidesToShow: (viewPort.width - 20) / 160 - 0.1,
                     slidesToScroll: 1,
                     infinite: true,
-
                 },
             },
         ],
@@ -80,6 +82,7 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
                         key={index}
                         imgSrc={film.img}
                         filmName={film.name}
+                        searchName={film.searchName}
                         views={film.views}
                         rating={film.rating}
                         episodes={film.episodes}

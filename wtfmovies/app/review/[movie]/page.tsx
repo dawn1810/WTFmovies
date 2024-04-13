@@ -7,70 +7,10 @@ import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../api/auth/[...nextauth]/auth';
-import { useSearchParams } from 'next/navigation';
 import { getFilmReviewInfo } from '~/libs/getData/review';
 import { getProposeListFilms } from '~/libs/getData/home';
 
 const cx = classNames.bind(style);
-
-const films = [
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        img: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: 999999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-];
 
 const commentTabs = [
     {
@@ -84,7 +24,8 @@ async function Review({ params }: { params: { movie: string } }) {
     const session = await auth();
     const { movie } = params;
 
-    const filmReviewInfo = await getFilmReviewInfo(movie.replaceAll('-', ' '));
+    const filmReviewInfo = await getFilmReviewInfo(movie);
+
     const proposeListFilms = await getProposeListFilms();
 
     return (

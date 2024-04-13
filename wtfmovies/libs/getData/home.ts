@@ -1,5 +1,5 @@
 import { mongodb } from '~/libs/func';
-import { CaptionsItemInterface, FilmInfoInterface } from '../interfaces';
+import { FilmInfoInterface } from '../interfaces';
 
 export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
     const films: FilmInfoInterface[] = await mongodb()
@@ -36,6 +36,7 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
                     $project: {
                         _id: 0,
                         name: 1,
+                        searchName: 1,
                         describe: 1,
                         author: '$authorDetails.name',
                         genre: '$genreDetails.name',
@@ -61,6 +62,7 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
                 _id: 0,
                 img: 1,
                 name: 1,
+                searchName: 1,
                 videoType: 1,
                 views: 1,
                 rating: 1,
@@ -82,6 +84,7 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
                 _id: 0,
                 img: 1,
                 name: 1,
+                searchName: 1,
                 videoType: 1,
                 views: 1,
                 rating: 1,

@@ -7,7 +7,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
         .collection('information')
         .aggregate({
             pipeline: [
-                { $match: { name: filmName } },
+                { $match: { searchName: filmName } },
                 {
                     $lookup: {
                         from: 'author',
@@ -56,6 +56,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                     $project: {
                         _id: 0,
                         name: 1,
+                        searchName: 1,
                         describe: 1,
                         author: '$authorDetails.name',
                         genre: '$genreDetails.name',

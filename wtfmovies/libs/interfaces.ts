@@ -57,6 +57,7 @@ export interface ExtendedUser extends User {
 export interface CaptionsItemInterface {
     img?: string;
     name: string;
+    searchName: string;
     describe: string;
     infoList: { title: string; info: string[] | string | number; type?: string }[];
 }
@@ -65,6 +66,7 @@ export interface FilmsInterFace {
     poster?: string;
     img?: string;
     name: string;
+    searchName: string;
     views: number;
     rating: number;
     episodes: number;
@@ -102,7 +104,7 @@ export interface FilmInfo {
     poster?: string;
     genre?: ObjectMongo[];
     rating?: number;
-    notification?: { schedule: string; notification: string; }
+    notification?: { schedule: string; notification: string };
 }
 
 export interface EpisodeInterFace {
@@ -139,6 +141,7 @@ export interface FilmCardInterface {
     largeNoOverlay?: boolean;
     imgSrc?: string;
     filmName: string;
+    searchName: string;
     views: number;
     rating: number;
     episodes: number;
@@ -153,6 +156,7 @@ export interface TabInterface {
 
 export interface FilmInfoInterface {
     name: string;
+    searchName: string;
     describe: string;
     status?: string;
     author: string[];

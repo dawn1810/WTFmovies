@@ -63,7 +63,6 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                 type: 'searchAble',
             },
             { title: 'Thời lượng', info: filmInfo.duration ? filmInfo.duration / 60 + ' phút' : 'Unknown' },
-            // { title: 'Ngôn ngữ', info: ['Nhật Bản', 'Anh'], type: 'searchAble' },
             { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
             { title: 'Năm sản xuất', info: releaseYear?.getFullYear() },
             { title: 'Quốc gia sản xuất', info: filmInfo.country },
