@@ -26,6 +26,7 @@ function FilmCard({
     largeNoOverlay = false,
     imgSrc,
     filmName,
+    searchName,
     views,
     rating,
     episodes,
@@ -110,19 +111,19 @@ function FilmCard({
             </div>
             {noOverlay || largeNoOverlay ? (
                 <div className={cx('noOverlay-btn-list', { 'large-noOverlay-btn-list': largeNoOverlay })}>
-                    <Link href={`/watch/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn')}>
+                    <Link href={`/watch/${searchName}`} className={cx('hover-btn')}>
                         <FontAwesomeIcon icon={faPlay} />
                     </Link>
-                    <Link href={`/review/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn')}>
+                    <Link href={`/review/${searchName}`} className={cx('hover-btn')}>
                         <FontAwesomeIcon icon={faBookOpen} />
                     </Link>
                 </div>
             ) : (
                 <div className={cx('hover-btn-list')}>
-                    <Link href={`/watch/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn', 'watch-btn')}>
+                    <Link href={`/watch/${searchName}`} className={cx('hover-btn', 'watch-btn')}>
                         <FontAwesomeIcon icon={faPlay} />
                     </Link>
-                    <Link href={`/review/${filmName.replaceAll(' ', '-')}`} className={cx('hover-btn', 'review-btn')}>
+                    <Link href={`/review/${searchName}`} className={cx('hover-btn', 'review-btn')}>
                         <FontAwesomeIcon icon={faBookOpen} />
                     </Link>
                 </div>

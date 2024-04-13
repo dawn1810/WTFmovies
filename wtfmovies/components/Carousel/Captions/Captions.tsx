@@ -60,11 +60,7 @@ function Captions({ item }: { item: CaptionsItemInterface }) {
                     ))}
                 </ul>
                 <div className={cx('btn-group')}>
-                    <Button
-                        to={`/review/${item.name.replaceAll(' ', '-')}`}
-                        primary
-                        leftIcon={<FontAwesomeIcon icon={faPlay} />}
-                    >
+                    <Button to={`/review/${item.searchName}`} primary leftIcon={<FontAwesomeIcon icon={faPlay} />}>
                         Xem phim
                     </Button>
                     <button className={cx('action-btn')}>

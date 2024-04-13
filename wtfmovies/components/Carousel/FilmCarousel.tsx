@@ -38,6 +38,7 @@ function FilmCarousel({ items }: { items: FilmInfoInterface[] }) {
         return {
             img: item.poster,
             name: item.name,
+            searchName: item.searchName,
             describe: item.describe,
             infoList: [
                 { title: 'Tác giả', info: item.author, type: 'searchAble' },

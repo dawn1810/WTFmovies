@@ -32,6 +32,7 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
                         large
                         imgSrc={films[0].poster || films[0].img}
                         filmName={films[0].name}
+                        searchName={films[0].searchName}
                         views={films[0].views}
                         rating={films[0].rating}
                         episodes={films[0].episodes}
@@ -46,6 +47,7 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
                                 noOverlay
                                 imgSrc={film.img}
                                 filmName={film.name}
+                                searchName={film.searchName}
                                 views={film.views}
                                 rating={film.rating}
                                 episodes={film.episodes}
@@ -57,6 +59,7 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
                                 noOverlay
                                 imgSrc={film.img}
                                 filmName={film.name}
+                                searchName={film.searchName}
                                 views={film.views}
                                 rating={film.rating}
                                 episodes={film.episodes}
