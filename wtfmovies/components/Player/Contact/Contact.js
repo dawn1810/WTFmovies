@@ -30,6 +30,7 @@ import {
     showCenterBtn,
     showLeftBtn,
     showRightBtn,
+    changeResolution,
 } from '../playerSlice';
 import { contactPlayerSelector } from '~/redux/selectors';
 import style from './Contact.module.scss';
@@ -79,7 +80,6 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     let x, y, z;
 
     const contactState = useSelector(contactPlayerSelector);
-
     const dispatch = useDispatch();
 
     const handleTogglePIP = useCallback(() => {
@@ -88,15 +88,13 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [contactState.pip]);
 
-    const [resolution, setResolution] = useState([]);
+    // const [resolution, setResolution] = useState([]);
     const [hlsPlayer, setHlsPlayer] = useState({
         levels: null,
         nextLevel: null,
         currentLevel: null,
         autoLevelEnabled: false,
     });
-
-
 
     // Rest of your component
 
@@ -108,18 +106,18 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
             dispatch(changeCurrentResolution(currentResolution));
 
             const newResolutions = hls.levels.toReversed().map((item, index) => ({
-                icon: hls.currentLevel === index ? <FontAwesomeIcon icon={faCheck} /> : null,
+                icon: hls.currentLevel === index ? true : null,
                 title: item.height + 'p',
             }));
 
             if (hasAutoLevel) {
                 newResolutions.push({
-                    icon: <FontAwesomeIcon icon={faCheck} />,
+                    icon: true,
                     title: `Tự động`,
                 });
             }
-
-            setResolution(newResolutions);
+            dispatch(changeResolution(newResolutions))
+            // setResolution(newResolutions);
         };
 
         if (contactState.ready && playerRef.current) {
@@ -133,12 +131,10 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
-
-
         if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled) {
             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
         }
-    }, [hlsPlayer.nextLevel]);
+    }, [hlsPlayer.nextLevel, dispatch]);
 
     // short-cut
     useEffect(() => {
@@ -231,15 +227,23 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
     };
 
     const handleResolSettingChange = (selectedResol) => {
-        resolution.forEach((menuItem, index) => {
+        let resolution = contactState.resolution;
+        resolution = resolution.map((menuItem, index) => {
             if (menuItem.title === selectedResol.title) {
-                console.log(hlsPlayer.levels, resolution.length - 2 - index, index);
-                menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
-                if (index === resolution.length - 1) hlsPlayer.currentLevel = -1;
+                if (selectedResol.title === 'Tự động') hlsPlayer.currentLevel = -1;
                 else hlsPlayer.currentLevel = resolution.length - 2 - index;
-            } else menuItem.icon = null;
+                return { ...menuItem, icon: true };
+            } else {
+                return { ...menuItem, icon: null };
+            }
         });
-        dispatch(changeCurrentResolution(selectedResol.title));
+        console.log(hlsPlayer.currentLevel, hlsPlayer.levels[hlsPlayer.currentLevel].height);
+        dispatch(changeResolution(resolution));
+        if (selectedResol.title === 'Tự động' && hlsPlayer.levels)
+            dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.currentLevel].height}p)`));
+        else
+            dispatch(changeCurrentResolution(selectedResol.title));
+
     };
 
     const handleAnimBtnClick = () => {
@@ -356,7 +360,13 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                     <Menu
                         key={contactState.currResol}
                         playerMenu
-                        items={resolution}
+                        items={contactState.resolution.map((menuItem) => {
+                            if (menuItem.icon === true) {
+                                return { ...menuItem, icon: <FontAwesomeIcon icon={faCheck} /> };
+                            } else {
+                                return menuItem;
+                            }
+                        })}
                         title="Chất lượng"
                         placement="top"
                         delay={0}
@@ -378,7 +388,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                     </Tippy>
                 </div>
             </div>
-        </div>
+        </div >
     );
 });
 

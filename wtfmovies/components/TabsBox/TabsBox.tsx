@@ -21,6 +21,7 @@ function TabBox({
     flexContent = false,
     textContent = false,
     gridContent = false,
+    handleEpClick,
     tabs,
     active_index,
     defaultActiveKey,
@@ -31,6 +32,7 @@ function TabBox({
     flexContent?: boolean;
     textContent?: boolean;
     gridContent?: boolean;
+    handleEpClick?: any;
     tabs: tab[];
     active_index?: number;
     defaultActiveKey?: string;
@@ -58,7 +60,7 @@ function TabBox({
                         {gridContent ? (
                             <TabGridContent films={tab.content} />
                         ) : flexContent ? (
-                            <TabFlexContent episodes={tab.content} active_index={active_index} />
+                            <TabFlexContent episodes={tab.content} active_index={active_index} handleEpClick={handleEpClick} />
                         ) : listContent ? (
                             <FilmProposeList films={tab.content} className={cx('films-list')} />
                         ) : (

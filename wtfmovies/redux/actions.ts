@@ -190,3 +190,10 @@ export const changeCurrentResolution = (currResol: string) => {
         payload: currResol,
     };
 };
+
+export const changeResolution = (resolution: any[]) => {
+    return {
+        type: 'player/changeResolution',
+        payload: resolution,
+    };
+};

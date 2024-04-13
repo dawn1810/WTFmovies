@@ -9,97 +9,32 @@ import Player from '~/components/Player';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../../api/auth/[...nextauth]/auth';
 import { getFilmReviewInfo } from '~/libs/getData/review';
-import NotFound from '~/app/not-found';
+import { getProposeListFilms } from '~/libs/getData/home';
+
 
 const cx = classNames.bind(style);
 
-const films = [
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-    {
-        imgSrc: '/zdwfbkt301n51.jpg',
-        name: 'Jujutsu Kaisen',
-        views: '999.999',
-        rating: '4.9',
-        episodes: '1029',
-    },
-];
 
 
 
-
-const proposeFilmsTabs = [
-    {
-        title: '#CÓ THỂ BẠN SẼ THÍCH',
-        eventKey: 'like',
-        content: films,
-    },
-    {
-        title: '#PHIM HÀN QUỐC',
-        eventKey: 'korean',
-        content: films,
-    },
-    {
-        title: '#PHIM MỚI',
-        eventKey: 'new',
-        content: films,
-    },
-];
 
 
 async function Watch({ params }: { params: { movieName: string, numEp: string } }) {
-    const { movieName, numEp } = params;
-    const filmReviewInfo = await getFilmReviewInfo(movieName.replaceAll('-', ' '));
 
+
+    //get Param
+    const { movieName, numEp } = params;
+
+    //get info for component
     const filmData = await getFilmsInfo(movieName.replaceAll('-', ' '));
     const filmEpisode = await getFilmsEpisode(filmData?.film_id);
+
+    const filmReviewInfo = await getFilmReviewInfo(movieName.replaceAll('-', ' '));
+
+    //re check info film
+    if (!filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return 404;
+
+    console.log(filmEpisode[0]);
 
     const commentTabs = [
         {
@@ -114,19 +49,11 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
         },
     ];
 
-    if (!filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return 404;
-
     const episodesTabs = filmData.videoType.map(({ title, episode }) => {
-        if (!title || !episode)
-            return {
-                title: 'title',
-                eventKey: 'title',
-                content: 'episode',
-            }
         return {
-            title: title,
-            eventKey: title,
-            content: episode,
+            title: '#VIETSUB',
+            eventKey: title || "",
+            content: episode || "",
         }
     })
 
@@ -142,18 +69,43 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
             content: filmData.notification?.notification,
         }
     ];
+    const proposeListFilms = await getProposeListFilms();
 
+    const proposeFilmsTabs = [
+        {
+            title: '#CÓ THỂ BẠN SẼ THÍCH',
+            eventKey: 'like',
+            content: proposeListFilms,
+        },
+        {
+            title: '#PHIM HÀN QUỐC',
+            eventKey: 'korean',
+            content: proposeListFilms,
+        },
+        {
+            title: '#PHIM MỚI',
+            eventKey: 'new',
+            content: proposeListFilms,
+        },
+    ];
+
+    const haha = (value: any) => {
+        console.log(value);
+
+    }
     const session = await auth();
+
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
                 <h1 className={cx('title')}>{filmData.name}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
                 <Player url={`${filmEpisode[0].link}?.m3u8`} />
-                <FilmInteract rating={filmData.rating} />
+                <FilmInteract rating={filmEpisode[0].rating} />
                 <TabsBox
                     tabs={episodesTabs}
                     active_index={1}
+                    handleEpClick={haha}
                     flexContent
                     textContent
                     defaultActiveKey={filmData.videoType[0].title}

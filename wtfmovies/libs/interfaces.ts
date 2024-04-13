@@ -23,6 +23,7 @@ export interface reduxStateInterface {
         rightBtnShow: boolean;
         currSpeed: string;
         currResol: string;
+        resolution: any[];
     };
     header: {
         modalShow: boolean;

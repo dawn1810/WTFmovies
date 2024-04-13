@@ -25,6 +25,7 @@ export const playerSlice = createSlice({
         rightBtnShow: false,
         currSpeed: '1',
         currResol: 'N/A',
+        resolution: []
     },
     reducers: {
         changeUrl: (state, action) => {
@@ -83,6 +84,9 @@ export const playerSlice = createSlice({
         changeCurrentResolution: (state, action) => {
             state.currResol = action.payload;
         },
+        changeResolution: (state, action) => {
+            state.resolution = action.payload;
+        },
     },
 });
 
@@ -105,6 +109,7 @@ export const {
     showRightBtn,
     changeCurrentSpeed,
     changeCurrentResolution,
+    changeResolution,
 } = playerSlice.actions;
 
 export default playerSlice.reducer;

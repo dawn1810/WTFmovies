@@ -4,8 +4,10 @@ import Box from '@mui/material/Box';
 import StarIcon from '@mui/icons-material/Star';
 
 export default function RatingMui({ rating }: { rating?: number }) {
-    const [value, setValue] = React.useState<number | null>(null);
+    const [value, setValue] = React.useState<number | undefined>(rating);
     const [hover, setHover] = React.useState(-1);
+    console.log(value);
+
     return (
         <Box
             sx={{
@@ -18,7 +20,7 @@ export default function RatingMui({ rating }: { rating?: number }) {
             <Rating
                 size="large"
                 name="hover-feedback"
-                value={value ? value : rating}
+                value={value}
                 precision={0.1}
                 onChange={(event, newValue: any) => {
                     setValue(newValue);

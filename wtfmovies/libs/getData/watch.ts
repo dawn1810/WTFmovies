@@ -48,6 +48,7 @@ export const getFilmsEpisode = async (movie_id?: string): Promise<FilmEpisode[] 
                 rating: 1,
             },
         });
+
     const sortedFilms = films.sort((a, b) => a.index - b.index);
 
     return sortedFilms;

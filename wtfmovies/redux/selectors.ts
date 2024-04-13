@@ -38,6 +38,7 @@ export const leftBtnShowSelector = (state: reduxStateInterface) => state.player.
 export const rightBtnShowSelector = (state: reduxStateInterface) => state.player.rightBtnShow;
 export const currSpeedSelector = (state: reduxStateInterface) => state.player.currSpeed;
 export const currResolSelector = (state: reduxStateInterface) => state.player.currResol;
+export const resolutionSelector = (state: reduxStateInterface) => state.player.resolution;
 
 export const signupSelector = createSelector(
     signupEmailAlertSelector,
@@ -91,6 +92,7 @@ export const playerSelector = createSelector(
     rightBtnShowSelector,
     currSpeedSelector,
     currResolSelector,
+    resolutionSelector,
     (
         url,
         pip,
@@ -112,6 +114,7 @@ export const playerSelector = createSelector(
         rightBtnShow,
         currSpeed,
         currResol,
+        resolution,
     ) => ({
         url,
         pip,
@@ -133,6 +136,7 @@ export const playerSelector = createSelector(
         rightBtnShow,
         currSpeed,
         currResol,
+        resolution,
     }),
 );
 
@@ -164,7 +168,8 @@ export const contactPlayerSelector = createSelector(
     currResolSelector,
     contactShowSelector,
     pipSelector,
-    (ready, url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip) => ({
+    resolutionSelector,
+    (ready, url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip, resolution) => ({
         ready,
         url,
         loaded,
@@ -177,5 +182,6 @@ export const contactPlayerSelector = createSelector(
         currResol,
         contactShow,
         pip,
+        resolution,
     }),
 );

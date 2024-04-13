@@ -4,6 +4,7 @@
     gap: 15px;
     justify-content: center;
 
+
     .expisode {
         position: relative;
         height: 60px;
@@ -11,6 +12,19 @@
         width: 60px;
         padding: 1px;
         margin-left: 0;
+
+        &.watched {
+            background-color: var(--primary-hover);
+        }
+
+
+        &.watching,
+        &:disabled {
+            opacity: 1;
+            background-color: var(--primary-active);
+            color: var(--body-color);
+        }
+
 
         span {
             position: absolute;
