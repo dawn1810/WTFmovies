@@ -11,17 +11,9 @@ import { auth } from '../../../api/auth/[...nextauth]/auth';
 import { getFilmReviewInfo } from '~/libs/getData/review';
 import { getProposeListFilms } from '~/libs/getData/home';
 
-
 const cx = classNames.bind(style);
 
-
-
-
-
-
 async function Watch({ params }: { params: { movieName: string, numEp: string } }) {
-
-
     //get Param
     const { movieName, numEp } = params;
 
@@ -105,7 +97,7 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
                 <TabsBox
                     tabs={episodesTabs}
                     active_index={1}
-                    handleEpClick={haha}
+                    // handleEpClick={haha}
                     flexContent
                     textContent
                     defaultActiveKey={filmData.videoType[0].title}
