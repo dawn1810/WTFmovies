@@ -104,7 +104,6 @@ const Player = ({ url }) => {
     return (isClient ?
         <div ref={wrapperRef} className={cx('wrapper')}>
             <ReactPlayer
-                key={state.url}
                 ref={playerRef}
                 className="react-player"
                 width="100%"

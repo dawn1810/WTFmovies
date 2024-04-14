@@ -100,13 +100,14 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     useEffect(() => {
         const updateHlsPlayerInfo = (hls) => {
-            const hasAutoLevel = hls && hls.autoLevelEnabled;
-            const currentResolution = hasAutoLevel ? `Tự động (${hls.levels[hls.nextLoadLevel].height}p)` : '';
+            const hasAutoLevel = hls && hls.autoLevelEnabled && hls.levels.length > 0;
+            const indexLevel = hls.loadLevel !== -1 ? hls.loadLevel : hls.firstLevel;
+            const currentResolution = hasAutoLevel ? `Tự động (${hls.levels[indexLevel].height}p)` : "Tự động";
 
             dispatch(changeCurrentResolution(currentResolution));
 
             const newResolutions = hls.levels.toReversed().map((item, index) => ({
-                icon: hls.currentLevel === index ? true : null,
+                icon: hls.currentLevel === hls.levels.length ? true : null,
                 title: item.height + 'p',
             }));
 
@@ -117,28 +118,22 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                 });
             }
             dispatch(changeResolution(newResolutions))
-
-            // setResolution(newResolutions);
         };
 
-        playerRef.current = createRef();
         if (contactState.ready && playerRef.current) {
 
             const internalHlsPlayer = playerRef.current.getInternalPlayer('hls');
-            console.log(internalHlsPlayer);
             if (internalHlsPlayer) {
                 setHlsPlayer(internalHlsPlayer);
                 updateHlsPlayerInfo(internalHlsPlayer);
             }
         }
-        // if (playerRef.current) {
-        //     playerRef.current.load();
-        // }
-    }, [contactState.ready, dispatch, contactState.url]);
+
+    }, [contactState.ready, dispatch]);
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
-        if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled) {
+        if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled && hlsPlayer.levels.length > 0) {
             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
         }
     }, [hlsPlayer.nextLevel, dispatch]);
