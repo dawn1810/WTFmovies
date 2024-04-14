@@ -28,6 +28,11 @@
         flex-direction: column;
         gap: 18px;
 
+        .read-more-btn {
+            margin-top: -11px;
+            cursor: pointer;
+        }
+
         h3 {
             width: 250px;
 

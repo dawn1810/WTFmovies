@@ -24,6 +24,8 @@ async function Review({ params }: { params: { movie: string } }) {
     const session = await auth();
     const { movie } = params;
 
+    console.log(session?.user);
+
     const filmReviewInfo = await getFilmReviewInfo(movie);
 
     const proposeListFilms = await getProposeListFilms();
