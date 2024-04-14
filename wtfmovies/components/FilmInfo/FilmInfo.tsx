@@ -48,7 +48,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
     const totalEpisodes = subsType.episode[subsType.episode.length - 1];
     const lastThreeEpisodes = subsType.episode.slice(Math.max(subsType.episode.length - 3, 1));
     const infoList: FilmReviewInfoInterface = {
-        image: filmInfo.poster,
+        image: filmInfo.img,
         title: filmInfo.name,
         rating: filmInfo.rating,
         episodes: totalEpisodes,
@@ -86,7 +86,10 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
 
     return (
         <div className={cx('wrapper')}>
-            <ImageCustom className={cx('film-image')} src={infoList.image} alt={infoList.title} />
+            <div className={cx('image-box')}>
+                <div className={cx('film-bg-image')} style={{ backgroundImage: `url("${infoList.image}")` }} />
+                <ImageCustom className={cx('film-image')} src={infoList.image} alt={infoList.title} />
+            </div>
             <div className={cx('film-left-container')}>
                 <div className={cx('film-info')}>
                     <Tippy content="Copied" placement="top" arrow={false} trigger="click">
