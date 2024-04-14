@@ -74,13 +74,14 @@ export const validatePassword = (password: string): number => {
 // map films data
 export const mapFilms = (films: FilmInfoInterface[]): FilmsInterFace[] => {
     const mappedFilms: FilmsInterFace[] = films.map(
-        ({ img, name, videoType, views, rating, poster }): FilmsInterFace => {
+        ({ img, name, videoType, views, rating, poster, searchName }): FilmsInterFace => {
             // Calculate the total number of episodes across all video types
             const subsType = videoType.find((type) => type.title === 'Subs') as any;
             const totalEpisodes = subsType.episode[subsType.episode.length - 1];
             return {
                 img,
                 name,
+                searchName,
                 views,
                 rating,
                 poster,

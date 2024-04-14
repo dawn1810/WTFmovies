@@ -52,6 +52,7 @@ function ImageUpload() {
                 views={1309}
                 rating={4.9}
                 episodes={24}
+                searchName='x'
             >
 
             </FilmCard>

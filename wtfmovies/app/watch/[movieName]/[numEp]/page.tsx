@@ -8,19 +8,20 @@ import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../../api/auth/[...nextauth]/auth';
 import { getFilmReviewInfo } from '~/libs/getData/review';
 import { getProposeListFilms } from '~/libs/getData/home';
-import { WatchWithEp } from './Watch';
+import { WatchWithEp } from './WatchWithEp';
 
 import type { Metadata, ResolvingMetadata } from 'next'
 import NotFound from '~/app/not-found';
 const cache = new Map();
 
-async function getFilmInfoWithCache(movieName: string) {
-    if (cache.has(movieName)) {
-        return cache.get(movieName);
+async function getFilmInfoWithCache(movieName: string, epId: string) {
+    if (cache.has(movieName + epId)) {
+        return cache.get(movieName + epId);
     }
 
     const filmData = await getFilmsInfo(movieName);
-    cache.set(movieName, filmData);
+    cache.set(movieName + epId, filmData);
+
     return filmData;
 }
 
@@ -44,7 +45,7 @@ export async function generateMetadata(
         numberEp = match[1];
     }
 
-    const filmData = await getFilmInfoWithCache(movieName);
+    const filmData = await getFilmInfoWithCache(movieName, numEp);
 
     return {
         title: `${filmData?.name} tập ${numberEp}`,
@@ -59,7 +60,7 @@ export default async function Watch({ params }: Props) {
     const { movieName, numEp } = params;
 
     //get info for component
-    const filmData = await getFilmInfoWithCache(movieName);
+    const filmData = await getFilmInfoWithCache(movieName, numEp);
     const filmEpisode = await getFilmsEpisode(filmData?.film_id);
 
     const filmReviewInfo = await getFilmReviewInfo(movieName);
@@ -71,9 +72,8 @@ export default async function Watch({ params }: Props) {
     const matchNumEp = numEp.match(regex);
 
 
-
     //re check info film
-    if (!matchNumEp || !filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
+    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
 
     //spit to get "{number}"
     const regexGetEp = /(\d+)/
@@ -139,7 +139,7 @@ export default async function Watch({ params }: Props) {
             <div className={cx('wrapper')}>
                 <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
+                <WatchWithEp key={numberEp} numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
 
                 <TabsBox
                     tabs={episodesTabs}

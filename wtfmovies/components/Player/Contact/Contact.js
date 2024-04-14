@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState, createRef } from 'react';
 import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -100,13 +100,14 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     useEffect(() => {
         const updateHlsPlayerInfo = (hls) => {
-            const hasAutoLevel = hls && hls.autoLevelEnabled;
-            const currentResolution = hasAutoLevel ? `Tự động (${hls.levels[hls.nextLoadLevel].height}p)` : '';
+            const hasAutoLevel = hls && hls.autoLevelEnabled && hls.levels.length > 0;
+            const indexLevel = hls.loadLevel !== -1 ? hls.loadLevel : hls.firstLevel;
+            const currentResolution = hasAutoLevel ? `Tự động (${hls.levels[indexLevel].height}p)` : "Tự động";
 
             dispatch(changeCurrentResolution(currentResolution));
 
             const newResolutions = hls.levels.toReversed().map((item, index) => ({
-                icon: hls.currentLevel === index ? true : null,
+                icon: hls.currentLevel === hls.levels.length ? true : null,
                 title: item.height + 'p',
             }));
 
@@ -117,21 +118,22 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                 });
             }
             dispatch(changeResolution(newResolutions))
-            // setResolution(newResolutions);
         };
 
         if (contactState.ready && playerRef.current) {
+
             const internalHlsPlayer = playerRef.current.getInternalPlayer('hls');
             if (internalHlsPlayer) {
                 setHlsPlayer(internalHlsPlayer);
                 updateHlsPlayerInfo(internalHlsPlayer);
             }
         }
+
     }, [contactState.ready, dispatch]);
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {
-        if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled) {
+        if (hlsPlayer.nextLevel !== null && hlsPlayer.autoLevelEnabled && hlsPlayer.levels.length > 0) {
             dispatch(changeCurrentResolution(`Tự động (${hlsPlayer.levels[hlsPlayer.nextLoadLevel].height}p)`));
         }
     }, [hlsPlayer.nextLevel, dispatch]);

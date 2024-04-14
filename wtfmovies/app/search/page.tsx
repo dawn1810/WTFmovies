@@ -147,6 +147,7 @@ function search() {
                                 rating={test.rating}
                                 episodes={test.episodes}
                                 className={cx('large-film-card')}
+                                searchName='test'
                             />
                         ))}
                     </div>

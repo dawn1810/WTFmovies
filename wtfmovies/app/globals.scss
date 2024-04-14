@@ -18,6 +18,10 @@ $card-blur-color: transparentize($background-color, 0.2);
 $card-background-color: #272727;
 $blur-background-color: transparentize($card-background-color, 0.8);
 
+// html {
+//     scroll-behavior: smooth !important;
+// }
+
 :root {
     //color search btn
     --color-bg1: rgb(108, 0, 162);
