@@ -185,6 +185,7 @@ export interface FilmInfoInterface {
 export interface FilmReviewInfoInterface {
     image?: string;
     title: string;
+    searchName: string;
     rating: number;
     episodes: number;
     describe: string;

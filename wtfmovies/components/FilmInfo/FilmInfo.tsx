@@ -48,6 +48,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
     const totalEpisodes = subsType.episode[subsType.episode.length - 1];
     const lastThreeEpisodes = subsType.episode.slice(Math.max(subsType.episode.length - 3, 1));
     const infoList: FilmReviewInfoInterface = {
+        searchName: filmInfo.searchName,
         image: filmInfo.img,
         title: filmInfo.name,
         rating: filmInfo.rating,
@@ -144,7 +145,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                                             <Button
                                                 key={index}
                                                 primary
-                                                to={`/watch?film=${infoList.title}&eps=${info}`}
+                                                to={`/watch/${infoList.searchName}/tap${info}`}
                                                 className={cx('episodes-btn')}
                                             >
                                                 {info}
@@ -161,7 +162,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                     </ul>
                     <div className={cx('btn-group')}>
                         <Button
-                            to={`/watch/${filmInfo.name.replaceAll(' ', '-')}`}
+                            to={`/watch/${filmInfo.searchName}`}
                             primary
                             leftIcon={<FontAwesomeIcon icon={faPlay} />}
                         >

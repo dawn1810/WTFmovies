@@ -17,8 +17,9 @@ export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any, numEp: n
 
     useEffect(() => {
         dispatch(changeEpisode(filmEpisode[numEp - 1]));
+        console.log(filmEpisode[numEp - 1]);
 
-    }, [filmEpisode]);
+    }, [filmEpisode[numEp - 1]]);
 
     return (
         <div className={cx('wrapper')}>

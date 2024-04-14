@@ -133,13 +133,14 @@ export default async function Watch({ params }: Props) {
             content: proposeListFilms,
         },
     ];
+    console.log(filmEpisode[Number(numberEp) - 1]);
 
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
                 <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <WatchWithEp key={numberEp} numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
+                <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
 
                 <TabsBox
                     tabs={episodesTabs}
