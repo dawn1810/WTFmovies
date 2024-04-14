@@ -40,6 +40,10 @@ export const currSpeedSelector = (state: reduxStateInterface) => state.player.cu
 export const currResolSelector = (state: reduxStateInterface) => state.player.currResol;
 export const resolutionSelector = (state: reduxStateInterface) => state.player.resolution;
 
+//watch
+export const episodeSelector = (state: reduxStateInterface) => state.watch.episode;
+
+
 export const signupSelector = createSelector(
     signupEmailAlertSelector,
     signupEmailAlertContentSelector,

@@ -1,5 +1,6 @@
 import { User } from 'next-auth';
 
+
 export interface reduxStateInterface {
     player: {
         url: string;
@@ -41,6 +42,9 @@ export interface reduxStateInterface {
     dataGridCom: {
         alertStatus: { content: any; status: boolean };
     };
+    watch: {
+        episode: { _id: string, index: number, rating: number, link: string };
+    }
 }
 
 interface EpisodeType {
@@ -80,6 +84,10 @@ export interface DateMongo {
     $date: string;
 }
 
+export interface MongoUpdate {
+    matchedCount: number;
+    modifiedCount: number
+}
 export interface FilmInfo {
     _id?: ObjectMongo;
     film_id?: string;

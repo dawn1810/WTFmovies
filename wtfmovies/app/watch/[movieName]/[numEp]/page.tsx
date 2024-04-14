@@ -4,30 +4,84 @@ import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
-import FilmInteract from '~/components/FilmInteract';
-import Player from '~/components/Player';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../../api/auth/[...nextauth]/auth';
 import { getFilmReviewInfo } from '~/libs/getData/review';
 import { getProposeListFilms } from '~/libs/getData/home';
+import { WatchWithEp } from './Watch';
+
+import type { Metadata, ResolvingMetadata } from 'next'
+import NotFound from '~/app/not-found';
+const cache = new Map();
+
+async function getFilmInfoWithCache(movieName: string) {
+    if (cache.has(movieName)) {
+        return cache.get(movieName);
+    }
+
+    const filmData = await getFilmsInfo(movieName);
+    cache.set(movieName, filmData);
+    return filmData;
+}
+
 
 const cx = classNames.bind(style);
 
-async function Watch({ params }: { params: { movieName: string, numEp: string } }) {
+type Props = {
+    params: { movieName: string, numEp: string }
+}
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    //get Param
+    const { movieName, numEp } = params;
+    const regex = /tap(\d+)/;
+
+    const match = numEp.match(regex);
+    let numberEp: string = '0';
+    if (match) {
+        numberEp = match[1];
+    }
+
+    const filmData = await getFilmInfoWithCache(movieName);
+
+    return {
+        title: `${filmData?.name} tập ${numberEp}`,
+
+    }
+}
+
+export default async function Watch({ params }: Props) {
+    const session = await auth();
+
     //get Param
     const { movieName, numEp } = params;
 
     //get info for component
-    const filmData = await getFilmsInfo(movieName.replaceAll('-', ' '));
+    const filmData = await getFilmInfoWithCache(movieName);
     const filmEpisode = await getFilmsEpisode(filmData?.film_id);
 
-    const filmReviewInfo = await getFilmReviewInfo(movieName.replaceAll('-', ' '));
+    const filmReviewInfo = await getFilmReviewInfo(movieName);
+
+    const proposeListFilms = await getProposeListFilms();
+
+    //get info from params
+    const regex = /^tap\d+$/;
+    const matchNumEp = numEp.match(regex);
+
+
 
     //re check info film
-    if (!filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return 404;
+    if (!matchNumEp || !filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
 
-    console.log(filmEpisode[0]);
+    //spit to get "{number}"
+    const regexGetEp = /(\d+)/
+    const matchEp = numEp.match(regexGetEp);
+    if (!matchEp) return NotFound();
+    let numberEp: string = matchEp[1];
 
+    if ((numberEp > filmData.videoType[0].episode[filmData.videoType[0].episode.length - 1]) || (numberEp < filmData.videoType[0].episode[0])) return NotFound()
     const commentTabs = [
         {
             title: '#BÌNH LUẬN',
@@ -41,7 +95,7 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
         },
     ];
 
-    const episodesTabs = filmData.videoType.map(({ title, episode }) => {
+    const episodesTabs = filmData.videoType.map(({ title, episode }: { title: string, episode: string }) => {
         return {
             title: '#VIETSUB',
             eventKey: title || "",
@@ -61,7 +115,6 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
             content: filmData.notification?.notification,
         }
     ];
-    const proposeListFilms = await getProposeListFilms();
 
     const proposeFilmsTabs = [
         {
@@ -81,25 +134,19 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
         },
     ];
 
-    const haha = (value: any) => {
-        console.log(value);
-
-    }
-    const session = await auth();
-
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
             <div className={cx('wrapper')}>
-                <h1 className={cx('title')}>{filmData.name}</h1>
+                <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <Player url={`${filmEpisode[0].link}?.m3u8`} />
-                <FilmInteract rating={filmEpisode[0].rating} />
+                <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
+
                 <TabsBox
                     tabs={episodesTabs}
-                    active_index={1}
-                    // handleEpClick={haha}
+                    active_episode={Number(numberEp)}
                     flexContent
                     textContent
+                    listIdEp={filmEpisode}
                     defaultActiveKey={filmData.videoType[0].title}
                     className={cx('tab-box')}
                 />
@@ -118,8 +165,7 @@ async function Watch({ params }: { params: { movieName: string, numEp: string } 
                     className={cx('cmt-tab-box')}
                 />
             </div>
-        </DefaultLayout>
+        </DefaultLayout >
     );
 }
 
-export default Watch;

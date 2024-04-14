@@ -1,6 +1,7 @@
 export const runtime = 'edge';
 import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
+import { ObjectMongo } from './interfaces';
 export const { env } = getOptionalRequestContext() ?? {
     env: { AUTH_SECRET: 'haha', APIKey: 'haha', URL_Endpoint: 'haha' },
 };
@@ -122,4 +123,11 @@ export function toError(error: string | unknown, status = 400): Response {
 export function reply(output: any): Response {
     if (output != null) return toJSON(output, 200);
     return toError('Error with query', 500);
+}
+
+//mongodb
+export function ObjectId(id: string): ObjectMongo {
+    return {
+        $oid: id
+    }
 }
