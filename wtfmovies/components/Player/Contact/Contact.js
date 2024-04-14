@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { forwardRef, useCallback, useEffect, useState } from 'react';
+import { forwardRef, useCallback, useEffect, useState, createRef } from 'react';
 import Tippy from '@tippyjs/react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -121,6 +121,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
             // setResolution(newResolutions);
         };
 
+        playerRef.current = createRef();
         if (contactState.ready && playerRef.current) {
 
             const internalHlsPlayer = playerRef.current.getInternalPlayer('hls');

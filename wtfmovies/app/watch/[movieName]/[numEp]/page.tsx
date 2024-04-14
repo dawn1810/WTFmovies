@@ -72,7 +72,6 @@ export default async function Watch({ params }: Props) {
     const matchNumEp = numEp.match(regex);
 
 
-
     //re check info film
     if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
 
@@ -140,7 +139,7 @@ export default async function Watch({ params }: Props) {
             <div className={cx('wrapper')}>
                 <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
+                <WatchWithEp key={numberEp} numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
 
                 <TabsBox
                     tabs={episodesTabs}

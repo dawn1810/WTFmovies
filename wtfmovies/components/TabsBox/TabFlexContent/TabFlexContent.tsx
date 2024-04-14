@@ -14,7 +14,7 @@ function TabFlexContent({ episodes, active_episode, listIdEp }: { episodes: [], 
     const pathname = usePathname();
     function handleEpClick(value: any, index: any) {
 
-        router.push(pathname.replace(/tap.*/g, `tap${value}`));
+        router.push(pathname.replace(/tap.*/g, `tap${value}`), { scroll: true });
     }
     return (
         <div className={cx('wrapper')}>

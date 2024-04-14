@@ -17,11 +17,12 @@ export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any, numEp: n
 
     useEffect(() => {
         dispatch(changeEpisode(filmEpisode[numEp - 1]));
-    }, [dispatch, numEp]);
+
+    }, [filmEpisode]);
 
     return (
         <div className={cx('wrapper')}>
-            <Player key={numEp + 'video'} url={`${filmEpisode[numEp].link}?.m3u8`} />
+            <Player key={numEp + 'video'} url={`${filmEpisode[numEp - 1].link}?.m3u8`} />
             <FilmInteract />
         </div >
     )
