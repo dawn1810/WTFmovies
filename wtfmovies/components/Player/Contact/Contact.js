@@ -117,17 +117,23 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                 });
             }
             dispatch(changeResolution(newResolutions))
+
             // setResolution(newResolutions);
         };
 
         if (contactState.ready && playerRef.current) {
+
             const internalHlsPlayer = playerRef.current.getInternalPlayer('hls');
+            console.log(internalHlsPlayer);
             if (internalHlsPlayer) {
                 setHlsPlayer(internalHlsPlayer);
                 updateHlsPlayerInfo(internalHlsPlayer);
             }
         }
-    }, [contactState.ready, dispatch]);
+        // if (playerRef.current) {
+        //     playerRef.current.load();
+        // }
+    }, [contactState.ready, dispatch, contactState.url]);
 
     // Separate useEffect if necessary based on additional logic requirements.
     useEffect(() => {

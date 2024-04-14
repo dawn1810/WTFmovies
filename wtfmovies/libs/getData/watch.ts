@@ -4,7 +4,7 @@ import { EpisodeInterFace, FilmInfo, MongoUpdate, ObjectMongo } from '../interfa
 interface watchFilmInterface extends FilmInfo {
     sumEpisodes: number;
 }
-export const getFilmsInfo = async (movie_name: string): Promise<FilmInfo | null> => {
+export const getFilmsInfo = async (movie_name: string): Promise<FilmInfo | undefined> => {
     const films: FilmInfo = await mongodb()
         .db('film')
         .collection('information')

@@ -6,6 +6,7 @@ import classNames from 'classnames/bind';
 import style from './Watch.module.scss';
 import { changeEpisode } from './watchSlice';
 import { useDispatch } from 'react-redux';
+import { useEffect } from 'react';
 
 
 
@@ -13,7 +14,10 @@ const cx = classNames.bind(style);
 
 export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any, numEp: number }) {
     const dispatch = useDispatch();
-    dispatch(changeEpisode(filmEpisode[numEp - 1]))
+
+    useEffect(() => {
+        dispatch(changeEpisode(filmEpisode[numEp - 1]));
+    }, [dispatch, numEp]);
 
     return (
         <div className={cx('wrapper')}>
