@@ -74,7 +74,7 @@ export default async function Watch({ params }: Props) {
 
 
     //re check info film
-    if (!matchNumEp || !filmEpisode || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
+    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
 
     //spit to get "{number}"
     const regexGetEp = /(\d+)/

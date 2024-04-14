@@ -9,6 +9,7 @@ import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../api/auth/[...nextauth]/auth';
 import { getFilmReviewInfo } from '~/libs/getData/review';
 import { getProposeListFilms } from '~/libs/getData/home';
+import NotFound from '~/app/not-found';
 
 const cx = classNames.bind(style);
 
@@ -25,6 +26,7 @@ async function Review({ params }: { params: { movie: string } }) {
     const { movie } = params;
 
     const filmReviewInfo = await getFilmReviewInfo(movie);
+    if (!filmReviewInfo) return NotFound();
 
     const proposeListFilms = await getProposeListFilms();
 

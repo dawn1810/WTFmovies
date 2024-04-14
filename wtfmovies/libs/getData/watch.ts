@@ -36,7 +36,7 @@ interface FilmEpisode {
     index: number
 }
 
-export const getFilmsEpisode = async (movie_id: string): Promise<FilmEpisode[] | null> => {
+export const getFilmsEpisode = async (movie_id: string): Promise<FilmEpisode[] | []> => {
     const films: FilmEpisode[] = await mongodb()
         .db('film')
         .collection('episode')

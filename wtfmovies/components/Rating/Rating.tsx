@@ -16,7 +16,6 @@ export default function RatingMui() {
         setValue(Ep.rating)
     },
         [Ep, dispatch])
-    console.log(value);
 
     const handleRating = async (event: any, value: number | any) => {
         setValue(value);
