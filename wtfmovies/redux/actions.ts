@@ -197,3 +197,11 @@ export const changeResolution = (resolution: any[]) => {
         payload: resolution,
     };
 };
+
+//Watch 
+export const changeEpisode = (episode: number) => {
+    return {
+        type: 'watch/changeResolution',
+        payload: episode,
+    };
+};

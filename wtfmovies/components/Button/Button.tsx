@@ -38,7 +38,7 @@ function Button({
     children: React.ReactNode;
     className?: any;
     type?: string;
-    onClick?: () => void;
+    onClick?: any;
 }) {
     let Comp: any = 'button';
     const props: any = {
