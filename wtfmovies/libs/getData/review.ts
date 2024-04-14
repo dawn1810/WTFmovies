@@ -64,7 +64,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                         videoType: 1,
                         views: 1,
                         rating: 1,
-                        poster: 1,
+                        img: 1,
                         status: 1,
                         duration: 1,
                         tag: 1,

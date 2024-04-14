@@ -27,6 +27,7 @@ function TabGridContent({ films }: { films: FilmInfoInterface[] }) {
                             large={isMobile}
                             imgSrc={film.img}
                             filmName={film.name}
+                            searchName={film.searchName}
                             views={film.views}
                             rating={film.rating}
                             episodes={film.episodes}
