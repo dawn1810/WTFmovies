@@ -62,7 +62,7 @@ const Comment = ({
                 <div dangerouslySetInnerHTML={{ __html: shownComment }} />
                 {shouldShorten && !isExpanded && (
                     <span onClick={handleShowMore} className={cx('read-more-btn')}>
-                        ...Xem thêm
+                        Xem thêm
                     </span>
                 )}
             </div>

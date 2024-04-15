@@ -1,6 +1,5 @@
 import { User } from 'next-auth';
 
-
 export interface reduxStateInterface {
     player: {
         url: string;
@@ -43,8 +42,8 @@ export interface reduxStateInterface {
         alertStatus: { content: any; status: boolean };
     };
     watch: {
-        episode: { _id: string, index: number, rating: number, link: string };
-    }
+        episode: { _id: string; index: number; rating: number; link: string };
+    };
 }
 
 interface EpisodeType {
@@ -86,7 +85,7 @@ export interface DateMongo {
 
 export interface MongoUpdate {
     matchedCount: number;
-    modifiedCount: number
+    modifiedCount: number;
 }
 export interface FilmInfo {
     _id?: ObjectMongo;
@@ -190,4 +189,13 @@ export interface FilmReviewInfoInterface {
     episodes: number;
     describe: string;
     info: { title: string; info?: string[] | string | number[] | number; type?: string }[];
+}
+
+export interface CommentInterface {
+    user_id: string;
+    avatar?: string;
+    content: string;
+    time: string;
+    status: boolean;
+    username: string;
 }

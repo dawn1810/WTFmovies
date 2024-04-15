@@ -1,5 +1,5 @@
 import { mongodb } from '~/libs/func';
-import { FilmInfoInterface } from '../interfaces';
+import { CommentInterface, FilmInfoInterface } from '../interfaces';
 
 export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInterface> => {
     const films: FilmInfoInterface[] = await mongodb()
@@ -78,6 +78,45 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
         });
 
     return films[0];
+};
+
+interface CommentsFilmsInterface {
+    comments: CommentInterface[];
+}
+
+export const getAllFilmsComment = async (filmName: string): Promise<CommentInterface[]> => {
+    const comments: CommentsFilmsInterface[] = await mongodb()
+        .db('film')
+        .collection('information')
+        .aggregate({
+            pipeline: [
+                { $match: { searchName: filmName } },
+                { $match: { comment: { $exists: true, $ne: [] } } },
+                {
+                    $lookup: {
+                        from: 'comment',
+                        let: { commentIds: '$comment' },
+                        pipeline: [
+                            { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
+                            { $project: { _id: 0 } },
+                        ],
+                        as: 'commentDetails',
+                    },
+                },
+                {
+                    $project: {
+                        comments: '$commentDetails',
+                    },
+                },
+                { $limit: 1 },
+            ],
+        });
+
+    if (comments.length > 0 && comments[0].comments.length > 0) {
+        return comments[0].comments;
+    } else {
+        return [];
+    }
 };
 
 // export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {

@@ -7,28 +7,27 @@ import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { auth } from '../../api/auth/[...nextauth]/auth';
-import { getFilmReviewInfo } from '~/libs/getData/review';
+import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
 import { getProposeListFilms } from '~/libs/getData/home';
 import NotFound from '~/app/not-found';
 
 const cx = classNames.bind(style);
 
-const commentTabs = [
-    {
-        title: '#BÌNH LUẬN',
-        eventKey: 'comment',
-        content: <CommentContent />,
-    },
-];
-
 async function Review({ params }: { params: { movie: string } }) {
     const session = await auth();
     const { movie } = params;
 
-    console.log(session?.user);
-
     const filmReviewInfo = await getFilmReviewInfo(movie);
     if (!filmReviewInfo) return NotFound();
+
+    const commentsFilm = await getAllFilmsComment(movie);
+    const commentTabs = [
+        {
+            title: '#BÌNH LUẬN',
+            eventKey: 'comment',
+            content: <CommentContent comments={commentsFilm} />,
+        },
+    ];
 
     const proposeListFilms = await getProposeListFilms();
 

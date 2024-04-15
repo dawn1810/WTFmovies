@@ -29,8 +29,14 @@
         gap: 18px;
 
         .read-more-btn {
-            margin-top: -11px;
+            width: 100px;
+            margin-top: -8px;
+            opacity: 0.5;
             cursor: pointer;
+
+            &:hover {
+                opacity: 1;
+            }
         }
 
         h3 {
