@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faEye, faFire, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
-import { auth } from './api/auth/[...nextauth]/auth';
 import FilmCarousel from '~/components/Carousel/FilmCarousel';
 import FilmProposeList from '~/components/FilmProposeList';
 import FilmClassify from '~/components/FilmClassify';
@@ -13,8 +12,6 @@ import { getCaroselFilms, getHotClassifyFilms, getNewClassifyFilms, getProposeLi
 const cx = classNames.bind(style);
 
 async function Home() {
-    const session = await auth();
-
     // get data
     const carouselItems = await getCaroselFilms();
     const proposeListFilms = await getProposeListFilms();
@@ -28,7 +25,7 @@ async function Home() {
     );
 
     return (
-        <DefaultLayout currentUser={!!session && !!session?.user}>
+        <DefaultLayout>
             <div className={cx('wrapper')}>
                 <div className={cx('home-top')}>
                     <FilmCarousel items={carouselItems} />

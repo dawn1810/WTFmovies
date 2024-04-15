@@ -33,6 +33,7 @@ import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
+import { ExtendedUser } from '~/libs/interfaces';
 
 const cx = classNames.bind(styles);
 
@@ -125,12 +126,13 @@ function Header({
     isDatabase = false,
     title,
 }: {
-    currentUser?: boolean;
+    currentUser?: ExtendedUser;
     isDatabase?: boolean;
     title?: string;
 }) {
     // session
     const { data: session } = useSession();
+    const isLogged = !!currentUser && !!currentUser.user_id;
 
     //redux
     const state = useSelector(headerSelector);
@@ -162,7 +164,7 @@ function Header({
         const [scrollSpeed, setScrollSpeed] = useState(0);
         const [lastScrollTop, setLastScrollTop] = useState(0);
         useEffect(() => {
-            setHeaderClass('wrapper-show')
+            setHeaderClass('wrapper-show');
         }, []);
         useEffect(() => {
             let ticking = false;
@@ -230,7 +232,7 @@ function Header({
                                 </button>
                             </Tippy>
                         )}
-                        {currentUser || (!!session && !!session.user) ? (
+                        {isLogged || (!!session && !!session.user) ? (
                             <>
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
                                     <button className={cx('action-btn')}>
@@ -246,7 +248,11 @@ function Header({
                                     delay={[0, 500]}
                                     onChange={handleMenuChange}
                                 >
-                                    <ImageCustom className={cx('user-avatar')} src="" alt="Itadory" />
+                                    <ImageCustom
+                                        className={cx('user-avatar')}
+                                        src={currentUser?.avatar}
+                                        alt="Itadory"
+                                    />
                                 </Menu>
                             </>
                         ) : (

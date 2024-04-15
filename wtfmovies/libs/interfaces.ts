@@ -52,9 +52,11 @@ interface EpisodeType {
 }
 
 export interface ExtendedUser extends User {
-    user_id: string; // Use the appropriate type for user_id.
-    first: boolean;
-    avatar: string;
+    user_id?: string; // Use the appropriate type for user_id.
+    first?: boolean;
+    avatar?: string;
+    role?: string;
+    email?: string | undefined;
 }
 
 export interface CaptionsItemInterface {
