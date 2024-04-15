@@ -10,15 +10,15 @@ import { User } from 'next-auth';
 
 const cx = classNames.bind(styles);
 
-async function DefaultLayout({ children }: { children: React.ReactNode }) {
+async function DefaultLayout({ children, currentUser }: { children: React.ReactNode, currentUser: any }) {
     const session = await auth();
 
     const user: User | undefined = session?.user;
     const extendedUser: ExtendedUser | undefined = user
         ? {
-              ...user,
-              email: user.email as string | undefined,
-          }
+            ...user,
+            email: user.email as string | undefined,
+        }
         : undefined;
 
     return (

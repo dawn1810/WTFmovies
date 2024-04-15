@@ -251,7 +251,7 @@ function Header({
                                     <ImageCustom
                                         className={cx('user-avatar')}
                                         src={currentUser?.avatar}
-                                        alt="Itadory"
+                                        alt="Avt"
                                     />
                                 </Menu>
                             </>

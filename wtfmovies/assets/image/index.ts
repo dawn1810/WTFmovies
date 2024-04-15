@@ -1,12 +1,12 @@
 // Trong file quản lý assets của bạn
-import logoImage from '~/assets/image/logo.svg';
-import itadoryImage from '~/assets/image/Itadory.jpg';
-import starImage from '~/assets/image/rating.png';
-import episodesImage from '~/assets/image/episodes.png';
-import gerneImage from '~/assets/image/gerne.jpg';
-import languageImage from '~/assets/image/language.png';
-import directorImage from '~/assets/image/director.png';
-import actorImage from '~/assets/image/actor.png';
+import logoImage from '~/public/images/svg/logo.svg';
+import itadoryImage from '~/public/images/Itadory.jpg';
+import starImage from '~/public/images/rating.png';
+import episodesImage from '~/public/images/episodes.png';
+import gerneImage from '~/public/images/gerne.jpg';
+import languageImage from '~/public/images/language.png';
+import directorImage from '~/public/images/director.png';
+import actorImage from '~/public/images/actor.png';
 
 type typeImages = {
     logo: string;

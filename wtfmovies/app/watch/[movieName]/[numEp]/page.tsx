@@ -86,7 +86,7 @@ export default async function Watch({ params }: Props) {
         {
             title: '#BÌNH LUẬN',
             eventKey: 'comment',
-            content: <CommentContent />,
+            content: <CommentContent comments={[]} />,
         },
         {
             title: '#THÔNG TIN PHIM',
@@ -133,7 +133,6 @@ export default async function Watch({ params }: Props) {
             content: proposeListFilms,
         },
     ];
-    console.log(filmEpisode[Number(numberEp) - 1]);
 
     return (
         <DefaultLayout currentUser={!!session && !!session?.user}>
