@@ -120,7 +120,7 @@ const tests = [
 
 function search() {
     return (
-        <DefaultLayout>
+        <DefaultLayout currentUser={{}}>
             <div className={cx('wrapper')}>
                 {/* <Breadcrumbs maxItems={3} aria-label="breadcrumb" className={cx('bread-crumbs')}>
                     <Link underline="hover" color="inherit" href="/">
