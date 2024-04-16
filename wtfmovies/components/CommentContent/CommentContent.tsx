@@ -4,14 +4,22 @@ import classNames from 'classnames/bind';
 import style from './CommentContent.module.scss';
 import CommentInputForm from './CommentInputForm';
 import Comment from './Comment';
-import { CommentInterface } from '~/libs/interfaces';
+import { CommentInterface, UserInfoInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
-function CommentContent({ comments }: { comments: CommentInterface[] }) {
+function CommentContent({
+    comments,
+    filmName,
+    currUser,
+}: {
+    comments: CommentInterface[];
+    filmName: string;
+    currUser?: UserInfoInterface;
+}) {
     return (
         <div className={cx('wrapper')}>
-            <CommentInputForm />
+            <CommentInputForm filmName={filmName} currUser={currUser} />
             <div className={cx('comment-list')}>
                 {comments.map((comment, index) => (
                     <Comment

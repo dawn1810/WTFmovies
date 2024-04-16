@@ -56,7 +56,6 @@ export interface ExtendedUser extends User {
     first?: boolean;
     avatar?: string;
     role?: string;
-    email?: string | undefined;
 }
 
 export interface CaptionsItemInterface {
@@ -200,4 +199,9 @@ export interface CommentInterface {
     time: string;
     status: boolean;
     username: string;
+}
+
+export interface UserInfoInterface {
+    name: string;
+    avatar: string;
 }

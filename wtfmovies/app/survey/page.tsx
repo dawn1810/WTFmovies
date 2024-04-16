@@ -138,13 +138,7 @@ function Survey() {
                 return (
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>Đạo diễn bạn yêu thích?</h1>
-                        <img
-                            className={cx('quest-image')}
-                            width={320}
-                            height={252}
-                            src={images.director}
-                            alt="gerne"
-                        />
+                        <img className={cx('quest-image')} width={320} height={252} src={images.director} alt="gerne" />
                         <Form.Group className="mb-5" controlId="formHorizontalDirector">
                             <Form.Control
                                 value={info.directors}
@@ -198,13 +192,7 @@ function Survey() {
                 return (
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>Ngôn ngữ phim bạn yêu thích?</h1>
-                        <img
-                            className={cx('quest-image')}
-                            width={500}
-                            height={252}
-                            src={images.language}
-                            alt="gerne"
-                        />
+                        <img className={cx('quest-image')} width={500} height={252} src={images.language} alt="gerne" />
                         <Form.Group className="mb-5">
                             <Select
                                 isMulti
