@@ -11,9 +11,18 @@ import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
+import { Prev } from 'react-bootstrap/esm/PageItem';
 
 const cx = classNames.bind(style);
-function CommentInputForm({ filmName, currUser }: { filmName: string; currUser?: UserInfoInterface }) {
+function CommentInputForm({
+    filmName,
+    currUser,
+    addComment,
+}: {
+    filmName: string;
+    currUser?: UserInfoInterface;
+    addComment: any;
+}) {
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
     const [currentUser, setCurrentUser] = useState({ avatar: currUser?.avatar, name: currUser?.name });
@@ -48,26 +57,29 @@ function CommentInputForm({ filmName, currUser }: { filmName: string; currUser?:
         setCommentInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
-    const handleSubmit = (event: any) => {
+    const handleSubmit = async (event: any) => {
         event.preventDefault();
 
-        async () => {
-            const response = await fetch('/api/comment/getCommentUserInfo', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    filmName: filmName,
-                    user_id: extendedUser?.user_id,
-                    avatar: currentUser.avatar,
-                    name: commentInfo.name,
-                    content: commentInfo.content.replace(/\n/g, '<br/>'),
-                }),
-            });
-
-            if (response.ok) {
-                // eeee
-            }
+        const comment = {
+            avatar: currentUser.avatar,
+            username: commentInfo.name,
+            content: commentInfo.content.replace(/\n/g, '<br/>'),
         };
+
+        const response = await fetch('/api/comment/sendComment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                filmName: filmName,
+                user_id: extendedUser?.user_id,
+                ...comment,
+            }),
+        });
+
+        if (response.ok) {
+            addComment(comment);
+            setCommentInfo((prev) => ({ ...prev, content: '' }));
+        }
     };
 
     return (
