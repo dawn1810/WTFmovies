@@ -31,9 +31,10 @@ function CommentContent({
                 {commentList.map((comment, index) => (
                     <Comment
                         key={index}
-                        avatar={comment.avatar}
-                        commentOwner={comment.username}
-                        commentContent={comment.content}
+                        comment={comment}
+                        // avatar={comment.avatar}
+                        // commentOwner={comment.username}
+                        // commentContent={comment.content}
                     />
                 ))}
                 {!commentList.length && <div className={cx('no-comment')}>Không có bình luận</div>}
