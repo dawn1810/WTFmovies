@@ -34,6 +34,14 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
                     },
                 },
                 {
+                    $lookup: {
+                        from: "episode",
+                        localField: "film_id",
+                        foreignField: "film_id",
+                        as: "reviews"
+                    }
+                },
+                {
                     $project: {
                         _id: 0,
                         name: 1,
@@ -43,7 +51,7 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
                         genre: '$genreDetails.name',
                         videoType: 1,
                         views: 1,
-                        rating: 1,
+                        rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                         poster: 1,
                     },
                 },
@@ -55,22 +63,53 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
 };
 
 export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
+    // const films: FilmInfoInterface[] = await mongodb()
+    //     .db('film')
+    //     .collection('information')
+    //     .find({
+    //         projection: {
+    //             _id: 0,
+    //             img: 1,
+    //             name: 1,
+    //             searchName: 1,
+    //             videoType: 1,
+    //             views: 1,
+    //             rating: 1,
+    //         },
+    //         limit: 10,
+    //         sort: { likes: -1, views: -1, rating: -1 },
+    //     });
     const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
-        .find({
-            projection: {
-                _id: 0,
-                img: 1,
-                name: 1,
-                searchName: 1,
-                videoType: 1,
-                views: 1,
-                rating: 1,
-            },
-            limit: 10,
-            sort: { likes: -1, views: -1, rating: -1 },
+        .aggregate({
+            pipeline: [
+                { $match: {} },
+                {
+                    $lookup: {
+                        from: "episode",
+                        localField: "film_id",
+                        foreignField: "film_id",
+                        as: "reviews"
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        img: 1,
+                        name: 1,
+                        searchName: 1,
+                        videoType: 1,
+                        views: 1,
+                        rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                    }
+                },
+
+                { $limit: 10 },
+                { $sort: { likes: -1, views: -1, rating: -1 } },
+            ]
         });
+
 
     return films;
 };
@@ -95,7 +134,6 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
     //         sort: sort,
     //     });
     const queryMatch = query ? { $match: query } : { $match: {} };
-
     const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
