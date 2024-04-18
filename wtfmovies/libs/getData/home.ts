@@ -35,11 +35,11 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
                 },
                 {
                     $lookup: {
-                        from: "episode",
-                        localField: "film_id",
-                        foreignField: "film_id",
-                        as: "reviews"
-                    }
+                        from: 'episode',
+                        localField: 'film_id',
+                        foreignField: 'film_id',
+                        as: 'reviews',
+                    },
                 },
                 {
                     $project: {
@@ -63,22 +63,6 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
 };
 
 export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
-    // const films: FilmInfoInterface[] = await mongodb()
-    //     .db('film')
-    //     .collection('information')
-    //     .find({
-    //         projection: {
-    //             _id: 0,
-    //             img: 1,
-    //             name: 1,
-    //             searchName: 1,
-    //             videoType: 1,
-    //             views: 1,
-    //             rating: 1,
-    //         },
-    //         limit: 10,
-    //         sort: { likes: -1, views: -1, rating: -1 },
-    //     });
     const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
@@ -87,11 +71,11 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
                 { $match: {} },
                 {
                     $lookup: {
-                        from: "episode",
-                        localField: "film_id",
-                        foreignField: "film_id",
-                        as: "reviews"
-                    }
+                        from: 'episode',
+                        localField: 'film_id',
+                        foreignField: 'film_id',
+                        as: 'reviews',
+                    },
                 },
                 {
                     $project: {
@@ -102,37 +86,18 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
                         videoType: 1,
                         views: 1,
                         rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
-                    }
+                    },
                 },
 
                 { $limit: 10 },
                 { $sort: { likes: -1, views: -1, rating: -1 } },
-            ]
+            ],
         });
-
 
     return films;
 };
 
 const getFilms = async (limit: number, sort: object, query?: object): Promise<FilmInfoInterface[]> => {
-    // const films: FilmInfoInterface[] = await mongodb()
-    //     .db('film')
-    //     .collection('information')
-    //     .find({
-    //         filter: query,
-    //         projection: {
-    //             _id: 0,
-    //             img: 1,
-    //             name: 1,
-    //             searchName: 1,
-    //             videoType: 1,
-    //             views: 1,
-    //             rating: 1,
-    //             poster: 1,
-    //         },
-    //         limit: limit,
-    //         sort: sort,
-    //     });
     const queryMatch = query ? { $match: query } : { $match: {} };
     const films: FilmInfoInterface[] = await mongodb()
         .db('film')
@@ -142,11 +107,11 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
                 queryMatch,
                 {
                     $lookup: {
-                        from: "episode",
-                        localField: "film_id",
-                        foreignField: "film_id",
-                        as: "reviews"
-                    }
+                        from: 'episode',
+                        localField: 'film_id',
+                        foreignField: 'film_id',
+                        as: 'reviews',
+                    },
                 },
                 {
                     $project: {
@@ -158,12 +123,12 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
                         views: 1,
                         rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                         poster: 1,
-                    }
+                    },
                 },
 
                 { $limit: limit },
                 { $sort: sort },
-            ]
+            ],
         });
 
     return films;

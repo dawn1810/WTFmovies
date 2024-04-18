@@ -97,7 +97,7 @@ function FilmCard({
                 })}
             >
                 <ImageCustom src={images.star} alt="rating" />
-                <span>{rating}</span>
+                <span>{rating || 'NR'}</span>
             </div>
             <div
                 className={cx('episodes', {

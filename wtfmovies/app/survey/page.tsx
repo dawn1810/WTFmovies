@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import style from './survey.module.scss';
 import SurveyForm from '~/components/SurveyForm';
 import { getSurveyOptions } from '~/libs/getData/survey';
-import { DefaultLayout } from '~/layouts';
+// import { DefaultLayout } from '~/layouts';
 
 const cx = classNames.bind(style);
 
@@ -12,9 +12,9 @@ async function Survey() {
     console.log(options);
 
     return (
-        <DefaultLayout>
-            <SurveyForm genreOptions={options.genres} languageOptions={options.languages} />
-        </DefaultLayout>
+        // <DefaultLayout>
+        <SurveyForm genreOptions={options.genres} languageOptions={options.languages} />
+        // </DefaultLayout>
     );
 }
 

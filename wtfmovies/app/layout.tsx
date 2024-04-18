@@ -5,6 +5,10 @@ import type { Metadata, Viewport } from 'next';
 import { montserrat } from './font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/components/theme/theme';
+import BottomBar from '~/layouts/components/BottomBar';
+import Header from '~/layouts/components/Header';
+import Footer from '~/layouts/components/Footer';
+import { getCurrentUser } from '~/libs/getData/home';
 
 const APP_NAME = 'WTFmovies';
 const APP_DEFAULT_TITLE = 'WTFmovies';
@@ -18,7 +22,7 @@ export const metadata: Metadata = {
         template: APP_TITLE_TEMPLATE,
     },
     description: APP_DESCRIPTION,
-    manifest: "/manifest.json",
+    manifest: '/manifest.json',
     icons: '/images/icons/favicon.svg',
     appleWebApp: {
         capable: true,
@@ -64,12 +68,19 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const currentUser = await getCurrentUser();
+
     return (
         <ReduxProvider>
             <ThemeP>
                 <SessionProvider>
                     <html lang="en">
-                        <body className={montserrat.className}>{children}</body>
+                        <body className={montserrat.className}>
+                            <Header currentUser={currentUser} />
+                            <section>{children}</section>
+                            <Footer />
+                            <BottomBar />
+                        </body>
                     </html>
                 </SessionProvider>
             </ThemeP>

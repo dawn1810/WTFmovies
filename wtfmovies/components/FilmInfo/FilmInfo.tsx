@@ -101,7 +101,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                     <div className={cx('film-content')}>{infoList.describe}</div>
                     <div className={cx('rating')}>
                         <ImageCustom src={images.star} alt="rating" />
-                        <span>{infoList.rating}</span>
+                        <span>{infoList.rating || 'NR'}</span>
                     </div>
                     <div className={cx('episodes')}>
                         <ImageCustom src={images.episodes} alt="episodes" />

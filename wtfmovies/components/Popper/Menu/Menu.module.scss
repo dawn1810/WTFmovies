@@ -2,7 +2,7 @@
     width: 250px;
 
     .menu-item {
-        margin-left: 0;
+        margin-left: 0 !important;
         background-color: transparent;
 
         &:hover {
@@ -50,8 +50,8 @@
 .menu-item {
     color: var(--text-color);
     width: 100%;
-    justify-content: flex-start;
-    border-radius: 0;
+    justify-content: flex-start !important;
+    border-radius: 0 !important;
     padding: 11px 16px;
     line-height: 1.8rem;
 

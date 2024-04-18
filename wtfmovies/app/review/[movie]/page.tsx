@@ -14,6 +14,7 @@ const cx = classNames.bind(style);
 
 async function Review({ params }: { params: { movie: string } }) {
     const { movie } = params;
+
     const currentUser = await getCurrentUserInfo();
     const filmReviewInfo = await getFilmReviewInfo(movie);
     if (!filmReviewInfo) return NotFound();

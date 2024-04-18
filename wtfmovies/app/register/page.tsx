@@ -1,4 +1,4 @@
-import { DefaultLayout } from '~/layouts';
+// import { DefaultLayout } from '~/layouts';
 import classNames from 'classnames/bind';
 
 import style from './signup.module.scss';
@@ -8,9 +8,9 @@ const cx = classNames.bind(style);
 
 function SignUp() {
     return (
-        <DefaultLayout>
-            <RegisterForm />
-        </DefaultLayout>
+        // <DefaultLayout>
+        <RegisterForm />
+        // </DefaultLayout>
     );
 }
 
