@@ -7,7 +7,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
         .collection('information')
         .aggregate({
             pipeline: [
-                { $match: { searchName: filmName } },
+                { $match: { searchName: 'inuyashiki' } },
                 {
                     $lookup: {
                         from: 'author',
@@ -53,6 +53,14 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                     },
                 },
                 {
+                    $lookup: {
+                        from: "episode",
+                        localField: "film_id",
+                        foreignField: "film_id",
+                        as: "reviews"
+                    }
+                },
+                {
                     $project: {
                         _id: 0,
                         name: 1,
@@ -63,7 +71,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                         director: '$directorDetails.name',
                         videoType: 1,
                         views: 1,
-                        rating: 1,
+                        rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                         img: 1,
                         status: 1,
                         duration: 1,

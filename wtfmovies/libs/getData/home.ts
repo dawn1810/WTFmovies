@@ -76,23 +76,56 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
 };
 
 const getFilms = async (limit: number, sort: object, query?: object): Promise<FilmInfoInterface[]> => {
+    // const films: FilmInfoInterface[] = await mongodb()
+    //     .db('film')
+    //     .collection('information')
+    //     .find({
+    //         filter: query,
+    //         projection: {
+    //             _id: 0,
+    //             img: 1,
+    //             name: 1,
+    //             searchName: 1,
+    //             videoType: 1,
+    //             views: 1,
+    //             rating: 1,
+    //             poster: 1,
+    //         },
+    //         limit: limit,
+    //         sort: sort,
+    //     });
+    const queryMatch = query ? { $match: query } : { $match: {} };
+
     const films: FilmInfoInterface[] = await mongodb()
         .db('film')
         .collection('information')
-        .find({
-            filter: query,
-            projection: {
-                _id: 0,
-                img: 1,
-                name: 1,
-                searchName: 1,
-                videoType: 1,
-                views: 1,
-                rating: 1,
-                poster: 1,
-            },
-            limit: limit,
-            sort: sort,
+        .aggregate({
+            pipeline: [
+                queryMatch,
+                {
+                    $lookup: {
+                        from: "episode",
+                        localField: "film_id",
+                        foreignField: "film_id",
+                        as: "reviews"
+                    }
+                },
+                {
+                    $project: {
+                        _id: 0,
+                        img: 1,
+                        name: 1,
+                        searchName: 1,
+                        videoType: 1,
+                        views: 1,
+                        rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                        poster: 1,
+                    }
+                },
+
+                { $limit: limit },
+                { $sort: sort },
+            ]
         });
 
     return films;
