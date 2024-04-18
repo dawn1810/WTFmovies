@@ -1,8 +1,7 @@
-'use client';
 import { createSlice } from '@reduxjs/toolkit';
 
-export const signupSlice = createSlice({
-    name: 'signup',
+export const registerSlice = createSlice({
+    name: 'register',
     initialState: {
         signupEmailAlert: false,
         signupEmailAlertContent: 'Email không đúng định dạng!',
@@ -45,6 +44,6 @@ export const {
     changeSignupAgainPassAlert,
     changeSignUpNameAlert,
     changeSignUpBirthDateAlert,
-} = signupSlice.actions;
+} = registerSlice.actions;
 
-export default signupSlice.reducer;
+export default registerSlice.reducer;

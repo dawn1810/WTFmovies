@@ -62,6 +62,7 @@ const authOptions: NextAuthConfig = {
                 token.email = user.email;
                 token.role = user.role;
                 token.first = user.first;
+                token.avatar = user.avatar;
             }
 
             return token;
@@ -72,6 +73,7 @@ const authOptions: NextAuthConfig = {
                 session.user.email = token.email;
                 session.user.role = token.role;
                 session.user.first = token.first;
+                session.user.avatar = token.avatar;
             }
             return session;
         },

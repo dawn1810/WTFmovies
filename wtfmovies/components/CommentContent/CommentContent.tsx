@@ -29,13 +29,7 @@ function CommentContent({
             <CommentInputForm filmName={filmName} currUser={currUser} addComment={addComment} />
             <div className={cx('comment-list')}>
                 {commentList.map((comment, index) => (
-                    <Comment
-                        key={index}
-                        comment={comment}
-                        // avatar={comment.avatar}
-                        // commentOwner={comment.username}
-                        // commentContent={comment.content}
-                    />
+                    <Comment key={index} comment={comment} />
                 ))}
                 {!commentList.length && <div className={cx('no-comment')}>Không có bình luận</div>}
             </div>

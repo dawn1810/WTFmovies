@@ -1,49 +1,49 @@
 // signup
 export const changeSignUpEmailAlert = (emailAlert: boolean) => {
     return {
-        type: 'signup/changeSignUpEmailAlert',
+        type: 'register/changeSignUpEmailAlert',
         payload: emailAlert,
     };
 };
 
 export const changeSignupEmailAlertContent = (emailAlertContent: boolean) => {
     return {
-        type: 'signup/changeSignupEmailAlertContent',
+        type: 'register/changeSignupEmailAlertContent',
         payload: emailAlertContent,
     };
 };
 
 export const changeSignUpPassAlert = (passAlert: boolean) => {
     return {
-        type: 'signup/changeSignUpPassAlert',
+        type: 'register/changeSignUpPassAlert',
         payload: passAlert,
     };
 };
 
 export const changeSignUpPassAlertContent = (passAlertContent: string) => {
     return {
-        type: 'signup/changeSignUpPassAlertContent',
+        type: 'register/changeSignUpPassAlertContent',
         payload: passAlertContent,
     };
 };
 
 export const changeSignupAgainPassAlert = (againPassAlert: boolean) => {
     return {
-        type: 'signup/changeSignupAgainPassAlert',
+        type: 'register/changeSignupAgainPassAlert',
         payload: againPassAlert,
     };
 };
 
 export const changeSignUpNameAlert = (nameAlert: boolean) => {
     return {
-        type: 'signup/changeSignUpNameAlert',
+        type: 'register/changeSignUpNameAlert',
         payload: nameAlert,
     };
 };
 
 export const changeSignUpBirthDateAlert = (birthDateAlert: boolean) => {
     return {
-        type: 'signup/changeSignUpBirthDateAlert',
+        type: 'register/changeSignUpBirthDateAlert',
         payload: birthDateAlert,
     };
 };
@@ -198,7 +198,7 @@ export const changeResolution = (resolution: any[]) => {
     };
 };
 
-//Watch 
+//Watch
 export const changeEpisode = (episode: number) => {
     return {
         type: 'watch/changeResolution',

@@ -20,7 +20,8 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-    const handleShowMore = () => setIsExpanded(true);
+    const handleShowMore = () => isExpanded || setIsExpanded(true);
+    const handleShowLess = () => isExpanded && setIsExpanded(false);
 
     const newLines = comment.content ? (comment.content.match(/<br\/>/g) || [])?.length : 0;
     const characters = comment.content ? comment.content.length - newLines * 5 : 0;
@@ -63,11 +64,21 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                         <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                     </div>
                 )}
-                <div dangerouslySetInnerHTML={{ __html: shownComment }} />
-                {shouldShorten && !isExpanded && (
+                <div
+                    onClick={isExpanded ? handleShowLess : handleShowMore}
+                    dangerouslySetInnerHTML={{ __html: shownComment }}
+                />
+                {shouldShorten && !isExpanded ? (
                     <span onClick={handleShowMore} className={cx('read-more-btn')}>
                         Xem thêm
                     </span>
+                ) : (
+                    shouldShorten &&
+                    isExpanded && (
+                        <span onClick={handleShowLess} className={cx('read-more-btn')}>
+                            Ẩn bớt
+                        </span>
+                    )
                 )}
             </div>
         </div>

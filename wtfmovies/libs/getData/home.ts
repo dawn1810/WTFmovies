@@ -227,9 +227,10 @@ export const getCurrentUserInfo = async (): Promise<UserInfoInterface | undefine
             projection: {
                 _id: 0,
                 name: 1,
-                avatar: 1,
             },
         });
+
+    userInfo.avatar = extendedUser?.avatar;
 
     return userInfo;
 };

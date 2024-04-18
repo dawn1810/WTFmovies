@@ -9,12 +9,7 @@ export async function GET(request: NextRequest) {
 
     if (!session) return undefined;
 
-    const extendedUser: ExtendedUser | undefined = session?.user
-        ? {
-              ...session?.user,
-              email: session?.user.email as string | undefined,
-          }
-        : undefined;
+    const extendedUser: ExtendedUser | undefined = session?.user;
 
     const info = await mongodb()
         .db('user')
@@ -24,9 +19,10 @@ export async function GET(request: NextRequest) {
             projection: {
                 _id: 0,
                 name: 1,
-                avatar: 1,
             },
         });
+
+    info.avatar = extendedUser?.avatar;
 
     return new Response(JSON.stringify(info, null, 2));
 }

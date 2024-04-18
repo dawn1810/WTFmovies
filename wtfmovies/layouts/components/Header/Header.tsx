@@ -133,6 +133,7 @@ function Header({
     // session
     const { data: session } = useSession();
     const isLogged = !!currentUser && !!currentUser.user_id;
+    const extendedUser: ExtendedUser | undefined = session?.user;
 
     //redux
     const state = useSelector(headerSelector);
@@ -159,6 +160,7 @@ function Header({
     };
 
     const [headerClass, setHeaderClass] = useState('wrapper-database');
+
     if (!isDatabase) {
         const [scrollPosition, setScrollPosition] = useState(0);
         const [scrollSpeed, setScrollSpeed] = useState(0);
@@ -201,6 +203,7 @@ function Header({
             };
         }, [scrollPosition, scrollSpeed]);
     }
+
     return (
         <header className={cx('wrapper', headerClass)}>
             <div className={cx('header')}>
@@ -232,7 +235,7 @@ function Header({
                                 </button>
                             </Tippy>
                         )}
-                        {isLogged || (!!session && !!session.user) ? (
+                        {isLogged || (!!session && !!extendedUser) ? (
                             <>
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
                                     <button className={cx('action-btn')}>
@@ -250,7 +253,7 @@ function Header({
                                 >
                                     <ImageCustom
                                         className={cx('user-avatar')}
-                                        src={currentUser?.avatar}
+                                        src={currentUser?.avatar || extendedUser?.avatar}
                                         alt="Avt"
                                     />
                                 </Menu>

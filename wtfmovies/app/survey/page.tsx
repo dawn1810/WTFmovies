@@ -5,7 +5,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { Form } from 'react-bootstrap';
 import Select from 'react-select';
-import { DefaultLayout } from '~/layouts';
 import classNames from 'classnames/bind';
 
 import { ExtendedUser } from '~/libs/interfaces';
@@ -13,11 +12,6 @@ import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './survey.module.scss';
 import { useRouter } from 'next/navigation';
-
-// type OptionType = {
-//     label: string;
-//     value: string;
-// };
 
 const cx = classNames.bind(style);
 

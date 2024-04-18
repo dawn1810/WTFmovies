@@ -29,7 +29,7 @@ export interface reduxStateInterface {
         modalShow: boolean;
         query: string;
     };
-    signup: {
+    register: {
         signupEmailAlert: boolean;
         signupEmailAlertContent: string;
         signupPassAlert: boolean;
@@ -203,5 +203,5 @@ export interface CommentInterface {
 
 export interface UserInfoInterface {
     name: string;
-    avatar: string;
+    avatar?: string;
 }
