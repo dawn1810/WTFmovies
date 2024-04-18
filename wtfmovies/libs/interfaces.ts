@@ -1,5 +1,6 @@
 import { User } from 'next-auth';
 
+// redux
 export interface reduxStateInterface {
     player: {
         url: string;
@@ -88,6 +89,7 @@ export interface MongoUpdate {
     matchedCount: number;
     modifiedCount: number;
 }
+
 export interface FilmInfo {
     _id?: ObjectMongo;
     film_id?: string;
@@ -126,6 +128,7 @@ export interface EpisodeInterFace {
     views: number;
     link: string;
 }
+
 export interface FilmProposeListInterface {
     films: FilmInfoInterface[];
     className?: string;
@@ -204,4 +207,9 @@ export interface CommentInterface {
 export interface UserInfoInterface {
     name: string;
     avatar?: string;
+}
+
+export interface SuveyOptionsInterface {
+    _id: string;
+    name: string;
 }
