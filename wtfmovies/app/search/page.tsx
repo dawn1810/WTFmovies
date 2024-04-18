@@ -120,7 +120,7 @@ const tests = [
 
 function search() {
     return (
-        <DefaultLayout currentUser={{}}>
+        <DefaultLayout>
             <div className={cx('wrapper')}>
                 {/* <Breadcrumbs maxItems={3} aria-label="breadcrumb" className={cx('bread-crumbs')}>
                     <Link underline="hover" color="inherit" href="/">
@@ -147,7 +147,7 @@ function search() {
                                 rating={test.rating}
                                 episodes={test.episodes}
                                 className={cx('large-film-card')}
-                                searchName='test'
+                                searchName="test"
                             />
                         ))}
                     </div>

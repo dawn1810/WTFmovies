@@ -5,12 +5,11 @@ import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
 import DefaultLayout from '~/layouts/DefaultLayout';
-import { auth } from '../../../api/auth/[...nextauth]/auth';
-import { getFilmReviewInfo } from '~/libs/getData/review';
-import { getProposeListFilms } from '~/libs/getData/home';
+import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
+import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
 
-import type { Metadata, ResolvingMetadata } from 'next'
+import type { Metadata, ResolvingMetadata } from 'next';
 import NotFound from '~/app/not-found';
 const cache = new Map();
 
@@ -25,16 +24,12 @@ async function getFilmInfoWithCache(movieName: string, epId: string) {
     return filmData;
 }
 
-
 const cx = classNames.bind(style);
 
 type Props = {
-    params: { movieName: string, numEp: string }
-}
-export async function generateMetadata(
-    { params }: Props,
-    parent: ResolvingMetadata
-): Promise<Metadata> {
+    params: { movieName: string; numEp: string };
+};
+export async function generateMetadata({ params }: Props, parent: ResolvingMetadata): Promise<Metadata> {
     //get Param
     const { movieName, numEp } = params;
     const regex = /tap(\d+)/;
@@ -49,15 +44,16 @@ export async function generateMetadata(
 
     return {
         title: `${filmData?.name} tập ${numberEp}`,
-
-    }
+    };
 }
 
 export default async function Watch({ params }: Props) {
-    const session = await auth();
-
     //get Param
     const { movieName, numEp } = params;
+
+    //for film comment
+    const currentUser = await getCurrentUserInfo();
+    const commentsFilm = await getAllFilmsComment(movieName);
 
     //get info for component
     const filmData = await getFilmInfoWithCache(movieName, numEp);
@@ -71,22 +67,26 @@ export default async function Watch({ params }: Props) {
     const regex = /^tap\d+$/;
     const matchNumEp = numEp.match(regex);
 
-
     //re check info film
-    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType || !filmData.notification) return NotFound();
+    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType || !filmData.notification)
+        return NotFound();
 
     //spit to get "{number}"
-    const regexGetEp = /(\d+)/
+    const regexGetEp = /(\d+)/;
     const matchEp = numEp.match(regexGetEp);
     if (!matchEp) return NotFound();
     let numberEp: string = matchEp[1];
 
-    if ((numberEp > filmData.videoType[0].episode[filmData.videoType[0].episode.length - 1]) || (numberEp < filmData.videoType[0].episode[0])) return NotFound()
+    if (
+        numberEp > filmData.videoType[0].episode[filmData.videoType[0].episode.length - 1] ||
+        numberEp < filmData.videoType[0].episode[0]
+    )
+        return NotFound();
     const commentTabs = [
         {
             title: '#BÌNH LUẬN',
             eventKey: 'comment',
-            content: <CommentContent comments={[]} />,
+            content: <CommentContent comments={commentsFilm} filmName={movieName} currUser={currentUser} />,
         },
         {
             title: '#THÔNG TIN PHIM',
@@ -95,13 +95,13 @@ export default async function Watch({ params }: Props) {
         },
     ];
 
-    const episodesTabs = filmData.videoType.map(({ title, episode }: { title: string, episode: string }) => {
+    const episodesTabs = filmData.videoType.map(({ title, episode }: { title: string; episode: string }) => {
         return {
             title: '#VIETSUB',
-            eventKey: title || "",
-            content: episode || "",
-        }
-    })
+            eventKey: title || '',
+            content: episode || '',
+        };
+    });
 
     const notyfyTabs = [
         {
@@ -113,7 +113,7 @@ export default async function Watch({ params }: Props) {
             title: 'THÔNG BÁO',
             eventKey: 'notify',
             content: filmData.notification?.notification,
-        }
+        },
     ];
 
     const proposeFilmsTabs = [
@@ -135,7 +135,7 @@ export default async function Watch({ params }: Props) {
     ];
 
     return (
-        <DefaultLayout currentUser={!!session && !!session?.user}>
+        <DefaultLayout>
             <div className={cx('wrapper')}>
                 <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
                 <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
@@ -165,7 +165,6 @@ export default async function Watch({ params }: Props) {
                     className={cx('cmt-tab-box')}
                 />
             </div>
-        </DefaultLayout >
+        </DefaultLayout>
     );
 }
-

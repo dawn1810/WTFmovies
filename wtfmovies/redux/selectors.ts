@@ -1,14 +1,14 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
-//signup
-const signupEmailAlertSelector = (state: reduxStateInterface) => state.signup.signupEmailAlert;
-const signupEmailAlertContentSelector = (state: reduxStateInterface) => state.signup.signupEmailAlertContent;
-const signupPassAlertSelector = (state: reduxStateInterface) => state.signup.signupPassAlert;
-const signupPassAlertContentSelector = (state: reduxStateInterface) => state.signup.signupPassAlertContent;
-const signupAgainPassAlertSelector = (state: reduxStateInterface) => state.signup.signupAgainPassAlert;
-const signupNameAlertSelector = (state: reduxStateInterface) => state.signup.signupNameAlert;
-const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.signup.signupBirthDateAlert;
+//register
+const signupEmailAlertSelector = (state: reduxStateInterface) => state.register.signupEmailAlert;
+const signupEmailAlertContentSelector = (state: reduxStateInterface) => state.register.signupEmailAlertContent;
+const signupPassAlertSelector = (state: reduxStateInterface) => state.register.signupPassAlert;
+const signupPassAlertContentSelector = (state: reduxStateInterface) => state.register.signupPassAlertContent;
+const signupAgainPassAlertSelector = (state: reduxStateInterface) => state.register.signupAgainPassAlert;
+const signupNameAlertSelector = (state: reduxStateInterface) => state.register.signupNameAlert;
+const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.register.signupBirthDateAlert;
 
 //header
 const modalShowSelector = (state: reduxStateInterface) => state.header.modalShow;
@@ -42,7 +42,6 @@ export const resolutionSelector = (state: reduxStateInterface) => state.player.r
 
 //watch
 export const episodeSelector = (state: reduxStateInterface) => state.watch.episode;
-
 
 export const signupSelector = createSelector(
     signupEmailAlertSelector,
@@ -173,7 +172,21 @@ export const contactPlayerSelector = createSelector(
     contactShowSelector,
     pipSelector,
     resolutionSelector,
-    (ready, url, loaded, played, playing, muted, volume, duration, currSpeed, currResol, contactShow, pip, resolution) => ({
+    (
+        ready,
+        url,
+        loaded,
+        played,
+        playing,
+        muted,
+        volume,
+        duration,
+        currSpeed,
+        currResol,
+        contactShow,
+        pip,
+        resolution,
+    ) => ({
         ready,
         url,
         loaded,

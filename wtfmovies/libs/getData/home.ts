@@ -1,5 +1,6 @@
 import { mongodb } from '~/libs/func';
-import { FilmInfoInterface } from '../interfaces';
+import { ExtendedUser, FilmInfoInterface, UserInfoInterface } from '../interfaces';
+import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
     const films: FilmInfoInterface[] = await mongodb()
@@ -201,4 +202,35 @@ export const getHotClassifyFilms = async (
     const mostLikeFilms = await getFilms(8, { likes: -1, views: -1, rating: -1 });
 
     return { allHotFilms, currHotFilms, seriesHotFilms, movieHotFilms, mostLikeFilms };
+};
+
+export const getCurrentUser = async (): Promise<ExtendedUser | undefined> => {
+    const session = await auth();
+
+    const extendedUser: ExtendedUser | undefined = session?.user;
+
+    return extendedUser;
+};
+
+export const getCurrentUserInfo = async (): Promise<UserInfoInterface | undefined> => {
+    const session = await auth();
+
+    if (!session) return undefined;
+
+    const extendedUser: ExtendedUser | undefined = session?.user;
+
+    const userInfo: UserInfoInterface = await mongodb()
+        .db('user')
+        .collection('information')
+        .findOne({
+            filter: { user_id: extendedUser?.user_id },
+            projection: {
+                _id: 0,
+                name: 1,
+            },
+        });
+
+    userInfo.avatar = extendedUser?.avatar;
+
+    return userInfo;
 };

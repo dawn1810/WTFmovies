@@ -6,10 +6,10 @@ import { montserrat } from './font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/components/theme/theme';
 
-const APP_NAME = "WTFmovies";
-const APP_DEFAULT_TITLE = "WTFmovies";
-const APP_TITLE_TEMPLATE = "%s - WTFmovies";
-const APP_DESCRIPTION = "Nơi thoả sức đam mê phim ảnh!";
+const APP_NAME = 'WTFmovies';
+const APP_DEFAULT_TITLE = 'WTFmovies';
+const APP_TITLE_TEMPLATE = '%s - WTFmovies';
+const APP_DESCRIPTION = 'Nơi thoả sức đam mê phim ảnh!';
 
 export const metadata: Metadata = {
     applicationName: APP_NAME,
@@ -19,10 +19,9 @@ export const metadata: Metadata = {
     },
     description: APP_DESCRIPTION,
     manifest: "/manifest.json",
-    icons: '/images/icons/favicon.svg',
     appleWebApp: {
         capable: true,
-        statusBarStyle: "default",
+        statusBarStyle: 'default',
         title: APP_DEFAULT_TITLE,
         // startUpImage: [],
     },
@@ -49,7 +48,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-    themeColor: "#0f0f0f",
+    themeColor: '#0f0f0f',
 };
 // export const metadata: Metadata = {
 //     title: 'WTFmovies',
@@ -59,13 +58,11 @@ export const viewport: Viewport = {
 //     icons: '/images/icons/favicon.svg',
 // };
 
-export default function RootLayout({
-
+export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-
     return (
         <ReduxProvider>
             <ThemeP>

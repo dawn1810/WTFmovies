@@ -60,7 +60,6 @@ const authOptions: NextAuthConfig = {
             if (user) {
                 token.user_id = user.user_id;
                 token.email = user.email;
-                // token.password = user.password;
                 token.role = user.role;
                 token.first = user.first;
                 token.avatar = user.avatar;
@@ -72,7 +71,6 @@ const authOptions: NextAuthConfig = {
             if (token) {
                 session.user.user_id = token.user_id;
                 session.user.email = token.email;
-                // session.user.password = token.password;
                 session.user.role = token.role;
                 session.user.first = token.first;
                 session.user.avatar = token.avatar;

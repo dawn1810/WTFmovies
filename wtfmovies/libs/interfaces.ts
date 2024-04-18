@@ -1,5 +1,6 @@
 import { User } from 'next-auth';
 
+// redux
 export interface reduxStateInterface {
     player: {
         url: string;
@@ -29,7 +30,7 @@ export interface reduxStateInterface {
         modalShow: boolean;
         query: string;
     };
-    signup: {
+    register: {
         signupEmailAlert: boolean;
         signupEmailAlertContent: string;
         signupPassAlert: boolean;
@@ -56,7 +57,6 @@ export interface ExtendedUser extends User {
     first?: boolean;
     avatar?: string;
     role?: string;
-    email?: string | undefined;
 }
 
 export interface CaptionsItemInterface {
@@ -89,6 +89,7 @@ export interface MongoUpdate {
     matchedCount: number;
     modifiedCount: number;
 }
+
 export interface FilmInfo {
     _id?: ObjectMongo;
     film_id?: string;
@@ -127,6 +128,7 @@ export interface EpisodeInterFace {
     views: number;
     link: string;
 }
+
 export interface FilmProposeListInterface {
     films: FilmInfoInterface[];
     className?: string;
@@ -200,4 +202,14 @@ export interface CommentInterface {
     time: string;
     status: boolean;
     username: string;
+}
+
+export interface UserInfoInterface {
+    name: string;
+    avatar?: string;
+}
+
+export interface SuveyOptionsInterface {
+    _id: string;
+    name: string;
 }

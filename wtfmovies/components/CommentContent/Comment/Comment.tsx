@@ -6,36 +6,31 @@ import { useViewport } from '~/hooks';
 import ImageCustom from '~/components/ImageCustom';
 import style from './Comment.module.scss';
 import images from '~/assets/image';
+import { CommentInterface } from '~/libs/interfaces';
+import { timePassed } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
-const Comment = ({
-    avatar,
-    commentOwner,
-    commentContent,
-}: {
-    avatar?: string;
-    commentOwner: string;
-    commentContent: string;
-}) => {
+const Comment = ({ comment }: { comment: CommentInterface }) => {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-    const handleShowMore = () => setIsExpanded(true);
+    const handleShowMore = () => isExpanded || setIsExpanded(true);
+    const handleShowLess = () => isExpanded && setIsExpanded(false);
 
-    const newLines = commentContent ? (commentContent.match(/<br\/>/g) || [])?.length : 0;
-    const characters = commentContent ? commentContent.length - newLines * 5 : 0;
+    const newLines = comment.content ? (comment.content.match(/<br\/>/g) || [])?.length : 0;
+    const characters = comment.content ? comment.content.length - newLines * 5 : 0;
     const tooManyNewlines = newLines > LIMIT_NEWLINES;
     const tooManyCharacters = characters > LIMIT_LENGTH;
     const shouldShorten = tooManyNewlines || tooManyCharacters;
 
     const calculateShortVersion = (): string => {
-        const splitContent = commentContent.split('<br/>');
+        const splitContent = comment.content.split('<br/>');
         let shortVersion = '';
         for (let i = 0; i <= LIMIT_NEWLINES; i++) {
             if (splitContent[i] && shortVersion.length + splitContent[i].length < LIMIT_LENGTH) {
@@ -49,21 +44,41 @@ const Comment = ({
         return shortVersion;
     };
 
-    const shownComment = isExpanded ? commentContent : calculateShortVersion();
+    const shownComment = isExpanded ? comment.content : calculateShortVersion();
 
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <ImageCustom className={cx('avatar')} src={avatar} alt={commentOwner} />
-                {isMobile && <div className={cx('user-name')}>{commentOwner}</div>}
+                <ImageCustom className={cx('avatar')} src={comment.avatar} alt={comment.username} />
+                {isMobile && (
+                    <div>
+                        <div className={cx('user-name')}>{comment.username}</div>
+                        <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
+                    </div>
+                )}
             </div>
             <div className={cx('content')}>
-                {isMobile || <h3>{commentOwner}</h3>}
-                <div dangerouslySetInnerHTML={{ __html: shownComment }} />
-                {shouldShorten && !isExpanded && (
+                {isMobile || (
+                    <div>
+                        <h3>{comment.username}</h3>
+                        <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
+                    </div>
+                )}
+                <div
+                    onClick={isExpanded ? handleShowLess : handleShowMore}
+                    dangerouslySetInnerHTML={{ __html: shownComment }}
+                />
+                {shouldShorten && !isExpanded ? (
                     <span onClick={handleShowMore} className={cx('read-more-btn')}>
                         Xem thêm
                     </span>
+                ) : (
+                    shouldShorten &&
+                    isExpanded && (
+                        <span onClick={handleShowLess} className={cx('read-more-btn')}>
+                            Ẩn bớt
+                        </span>
+                    )
                 )}
             </div>
         </div>

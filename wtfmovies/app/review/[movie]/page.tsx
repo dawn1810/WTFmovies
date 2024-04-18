@@ -7,14 +7,14 @@ import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 import DefaultLayout from '~/layouts/DefaultLayout';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
-import { getProposeListFilms } from '~/libs/getData/home';
+import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
 import NotFound from '~/app/not-found';
 
 const cx = classNames.bind(style);
 
 async function Review({ params }: { params: { movie: string } }) {
     const { movie } = params;
-
+    const currentUser = await getCurrentUserInfo();
     const filmReviewInfo = await getFilmReviewInfo(movie);
     if (!filmReviewInfo) return NotFound();
 
@@ -23,7 +23,7 @@ async function Review({ params }: { params: { movie: string } }) {
         {
             title: '#BÌNH LUẬN',
             eventKey: 'comment',
-            content: <CommentContent comments={commentsFilm} />,
+            content: <CommentContent comments={commentsFilm} currUser={currentUser} filmName={movie} />,
         },
     ];
 
