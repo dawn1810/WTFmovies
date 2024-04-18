@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { ObjectId, mongodb } from '~/libs/func';
+import { ObjectId, mongodb, reply } from '~/libs/func';
 
 interface dataType {
     filmName: string;
@@ -31,5 +31,5 @@ export async function POST(request: NextRequest) {
         .collection('information')
         .updateOne({ filter: { searchName: filmName }, update: { $push: { comment: ObjectId(result.insertedId) } } });
 
-    return new Response(JSON.stringify(null, null, 2));
+    return reply();
 }

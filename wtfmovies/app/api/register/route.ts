@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { getSHA256Hash, generateUUIDv4 } from '~/libs/func';
+import { getSHA256Hash, generateUUIDv4, reply } from '~/libs/func';
 import { mongodb } from '~/libs/func';
 
 type dataType = {
@@ -40,6 +40,6 @@ export async function POST(request: NextRequest) {
             status: false,
         });
 
-        return new Response();
+        return reply();
     }
 }

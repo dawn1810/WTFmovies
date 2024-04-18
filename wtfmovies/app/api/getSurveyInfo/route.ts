@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { mongodb } from '~/libs/func';
+import { mongodb, toJSON } from '~/libs/func';
 
 export async function GET(request: NextRequest) {
     let genre = await mongodb()
@@ -12,6 +12,6 @@ export async function GET(request: NextRequest) {
         .db('film')
         .collection('language')
         .find({ projection: { name: 1 } });
+    return toJSON({ genre, language });
 
-    return new Response(JSON.stringify({ genre, language }, null, 2));
 }

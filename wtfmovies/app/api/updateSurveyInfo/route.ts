@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { mongodb } from '~/libs/func';
+import { mongodb, reply } from '~/libs/func';
 
 export async function POST(request: NextRequest) {
     const { userID, info }: { userID: string; info: any } = await request.json();
@@ -35,5 +35,5 @@ export async function POST(request: NextRequest) {
             },
         });
 
-    return new Response(null);
+    return reply();
 }

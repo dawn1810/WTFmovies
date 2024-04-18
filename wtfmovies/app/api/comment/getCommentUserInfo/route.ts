@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { mongodb } from '~/libs/func';
+import { mongodb, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 import { auth } from '../../auth/[...nextauth]/auth';
 
@@ -24,5 +24,5 @@ export async function GET(request: NextRequest) {
 
     info.avatar = extendedUser?.avatar;
 
-    return new Response(JSON.stringify(info, null, 2));
+    return toJSON(info);
 }
