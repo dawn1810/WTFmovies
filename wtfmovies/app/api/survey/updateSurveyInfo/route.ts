@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { mongodb } from '~/libs/func';
+import { mongodb, reply } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 import { auth } from '../../auth/[...nextauth]/auth';
 
@@ -43,5 +43,5 @@ export async function POST(request: NextRequest) {
             },
         });
 
-    return new Response(null);
+    return reply();
 }

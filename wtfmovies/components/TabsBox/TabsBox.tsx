@@ -42,7 +42,7 @@ function TabBox({
         <div className={cx('wrapper', className)}>
             <Tabs
                 transition={false}
-                className={cx('tabs', { 'cmt-tabs': commentContent })}
+                className={cx('tabs', 'flex-nowrap', { 'cmt-tabs': commentContent })}
                 defaultActiveKey={defaultActiveKey}
             >
                 {tabs.map((tab, index) => (

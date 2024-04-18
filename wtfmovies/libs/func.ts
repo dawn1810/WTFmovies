@@ -120,9 +120,9 @@ export function toError(error: string | unknown, status = 400): Response {
     return toJSON({ error }, status);
 }
 
-export function reply(output: any): Response {
+export function reply(output = { status: 'OK' }): Response {
     if (output != null) return toJSON(output, 200);
-    return toError('Error with query', 500);
+    return toError({ error: 'Error with query' }, 500);
 }
 
 //mongodb

@@ -130,3 +130,14 @@
         color: var(--text-color);
     }
 }
+
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        .home-top {
+            .info-content {
+                width: 100%
+            }
+        }
+    }
+
+}
