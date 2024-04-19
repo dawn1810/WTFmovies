@@ -259,7 +259,7 @@ export const getCurrentUserInfo = async (): Promise<UserInfoInterface | undefine
         .db('user')
         .collection('information')
         .findOne({
-            filter: { user_id: extendedUser?.user_id },
+            filter: { email: extendedUser?.email },
             projection: {
                 _id: 0,
                 name: 1,

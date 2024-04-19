@@ -71,7 +71,6 @@ function CommentInputForm({
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
                 filmName: filmName,
-                user_id: extendedUser?.user_id,
                 ...comment,
             }),
         });

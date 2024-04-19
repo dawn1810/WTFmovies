@@ -15,7 +15,7 @@ export async function GET(request: NextRequest) {
         .db('user')
         .collection('information')
         .findOne({
-            filter: { user_id: extendedUser?.user_id },
+            filter: { email: extendedUser?.email },
             projection: {
                 _id: 0,
                 name: 1,

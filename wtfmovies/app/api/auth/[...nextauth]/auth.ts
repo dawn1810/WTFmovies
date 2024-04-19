@@ -58,7 +58,6 @@ const authOptions: NextAuthConfig = {
         // },
         async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
-                token.user_id = user.user_id;
                 token.email = user.email;
                 token.role = user.role;
                 token.first = user.first;
@@ -69,7 +68,6 @@ const authOptions: NextAuthConfig = {
         },
         async session({ session, token }: { session: any; token: any }) {
             if (token) {
-                session.user.user_id = token.user_id;
                 session.user.email = token.email;
                 session.user.role = token.role;
                 session.user.first = token.first;

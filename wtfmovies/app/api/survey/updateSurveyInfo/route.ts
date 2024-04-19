@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
             .db('user')
             .collection('information')
             .updateOne({
-                filter: { user_id: extendedUser?.user_id },
+                filter: { email: extendedUser?.email },
                 update: {
                     $set: {
                         directors: info.directors,
@@ -35,7 +35,7 @@ export async function POST(request: NextRequest) {
         .db('user')
         .collection('auth')
         .updateOne({
-            filter: { user_id: extendedUser?.user_id },
+            filter: { email: extendedUser?.email },
             update: {
                 $set: {
                     first: false,

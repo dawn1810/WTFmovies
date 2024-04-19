@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import styles from './Menu.module.scss';
+import { HeaderMenuItemsInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(styles);
 
-function MenuItem({ data, onClick }) {
+function MenuItem({ data, onClick }: { data: HeaderMenuItemsInterface; onClick: () => void }) {
     const classes = cx('menu-item', {
         separate: data.separate,
     });

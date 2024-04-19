@@ -1,4 +1,5 @@
 'use client';
+import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
@@ -85,7 +86,7 @@ const userMenu = [
     {
         icon: <FontAwesomeIcon icon={faUser} />,
         title: 'Thông tin tài khoản',
-        to: '/@hoaa',
+        type: 'profile',
     },
 
     ...MENU_ITEMS,
@@ -130,9 +131,12 @@ function Header({
     isDatabase?: boolean;
     title?: string;
 }) {
+    //router
+    const router = useRouter();
+
     // session
     const { data: session } = useSession();
-    const isLogged = !!currentUser && !!currentUser.user_id;
+    const isLogged = !!currentUser && !!currentUser.email;
     const extendedUser: ExtendedUser | undefined = session?.user;
 
     //redux
@@ -154,6 +158,11 @@ function Header({
                 break;
             case 'logout':
                 signOut();
+                break;
+            case 'profile':
+                console.log('aaa');
+
+                router.push(`/profile/${extendedUser?.email}`);
                 break;
             default:
         }

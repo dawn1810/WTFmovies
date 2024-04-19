@@ -22,7 +22,7 @@ function Survey({
     languageOptions: SuveyOptionsInterface[];
 }) {
     const router = useRouter();
-    const prevPath = sessionStorage.getItem('prev');
+    const prevPath = typeof window !== 'undefined' && !!sessionStorage && sessionStorage.getItem('prev');
 
     const [info, setInfo] = useState({ genres: [], directors: '', actors: '', languages: [] });
 
