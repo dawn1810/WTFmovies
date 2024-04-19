@@ -4,7 +4,7 @@ import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
-import DefaultLayout from '~/layouts/DefaultLayout';
+// import DefaultLayout from '~/layouts/DefaultLayout';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
 import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
@@ -135,36 +135,36 @@ export default async function Watch({ params }: Props) {
     ];
 
     return (
-        <DefaultLayout>
-            <div className={cx('wrapper')}>
-                <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
-                <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-                <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
+        // <DefaultLayout>
+        <div className={cx('wrapper')}>
+            <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
+            <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
+            <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
 
-                <TabsBox
-                    tabs={episodesTabs}
-                    active_episode={Number(numberEp)}
-                    flexContent
-                    textContent
-                    listIdEp={filmEpisode}
-                    defaultActiveKey={filmData.videoType[0].title}
-                    className={cx('tab-box')}
-                />
-                <TabsBox
-                    tabs={proposeFilmsTabs}
-                    listContent
-                    // textContent
-                    defaultActiveKey="like"
-                    className={cx('tab-box')}
-                />
-                <TabsBox
-                    tabs={commentTabs}
-                    commentContent
-                    textContent
-                    defaultActiveKey="comment"
-                    className={cx('cmt-tab-box')}
-                />
-            </div>
-        </DefaultLayout>
+            <TabsBox
+                tabs={episodesTabs}
+                active_episode={Number(numberEp)}
+                flexContent
+                textContent
+                listIdEp={filmEpisode}
+                defaultActiveKey={filmData.videoType[0].title}
+                className={cx('tab-box')}
+            />
+            <TabsBox
+                tabs={proposeFilmsTabs}
+                listContent
+                // textContent
+                defaultActiveKey="like"
+                className={cx('tab-box')}
+            />
+            <TabsBox
+                tabs={commentTabs}
+                commentContent
+                textContent
+                defaultActiveKey="comment"
+                className={cx('cmt-tab-box')}
+            />
+        </div>
+        // </DefaultLayout>
     );
 }

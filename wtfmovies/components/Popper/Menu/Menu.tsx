@@ -7,6 +7,7 @@ import { Wrapper as PopperWrapper } from '~/components/Popper';
 import Header from './Header';
 import MenuItem from './MenuItem';
 import styles from './Menu.module.scss';
+import { HeaderMenuInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(styles);
 const defaultFn = () => {};
@@ -21,17 +22,7 @@ function Menu({
     delay,
     className,
     onChange = defaultFn,
-}: {
-    playerMenu?: boolean;
-    children: React.ReactElement;
-    items: any;
-    title?: string;
-    hideOnClick?: boolean;
-    placement: any;
-    delay: any;
-    className?: string;
-    onChange?: (item: any) => void;
-}) {
+}: HeaderMenuInterface) {
     const [history, setHistory] = useState([{ data: items }]);
     const current: any = history[history.length - 1];
 

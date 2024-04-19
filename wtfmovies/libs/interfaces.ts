@@ -1,4 +1,6 @@
 import { User } from 'next-auth';
+import { ReactNode } from 'react';
+import { Placement } from 'react-bootstrap/esm/types';
 
 // redux
 export interface reduxStateInterface {
@@ -53,7 +55,6 @@ interface EpisodeType {
 }
 
 export interface ExtendedUser extends User {
-    user_id?: string; // Use the appropriate type for user_id.
     first?: boolean;
     avatar?: string;
     role?: string;
@@ -196,7 +197,6 @@ export interface FilmReviewInfoInterface {
 }
 
 export interface CommentInterface {
-    user_id: string;
     avatar?: string;
     content: string;
     time: string;
@@ -212,4 +212,24 @@ export interface UserInfoInterface {
 export interface SuveyOptionsInterface {
     _id: string;
     name: string;
+}
+
+export interface HeaderMenuItemsInterface {
+    icon: JSX.Element;
+    title: string;
+    to?: string;
+    type?: string;
+    separate?: boolean;
+}
+
+export interface HeaderMenuInterface {
+    playerMenu?: boolean;
+    children: React.ReactElement;
+    items: HeaderMenuItemsInterface[];
+    title?: string;
+    hideOnClick?: boolean;
+    placement: Placement;
+    delay: number | [number | null, number | null] | undefined;
+    className?: string;
+    onChange?: (item: any) => void;
 }

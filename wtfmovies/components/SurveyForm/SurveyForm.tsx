@@ -1,13 +1,12 @@
 'use client';
-import { useSession } from 'next-auth/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
 import { Form } from 'react-bootstrap';
 import Select, { GroupBase } from 'react-select';
 import classNames from 'classnames/bind';
 
-import { ExtendedUser, SuveyOptionsInterface } from '~/libs/interfaces';
+import { SuveyOptionsInterface } from '~/libs/interfaces';
 import images from '~/assets/image';
 import Button from '~/components/Button';
 import style from './SurveyForm.module.scss';
@@ -23,14 +22,10 @@ function Survey({
     languageOptions: SuveyOptionsInterface[];
 }) {
     const router = useRouter();
-    const prevPath = sessionStorage.getItem('prev');
-
-    const { data: session } = useSession();
+    const prevPath = typeof window !== 'undefined' && !!sessionStorage && sessionStorage.getItem('prev');
 
     const [info, setInfo] = useState({ genres: [], directors: '', actors: '', languages: [] });
 
-    // const [genreOption, setGenreOption] = useState<any[]>(genres);
-    // const [languageOption, setLanguageOption] = useState<any[]>(languages);
     const [currForm, setCurrForm] = useState(0);
 
     const mappedOptions = (options: SuveyOptionsInterface[]): any[] => {
@@ -41,32 +36,6 @@ function Survey({
 
         return mappedOptions;
     };
-
-    // useEffect(() => {
-    //     const getSurveyInfo = async () => {
-    //         try {
-    //             const response = await fetch('/api/getSurveyInfo', {
-    //                 method: 'GET',
-    //                 headers: { 'Content-Type': 'application/json' },
-    //             });
-
-    //             if (response.ok) {
-    //                 const res: { genre: { _id: string; name: string }[]; language: { _id: string; name: string }[] } =
-    //                     await response.json();
-
-    //                 const genres = res.genre.map((g) => ({ value: g._id, label: g.name }));
-    //                 const languages = res.language.map((g) => ({ value: g._id, label: g.name }));
-
-    //                 setGenreOption(genres);
-    //                 setLanguageOption(languages);
-    //             }
-    //         } catch (err) {
-    //             console.log(err);
-    //         }
-    //     };
-
-    //     getSurveyInfo();
-    // }, []);
 
     const nextPage = () => setCurrForm((prev) => prev + 1);
     const prevPage = () => setCurrForm((prev) => prev - 1);
@@ -80,12 +49,10 @@ function Survey({
     };
 
     const handleSubmit = async () => {
-        const userID = (session?.user as ExtendedUser)?.user_id;
-
-        const response = await fetch('/api/updateSurveyInfo', {
+        const response = await fetch('/api/survey/updateSurveyInfo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userID, info }),
+            body: JSON.stringify({ info }),
         });
 
         if (response.ok) {
@@ -98,12 +65,10 @@ function Survey({
     };
 
     const handleSkip = async () => {
-        const userID = (session?.user as ExtendedUser)?.user_id;
-
-        const response = await fetch('/api/updateSurveyInfo', {
+        const response = await fetch('/api/survey/updateSurveyInfo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userID, info: false }),
+            body: JSON.stringify({ info: false }),
         });
 
         if (response.ok) {

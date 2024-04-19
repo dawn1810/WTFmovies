@@ -1,16 +1,24 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { mongodb, reply } from '~/libs/func';
+import { ExtendedUser } from '~/libs/interfaces';
+import { auth } from '../../auth/[...nextauth]/auth';
 
 export async function POST(request: NextRequest) {
-    const { userID, info }: { userID: string; info: any } = await request.json();
+    const session = await auth();
+
+    if (!session) return new Response(null, { status: 403 });
+
+    const extendedUser: ExtendedUser | undefined = session?.user;
+
+    const { info }: { info: any } = await request.json();
 
     if (info) {
         await mongodb()
             .db('user')
             .collection('information')
             .updateOne({
-                filter: { user_id: userID },
+                filter: { email: extendedUser?.email },
                 update: {
                     $set: {
                         directors: info.directors,
@@ -27,7 +35,7 @@ export async function POST(request: NextRequest) {
         .db('user')
         .collection('auth')
         .updateOne({
-            filter: { user_id: userID },
+            filter: { email: extendedUser?.email },
             update: {
                 $set: {
                     first: false,
