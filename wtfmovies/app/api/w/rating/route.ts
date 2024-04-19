@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     const session = await auth();
 
     if (!session) return new Response(JSON.stringify({ 'statusCode': 200, 'content': 'ok' }, null, 2));
-    ;
+
 
     const extendedUser: ExtendedUser | undefined = session?.user;
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
         .db('film')
         .collection('rating')
         .updateOne({
-            filter: { id_ep: ObjectId(epId), id_user: ObjectId(userId) },
+            filter: { id_ep: ObjectId(epId), id_user: ObjectId(extendedUser?.user_id) },
             update: {
                 "$set": {
                     rating: { "$numberDouble": String(rating) }
