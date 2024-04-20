@@ -9,7 +9,6 @@ const cx = classNames.bind(style);
 
 async function Survey() {
     const options = await getSurveyOptions();
-    console.log(options);
 
     return (
         // <DefaultLayout>
