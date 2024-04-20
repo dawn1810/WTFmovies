@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
-import { ObjectMongo } from './interfaces';
+import { DateMongo, ObjectMongo } from './interfaces';
 export const { env } = getOptionalRequestContext() ?? {
     env: { AUTH_SECRET: 'haha', APIKey: 'haha', URL_Endpoint: 'haha' },
 };
@@ -129,5 +129,11 @@ export function reply(output = { status: 'OK' }): Response {
 export function ObjectId(id: string): ObjectMongo {
     return {
         $oid: id
+    }
+}
+
+export function MongoDate(data: Date): DateMongo {
+    return {
+        $date: data.toISOString()
     }
 }

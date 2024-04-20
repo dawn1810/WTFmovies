@@ -4,7 +4,7 @@ import { SessionProvider } from 'next-auth/react';
 import type { Metadata, Viewport } from 'next';
 import { montserrat } from './font';
 import ReduxProvider from '~/redux/redux-provider';
-import ThemeP from '~/components/theme/theme';
+import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
 import Header from '~/layouts/components/Header';
 import Footer from '~/layouts/components/Footer';
