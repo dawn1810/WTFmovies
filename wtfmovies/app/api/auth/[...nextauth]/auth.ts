@@ -12,9 +12,7 @@ const login = async (credentials: any) => {
             filter: {
                 email: credentials.email,
             },
-            projection: {
-                _id: 0,
-            },
+
         });
 
     if (!userAuth) throw new Error('Email không tồn tại');
@@ -58,6 +56,7 @@ const authOptions: NextAuthConfig = {
         // },
         async jwt({ token, user }: { token: any; user: any }) {
             if (user) {
+                token.id = user._id;
                 token.email = user.email;
                 token.role = user.role;
                 token.first = user.first;
@@ -68,6 +67,7 @@ const authOptions: NextAuthConfig = {
         },
         async session({ session, token }: { session: any; token: any }) {
             if (token) {
+                session.user.id = token.id;
                 session.user.email = token.email;
                 session.user.role = token.role;
                 session.user.first = token.first;

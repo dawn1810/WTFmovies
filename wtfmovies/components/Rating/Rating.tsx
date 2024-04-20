@@ -29,7 +29,7 @@ export default function RatingMui() {
         };
 
         // Thực hiện request POST
-        const response = await fetch('/api/w/rating', {
+        const response = await fetch('/api/v1/rating', {
             method: 'POST', // Chỉ định phương thức là POST
             headers: {
                 'Content-Type': 'application/json', // Chỉ định kiểu nội dung của dữ liệu gửi đi
