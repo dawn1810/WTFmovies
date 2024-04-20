@@ -5,93 +5,50 @@ import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
 
-    return new Response(JSON.stringify(await mongodb().db('film').collection('information').updateMany({
-        filter: {},
-        update: {
-            "$unset": {
-                rating: 0
-            }
-        }
-    }), null, 2));
-    // return new Response(JSON.stringify(await mongodb().db('film').collection('information').aggregate({
-    //     pipeline: [
-    //         { $match: { searchName: 'inuyashiki' } },
-    //         {
-    //             $lookup: {
-    //                 from: 'author',
-    //                 let: { authorIds: '$author' }, // Define the local variable authorIds
-    //                 pipeline: [
-    //                     { $match: { $expr: { $in: ['$_id', '$$authorIds'] } } }, // Match the author ids
-    //                     { $project: { _id: 0, name: 1 } }, // Get name only
-    //                 ],
-    //                 as: 'authorDetails',
-    //             },
-    //         },
-    //         {
-    //             $lookup: {
-    //                 from: 'genre',
-    //                 let: { genreIds: '$genre' }, // Define the local variable genreIds
-    //                 pipeline: [
-    //                     { $match: { $expr: { $in: ['$_id', '$$genreIds'] } } }, // Match the genre ids
-    //                     { $project: { _id: 0, name: 1 } }, // Get name only
-    //                 ],
-    //                 as: 'genreDetails',
-    //             },
-    //         },
-    //         {
-    //             $lookup: {
-    //                 from: 'director',
-    //                 let: { directorIds: '$director' }, // Define the local variable genreIds
-    //                 pipeline: [
-    //                     { $match: { $expr: { $in: ['$_id', '$$directorIds'] } } }, // Match the genre ids
-    //                     { $project: { _id: 0, name: 1 } }, // Get name only
-    //                 ],
-    //                 as: 'directorDetails',
-    //             },
-    //         },
-    //         {
-    //             $lookup: {
-    //                 from: 'actor',
-    //                 let: { actorIds: '$actor' }, // Define the local variable genreIds
-    //                 pipeline: [
-    //                     { $match: { $expr: { $in: ['$_id', '$$actorIds'] } } }, // Match the genre ids
-    //                     { $project: { _id: 0, name: 1 } }, // Get name only
-    //                 ],
-    //                 as: 'actorDetails',
-    //             },
-    //         },
-    //         {
-    //             "$lookup": {
-    //                 "from": "episode",
-    //                 "localField": "film_id",
-    //                 "foreignField": "film_id",
-    //                 "as": "reviews"
-    //             }
-    //         },
-    //         {
-    //             $project: {
-    //                 _id: 0,
-    //                 name: 1,
-    //                 searchName: 1,
-    //                 describe: 1,
-    //                 author: '$authorDetails.name',
-    //                 genre: '$genreDetails.name',
-    //                 director: '$directorDetails.name',
-    //                 videoType: 1,
-    //                 views: 1,
-    //                 rating: { $avg: '$reviews.rating' },
-    //                 img: 1,
-    //                 status: 1,
-    //                 duration: 1,
-    //                 tag: 1,
-    //                 releaseYear: 1,
-    //                 country: 1,
-    //                 actor: '$actorDetails.name',
-    //             },
-    //         },
-    //         { $limit: 1 },
-    //     ],
+    // return new Response(JSON.stringify(await mongodb().db('film').collection('information').updateMany({
+    //     filter: {},
+    //     update: {
+    //         "$unset": {
+    //             rating: 0
+    //         }
+    //     }
     // }), null, 2));
+    return new Response(JSON.stringify(await mongodb()
+        .db('film')
+        .collection('episode')
+        .aggregate({
+            pipeline: [
+                {
+                    $match: {
+                        film_id:
+                            "bfae10e9-d0c9-4746-9be9-a6ea16f369b1"
+                    }
+                }
+                ,
+                {
+                    $lookup: {
+                        from: 'rating',
+                        localField: '_id',
+                        foreignField: 'id_ep',
+                        as: 'reviews',
+                    },
+                },
+                {
+                    $project: {
+                        _id: 1,
+                        film_id: 1,
+                        index: 1,
+                        name: 1,
+                        uploader_id: 1,
+                        upload_date: 1,
+                        rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                        views: 1,
+                        link: 1
+                    },
+
+                },
+                { $merge: { into: "episode", on: "rating", whenMatched: "replace", whenNotMatched: "insert" } }]
+        }), null, 2));
 
 
 
