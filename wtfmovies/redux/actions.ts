@@ -199,7 +199,7 @@ export const changeResolution = (resolution: any[]) => {
 };
 
 //Watch
-export const changeEpisode = (episode: number) => {
+export const changeEpisode = (episode: any) => {
     return {
         type: 'watch/changeResolution',
         payload: episode,

@@ -25,7 +25,7 @@ export default function RatingMui() {
 
         const postData = {
             rating: value,
-            epId: Ep._id
+            epId: Ep._id,
         };
 
         // Thực hiện request POST
