@@ -204,9 +204,20 @@ export interface CommentInterface {
     username: string;
 }
 
+export interface OptionInterface {
+    value: string;
+    label: string;
+}
+
 export interface UserInfoInterface {
     name: string;
     avatar?: string;
+    birthDate?: string;
+    actor?: string;
+    director?: string;
+    genres?: OptionInterface[];
+    languages?: OptionInterface[];
+    status?: boolean;
 }
 
 export interface SuveyOptionsInterface {

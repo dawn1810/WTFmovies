@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { ObjectId, mongodb, reply } from '~/libs/func';
+import { MongoDate, ObjectId, mongodb, reply } from '~/libs/func';
 import { auth } from '../../auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
 
@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
     const extendedUser: ExtendedUser | undefined = session?.user;
 
     const { filmName, avatar, username, content }: dataType = await request.json();
-    // const today = new Date();
+    const today = new Date();
 
     const result = await mongodb()
         .db('film')
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
             username: username,
             avatar: avatar,
             content: content,
-            time: { $currentDate: { $type: 'date' } },
+            time: MongoDate(today),
             status: true,
         });
 

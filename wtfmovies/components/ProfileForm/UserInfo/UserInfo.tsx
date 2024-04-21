@@ -15,68 +15,72 @@ import style from '../UserInfo.module.scss';
 
 const cx = classNames.bind(style);
 
-const userInfo = [
-    {
-        icon: <AlternateEmailOutlined />,
-        tag: 'Email',
-        input: (
-            <TextField
-                disabled
-                className={cx('user-info-txt-input')}
-                id="standard-basic"
-                // label="Standard"
-                value="binhminh19112003@gmail.com"
-                variant="outlined"
-            />
-        ),
-    },
-    {
-        icon: <PermIdentityOutlined />,
-        tag: 'Họ và tên',
-        input: (
-            <TextField
-                className={cx('user-info-txt-input')}
-                id="standard-basic"
-                value="Nguyễn Bình Minh"
-                variant="outlined"
-            />
-        ),
-    },
-    {
-        icon: <TransgenderOutlined />,
-        tag: 'Giới tính',
-        input: (
-            <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={1}
-                className={cx('user-info-txt-input')}
-                // label="Age"
-                // onChange={handleChange}
-            >
-                <MenuItem value={0}>Nam</MenuItem>
-                <MenuItem value={1}>Nữ</MenuItem>
-                <MenuItem value={2}>Khác</MenuItem>
-            </Select>
-        ),
-    },
-    {
-        icon: <CelebrationOutlined />,
-        tag: 'Sinh nhật',
-        input: (
-            <LocalizationProvider dateAdapter={AdapterDayjs}>
-                <DatePicker
-                    // label="Controlled picker"
-                    value={dayjs('2022-04-17')}
+function UserInfo({
+    userInfoList,
+}: {
+    userInfoList: { email: string; name?: string; birthDate?: string; gender?: string };
+}) {
+    const userInfo = [
+        {
+            icon: <AlternateEmailOutlined />,
+            tag: 'Email',
+            input: (
+                <TextField
+                    disabled
                     className={cx('user-info-txt-input')}
-                    // onChange={(newValue) => setValue(newValue)}
+                    id="standard-basic"
+                    // label="Standard"
+                    value={userInfoList.email}
+                    variant="outlined"
                 />
-            </LocalizationProvider>
-        ),
-    },
-];
+            ),
+        },
+        {
+            icon: <PermIdentityOutlined />,
+            tag: 'Họ và tên',
+            input: (
+                <TextField
+                    className={cx('user-info-txt-input')}
+                    id="standard-basic"
+                    value={userInfoList.name}
+                    variant="outlined"
+                />
+            ),
+        },
+        {
+            icon: <TransgenderOutlined />,
+            tag: 'Giới tính',
+            input: (
+                <Select
+                    labelId="demo-simple-select-label"
+                    id="demo-simple-select"
+                    value={0}
+                    className={cx('user-info-txt-input')}
+                    // label="Age"
+                    // onChange={handleChange}
+                >
+                    <MenuItem value={0}>Nam</MenuItem>
+                    <MenuItem value={1}>Nữ</MenuItem>
+                    <MenuItem value={2}>Khác</MenuItem>
+                </Select>
+            ),
+        },
+        {
+            icon: <CelebrationOutlined />,
+            tag: 'Sinh nhật',
+            input: (
+                <LocalizationProvider dateAdapter={AdapterDayjs}>
+                    <DatePicker
+                        // label="Controlled picker"
+                        value={dayjs(userInfoList.birthDate)}
+                        className={cx('user-info-txt-input')}
+                        // onChange={(newValue) => setValue(newValue)}
+                    />
+                </LocalizationProvider>
+            ),
+        },
+    ];
 
-function UserInfo() {
     return (
         <div className={cx('wrapper')}>
             <Divider textAlign="left" className={cx('divider')}>

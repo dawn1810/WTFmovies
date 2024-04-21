@@ -9,40 +9,45 @@ import {
     MoodOutlined,
     TranslateOutlined,
 } from '@mui/icons-material';
+import { OptionInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
-const userInfo = [
-    {
-        icon: <Face2Outlined />,
-        tag: 'Diễn viên',
-        content: 'Tom Hanks, Leonardo DiCaprio, Tom Cruise',
-    },
-    {
-        icon: <Face6Outlined />,
-        tag: 'Đạo diễn',
-        content: 'Steven Spielberg, Christopher Nolan, James CameronSteven Spielberg, Christopher Nolan, James Cameron',
-    },
-    {
-        icon: <MoodOutlined />,
-        tag: 'Thể loại',
-        content: 'Action, Drama, Detective',
-    },
-    {
-        icon: <TranslateOutlined />,
-        tag: 'Ngôn ngữ',
-        content: 'English, Tiếng Việt, 日本語',
-    },
-];
+function UserHobby({
+    userHobby,
+}: {
+    userHobby: { actor?: string; director?: string; genres?: OptionInterface[]; laguages?: OptionInterface[] };
+}) {
+    const userInfo = [
+        {
+            icon: <Face2Outlined />,
+            tag: 'Diễn viên',
+            content: userHobby.actor || 'Không có',
+        },
+        {
+            icon: <Face6Outlined />,
+            tag: 'Đạo diễn',
+            content: userHobby.director || 'Không có',
+        },
+        {
+            icon: <MoodOutlined />,
+            tag: 'Thể loại',
+            content: userHobby?.genres?.join(', ') || 'Không có',
+        },
+        {
+            icon: <TranslateOutlined />,
+            tag: 'Ngôn ngữ',
+            content: userHobby?.laguages?.join(', ') || 'Không có',
+        },
+    ];
 
-function UserHobby() {
     return (
         <div className={cx('wrapper')}>
             <Divider textAlign="left" className={cx('divider')}>
                 SỞ THÍCH XEM PHIM
             </Divider>
             {userInfo.map((info, index) => (
-                <div className={cx('user-info')}>
+                <div className={cx('user-info')} key={index}>
                     <div className={cx('user-info-tags')}>
                         {info.icon}
                         <span>{info.tag}</span>

@@ -29,7 +29,7 @@ function InputFileUpload({ onChange = () => {} }: { onChange: (event: any) => vo
     );
 }
 
-function AvatarUpload() {
+function AvatarUpload({ avatarImage }: { avatarImage?: string }) {
     const [avatar, setAvatar] = useState<any>();
 
     useEffect(() => {
@@ -49,7 +49,7 @@ function AvatarUpload() {
             <Divider textAlign="center" className={cx('title')}>
                 AVATAR
             </Divider>
-            <ImageCustom src={avatar?.priview} alt="avatar" className={cx('avatar')} />
+            <ImageCustom src={avatar?.priview || avatarImage} alt="avatar" className={cx('avatar')} />
             <InputFileUpload onChange={handleChange} />
         </div>
     );
