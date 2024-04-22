@@ -9,17 +9,17 @@ import { UserInfoInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
-function Profile({ email, userInfo }: { email: string; userInfo: UserInfoInterface }) {
+function Profile({ userInfo }: { userInfo: UserInfoInterface }) {
     return (
         <div className={cx('wrapper')}>
             <AvatarUpload avatarImage={userInfo.avatar} />
             <div className={cx('info-container')}>
                 <UserInfo
                     userInfoList={{
-                        email: email,
+                        email: userInfo.email,
                         name: userInfo.name,
                         birthDate: userInfo.birthDate,
-                        gender: 1,
+                        gender: 0,
                     }}
                 />
                 <UserHobby

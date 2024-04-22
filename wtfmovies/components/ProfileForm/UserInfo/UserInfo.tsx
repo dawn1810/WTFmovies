@@ -1,4 +1,5 @@
 import classNames from 'classnames/bind';
+import { useEffect, useState } from 'react';
 import { Button, Divider, MenuItem, Select, TextField } from '@mui/material';
 import {
     AlternateEmailOutlined,
@@ -15,11 +16,65 @@ import style from '../UserInfo.module.scss';
 
 const cx = classNames.bind(style);
 
+function deepEqual(object1: any, object2: any): boolean {
+    const keys1 = Object.keys(object1);
+    const keys2 = Object.keys(object2);
+
+    if (keys1.length !== keys2.length) {
+        return false;
+    }
+
+    for (let key of keys1) {
+        if (!keys2.includes(key) || object1[key] !== object2[key]) {
+            return false;
+        }
+    }
+
+    return true;
+}
+
 function UserInfo({
     userInfoList,
 }: {
-    userInfoList: { email: string; name?: string; birthDate?: string; gender?: string };
+    userInfoList: { email?: string; name?: string; birthDate?: string; gender?: number };
 }) {
+    const initialInfo = {
+        name: userInfoList.name,
+        gender: userInfoList.gender,
+        birthDate: userInfoList.birthDate,
+    };
+    const [info, setInfo] = useState(initialInfo);
+
+    const [canSave, setCanSave] = useState(true);
+    // const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        if (!deepEqual(info, initialInfo)) setCanSave(false);
+        else setCanSave(true);
+    }, [info]);
+
+    const handleInputChange = (event: any) => {
+        setInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
+    const handleDateChange = (newValue: any) => {
+        setInfo((prev: any) => ({ ...prev, birthDate: newValue }));
+    };
+
+    const handleSave = async () => {
+        const response = await fetch('/api/profile/updateInfo', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(info),
+        });
+
+        if (response.ok) {
+            alert('Cập nhật thông tin thành công!');
+        } else if (response.status === 400) {
+            alert('Cập nhật không thành công!');
+        }
+    };
+
     const userInfo = [
         {
             icon: <AlternateEmailOutlined />,
@@ -42,8 +97,10 @@ function UserInfo({
                 <TextField
                     className={cx('user-info-txt-input')}
                     id="standard-basic"
-                    value={userInfoList.name}
+                    value={info.name}
                     variant="outlined"
+                    name="name"
+                    onChange={handleInputChange}
                 />
             ),
         },
@@ -54,10 +111,10 @@ function UserInfo({
                 <Select
                     labelId="demo-simple-select-label"
                     id="demo-simple-select"
-                    value={0}
+                    value={info.gender}
                     className={cx('user-info-txt-input')}
-                    // label="Age"
-                    // onChange={handleChange}
+                    name="gender"
+                    onChange={handleInputChange}
                 >
                     <MenuItem value={0}>Nam</MenuItem>
                     <MenuItem value={1}>Nữ</MenuItem>
@@ -72,9 +129,10 @@ function UserInfo({
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                     <DatePicker
                         // label="Controlled picker"
-                        value={dayjs(userInfoList.birthDate)}
+                        value={dayjs(info.birthDate)}
                         className={cx('user-info-txt-input')}
-                        // onChange={(newValue) => setValue(newValue)}
+                        name="birthDate"
+                        onChange={handleDateChange}
                     />
                 </LocalizationProvider>
             ),
@@ -95,7 +153,13 @@ function UserInfo({
                     {info.input}
                 </div>
             ))}
-            <Button disabled variant="contained" startIcon={<SaveOutlined />} className={cx('bottom-button')}>
+            <Button
+                disabled={canSave}
+                variant="contained"
+                startIcon={<SaveOutlined />}
+                className={cx('bottom-button')}
+                onClick={handleSave}
+            >
                 SAVE
             </Button>
         </div>

@@ -24,6 +24,7 @@ export const getUserInfo = async (): Promise<any> => {
                         languages: '$languages.label',
                         status: 1,
                         avatar: extendedUser?.avatar,
+                        email: extendedUser?.email,
                     },
                 },
                 { $limit: 1 },

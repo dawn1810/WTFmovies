@@ -11,7 +11,6 @@ import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { Prev } from 'react-bootstrap/esm/PageItem';
 
 const cx = classNames.bind(style);
 function CommentInputForm({

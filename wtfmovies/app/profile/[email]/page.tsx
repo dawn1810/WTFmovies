@@ -6,12 +6,11 @@ import { getUserInfo } from '~/libs/getData/profile';
 
 const cx = classNames.bind(style);
 
-async function Profile({ params }: { params: { email: string } }) {
-    const { email } = params;
+async function Profile() {
     //get all user info
     const userInfo = await getUserInfo();
 
-    return <ProfileForm email={email} userInfo={userInfo} />;
+    return <ProfileForm userInfo={userInfo} />;
 }
 
 export default Profile;

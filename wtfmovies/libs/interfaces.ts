@@ -218,6 +218,7 @@ export interface UserInfoInterface {
     genres?: OptionInterface[];
     languages?: OptionInterface[];
     status?: boolean;
+    email?: string;
 }
 
 export interface SuveyOptionsInterface {
