@@ -245,3 +245,30 @@ export interface HeaderMenuInterface {
     className?: string;
     onChange?: (item: any) => void;
 }
+
+//tiktok
+interface ResponseTiktokData {
+    "image_info": {
+        "hash": string,
+        "name": string,
+        "src_h": number,
+        "format": string,
+        "web_uri_v2": string,
+        "height": number,
+        "width": number,
+        "mode": number,
+        "src_uri": string,
+        "src_w": number,
+        "size": number,
+        "web_uri": string,
+        "d": number
+    },
+    "url": string,
+    "uri": string
+}
+export interface ResponseTiktokOK {
+    "msg": string,
+    "code": number,
+    "data": ResponseTiktokData | any,
+    "extra": object
+}
