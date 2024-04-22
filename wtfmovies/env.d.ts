@@ -4,6 +4,7 @@ interface CloudflareEnv {
     publicKey: string;
     privateKey: string;
     AUTH_SECRET: string;
+    TIKTOKCOOKIE: string;
     // Add here the Cloudflare Bindings you want to have available in your application
     // (for more details on Bindings see: https://developers.cloudflare.com/pages/functions/bindings/)
     //
