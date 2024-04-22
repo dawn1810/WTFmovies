@@ -13,6 +13,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
 
 import style from '../UserInfo.module.scss';
+import { LoadingButton } from '@mui/lab';
 
 const cx = classNames.bind(style);
 
@@ -46,7 +47,7 @@ function UserInfo({
     const [info, setInfo] = useState(initialInfo);
 
     const [canSave, setCanSave] = useState(true);
-    // const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         if (!deepEqual(info, initialInfo)) setCanSave(false);
@@ -62,6 +63,7 @@ function UserInfo({
     };
 
     const handleSave = async () => {
+        setLoading(true);
         const response = await fetch('/api/profile/updateInfo', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -69,8 +71,10 @@ function UserInfo({
         });
 
         if (response.ok) {
+            setLoading(false);
             alert('Cập nhật thông tin thành công!');
         } else if (response.status === 400) {
+            setLoading(false);
             alert('Cập nhật không thành công!');
         }
     };
@@ -153,7 +157,8 @@ function UserInfo({
                     {info.input}
                 </div>
             ))}
-            <Button
+            <LoadingButton
+                loading={loading}
                 disabled={canSave}
                 variant="contained"
                 startIcon={<SaveOutlined />}
@@ -161,7 +166,7 @@ function UserInfo({
                 onClick={handleSave}
             >
                 SAVE
-            </Button>
+            </LoadingButton>
         </div>
     );
 }
