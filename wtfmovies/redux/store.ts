@@ -5,6 +5,7 @@ import headerSlice from '~/layouts/components/Header/headerSlice';
 import registerSlice from '~/components/RegisterForm/registerSlice';
 import dataGridComSlice from '~/components/DataGridCom/dataGridComSlice';
 import watchSlice from '~/app/watch/[movieName]/[numEp]/watchSlice';
+import profileSlice from '~/components/ProfileForm/profileSlice';
 
 const store = configureStore({
     reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
         register: registerSlice,
         dataGridCom: dataGridComSlice,
         watch: watchSlice,
+        profile: profileSlice,
     },
 });
 

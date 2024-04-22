@@ -205,3 +205,11 @@ export const changeEpisode = (episode: any) => {
         payload: episode,
     };
 };
+
+//Profile
+export const changeAvatar = (avatar: any) => {
+    return {
+        type: 'profile/changeAvatar',
+        payload: avatar,
+    };
+};

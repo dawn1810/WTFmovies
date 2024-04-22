@@ -1,6 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
+//profile
+export const avatarSelector = (state: reduxStateInterface) => state.profile.avatar;
+
 //register
 const signupEmailAlertSelector = (state: reduxStateInterface) => state.register.signupEmailAlert;
 const signupEmailAlertContentSelector = (state: reduxStateInterface) => state.register.signupEmailAlertContent;

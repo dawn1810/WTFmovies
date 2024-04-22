@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     gap: 18px;
 
     .bottom-button {
@@ -20,6 +20,16 @@
             background-color: var(--text-color);
         }
     }
+
+    .container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 18px;
+    }
+
 }
 
 .wrapper .user-info {

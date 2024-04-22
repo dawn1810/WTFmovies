@@ -1,10 +1,10 @@
 import classNames from 'classnames/bind';
-import { Button, Divider, styled } from '@mui/material';
+import { Button, styled } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { CloudUpload } from '@mui/icons-material';
 
 import style from './Avatar.module.scss';
 import ImageCustom from '~/components/ImageCustom';
-import { CloudUpload } from '@mui/icons-material';
 
 const cx = classNames.bind(style);
 
@@ -29,27 +29,22 @@ function InputFileUpload({ onChange = () => {} }: { onChange: (event: any) => vo
     );
 }
 
-function AvatarUpload({ avatarImage }: { avatarImage?: string }) {
-    const [avatar, setAvatar] = useState<any>();
-
+function AvatarUpload({
+    handleChange,
+    avatarImage,
+}: {
+    handleChange: (event: any) => Promise<void>;
+    avatarImage?: string;
+}) {
     useEffect(() => {
         return () => {
-            avatar && URL.revokeObjectURL(avatar.priview);
+            avatarImage && URL.revokeObjectURL(avatarImage);
         };
-    }, [avatar]);
-
-    const handleChange = (event: any) => {
-        const file = event.target.files[0];
-        file.priview = URL.createObjectURL(file);
-        setAvatar(file);
-    };
+    }, [avatarImage]);
 
     return (
         <div className={cx('wrapper')}>
-            <Divider textAlign="center" className={cx('title')}>
-                AVATAR
-            </Divider>
-            <ImageCustom src={avatar?.priview || avatarImage} alt="avatar" className={cx('avatar')} />
+            <ImageCustom src={avatarImage} alt="avatar" className={cx('avatar')} />
             <InputFileUpload onChange={handleChange} />
         </div>
     );

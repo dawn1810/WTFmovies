@@ -5,6 +5,7 @@ import { headerSlice } from '~/layouts/components/Header/headerSlice';
 import { dataGridComSlice } from '~/components/DataGridCom/dataGridComSlice';
 import { registerSlice } from '~/components/RegisterForm/registerSlice';
 import { watchSlice } from '~/app/watch/[movieName]/[numEp]/watchSlice';
+import { profileSlice } from '~/components/ProfileForm/profileSlice';
 
 const rootReducer = combineReducers({
     player: playerSlice,
@@ -12,6 +13,7 @@ const rootReducer = combineReducers({
     register: registerSlice,
     dataGridCom: dataGridComSlice,
     watch: watchSlice,
+    profile: profileSlice,
 });
 
 export default rootReducer;

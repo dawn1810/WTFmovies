@@ -55,7 +55,6 @@ function UserHobby({
                     <div className={cx('user-info-content')}>{info.content}</div>
                 </div>
             ))}
-
             <Button
                 href="/survey"
                 variant="contained"

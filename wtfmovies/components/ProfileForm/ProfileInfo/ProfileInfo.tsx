@@ -1,7 +1,6 @@
 import classNames from 'classnames/bind';
 
 import style from './ProfileInfo.module.scss';
-import AvatarUpload from './AvatarUpload';
 import UserInfo from './UserInfo';
 import UserHobby from './UserHobby';
 import { UserInfoInterface } from '~/libs/interfaces';
@@ -11,9 +10,9 @@ const cx = classNames.bind(style);
 function ProfileInfo({ userInfo }: { userInfo: UserInfoInterface }) {
     return (
         <div className={cx('wrapper')}>
-            <AvatarUpload avatarImage={userInfo.avatar} />
             <div className={cx('info-container')}>
                 <UserInfo
+                    avatar={userInfo.avatar}
                     userInfoList={{
                         email: userInfo.email,
                         name: userInfo.name,

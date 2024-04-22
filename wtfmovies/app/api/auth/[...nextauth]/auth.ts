@@ -1,6 +1,7 @@
 import { randomBytes, randomUUID } from 'crypto';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import { AnyIfEmpty } from 'react-redux';
 import { comparePassWord, env, mongodb } from '~/libs/func';
 
 const login = async (credentials: any) => {
@@ -12,7 +13,6 @@ const login = async (credentials: any) => {
             filter: {
                 email: credentials.email,
             },
-
         });
 
     if (!userAuth) throw new Error('Email không tồn tại');
@@ -54,7 +54,11 @@ const authOptions: NextAuthConfig = {
         //     // You can also return a custom error URL if needed
         //     return false;
         // },
-        async jwt({ token, user }: { token: any; user: any }) {
+        async jwt({ token, user, trigger, session }: { token: any; user: any; trigger?: any; session?: any }) {
+            if (trigger === 'update' && session.user.avatar) {
+                token.avatar = session.user.avatar;
+            }
+
             if (user) {
                 token.id = user._id;
                 token.email = user.email;
@@ -65,7 +69,21 @@ const authOptions: NextAuthConfig = {
 
             return token;
         },
-        async session({ session, token }: { session: any; token: any }) {
+        async session({
+            session,
+            token,
+            trigger,
+            newSession,
+        }: {
+            session: any;
+            token: any;
+            trigger?: any;
+            newSession: any;
+        }) {
+            if (trigger === 'update' && newSession?.user.avatar) {
+                session.user.avatar = newSession.user.avatar;
+            }
+
             if (token) {
                 session.user.id = token.id;
                 session.user.email = token.email;
@@ -73,6 +91,7 @@ const authOptions: NextAuthConfig = {
                 session.user.first = token.first;
                 session.user.avatar = token.avatar;
             }
+
             return session;
         },
     },

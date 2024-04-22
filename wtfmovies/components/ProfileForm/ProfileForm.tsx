@@ -16,6 +16,7 @@ function Profile({ userInfo }: { userInfo: UserInfoInterface }) {
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
+
     return (
         <div className={cx('wrapper')}>
             <TabContext value={value}>

@@ -136,18 +136,19 @@ function Header({
 
     // session
     const { data: session } = useSession();
-    const isLogged = !!currentUser && !!currentUser.email;
     const extendedUser: ExtendedUser | undefined = session?.user;
+    const isLogged = !!currentUser && !!currentUser.email;
 
     //redux
     const state = useSelector(headerSelector);
     const dispatch = useDispatch();
 
     const [searchShow, setSearchShow] = useState<boolean>(false);
-    const handleSearchClose = () => setSearchShow(false);
-    const handleSearchShow = () => setSearchShow(true);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
+
+    const handleSearchClose = () => setSearchShow(false);
+    const handleSearchShow = () => setSearchShow(true);
 
     // Handle logic
     const handleMenuChange = (menuItem: MenuItem) => {
@@ -260,11 +261,7 @@ function Header({
                                     delay={[0, 500]}
                                     onChange={handleMenuChange}
                                 >
-                                    <ImageCustom
-                                        className={cx('user-avatar')}
-                                        src={currentUser?.avatar || extendedUser?.avatar}
-                                        alt="Avt"
-                                    />
+                                    <ImageCustom className={cx('user-avatar')} src={extendedUser?.avatar} alt="Avt" />
                                 </Menu>
                             </>
                         ) : (

@@ -128,14 +128,14 @@ export function reply(output = { status: 'OK' }): Response {
 //mongodb
 export function ObjectId(id: string): ObjectMongo {
     return {
-        $oid: id
-    }
+        $oid: id,
+    };
 }
 
 export function MongoDate(data: Date): DateMongo {
     return {
-        $date: data.toISOString()
-    }
+        $date: data.toISOString(),
+    };
 }
 
 //tiktok upload
@@ -146,74 +146,73 @@ export function MongoDate(data: Date): DateMongo {
 // or
 // sessionid_ads= 49aec6dd1283b4f8214dd2b1bbee2358
 
-let currentCookie =
-    `csrftoken=9BrXKhM5zk3UXppyxHP2EtgbdLWZJg9W;sessionid_ss_ads=${env.TIKTOKCOOKIE}`;
+let currentCookie = `csrftoken=9BrXKhM5zk3UXppyxHP2EtgbdLWZJg9W;sessionid_ss_ads=${env.TIKTOKCOOKIE}`;
 
 function updateCookie(currentCookie: string, newCookie: string) {
-    const currentCookies = currentCookie ? currentCookie.split(";") : [];
-    const newCookies = newCookie.split(";");
+    const currentCookies = currentCookie ? currentCookie.split(';') : [];
+    const newCookies = newCookie.split(';');
 
     const updatedCookies = currentCookies.map((current) => {
-        const currentKey = current.split("=")[0].trim();
+        const currentKey = current.split('=')[0].trim();
         const newCookieValue = newCookies.find((newC) => newC.trim().startsWith(`${currentKey}=`));
 
         return newCookieValue || current;
     });
 
-    return updatedCookies.join("; ");
+    return updatedCookies.join('; ');
 }
 
 function getCsrfToken(cookieString: string) {
-    const cookies = cookieString.split(";");
+    const cookies = cookieString.split(';');
     for (const cookie of cookies) {
-        const [name, value] = cookie.trim().split("=");
-        if (name === "csrftoken") {
+        const [name, value] = cookie.trim().split('=');
+        if (name === 'csrftoken') {
             return value;
         }
     }
-    return "";
+    return '';
 }
 
-export async function uploadImagetoTiktok(file_buffer: BlobPart) {
+export async function uploadImagetoTiktok(file_blob: File) {
     try {
-        // const file_buffer = await fs.promises.readFile(file_path);
-        // const file_buffer: BlobPart[] = any;
-        const file_blob = new Blob([file_buffer], { type: "image/png" });
-
         const formData = new FormData();
-        formData.append("Filedata", file_blob);
+        formData.append('Filedata', file_blob);
 
         const headers = new Headers();
 
         // Add custom headers
-        headers.append("x-csrftoken", getCsrfToken(currentCookie));
+        headers.append('x-csrftoken', getCsrfToken(currentCookie));
 
         // Add cookie from the previous response
         if (currentCookie) {
-            headers.append("Cookie", currentCookie);
+            headers.append('Cookie', currentCookie);
         }
         const generateUUID = () => {
-            return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
                 const r = (Math.random() * 16) | 0;
-                const v = c === "x" ? r : (r & 0x3) | 0x8;
+                const v = c === 'x' ? r : (r & 0x3) | 0x8;
                 return v.toString(16);
             });
-        }
+        };
 
-        const response = await fetch(`https://ads.tiktok.com/api/v2/i18n/material/image/upload/?aadvid=${generateUUID()}`, {
-            method: "POST",
-            body: formData,
-            headers: headers,
-        });
+        const response = await fetch(
+            `https://ads.tiktok.com/api/v2/i18n/material/image/upload/?aadvid=${generateUUID()}`,
+            {
+                method: 'POST',
+                body: formData,
+                headers: headers,
+            },
+        );
+
         if (response.ok) {
             const responseData: ResponseTiktokOK = await response.json();
             // Update currentCookie with the new values
-            const responseCookieHeader = response.headers.get("Set-Cookie");
+            const responseCookieHeader = response.headers.get('Set-Cookie');
             if (responseCookieHeader) {
                 currentCookie = updateCookie(currentCookie, responseCookieHeader);
             }
 
-            if (responseData.msg === "success" && responseData.data) {
+            if (responseData.msg === 'success' && responseData.data) {
                 // console.log("Upload successful:", file_path);
                 // fs.unlink(file_path, (err: any) => {
                 //     if (err) throw (err);
@@ -221,14 +220,13 @@ export async function uploadImagetoTiktok(file_buffer: BlobPart) {
                 return responseData.data.url;
             }
         } else {
-            console.error("Failed to upload:", await response.text());
+            console.error('Failed to upload:', await response.text());
         }
-        console.error("Upload unsuccessful:", await response.text());
+        console.error('Upload unsuccessful:', await response.text());
         return null;
     } catch (error: any) {
-        await uploadImagetoTiktok(file_buffer);
-        console.error("Error uploading file:", error.message);
+        await uploadImagetoTiktok(file_blob);
+        console.error('Error uploading file:', error.message);
         throw error;
     }
 }
-

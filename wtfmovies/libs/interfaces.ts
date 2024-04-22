@@ -1,8 +1,13 @@
+import { File } from 'buffer';
 import { User } from 'next-auth';
 import { ReactNode } from 'react';
 import { Placement } from 'react-bootstrap/esm/types';
 
 // redux
+export interface ExtendedFile extends File {
+    preview: string;
+}
+
 export interface reduxStateInterface {
     player: {
         url: string;
@@ -46,6 +51,9 @@ export interface reduxStateInterface {
     };
     watch: {
         episode: { _id: string; index: number; rating: number; link: string };
+    };
+    profile: {
+        avatar: ExtendedFile;
     };
 }
 
@@ -248,27 +256,27 @@ export interface HeaderMenuInterface {
 
 //tiktok
 interface ResponseTiktokData {
-    "image_info": {
-        "hash": string,
-        "name": string,
-        "src_h": number,
-        "format": string,
-        "web_uri_v2": string,
-        "height": number,
-        "width": number,
-        "mode": number,
-        "src_uri": string,
-        "src_w": number,
-        "size": number,
-        "web_uri": string,
-        "d": number
-    },
-    "url": string,
-    "uri": string
+    image_info: {
+        hash: string;
+        name: string;
+        src_h: number;
+        format: string;
+        web_uri_v2: string;
+        height: number;
+        width: number;
+        mode: number;
+        src_uri: string;
+        src_w: number;
+        size: number;
+        web_uri: string;
+        d: number;
+    };
+    url: string;
+    uri: string;
 }
 export interface ResponseTiktokOK {
-    "msg": string,
-    "code": number,
-    "data": ResponseTiktokData | any,
-    "extra": object
+    msg: string;
+    code: number;
+    data: ResponseTiktokData | any;
+    extra: object;
 }
