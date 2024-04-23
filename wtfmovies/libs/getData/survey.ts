@@ -5,18 +5,26 @@ export const getSurveyOptions = async (): Promise<{
     genres: SuveyOptionsInterface[];
     languages: SuveyOptionsInterface[];
 }> => {
-    const genres = await mongodb()
-        .db('film')
-        .collection('gerne')
-        .find({ projection: { name: 1 } });
+    try {
+        const genres = await mongodb()
+            .db('film')
+            .collection('gerne')
+            .find({ projection: { name: 1 } });
 
-    const languages = await mongodb()
-        .db('film')
-        .collection('language')
-        .find({ projection: { name: 1 } });
+        const languages = await mongodb()
+            .db('film')
+            .collection('language')
+            .find({ projection: { name: 1 } });
 
-    return {
-        genres,
-        languages,
-    };
+        return {
+            genres,
+            languages,
+        };
+    } catch (err) {
+        console.log('😨😨😨 error at survey/getSurveyOptions function  : ', err);
+        return {
+            genres: [],
+            languages: [],
+        };
+    }
 };
