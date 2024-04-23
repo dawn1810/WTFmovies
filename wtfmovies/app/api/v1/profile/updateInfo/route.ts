@@ -1,20 +1,14 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { mongodb, reply, toError, toJSON, uploadImagetoTiktok } from '~/libs/func';
+import { mongodb, toError, toJSON, uploadImagetoTiktok } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
-interface dataType {
-    name: string;
-    birthDate: string;
-    gender: number;
-}
-
 export async function POST(request: NextRequest) {
-    // const { name, birthDate, gender, formData }: dataType = await request.json();
     const formData: any = await request.formData();
-    const imageLink = await uploadImagetoTiktok(await formData.get('image'));
-    const { name, birthDate, gender } = await formData.get('info');
+    const imageLink = !!formData.get('image') ? await uploadImagetoTiktok(await formData.get('image')) : undefined;
+    const info = await formData.get('info');
+    const { name, birthDate, gender } = JSON.parse(info);
 
     const session = await auth();
 
@@ -31,16 +25,20 @@ export async function POST(request: NextRequest) {
             upsert: true,
         });
 
-    const response2 = await mongodb()
-        .db('user')
-        .collection('auth')
-        .updateOne({
-            filter: { email: extendedUser?.email },
-            update: { $set: { avatar: imageLink } },
-            upsert: true,
-        });
+    const response2 = imageLink
+        ? await mongodb()
+              .db('user')
+              .collection('auth')
+              .updateOne({
+                  filter: { email: extendedUser?.email },
+                  update: { $set: { avatar: imageLink } },
+                  upsert: true,
+              })
+        : undefined;
 
-    if (response.modifiedCount === 1 && response2.modifiedCount === 1) {
+    if (!response2 && response.modifiedCount === 1) {
+        return toJSON('Không cập nhật hình ảnh');
+    } else if (response2 && response.modifiedCount === 1 && response2.modifiedCount === 1) {
         return toJSON(imageLink);
     }
     return toError('Cập nhật không thành công!', 400);

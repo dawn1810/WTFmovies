@@ -161,8 +161,6 @@ function Header({
                 signOut();
                 break;
             case 'profile':
-                console.log('aaa');
-
                 router.push(`/profile/${extendedUser?.email}`);
                 break;
             default:

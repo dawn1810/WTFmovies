@@ -73,32 +73,31 @@ function UserInfo({
     const handleSave = async () => {
         setLoading(true);
         // send file to server
-        if (avatarFile) {
-            const file_blob = new Blob([avatarFile], { type: 'image/png' });
-            const formData = new FormData();
-            formData.append('image', file_blob);
-            formData.append('info', JSON.stringify(info));
+        const file_blob = avatarFile ? new Blob([avatarFile], { type: 'image/png' }) : undefined;
 
-            const response = await fetch('/api/v1/profile/updateInfo', {
-                method: 'POST',
-                // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: formData,
-            });
+        const formData = new FormData();
+        if (!!file_blob) formData.append('image', file_blob);
+        formData.append('info', JSON.stringify(info));
 
-            if (response.ok) {
-                const res = await response.json();
-                setLoading(false);
-                setCanSave(false);
-                alert('Cập nhật thông tin thành công!');
+        const response = await fetch('/api/v1/profile/updateInfo', {
+            method: 'POST',
+            // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: formData,
+        });
 
-                update({ user: { ...session?.user, avatar: res } });
-            } else if (response.status === 400) {
-                setInfo(initialInfo);
-                alert('Cập nhật không thành công!');
-            } else {
-                setInfo(initialInfo);
-                alert('Cập nhật không thành công!');
-            }
+        if (response.ok) {
+            const res = await response.json();
+            setLoading(false);
+            setCanSave(false);
+            alert('Cập nhật thông tin thành công!');
+
+            if (res !== 'Không cập nhật hình') update({ user: { ...session?.user, avatar: res } });
+        } else if (response.status === 400) {
+            setInfo(initialInfo);
+            alert('Cập nhật không thành công!');
+        } else {
+            setInfo(initialInfo);
+            alert('Cập nhật không thành công!');
         }
     };
 

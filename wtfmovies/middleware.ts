@@ -9,6 +9,10 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
+    if (!isLogged && request.nextUrl.pathname.startsWith('/profile')) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+
     if (
         request.nextUrl.pathname.startsWith('/editer') &&
         !editer_path.some((path) => request.nextUrl.pathname.endsWith(path))
