@@ -7,6 +7,7 @@ import classNames from 'classnames/bind';
 import Title from '~/components/FilmClassify/Title';
 import style from './search.module.scss';
 import FilmCard from '~/components/FilmCard';
+import { useSearchParams } from 'next/navigation';
 
 const cx = classNames.bind(style);
 
@@ -118,7 +119,12 @@ const tests = [
     },
 ];
 
-function search() {
+function search({
+    searchParams,
+}: {
+    searchParams?: { [query: string]: string | string[] | undefined };
+}) {
+    console.log(searchParams);
     return (
         // <DefaultLayout>
         <div className={cx('wrapper')}>

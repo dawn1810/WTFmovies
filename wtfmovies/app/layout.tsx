@@ -9,6 +9,7 @@ import BottomBar from '~/layouts/components/BottomBar';
 import Header from '~/layouts/components/Header';
 import Footer from '~/layouts/components/Footer';
 import { getCurrentUser } from '~/libs/getData/home';
+import { getGenres } from '~/libs/getData/search';
 
 const APP_NAME = 'WTFmovies';
 const APP_DEFAULT_TITLE = 'WTFmovies';
@@ -63,12 +64,15 @@ export const viewport: Viewport = {
 //     icons: '/images/icons/favicon.svg',
 // };
 
+
+
 export default async function RootLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
     const currentUser = await getCurrentUser();
+    const genres = await getGenres();
 
     return (
         <ReduxProvider>
@@ -76,7 +80,7 @@ export default async function RootLayout({
                 <SessionProvider>
                     <html lang="en">
                         <body className={montserrat.className}>
-                            <Header currentUser={currentUser} />
+                            <Header currentUser={currentUser} genres={genres} />
                             <section>{children}</section>
                             <Footer />
                             <BottomBar />

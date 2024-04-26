@@ -170,6 +170,7 @@ const Player = ({ url }) => {
 
                             hlsVersion: 'latest', // use the version you prefer
                         },
+
                         youtube: {
                             playerVars: { showinfo: 1 }
                         },
@@ -190,6 +191,7 @@ const Player = ({ url }) => {
                     handlePlayPause={handlePlayPause}
                     handleClickFullscreen={handleClickFullscreen}
                 />
+
 
 
             </div>

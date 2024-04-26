@@ -1,37 +1,19 @@
-import { faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
-import classNames from 'classnames/bind';
-
-import style from './Editor.module.scss';
-import DatabaseLayout from '~/layouts/DatabaseLayout';
 import FilmPage from './film';
+import classNames from 'classnames/bind';
+import style from './Editer.module.scss';
+// import DatabaseLayout from '~/layouts/DatabaseLayout';
 import OverViewPage from './overview';
 const cx = classNames.bind(style);
-const menuItems = [
-    {
-        title: 'Tổng quan',
-        icon: faHouse,
-        scene: 'overview',
-    },
-    {
-        title: 'Quản lý phim',
-        icon: faFilm,
-        scene: 'film',
-    },
-];
-function getPage(page: string) {
-    switch (page[0]) {
+function getPage(params: any) {
+    switch (params.page[0]) {
         case 'film':
-            return <FilmPage></FilmPage>;
+            return <FilmPage />;
         default:
-            return <OverViewPage></OverViewPage>;
+            return <OverViewPage />;
     }
 }
-export default function Editor({ params }: { params: { page: string } }) {
-    const { page } = params;
 
-    return (
-        <DatabaseLayout menuitem={menuItems} scene={page[0]}>
-            {getPage(page)}
-        </DatabaseLayout>
-    );
+export default function Editer({ params }: { params: { page: string[] } }) {
+    // return <>{getPage(params)}</>;
+    return <div></div>;
 }
