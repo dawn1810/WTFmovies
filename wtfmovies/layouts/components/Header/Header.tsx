@@ -98,38 +98,17 @@ const userMenu = [
     },
 ];
 
-const genres = [
-    { name: 'Tất cả', to: '/', special: true },
-    { name: 'Thịnh hành', to: '/hot', special: true },
-    { name: 'Mới', to: '/new', special: true },
-    { name: 'Hành động', to: '/action' },
-    { name: 'Tình cảm', to: '/romance' },
-    { name: 'Trinh thám', to: '/detective' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-    { name: 'Hành động', to: '/action' },
-    { name: 'Tình cảm', to: '/romance' },
-    { name: 'Trinh thám', to: '/detective' },
-    { name: 'Hành động', to: '/action' },
-    { name: 'Tình cảm', to: '/romance' },
-    { name: 'Trinh thám', to: '/detective' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-    { name: 'Trinh thám', to: '/detective' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-    { name: 'Trinh thám', to: '/detective' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-    { name: 'Tâm lý tội phạm', to: 'crime' },
-];
 
 function Header({
     currentUser,
     isDatabase = false,
     title,
+    genres,
 }: {
     currentUser?: ExtendedUser;
     isDatabase?: boolean;
     title?: string;
+    genres: { name: string, to: string, special?: boolean }[] | any,
 }) {
     //router
     const router = useRouter();
@@ -300,7 +279,7 @@ function Header({
             </div>
             {isDatabase || (
                 <Genres>
-                    {genres.map((genre, index) => {
+                    {genres.map((genre: any, index: number) => {
                         return (
                             <Link key={index} href={genre.to} className={cx(genre.special && 'special-genre', 'genre')}>
                                 {genre.name}

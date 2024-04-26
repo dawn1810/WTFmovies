@@ -1,25 +1,30 @@
-'use client';
 import React from 'react';
-import Header from '../components/Header';
-import Leftbar from '../components/Leftbar';
-import './DatabaseLayout.scss';
+import Header from '~/layouts/components/Header';
+import Leftbar from '~/layouts/components/Leftbar';
+import { faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
+
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
+const menuItems = [
+    {
+        title: 'Tổng quan',
+        icon: faHouse,
+        scene: 'overview',
+    },
+    {
+        title: 'Quản lý phim',
+        icon: faFilm,
+        scene: 'film',
+    }
+];
 
-function DatabaseLayout({ children, menuitem, scene }: {
-    children: React.ReactNode, menuitem: {
-        title: string;
-        icon: IconDefinition,
-        scene: string,
-    }[], scene: string
-}) {
+export default function Layout({ children, params }: { children: React.ReactNode, params: { page: string } }) {
     return (
         <Container fluid className='p-0' >
             <Row className="flex-nowrap g-0">
                 <Col xs={2} id="sidebar-container">
-                    <Leftbar menuItems={menuitem} scene={scene} />
+                    <Leftbar menuItems={menuItems} scene={params.page[0]} />
                 </Col>
                 <Col xs={10} id="main-container">
                     <Header isDatabase title='Editer' />
@@ -30,4 +35,3 @@ function DatabaseLayout({ children, menuitem, scene }: {
     );
 }
 
-export default DatabaseLayout;
