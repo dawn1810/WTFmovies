@@ -14,7 +14,8 @@ function Footer() {
     return (
         <footer className={cx('wrapper')}>
             <div className={cx('inner')}>
-                <Link href={config.routes.home} className={cx('logo-link')}>
+                {/* config.routes.home */}
+                <Link href="" className={cx('logo-link')}>
                     <img src={images.logo} alt="wtfmovies" className={cx('logo')} />
                 </Link>
                 <div className={cx('about-tag')}>

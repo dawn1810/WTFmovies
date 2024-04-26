@@ -1,8 +1,7 @@
-// import Tippy from '@tippyjs/react';
 'use client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useState, useRef, useCallback, useEffect } from 'react';
-import ReactPlayer from 'react-player/file';
+import ReactPlayer from 'react-player';
 import screenfull from 'screenfull';
 import classNames from 'classnames/bind';
 
@@ -101,95 +100,102 @@ const Player = ({ url }) => {
         }, 3000);
     };
 
-    return (isClient ?
-        <div ref={wrapperRef} className={cx('wrapper')}>
-            <ReactPlayer
-                ref={playerRef}
-                className="react-player"
-                width="100%"
-                height="100%"
-                url={state.url}
-                pip={state.pip}
-                playing={state.playing}
-                controls={false}
-                light={state.light}
-                loop={state.loop}
-                playbackRate={state.playbackRate}
-                volume={state.volume}
-                muted={state.muted}
-                onReady={handleReady}
-                onStart={() => console.log('start')}
-                onPlay={handlePlay}
-                // onProgress
-                onBuffer={handleOnBuffer}
-                onBufferEnd={handlePlay}
-                onEnablePIP={handleEnablePIP}
-                onDisablePIP={handleDisablePIP}
-                onPause={handlePause}
-                // onPlaybackRateChange={handleOnPlaybackRateChange}
-                onSeek={(e) => console.log('onSeek', e)}
-                onEnded={handleEnded}
-                onError={(e) => console.log('onError', e)}
-                onProgress={handleProgress}
-                onDuration={handleDuration}
-                onPlaybackQualityChange={(e) => console.log('onPlaybackQualityChange', e)}
-                config={{
-                    file: {
-                        forceHLS: true,
-                        hlsOptions: {
-                            // autoStartLoad: true,
-                            // additional hls.js options
-                            pLoader: function (config) {
-                                let loader = new Hls.DefaultConfig.loader(config);
-                                Object.defineProperties(this, {
-                                    stats: {
-                                        get: () => loader.stats,
-                                    },
-                                    context: {
-                                        get: () => loader.context,
-                                    },
-                                });
+    return (
+        isClient ?
+            <div ref={wrapperRef} className={cx('wrapper')}>
+                <ReactPlayer
+                    ref={playerRef}
+                    className="react-player"
+                    width="100%"
+                    height="100%"
+                    url={state.url}
+                    pip={state.pip}
+                    playing={state.playing}
+                    controls={false}
+                    light={state.light}
+                    loop={state.loop}
+                    playbackRate={state.playbackRate}
+                    volume={state.volume}
+                    muted={state.muted}
+                    onReady={handleReady}
+                    onStart={() => console.log('start')}
+                    onPlay={handlePlay}
+                    // onProgress
+                    onBuffer={handleOnBuffer}
+                    onBufferEnd={handlePlay}
+                    onEnablePIP={handleEnablePIP}
+                    onDisablePIP={handleDisablePIP}
+                    onPause={handlePause}
+                    // onPlaybackRateChange={handleOnPlaybackRateChange}
+                    onSeek={(e) => console.log('onSeek', e)}
+                    onEnded={handleEnded}
+                    onError={(e) => console.log('onError', e)}
+                    onProgress={handleProgress}
+                    onDuration={handleDuration}
+                    onPlaybackQualityChange={(e) => console.log('onPlaybackQualityChange', e)}
+                    config={{
+                        file: {
+                            // forceHLS: true,
+                            hlsOptions: {
+                                // autoStartLoad: true,
+                                // additional hls.js options
+                                pLoader: function (config) {
+                                    let loader = new Hls.DefaultConfig.loader(config);
+                                    Object.defineProperties(this, {
+                                        stats: {
+                                            get: () => loader.stats,
+                                        },
+                                        context: {
+                                            get: () => loader.context,
+                                        },
+                                    });
 
-                                this.abort = () => loader.abort();
-                                this.destroy = () => loader.destroy();
-                                this.load = (context, config, callbacks) => {
-                                    var onSuccess = callbacks.onSuccess;
-                                    callbacks.onSuccess = function (response, stats, context) {
+                                    this.abort = () => loader.abort();
+                                    this.destroy = () => loader.destroy();
+                                    this.load = (context, config, callbacks) => {
+                                        var onSuccess = callbacks.onSuccess;
+                                        callbacks.onSuccess = function (response, stats, context) {
 
-                                        response.data = response.data.slice(response.data.indexOf("#EXTM3U"));
+                                            response.data = response.data.slice(response.data.indexOf("#EXTM3U"));
 
-                                        onSuccess(response, stats, context);
+                                            onSuccess(response, stats, context);
+                                        };
+
+                                        loader.load(context, config, callbacks);
                                     };
-
-                                    loader.load(context, config, callbacks);
-                                };
+                                },
                             },
+
+
+
+                            hlsVersion: 'latest', // use the version you prefer
                         },
+                        youtube: {
+                            playerVars: { showinfo: 1 }
+                        },
+                    }}
+                />
 
 
+                <Contact
+                    ref={contactRef}
+                    playerRef={playerRef}
+                    handlePlayPause={handlePlayPause}
+                    handleClickFullscreen={handleClickFullscreen}
+                    handleMouseMove={handleMouseMove}
+                />
 
-                        hlsVersion: 'latest', // use the version you prefer
-                    },
-                }}
-            />
+                <Cover
+                    handleMouseMove={handleMouseMove}
+                    handlePlayPause={handlePlayPause}
+                    handleClickFullscreen={handleClickFullscreen}
+                />
 
 
-            <Contact
-                ref={contactRef}
-                playerRef={playerRef}
-                handlePlayPause={handlePlayPause}
-                handleClickFullscreen={handleClickFullscreen}
-                handleMouseMove={handleMouseMove}
-            />
-
-            <Cover
-                handleMouseMove={handleMouseMove}
-                handlePlayPause={handlePlayPause}
-                handleClickFullscreen={handleClickFullscreen}
-            />
-
-        </div> : <div className={cx('wrapper')}>Loading Player</div>
+            </div>
+            : <div className={cx('wrapper')}>Loading Player</div>
     );
 };
+
 
 export default Player;

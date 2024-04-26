@@ -1,0 +1,28 @@
+.wrapper {
+    width: var(--default-layout-width);
+    margin: 0 auto;
+
+    .card {
+        padding: 18px;
+        border-bottom: 3px solid var(--highlight-color);
+
+        .card-title {
+            opacity: 0.5;
+        }
+    }
+}
+
+.card .card-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+
+    .number {
+        font-size: 2.8rem;
+    }
+
+    .change {
+        font-weight: 700;
+        color: var(--highlight-color);
+    }
+}

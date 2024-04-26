@@ -14,7 +14,6 @@ export function mongodb(): Mongodb {
 }
 
 // auth
-
 const bufferFromPEM = (pem: string) => {
     // Remove the PEM headers and base64 decode the binary data
     const b64Data = pem.replace(/(-----(BEGIN|END) (PUBLIC|PRIVATE) KEY-----|\s)/g, '');

@@ -1,11 +1,10 @@
 import classNames from 'classnames/bind';
 
-import style from './Profile.module.scss';
+import style from './Admin.module.scss';
+import AdminDashboard from '~/components/AdminDashboard';
 
 const cx = classNames.bind(style);
 
-async function Profile() {
-    return;
+export default function Admin() {
+    return <AdminDashboard />;
 }
-
-export default Profile;

@@ -21,6 +21,7 @@ import { signupSelector } from '~/redux/selectors';
 import Button from '~/components/Button';
 import style from './RegisterForm.module.scss';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
+import Player from '../Player';
 
 const cx = classNames.bind(style);
 

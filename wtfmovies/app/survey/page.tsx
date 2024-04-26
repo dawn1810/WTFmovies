@@ -13,6 +13,7 @@ async function Survey() {
     return (
         // <DefaultLayout>
         <SurveyForm genreOptions={options.genres} languageOptions={options.languages} />
+
         // </DefaultLayout>
     );
 }
