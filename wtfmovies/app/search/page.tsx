@@ -8,123 +8,19 @@ import Title from '~/components/FilmClassify/Title';
 import style from './search.module.scss';
 import FilmCard from '~/components/FilmCard';
 import { useSearchParams } from 'next/navigation';
+import { getSearch } from '~/libs/getData/search';
+import test from 'node:test';
 
 const cx = classNames.bind(style);
 
-const tests = [
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-    {
-        imgSrc: '/jjk_shibuya_incident_arc_1693914044447_1693914064181.webp',
-        filmName: 'Jujutsu Kaisen',
-        views: 999.999,
-        rating: 4.9,
-        episodes: 1029,
-    },
-];
 
-function search({
+async function search({
     searchParams,
 }: {
-    searchParams?: { [query: string]: string | string[] | undefined };
+    searchParams: { query: string, type: string };
 }) {
-    console.log(searchParams);
+    const data = await getSearch(searchParams);
+
     return (
         // <DefaultLayout>
         <div className={cx('wrapper')}>
@@ -143,17 +39,17 @@ function search({
                     icon={<FontAwesomeIcon icon={faMagnifyingGlass} className={cx('search-films-title')} />}
                 />
                 <div className={cx('films-list')}>
-                    {tests.map((test, index) => (
+                    {data?.map((item, index) => (
                         <FilmCard
                             key={index}
                             largeNoOverlay
-                            imgSrc={test.imgSrc}
-                            filmName={test.filmName}
-                            views={test.views}
-                            rating={test.rating}
-                            episodes={test.episodes}
+                            imgSrc={item.poster}
+                            filmName={item.name}
+                            views={item.views}
+                            rating={item.rating}
+                            episodes={item.episodes}
                             className={cx('large-film-card')}
-                            searchName="test"
+                            searchName={item.searchName}
                         />
                     ))}
                 </div>
