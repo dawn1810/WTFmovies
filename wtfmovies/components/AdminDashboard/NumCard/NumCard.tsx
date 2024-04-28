@@ -1,29 +1,28 @@
 import classNames from 'classnames/bind';
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
+import { Card, CardActionArea } from '@mui/material';
 
 import style from './NumCard.module.scss';
-import { Card, CardActionArea } from '@mui/material';
-import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 
 const cx = classNames.bind(style);
 
-export default function AdminDashboard({
+export default function NumCard({
     title,
     number,
     change,
+    area,
     up = false,
 }: {
     title: string;
     number: number;
     change: number;
+    area?: string;
     up?: boolean;
 }) {
     return (
-        <Card sx={{ maxWidth: 345 }}>
+        <Card style={{ gridArea: area }}>
             <CardActionArea
-                className={cx('card')}
-                style={{
-                    borderBottom: up ? '3px solid var(--green-highlight-color);' : '3px solid var(--highlight-color);',
-                }}
+                className={cx('card-area', { 'card-green': up })}
                 onClick={() => {
                     console.log('aaaa');
                 }}

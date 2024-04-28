@@ -1,28 +1,13 @@
 .wrapper {
     width: var(--default-layout-width);
     margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, calc(100% / 3));
+    grid-template-rows: repeat(3, auto);
+    gap: 18px;
+    grid-template-areas:
+        "num1 num2 num3"
+        "bar1 bar1 table1"
+        "bar2 pie table2";
 
-    .card {
-        padding: 18px;
-        border-bottom: 3px solid var(--highlight-color);
-
-        .card-title {
-            opacity: 0.5;
-        }
-    }
-}
-
-.card .card-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-
-    .number {
-        font-size: 2.8rem;
-    }
-
-    .change {
-        font-weight: 700;
-        color: var(--highlight-color);
-    }
 }
