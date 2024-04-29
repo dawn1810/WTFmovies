@@ -14,13 +14,40 @@ export default function BarCard({
     series,
     ykey,
     title,
+    horizontal = false,
+    height,
 }: {
     area?: string;
     dataset: any[];
     series: any[];
     ykey: string;
     title: string;
+    horizontal?: boolean;
+    height: number;
 }) {
+    const chartSetting: any = horizontal
+        ? {
+              yAxis: [
+                  {
+                      scaleType: 'band',
+                      dataKey: ykey,
+                      valueFormatter: (value: any, context: any) =>
+                          context.location === 'tick' ? value.substring(0, 3) : value,
+                  },
+              ],
+              layout: 'horizontal',
+          }
+        : {
+              xAxis: [
+                  {
+                      scaleType: 'band',
+                      dataKey: ykey,
+                      valueFormatter: (value: any, context: any) =>
+                          context.location === 'tick' ? value.substring(0, 3) : value,
+                  },
+              ],
+          };
+
     return (
         <Card style={{ gridArea: area }}>
             <CardActionArea
@@ -31,19 +58,7 @@ export default function BarCard({
             >
                 <h4 className={cx('card-title')}>{title}</h4>
 
-                <BarChart
-                    dataset={dataset}
-                    yAxis={[{ scaleType: 'band', dataKey: ykey }]}
-                    series={series}
-                    layout="horizontal"
-                    className={cx('chart')}
-                    // xAxis={[
-                    //     {
-                    //         label: title,
-                    //     },
-                    // ]}
-                    height={400}
-                />
+                <BarChart dataset={dataset} series={series} className={cx('chart')} height={height} {...chartSetting} />
             </CardActionArea>
         </Card>
     );

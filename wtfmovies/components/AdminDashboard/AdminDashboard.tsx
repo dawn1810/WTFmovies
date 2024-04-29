@@ -12,40 +12,40 @@ const cx = classNames.bind(style);
 const dataset = [
     {
         views: 4000,
-        likes: 40,
-        rating: 50,
+        likes: 150,
+        rating: 2000,
         filmName: 'Inuyashiki',
     },
     {
-        views: 3950,
-        likes: 57,
-        rating: 86,
+        views: 3500,
+        likes: 100,
+        rating: 1006,
         filmName: 'Boku no Hero Academia',
     },
     {
-        views: 3880,
-        likes: 30,
-        rating: 70,
+        views: 3490,
+        likes: 300,
+        rating: 1070,
         filmName: 'Tensei shitara Slime Datta Ken',
     },
     {
-        views: 3800,
-        likes: 70,
-        rating: 100,
+        views: 2900,
+        likes: 100,
+        rating: 1000,
         filmName: "An Archdemon's Dilemma: How to Love Your Elf Bride",
     },
     {
-        views: 3500,
-        likes: 30,
-        rating: 96,
+        views: 1500,
+        likes: 300,
+        rating: 906,
         filmName: 'Tsuki ga Michibiku Isekai Douchuu',
     },
 ];
 
 const series = [
-    { dataKey: 'views', label: 'lượt xem' },
-    { dataKey: 'likes', label: 'lượt thích' },
-    { dataKey: 'rating', label: 'lượt đánh giá' },
+    { dataKey: 'views', label: 'lượt xem', stack: 'total' },
+    { dataKey: 'rating', label: 'lượt đánh giá', stack: 'total' },
+    { dataKey: 'likes', label: 'lượt thích', stack: 'total' },
 ];
 
 export default function AdminDashboard() {
@@ -60,6 +60,8 @@ export default function AdminDashboard() {
                 series={series}
                 ykey="filmName"
                 title="Danh sách film được quan tâm"
+                height={350}
+                horizontal
             />
             <TableCard area="table1" />
             <BarCard
@@ -67,7 +69,8 @@ export default function AdminDashboard() {
                 dataset={dataset}
                 series={series}
                 ykey="filmName"
-                title="Danh sách film được quan tâm"
+                title="Danh sách thể loại được quan tâm"
+                height={350}
             />
             <PieCard area="pie" />
             <TableCard area="table2" />
