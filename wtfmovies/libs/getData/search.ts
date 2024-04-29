@@ -53,10 +53,9 @@ interface SearchInterface {
 
 async function getSerachByType(type: string, query: string, limit: number, full = false) {
     const match = full ? {} : {
-        [type]: {
-            $elemMatch: { $regex: query, $options: "i" }
-        }
+        [type]: { $regex: `(?i)${query}` }
     }
+
     return await mongodb()
         .db('film')
         .collection('information')
@@ -110,6 +109,28 @@ async function getSerachByType(type: string, query: string, limit: number, full 
                     },
                 },
                 {
+                    $lookup: {
+                        from: 'director',
+                        let: { directorIds: '$director' }, // Define the local variable genreIds
+                        pipeline: [
+                            { $match: { $expr: { $in: ['$_id', '$$directorIds'] } } }, // Match the genre ids
+                            { $project: { _id: 0, name: 1 } }, // Get name only
+                        ],
+                        as: 'directorDetails',
+                    },
+                },
+                {
+                    $lookup: {
+                        from: 'actor',
+                        let: { actorIds: '$actor' }, // Define the local variable genreIds
+                        pipeline: [
+                            { $match: { $expr: { $in: ['$_id', '$$actorIds'] } } }, // Match the genre ids
+                            { $project: { _id: 0, name: 1 } }, // Get name only
+                        ],
+                        as: 'actorDetails',
+                    },
+                },
+                {
                     $project: {
                         _id: 0,
                         poster: 1,
@@ -122,6 +143,8 @@ async function getSerachByType(type: string, query: string, limit: number, full 
                         author: '$authorDetails.name',
                         tag: '$tagDetails.name',
                         genre: '$genreDetails.name',
+                        director: '$directorDetails.name',
+                        actor: '$actorDetails.name',
                         episodes: { $arrayElemAt: [{ $arrayElemAt: ['$videoType.episode', 0] }, -1] },
                         rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                     },
@@ -138,18 +161,15 @@ async function getSerachByType(type: string, query: string, limit: number, full 
 
 export const getSearch = async ({ query, type }: { query: string, type: string }): Promise<SearchInterface[] | undefined> => {
     try {
-        switch (type) {
-            case 'genre':
-                return await getSerachByType(type, query, 30);
+        const searchable = ['director', 'genre', 'author', 'actor', 'name']
+        if (searchable.includes(type))
+            return await getSerachByType(type, query, 30);
+        else
+            return await getSerachByType(type, query, 30, true);
 
 
 
-            default:
-                return await getSerachByType(type, query, 30, true);
 
-
-
-        }
     } catch (err) {
         console.log('😨😨😨 error at search/getSearch function: ', err);
     }

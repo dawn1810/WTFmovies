@@ -1,19 +1,20 @@
 'use client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 // Đảm bảo rằng hành động này được xác định trong các hành động Redux của bạn
-import { useSelector, useDispatch } from 'react-redux';
 import styles from './Search.module.scss';
+import { useRouter } from 'next/navigation';
 
 const cx = classNames.bind(styles);
 
 function Search() {
-    const dispatch = useDispatch();
+    const router = useRouter();
 
     const interactiveRef = useRef(null);
     const btnContainerRef = useRef(null);
+    const [searchValue, setSearchValue] = useState('');
     useEffect(() => {
         const interBubble: any = interactiveRef.current;
         const btnContainer: any = btnContainerRef.current;
@@ -55,21 +56,24 @@ function Search() {
         };
     }, []);
 
-    // const handleSearchQueryChange = (event: any) => {
-    //     dispatch(changeSearchQuery(event.target.value)); // Cập nhật trạng thái search trong redux
-    // };
+    const handleSearchQueryChange = (event: any) => {
+        setSearchValue(event.target.value); // Cập nhật trạng thái search trong redux
+    };
+
+    const handleSearch = (event: any) => {
+        router.push(`/search?query=${searchValue}&type=name`)
+    };
 
     return (
         <div className={cx('wrapper')}>
             <input
-                // value={searchQuery}
                 className={cx('search-input')}
                 type="text"
                 placeholder="Tìm kiếm"
-                // onChange={(e) => handleSearchQueryChange(e)}
+                onChange={handleSearchQueryChange}
             />
-            <div className={cx('search-btn-w-bg')} ref={btnContainerRef}>
-                <button className={cx('search-btn')}>
+            <div className={cx('search-btn-w-bg')} ref={btnContainerRef} >
+                <button className={cx('search-btn')} onClick={handleSearch}>
                     <FontAwesomeIcon icon={faSearch} />
                 </button>
                 <div className={cx('gradient-bg')}>
