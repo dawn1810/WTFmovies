@@ -39,7 +39,7 @@ export const getGenres = async (): Promise<{ name: string; to: string; special?:
 };
 
 
-export const getSearch = async ({ query, type }: { query: string, type: string }): Promise<{ img: string; name: string; views: number, rating: number, episodes: number, searchName: string }[] | undefined> => {
+export const getSearch = async ({ query, type }: { query: string, type: string }): Promise<{ poster: string; name: string; views: number, rating: number, episodes: number, searchName: string, releaseYear: string }[] | undefined> => {
     try {
         switch (type) {
             case 'genre':
@@ -78,6 +78,7 @@ export const getSearch = async ({ query, type }: { query: string, type: string }
                                     _id: 0,
                                     poster: 1,
                                     name: 1,
+                                    releaseYear: 1,
                                     views: 1,
                                     searchName: 1,
                                     genreInfo: '$genreDetails.searchName',

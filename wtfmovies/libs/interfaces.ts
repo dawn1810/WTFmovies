@@ -164,9 +164,13 @@ export interface FilmCardInterface {
     searchName: string;
     views: number;
     rating: number;
+    releaseYear?: Date; // Thêm trường releaseYear vào giao diện FilmCardInterface
     episodes: number;
     className?: string | [] | undefined;
 }
+
+
+
 
 export interface TabInterface {
     title: string;

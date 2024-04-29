@@ -27,6 +27,7 @@ function FilmCard({
     imgSrc,
     filmName,
     searchName,
+    releaseYear,
     views,
     rating,
     episodes,
@@ -66,10 +67,10 @@ function FilmCard({
                             <FontAwesomeIcon icon={faEye} /> {views}
                         </h5>
                         <h5>
-                            <FontAwesomeIcon icon={faCloudArrowUp} /> {'10/25'}
+                            <FontAwesomeIcon icon={faCloudArrowUp} /> {'haha'}
                         </h5>
                         <h5>
-                            <FontAwesomeIcon icon={faCalendar} /> {'2021'}
+                            <FontAwesomeIcon icon={faCalendar} /> {releaseYear?.getFullYear()}
                         </h5>
                         {largeNoOverlay && (
                             <>

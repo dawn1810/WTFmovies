@@ -46,6 +46,7 @@ async function search({
                             imgSrc={item.poster}
                             filmName={item.name}
                             views={item.views}
+                            releaseYear={new Date(item.releaseYear)}
                             rating={item.rating}
                             episodes={item.episodes}
                             className={cx('large-film-card')}
