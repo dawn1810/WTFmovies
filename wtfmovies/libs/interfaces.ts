@@ -163,8 +163,12 @@ export interface FilmCardInterface {
     filmName: string;
     searchName: string;
     views: number;
+    maxEp?: number;
     rating: number;
-    releaseYear?: Date; // Thêm trường releaseYear vào giao diện FilmCardInterface
+    releaseYear?: Date;
+    genre?: string[];
+    tag?: string[];
+    author?: string[];
     episodes: number;
     className?: string | [] | undefined;
 }
@@ -185,6 +189,7 @@ export interface FilmInfoInterface {
     status?: string;
     author: string[];
     genre: string[];
+    maxEp: number;
     director?: string[];
     duration?: number;
     videoType: EpisodeType[];
@@ -205,7 +210,7 @@ export interface FilmReviewInfoInterface {
     rating: number;
     episodes: number;
     describe: string;
-    info: { title: string; info?: string[] | string | number[] | number; type?: string }[];
+    info: { title: string; info?: string[] | string | number[] | number; type?: string, category?: string }[];
 }
 
 export interface CommentInterface {

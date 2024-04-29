@@ -28,8 +28,12 @@ function FilmCard({
     filmName,
     searchName,
     releaseYear,
+    maxEp,
     views,
     rating,
+    genre,
+    tag,
+    author,
     episodes,
     className,
 }: FilmCardInterface) {
@@ -67,7 +71,7 @@ function FilmCard({
                             <FontAwesomeIcon icon={faEye} /> {views}
                         </h5>
                         <h5>
-                            <FontAwesomeIcon icon={faCloudArrowUp} /> {'haha'}
+                            <FontAwesomeIcon icon={faCloudArrowUp} /> {`${episodes} / ${maxEp === -1 ? '?' : maxEp}`}
                         </h5>
                         <h5>
                             <FontAwesomeIcon icon={faCalendar} /> {releaseYear?.getFullYear()}
@@ -75,13 +79,13 @@ function FilmCard({
                         {largeNoOverlay && (
                             <>
                                 <h5>
-                                    <FontAwesomeIcon icon={faFeather} /> {'Gege Akutami'}
+                                    <FontAwesomeIcon icon={faFeather} /> {author?.length && author.length > 0 ? author?.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                                 <h5>
-                                    <FontAwesomeIcon icon={faCat} /> {'Shonen manga, Dark fantasy'}
+                                    <FontAwesomeIcon icon={faCat} /> {genre?.length && genre?.length > 0 ? genre?.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                                 <h5>
-                                    <FontAwesomeIcon icon={faUnlock} /> {'R-16 (Restricted-16)'}
+                                    <FontAwesomeIcon icon={faUnlock} /> {tag?.length && tag.length > 0 ? tag.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                             </>
                         )}

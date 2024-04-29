@@ -55,6 +55,17 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                     },
                     {
                         $lookup: {
+                            from: 'tag',
+                            let: { tagIds: '$tag' }, // Define the local variable genreIds
+                            pipeline: [
+                                { $match: { $expr: { $in: ['$_id', '$$tagIds'] } } }, // Match the genre ids
+                                { $project: { _id: 0, name: 1 } }, // Get name only
+                            ],
+                            as: 'tagDetails',
+                        },
+                    },
+                    {
+                        $lookup: {
                             from: 'episode',
                             localField: 'film_id',
                             foreignField: 'film_id',
@@ -72,11 +83,12 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                             director: '$directorDetails.name',
                             videoType: 1,
                             views: 1,
+                            maxEp: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                             img: 1,
                             status: 1,
                             duration: 1,
-                            tag: 1,
+                            tag: '$tagDetails.name',
                             releaseYear: 1,
                             country: 1,
                             actor: '$actorDetails.name',
@@ -95,6 +107,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
             describe: '',
             author: [],
             genre: [],
+            maxEp: -1,
             videoType: [],
             views: 0,
             rating: 0,

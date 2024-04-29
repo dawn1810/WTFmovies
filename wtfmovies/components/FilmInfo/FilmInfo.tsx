@@ -6,6 +6,7 @@ import {
     faCat,
     faClapperboard,
     faClock,
+    faCloudArrowUp,
     faEarthAsia,
     faFeather,
     faLanguage,
@@ -34,6 +35,7 @@ const icons = [
     <FontAwesomeIcon icon={faCat} />,
     <FontAwesomeIcon icon={faPersonChalkboard} />,
     <FontAwesomeIcon icon={faClock} />,
+    <FontAwesomeIcon icon={faCloudArrowUp} />,
     <FontAwesomeIcon icon={faLanguage} />,
     <FontAwesomeIcon icon={faUnlock} />,
     <FontAwesomeIcon icon={faCalendarDays} />,
@@ -56,21 +58,24 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
         describe: filmInfo.describe,
         info: [
             { title: 'Trạng thái', info: filmInfo.status, type: 'highLight' },
-            { title: 'Tác giả', info: filmInfo.author, type: 'searchAble' },
-            { title: 'Thể loại', info: filmInfo.genre, type: 'searchAble' },
+            { title: 'Tác giả', info: filmInfo.author, type: 'searchAble', category: 'author' },
+            { title: 'Thể loại', info: filmInfo.genre, type: 'searchAble', category: 'genre' },
             {
                 title: 'Đạo diễn',
                 info: filmInfo.director,
-                type: 'searchAble',
+                type: 'searchAble', category: 'director'
             },
             { title: 'Thời lượng', info: filmInfo.duration ? filmInfo.duration / 60 + ' phút' : 'Unknown' },
-            { title: 'Nhãn', info: 'R-16 (Restricted-16)', type: 'highLight' },
+            { title: 'Số tập', info: `${lastThreeEpisodes[lastThreeEpisodes.length - 1]}/${filmInfo.maxEp}` },
+
+            { title: 'Nhãn', info: filmInfo.tag, type: 'highLight' },
             { title: 'Năm sản xuất', info: releaseYear?.getFullYear() },
             { title: 'Quốc gia sản xuất', info: filmInfo.country },
             {
                 title: 'Diễn viên',
                 info: filmInfo.actor,
                 type: 'searchAble',
+                category: 'actor'
             },
 
             {
@@ -116,19 +121,19 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                                 {info.type === 'searchAble' && typeof info.info === 'object' ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>{' '}
-                                        {info.info.slice(0, -1).map((info, index) => (
+                                        {info.info.slice(0, -1).map((infoitem, index) => (
                                             <Fragment key={index}>
                                                 <Link
-                                                    href={'/result?search_query=' + info}
+                                                    href={'/search?query=' + infoitem + '&type=' + info.category}
                                                     className={cx('search-able')}
                                                 >
-                                                    {info + ','}
+                                                    {infoitem + ','}
                                                 </Link>{' '}
                                             </Fragment>
                                         ))}
                                         <Link
                                             key={index}
-                                            href={'/result?search_query=' + info.info.slice(-1)}
+                                            href={'/search?query=' + info.info.slice(-1) + '&type=' + info.category}
                                             className={cx('search-able')}
                                         >
                                             {info.info.slice(-1)}

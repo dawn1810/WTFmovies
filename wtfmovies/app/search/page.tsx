@@ -7,9 +7,7 @@ import classNames from 'classnames/bind';
 import Title from '~/components/FilmClassify/Title';
 import style from './search.module.scss';
 import FilmCard from '~/components/FilmCard';
-import { useSearchParams } from 'next/navigation';
 import { getSearch } from '~/libs/getData/search';
-import test from 'node:test';
 
 const cx = classNames.bind(style);
 
@@ -20,6 +18,7 @@ async function search({
     searchParams: { query: string, type: string };
 }) {
     const data = await getSearch(searchParams);
+    console.log(data);
 
     return (
         // <DefaultLayout>
@@ -38,6 +37,7 @@ async function search({
                     title="Phim tìm kiếm"
                     icon={<FontAwesomeIcon icon={faMagnifyingGlass} className={cx('search-films-title')} />}
                 />
+
                 <div className={cx('films-list')}>
                     {data?.map((item, index) => (
                         <FilmCard
@@ -46,6 +46,10 @@ async function search({
                             imgSrc={item.poster}
                             filmName={item.name}
                             views={item.views}
+                            author={item.author}
+                            genre={item.genre}
+                            tag={item.tag}
+                            maxEp={item.maxEp}
                             releaseYear={new Date(item.releaseYear)}
                             rating={item.rating}
                             episodes={item.episodes}
