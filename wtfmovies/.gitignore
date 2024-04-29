@@ -38,12 +38,3 @@ next-env.d.ts
 # wrangler files
 .wrangler
 .dev.vars
-
-# Exclude workbox.js files in the public directory
-**/public/workbox-*.js
-
-# Exclude sw.js file in the public directory
-**/public/sw.js
-
-# Exclude worker.js files in the public directory
-**/public/worker-*.js
