@@ -38,3 +38,8 @@ next-env.d.ts
 # wrangler files
 .wrangler
 .dev.vars
+
+
+public/workbox-*.js
+public/sw.js
+public/worker-*.js
