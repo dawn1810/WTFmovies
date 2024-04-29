@@ -40,6 +40,6 @@ next-env.d.ts
 .dev.vars
 
 
-public/workbox-*.js
-public/sw.js
-public/worker-*.js
+**/public/workbox-*.js
+**/public/sw.js
+**/public/worker-*.js
