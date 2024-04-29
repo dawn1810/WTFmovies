@@ -1,4 +1,4 @@
-.card {
+.card-area {
     padding: 18px;
     border-bottom: 3px solid var(--highlight-color);
 
@@ -20,4 +20,8 @@
             color: var(--highlight-color);
         }
     }
+}
+
+.card-green {
+    border-bottom: solid var(--green-highlight-color);
 }
