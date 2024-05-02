@@ -5,7 +5,7 @@ import StarIcon from '@mui/icons-material/Star';
 import { episodeSelector } from '~/redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import { changeEpisode } from '~/app/watch/[movieName]/[numEp]/watchSlice';
+import { changeEpisode } from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
 
 export default function RatingMui() {
     const dispatch = useDispatch();

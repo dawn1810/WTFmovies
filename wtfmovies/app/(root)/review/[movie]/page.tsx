@@ -8,7 +8,7 @@ import style from './Review.module.scss';
 // import DefaultLayout from '~/layouts/DefaultLayout';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
 import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
-import NotFound from '~/app/not-found';
+import NotFound from '~/app/(root)/not-found';
 
 const cx = classNames.bind(style);
 

@@ -6,19 +6,20 @@ import Link from 'next/link';
 import config from '~/config';
 import MenuSidebar from '~/components/MenusSidebar';
 import images from '~/assets/image';
+import { useParams } from 'next/navigation';
+
 const cx = classNames.bind(styles);
 
 function Leftbar({
     menuItems,
-    scene,
 }: {
     menuItems: {
         title: string;
         icon: IconDefinition;
         scene: string;
     }[];
-    scene: string;
 }) {
+    const params = useParams<{ page: string }>();
     return (
         <aside className={cx('wrapper')}>
             <div className={cx('sidebar')}>
@@ -28,7 +29,7 @@ function Leftbar({
                     </Link>
                 </div>
                 <div>
-                    <MenuSidebar menuItems={menuItems} scene={scene}></MenuSidebar>
+                    {/* <MenuSidebar menuItems={menuItems} scene={params.page[0]}></MenuSidebar> $ lỗi chổ này nè */}
                 </div>
             </div>
         </aside>

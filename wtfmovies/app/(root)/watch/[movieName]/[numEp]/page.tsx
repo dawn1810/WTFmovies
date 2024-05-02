@@ -10,7 +10,7 @@ import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
 
 import type { Metadata, ResolvingMetadata } from 'next';
-import NotFound from '~/app/not-found';
+import NotFound from '~/app/(root)/not-found';
 const cache = new Map();
 
 async function getFilmInfoWithCache(movieName: string, epId: string) {

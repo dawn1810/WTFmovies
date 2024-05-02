@@ -107,7 +107,7 @@ function Header({
     currentUser?: ExtendedUser;
     isDatabase?: boolean;
     title?: string;
-    genres: { name: string; to: string; special?: boolean }[] | any;
+    genres?: { name: string; to: string; special?: boolean }[] | any;
 }) {
     //router
     const router = useRouter();

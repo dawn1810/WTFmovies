@@ -1,8 +1,8 @@
-import './globals.scss';
+import '../globals.scss';
 export const runtime = 'edge';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata, Viewport } from 'next';
-import { montserrat } from './font';
+import { montserrat } from '../font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
