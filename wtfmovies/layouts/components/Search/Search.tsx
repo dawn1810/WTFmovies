@@ -11,6 +11,11 @@ const cx = classNames.bind(styles);
 
 function Search() {
     const router = useRouter();
+    const handleKeyDown = (event: any) => {
+        if (event.keyCode === 13) {
+            handleSearch(event);
+        }
+    };
 
     const interactiveRef = useRef(null);
     const btnContainerRef = useRef(null);
@@ -71,6 +76,8 @@ function Search() {
                 type="text"
                 placeholder="Tìm kiếm"
                 onChange={handleSearchQueryChange}
+                onKeyDown={handleKeyDown}
+
             />
             <div className={cx('search-btn-w-bg')} ref={btnContainerRef} >
                 <button className={cx('search-btn')} onClick={handleSearch}>

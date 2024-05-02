@@ -24,6 +24,11 @@
         gap: 28px;
         padding: var(--default-layout-horizontal-spacer);
 
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+        }
+
         .films-list {
             display: grid;
             grid-template-columns: auto auto auto;

@@ -1,6 +1,6 @@
 // import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFire, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faFire, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
 // import { DefaultLayout } from '~/layouts';
@@ -8,6 +8,7 @@ import Title from '~/components/FilmClassify/Title';
 import style from './search.module.scss';
 import FilmCard from '~/components/FilmCard';
 import { getSearch } from '~/libs/getData/search';
+import Button from '~/components/Button';
 
 const cx = classNames.bind(style);
 
@@ -18,7 +19,7 @@ async function search({
     searchParams: { query: string, type: string };
 }) {
     const data = await getSearch(searchParams);
-    console.log(data);
+    // console.log(data);
 
     return (
         // <DefaultLayout>
@@ -33,10 +34,14 @@ async function search({
                     <Typography className={cx('curr-page')}>Phim mới nhất</Typography>
                 </Breadcrumbs> */}
             <div className={cx('search-films')}>
-                <Title
-                    title="Phim tìm kiếm"
-                    icon={<FontAwesomeIcon icon={faMagnifyingGlass} className={cx('search-films-title')} />}
-                />
+                <div className={cx('top-bar')}>
+                    <Title
+                        title="Phim tìm kiếm"
+                        icon={<FontAwesomeIcon icon={faMagnifyingGlass} className={cx('search-films-title')} />}
+                    />
+                    <Button primary rightIcon={<FontAwesomeIcon icon={faFilter} />}>Bộ lọc</Button>
+
+                </div>
 
                 <div className={cx('films-list')}>
                     {data?.map((item, index) => (
