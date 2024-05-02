@@ -25,3 +25,18 @@
 .card-green {
     border-bottom: solid var(--green-highlight-color);
 }
+
+
+.dialog {
+    .dialog-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .filter {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+}

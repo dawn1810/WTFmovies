@@ -8,14 +8,17 @@ import MenuSidebar from '~/components/MenusSidebar';
 import images from '~/assets/image';
 const cx = classNames.bind(styles);
 
-function Leftbar({ menuItems, scene }: {
+function Leftbar({
+    menuItems,
+    scene,
+}: {
     menuItems: {
         title: string;
-        icon: IconDefinition,
-        scene: string,
-    }[], scene: string
+        icon: IconDefinition;
+        scene: string;
+    }[];
+    scene: string;
 }) {
-
     return (
         <aside className={cx('wrapper')}>
             <div className={cx('sidebar')}>
@@ -27,8 +30,6 @@ function Leftbar({ menuItems, scene }: {
                 <div>
                     <MenuSidebar menuItems={menuItems} scene={scene}></MenuSidebar>
                 </div>
-
-
             </div>
         </aside>
     );

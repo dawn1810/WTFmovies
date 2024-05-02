@@ -1,8 +1,36 @@
-.card-area {
+.card {
     padding: 18px;
     height: 100%;
 
-    .card-title {
-        opacity: 0.5;
+
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        .card-title {
+            opacity: 0.5;
+        }
+    }
+}
+
+.dialog {
+
+    .dialog-title {
+        min-width: 400px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .filter {
+        display: flex;
+        flex-direction: column;
+        justify-items: center;
+        margin-bottom: 18px;
+
+        .radio {
+            margin-left: 18px;
+        }
     }
 }

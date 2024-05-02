@@ -64,8 +64,6 @@ export const viewport: Viewport = {
 //     icons: '/images/icons/favicon.svg',
 // };
 
-
-
 export default async function RootLayout({
     children,
 }: Readonly<{
