@@ -29,7 +29,7 @@ function Leftbar({
                     </Link>
                 </div>
                 <div>
-                    {/* <MenuSidebar menuItems={menuItems} scene={params.page[0]}></MenuSidebar> $ lỗi chổ này nè */}
+                    <MenuSidebar menuItems={menuItems} scene={params.page[0]}></MenuSidebar>
                 </div>
             </div>
         </aside>
