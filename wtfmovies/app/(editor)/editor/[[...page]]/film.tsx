@@ -1,10 +1,6 @@
 'use client';
-import classNames from 'classnames/bind';
-import style from './Editor.module.scss';
 import DataGridCom from '~/components/DataGridCom';
 import { data } from './mockdata';
-
-const cx = classNames.bind(style);
 
 const colum = [
     { title: 'Film ID', field: 'id', width: 280 },

@@ -1,7 +1,6 @@
 'use client';
 import styles from './Leftbar.module.scss';
 import classNames from 'classnames/bind';
-import { IconDefinition } from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import config from '~/config';
 import MenuSidebar from '~/components/MenusSidebar';
@@ -15,7 +14,7 @@ function Leftbar({
 }: {
     menuItems: {
         title: string;
-        icon: IconDefinition;
+        icon: any;
         scene: string;
     }[];
 }) {
@@ -29,7 +28,7 @@ function Leftbar({
                     </Link>
                 </div>
                 <div>
-                    <MenuSidebar menuItems={menuItems} scene={params.page[0]}></MenuSidebar>
+                    <MenuSidebar menuItems={menuItems} scene={params?.page[0]}></MenuSidebar>
                 </div>
             </div>
         </aside>
