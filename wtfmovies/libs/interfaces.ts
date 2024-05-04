@@ -173,9 +173,6 @@ export interface FilmCardInterface {
     className?: string | [] | undefined;
 }
 
-
-
-
 export interface TabInterface {
     title: string;
     eventKey: string;
@@ -210,7 +207,7 @@ export interface FilmReviewInfoInterface {
     rating: number;
     episodes: number;
     describe: string;
-    info: { title: string; info?: string[] | string | number[] | number; type?: string, category?: string }[];
+    info: { title: string; info?: string[] | string | number[] | number; type?: string; category?: string }[];
 }
 
 export interface CommentInterface {
@@ -283,9 +280,24 @@ interface ResponseTiktokData {
     url: string;
     uri: string;
 }
+
 export interface ResponseTiktokOK {
     msg: string;
     code: number;
     data: ResponseTiktokData | any;
     extra: object;
+}
+
+// admin page interface //////////////////////////////////////////////////////////////////////////////////
+export interface LineChartDataInterface {
+    [index: string]: string | number;
+    time: string;
+    data: number;
+}
+
+export interface NumStatisticalInterface {
+    time: string;
+    views: number;
+    users: number;
+    films: number;
 }

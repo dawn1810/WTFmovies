@@ -3,7 +3,6 @@ import { PieChart } from '@mui/x-charts/PieChart';
 import {
     Button,
     Card,
-    CardActionArea,
     Dialog,
     DialogActions,
     DialogContent,

@@ -6,6 +6,8 @@ import NumCard from './NumCard';
 import BarCard from './BarCard';
 import TableCard from './TableCard';
 import PieCard from './PieCard';
+import { getNumberStatistical } from '~/libs/getData/admin';
+import { LineChartDataInterface, NumStatisticalInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -48,12 +50,128 @@ const series = [
     { dataKey: 'likes', label: 'lượt thích', stack: 'total' },
 ];
 
-export default function AdminDashboard() {
+function convertNumberToMonth(number: number) {
+    const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+
+    if (number < 1 || number > 12) {
+        return 'Invalid month number';
+    }
+
+    return months[number];
+}
+
+function getDataCurrentYear(data: NumStatisticalInterface[]): {
+    view: LineChartDataInterface[];
+    user: LineChartDataInterface[];
+    film: LineChartDataInterface[];
+} {
+    // views statistic map
+    const current_year = new Date().getFullYear();
+
+    const yearDataset = data
+        .filter((data) => {
+            const dataTime = new Date(data.time);
+            return dataTime.getFullYear() === current_year;
+        })
+        .map((data) => {
+            const dataTime = new Date(data.time);
+            return {
+                month: convertNumberToMonth(dataTime.getMonth()),
+                view: data.views,
+                user: data.users,
+                film: data.films,
+            };
+        });
+
+    return {
+        view: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.view,
+        })),
+        user: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.user,
+        })),
+        film: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.film,
+        })),
+    };
+}
+
+function getDataByYear(data: NumStatisticalInterface[]): {
+    view: LineChartDataInterface[];
+    user: LineChartDataInterface[];
+    film: LineChartDataInterface[];
+} {
+    const viewsByYear: any = {};
+    const usersByYear: any = {};
+    const filmsByYear: any = {};
+
+    data.forEach((item) => {
+        const year = new Date(item.time).getFullYear().toString();
+
+        if (!viewsByYear[year] || !usersByYear[year] || !filmsByYear[year]) {
+            viewsByYear[year] = { time: year, data: 0 };
+            usersByYear[year] = { time: year, data: 0 };
+            filmsByYear[year] = { time: year, data: 0 };
+        }
+
+        viewsByYear[year].data += item.views;
+        usersByYear[year].data += item.users;
+        filmsByYear[year].data += item.films;
+    });
+
+    return { view: Object.values(viewsByYear), user: Object.values(usersByYear), film: Object.values(filmsByYear) };
+}
+
+export default function AdminDashboard({ numStatistical }: { numStatistical: NumStatisticalInterface[] }) {
+    const yearDataset = getDataCurrentYear(numStatistical);
+    console.log(yearDataset);
+
+    const allTimeDataset = getDataByYear(numStatistical);
+
     return (
         <div className={cx('wrapper')}>
-            <NumCard title="Lượt xem" number={300000} change={18} area="num1" up />
-            <NumCard title="Người dùng" number={100000} change={18} area="num2" />
-            <NumCard title="Phim đăng tải" number={10} change={18} area="num3" up />
+            <NumCard
+                title="Lượt xem"
+                number={300000}
+                change={18}
+                area="num1"
+                yearDataset={yearDataset.view}
+                allDataset={allTimeDataset.view}
+                up
+            />
+            <NumCard
+                title="Người dùng"
+                number={100000}
+                change={18}
+                area="num2"
+                yearDataset={yearDataset.user}
+                allDataset={allTimeDataset.user}
+            />
+            <NumCard
+                title="Phim đăng tải"
+                number={10}
+                change={18}
+                area="num3"
+                yearDataset={yearDataset.film}
+                allDataset={allTimeDataset.film}
+                up
+            />
             <BarCard
                 area="bar1"
                 dataset={dataset}

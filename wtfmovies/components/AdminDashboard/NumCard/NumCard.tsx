@@ -1,52 +1,24 @@
 import classNames from 'classnames/bind';
 import { Close, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import {
-    Button,
     Card,
     CardActionArea,
     Dialog,
-    DialogActions,
     DialogContent,
     DialogContentText,
     DialogTitle,
     FormControlLabel,
     IconButton,
-    MenuItem,
     Radio,
     RadioGroup,
-    Select,
 } from '@mui/material';
 import { LineChart } from '@mui/x-charts/LineChart';
 
 import style from './NumCard.module.scss';
 import { useState } from 'react';
+import { LineChartDataInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
-
-const yearDataset = [
-    { time: 'January', views: 34567 },
-    { time: 'February', views: 12345 },
-    { time: 'March', views: 78901 },
-    { time: 'April', views: 54321 },
-    { time: 'May', views: 23456 },
-    { time: 'June', views: 67890 },
-    { time: 'July', views: 12345 },
-    { time: 'August', views: 78901 },
-    { time: 'September', views: 54321 },
-    { time: 'October', views: 23456 },
-    { time: 'November', views: 67890 },
-    { time: 'December', views: 12345 },
-];
-
-const allDataset = [
-    { time: '2018', views: 614898 },
-    { time: '2019', views: 183957 },
-    { time: '2020', views: 637025 },
-    { time: '2021', views: 323604 },
-    { time: '2022', views: 661253 },
-    { time: '2023', views: 875092 },
-    { time: '2024', views: 647318 },
-];
 
 function formatLargeNumber(num: number) {
     if (typeof num !== 'number' || isNaN(num)) {
@@ -69,12 +41,16 @@ export default function NumCard({
     number,
     change,
     area,
+    yearDataset,
+    allDataset,
     up = false,
 }: {
     title: string;
     number: number;
     change: number;
     area?: string;
+    yearDataset: LineChartDataInterface[];
+    allDataset: LineChartDataInterface[];
     up?: boolean;
 }) {
     const [open, setOpen] = useState(false);
@@ -148,7 +124,7 @@ export default function NumCard({
                                         context.location === 'tick' ? formatLargeNumber(value) : value,
                                 },
                             ]}
-                            series={[{ dataKey: 'views', label: title, showMark: false, stackOffset: 'none' }]}
+                            series={[{ dataKey: 'data', label: title, showMark: false, stackOffset: 'none' }]}
                             dataset={filter === 'year' ? yearDataset : allDataset}
                             slotProps={{ legend: { hidden: true } }}
                             width={500}

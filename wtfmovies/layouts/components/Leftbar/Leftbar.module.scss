@@ -14,7 +14,8 @@
     display: flex;
     justify-content: flex-start;
 
-    min-height: 100vh;
+    // min-height: 100vh;
+    height: 100%;
     border-radius: 0 0 5px 5px;
     box-shadow: var(--lighten-primary-active-color) 1px 0px 999px;
     background-color: var(--primary);

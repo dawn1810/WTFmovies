@@ -1,3 +1,4 @@
+'use client';
 import FullPageDialog from '~/components/AlertDialog/FullPageDialog';
 
 export default function OverViewPage() {

@@ -5,7 +5,6 @@ import style from './BarCard.module.scss';
 import {
     Button,
     Card,
-    CardActionArea,
     Dialog,
     DialogActions,
     DialogContent,

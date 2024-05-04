@@ -51,7 +51,7 @@ const menuItems = [
         scene: 'report',
     },
     {
-        title: 'Quản lý editor',
+        title: 'Quản lý biên tập viên',
         icon: <BorderColorOutlined />,
         scene: 'editor',
     },
