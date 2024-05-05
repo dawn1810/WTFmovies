@@ -47,6 +47,7 @@ export default function PieCard({ area }: { area: string }) {
     const handleFilterChange = (event: any) => {
         setFilter((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     };
+
     return (
         <>
             <Card style={{ gridArea: area }} className={cx('card')}>
@@ -121,7 +122,7 @@ export default function PieCard({ area }: { area: string }) {
                     </DialogContentText>
                     <DialogActions>
                         <Button onClick={handleClose}>HUỶ</Button>
-                        <Button onClick={handleClose}>LƯU</Button>
+                        <Button onClick={handleClose}>XEM</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>

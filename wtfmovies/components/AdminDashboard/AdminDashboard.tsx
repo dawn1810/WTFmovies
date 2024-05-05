@@ -6,7 +6,6 @@ import NumCard from './NumCard';
 import BarCard from './BarCard';
 import TableCard from './TableCard';
 import PieCard from './PieCard';
-import { getNumberStatistical } from '~/libs/getData/admin';
 import { LineChartDataInterface, NumStatisticalInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
@@ -50,7 +49,13 @@ const series = [
     { dataKey: 'likes', label: 'lượt thích', stack: 'total' },
 ];
 
-function convertNumberToMonth(number: number) {
+interface DatasetInterface {
+    view: LineChartDataInterface[];
+    user: LineChartDataInterface[];
+    film: LineChartDataInterface[];
+}
+
+const convertNumberToMonth = (number: number) => {
     const months = [
         'January',
         'February',
@@ -66,18 +71,14 @@ function convertNumberToMonth(number: number) {
         'December',
     ];
 
-    if (number < 1 || number > 12) {
+    if (number < 0 || number > 11) {
         return 'Invalid month number';
     }
 
     return months[number];
-}
+};
 
-function getDataCurrentYear(data: NumStatisticalInterface[]): {
-    view: LineChartDataInterface[];
-    user: LineChartDataInterface[];
-    film: LineChartDataInterface[];
-} {
+const getDataCurrentYear = (data: NumStatisticalInterface[]): DatasetInterface => {
     // views statistic map
     const current_year = new Date().getFullYear();
 
@@ -110,13 +111,9 @@ function getDataCurrentYear(data: NumStatisticalInterface[]): {
             data: item.film,
         })),
     };
-}
+};
 
-function getDataByYear(data: NumStatisticalInterface[]): {
-    view: LineChartDataInterface[];
-    user: LineChartDataInterface[];
-    film: LineChartDataInterface[];
-} {
+const getDataByYear = (data: NumStatisticalInterface[]): DatasetInterface => {
     const viewsByYear: any = {};
     const usersByYear: any = {};
     const filmsByYear: any = {};
@@ -136,41 +133,57 @@ function getDataByYear(data: NumStatisticalInterface[]): {
     });
 
     return { view: Object.values(viewsByYear), user: Object.values(usersByYear), film: Object.values(filmsByYear) };
-}
+};
+
+const calcViewChange = (dataset: DatasetInterface, typeData: 'view' | 'user' | 'film') => {
+    const currentMonth = dataset[typeData][dataset[typeData].length - 1].data;
+    const previousMonth = dataset[typeData][dataset[typeData].length - 2].data;
+    const prevMonthChange = previousMonth / (currentMonth / 100);
+    const changePersent = Math.round((100 - prevMonthChange) * 10) / 10;
+
+    return {
+        number: currentMonth,
+        change: changePersent < 0 ? -changePersent : changePersent,
+        up: changePersent >= 0,
+    };
+};
 
 export default function AdminDashboard({ numStatistical }: { numStatistical: NumStatisticalInterface[] }) {
     const yearDataset = getDataCurrentYear(numStatistical);
-    console.log(yearDataset);
-
     const allTimeDataset = getDataByYear(numStatistical);
+
+    const views = calcViewChange(yearDataset, 'view');
+    const users = calcViewChange(yearDataset, 'user');
+    const films = calcViewChange(yearDataset, 'film');
 
     return (
         <div className={cx('wrapper')}>
             <NumCard
                 title="Lượt xem"
-                number={300000}
-                change={18}
+                number={views.number}
+                change={views.change}
                 area="num1"
                 yearDataset={yearDataset.view}
                 allDataset={allTimeDataset.view}
-                up
+                up={views.up}
             />
             <NumCard
                 title="Người dùng"
-                number={100000}
-                change={18}
+                number={users.number}
+                change={users.change}
                 area="num2"
                 yearDataset={yearDataset.user}
                 allDataset={allTimeDataset.user}
+                up={users.up}
             />
             <NumCard
                 title="Phim đăng tải"
-                number={10}
-                change={18}
+                number={films.number}
+                change={films.change}
                 area="num3"
                 yearDataset={yearDataset.film}
                 allDataset={allTimeDataset.film}
-                up
+                up={films.up}
             />
             <BarCard
                 area="bar1"

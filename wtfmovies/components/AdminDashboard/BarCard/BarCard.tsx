@@ -136,7 +136,7 @@ export default function BarCard({
                     </DialogContentText>
                     <DialogActions>
                         <Button onClick={handleClose}>HUỶ</Button>
-                        <Button onClick={handleClose}>LƯU</Button>
+                        <Button onClick={handleClose}>XEM</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>

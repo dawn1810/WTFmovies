@@ -3,7 +3,6 @@ import '../globals.scss';
 import React from 'react';
 import Header from '~/layouts/components/Header';
 import Leftbar from '~/layouts/components/Leftbar';
-import { faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
