@@ -17,10 +17,9 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 import { Close, FilterList } from '@mui/icons-material';
+import { FilmHotInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
-
-// const valueFormatter = (value: number | null) => `${value}mm`;
 
 export default function BarCard({
     area,
@@ -32,7 +31,7 @@ export default function BarCard({
     height,
 }: {
     area?: string;
-    dataset: any[];
+    dataset: FilmHotInterface[];
     series: any[];
     ykey: string;
     title: string;
@@ -88,7 +87,17 @@ export default function BarCard({
                         <FilterList />
                     </IconButton>
                 </div>
-                <BarChart dataset={dataset} series={series} className={cx('chart')} height={height} {...chartSetting} />
+                {!!dataset && !!dataset.length ? (
+                    <BarChart
+                        dataset={dataset}
+                        series={series}
+                        className={cx('chart')}
+                        height={height}
+                        {...chartSetting}
+                    />
+                ) : (
+                    <div className={cx('chart')}>Chưa có dữ liệu</div>
+                )}
             </Card>
             <Dialog
                 open={open}

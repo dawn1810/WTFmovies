@@ -6,7 +6,7 @@ import NumCard from './NumCard';
 import BarCard from './BarCard';
 import TableCard from './TableCard';
 import PieCard from './PieCard';
-import { LineChartDataInterface, NumStatisticalInterface } from '~/libs/interfaces';
+import { FilmHotInterface, LineChartDataInterface, NumStatisticalInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -15,31 +15,31 @@ const dataset = [
         views: 4000,
         likes: 150,
         rating: 2000,
-        filmName: 'Inuyashiki',
+        name: 'Inuyashiki',
     },
     {
         views: 3500,
         likes: 100,
         rating: 1006,
-        filmName: 'Boku no Hero Academia',
+        name: 'Boku no Hero Academia',
     },
     {
         views: 3490,
         likes: 300,
         rating: 1070,
-        filmName: 'Tensei shitara Slime Datta Ken',
+        name: 'Tensei shitara Slime Datta Ken',
     },
     {
         views: 2900,
         likes: 100,
         rating: 1000,
-        filmName: "An Archdemon's Dilemma: How to Love Your Elf Bride",
+        name: "An Archdemon's Dilemma: How to Love Your Elf Bride",
     },
     {
         views: 1500,
         likes: 300,
         rating: 906,
-        filmName: 'Tsuki ga Michibiku Isekai Douchuu',
+        name: 'Tsuki ga Michibiku Isekai Douchuu',
     },
 ];
 
@@ -148,7 +148,13 @@ const calcViewChange = (dataset: DatasetInterface, typeData: 'view' | 'user' | '
     };
 };
 
-export default function AdminDashboard({ numStatistical }: { numStatistical: NumStatisticalInterface[] }) {
+export default function AdminDashboard({
+    numStatistical,
+    hotFilmList,
+}: {
+    numStatistical: NumStatisticalInterface[];
+    hotFilmList: FilmHotInterface[];
+}) {
     const yearDataset = getDataCurrentYear(numStatistical);
     const allTimeDataset = getDataByYear(numStatistical);
 
@@ -187,9 +193,9 @@ export default function AdminDashboard({ numStatistical }: { numStatistical: Num
             />
             <BarCard
                 area="bar1"
-                dataset={dataset}
+                dataset={hotFilmList}
                 series={series}
-                ykey="filmName"
+                ykey="name"
                 title="Danh sách phim nỗi bật"
                 height={350}
                 horizontal
@@ -199,7 +205,7 @@ export default function AdminDashboard({ numStatistical }: { numStatistical: Num
                 area="bar2"
                 dataset={dataset}
                 series={series}
-                ykey="filmName"
+                ykey="name"
                 title="Danh sách thể loại nỗi bật"
                 height={350}
             />

@@ -301,3 +301,10 @@ export interface NumStatisticalInterface {
     users: number;
     films: number;
 }
+
+export interface FilmHotInterface {
+    name: string;
+    views: number;
+    likes?: number;
+    rating: number;
+}
