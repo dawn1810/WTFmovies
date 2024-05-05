@@ -3,7 +3,6 @@ import '../globals.scss';
 import React from 'react';
 import Header from '~/layouts/components/Header';
 import Leftbar from '~/layouts/components/Leftbar';
-import { faFilm, faHouse } from '@fortawesome/free-solid-svg-icons';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
@@ -15,8 +14,8 @@ import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
 import { HomeOutlined, MovieOutlined } from '@mui/icons-material';
 
-const APP_NAME = 'Admin';
-const APP_DEFAULT_TITLE = 'Admin';
+const APP_NAME = 'Editer';
+const APP_DEFAULT_TITLE = 'Editer';
 const APP_TITLE_TEMPLATE = '%s - WTFmovies';
 const APP_DESCRIPTION = 'Nơi thoả sức chỉnh sửa đam mê phim ảnh!';
 
@@ -72,9 +71,9 @@ export default async function AdminLayout({
                                     <Col xs={2} id="sidebar-container">
                                         <Leftbar menuItems={menuItems} />
                                     </Col>
-                                    <Col xs={10} id="main-container">
+                                    <Col xs={10} id="main-container" >
                                         <Header isDatabase title="Editer" />
-                                        <section className="main-content">{children}</section>
+                                        <section id="layout-main-content">{children}</section>
                                     </Col>
                                 </Row>
                             </Container>

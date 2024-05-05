@@ -35,7 +35,7 @@ function TabPanel(props: any) {
     );
 }
 
-export default function MyDialogWithTabs() {
+export function MovieForm() {
     const statusMovies = [
         {
             value: 'going',

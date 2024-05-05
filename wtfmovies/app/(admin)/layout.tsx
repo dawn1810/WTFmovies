@@ -78,7 +78,7 @@ export default async function AdminLayout({
                                     </Col>
                                     <Col xs={10} id="main-container">
                                         <Header isDatabase title="Admin" />
-                                        <section className="main-content">{children}</section>
+                                        <section id="layout-main-content">{children}</section>
                                     </Col>
                                 </Row>
                             </Container>

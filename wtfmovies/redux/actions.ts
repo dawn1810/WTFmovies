@@ -59,7 +59,7 @@ export const changeModalShow = (modalShow: boolean) => {
 //
 export const changeAlertStatus = (status: { content: any; status: boolean }) => {
     return {
-        type: 'alertdialog/changeAlertStatus',
+        type: 'MovieForm/changeAlertStatus',
         payload: status,
     };
 };

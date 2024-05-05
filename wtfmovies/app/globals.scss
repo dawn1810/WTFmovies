@@ -162,3 +162,8 @@ body {
         transform: scale(0.9, 1.1);
     }
 }
+
+#layout-main-content {
+    overflow: auto;
+    height: 89vh;
+}

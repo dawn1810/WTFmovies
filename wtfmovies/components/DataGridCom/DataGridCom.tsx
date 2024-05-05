@@ -16,9 +16,9 @@ import {
 } from '@mui/x-data-grid';
 import { Box } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { viVN } from '@mui/x-data-grid/locales';
-import AlertDialog from '~/components/AlertDialog';
+import AlertDialog from '~/components/Dialog';
 import { useSelector } from 'react-redux';
 import { alertStatusSelector } from '~/redux/selectors';
 
@@ -44,6 +44,9 @@ export default function DataGridCom({
         setOpen(true);
     }
 
+    function handleAdd() {
+        setOpen(true);
+    }
     function CustomToolbar() {
         return (
             <div>
@@ -75,6 +78,14 @@ export default function DataGridCom({
                             button: { variant: 'outlined' },
                         }}
                     />
+                    <Button
+                        className={cx('btncustom')}
+                        onClick={handleAdd}
+                        variant="outlined"
+                    >
+                        <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
+                        Thêm
+                    </Button>
                     <Button
                         className={cx('btncustom')}
                         onClick={handleDelete}
