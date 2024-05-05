@@ -34,8 +34,7 @@ function TabPanel(props: any) {
 
     );
 }
-
-export function MovieForm() {
+export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClose: () => any }) {
     const statusMovies = [
         {
             value: 'going',
@@ -76,49 +75,23 @@ export function MovieForm() {
 
 
     ];
-    const [open, setOpen] = useState(false);
+
     const [value, setValue] = useState(0);
     const [valueAuto, setvalueAutof] = React.useState([options[0]]);
-
-
-    //============
-    const [selectedImage, setSelectedImage] = useState<string>('');
-
-    const handleImageChange = (event: any) => {
-        const file = event.target.files[0];
-        setSelectedImage(URL.createObjectURL(file));
-    };
-
-    const handleUploadClick = () => {
-        // Handle upload logic here
-        // You can access the selected image using the 'selectedImage' state
-    };
-    //==============
     const handleChangeAuto = (event: any, newValue: any) => {
         console.log(valueAuto);
         setvalueAutof(newValue);
 
     };
-    const handleClickOpen = () => {
-        setOpen(true);
-    };
-    const handleClose = () => {
-        setOpen(false);
-    };
+
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
     };
 
 
-
-
-
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Open dialog
-            </Button>
-            <Dialog maxWidth={'xl'} open={open} onClose={handleClose}>
+            <Dialog maxWidth={'xl'} open={isOpen} onClose={handleClose}>
                 <AppBar position="static" >
                     <Toolbar >
                         <IconButton

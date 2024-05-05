@@ -1,7 +1,7 @@
 'use client';
 import { createSlice } from '@reduxjs/toolkit';
 
-export const dataGridComSlice = createSlice({
+export const filmManagerSlice = createSlice({
     name: 'dataGridCom',
     initialState: {
         alertStatus: { content: null, status: null }
@@ -13,6 +13,6 @@ export const dataGridComSlice = createSlice({
     },
 });
 
-export const { changeAlertStatus } = dataGridComSlice.actions;
+export const { changeAlertStatus } = filmManagerSlice.actions;
 
-export default dataGridComSlice.reducer;
+export default filmManagerSlice.reducer;

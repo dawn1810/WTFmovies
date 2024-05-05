@@ -190,7 +190,7 @@ export default function AdminDashboard({ numStatistical }: { numStatistical: Num
                 dataset={dataset}
                 series={series}
                 ykey="filmName"
-                title="Danh sách phim nỗi bật"
+                title="Danh sách phim nổi bật"
                 height={350}
                 horizontal
             />
@@ -200,7 +200,7 @@ export default function AdminDashboard({ numStatistical }: { numStatistical: Num
                 dataset={dataset}
                 series={series}
                 ykey="filmName"
-                title="Danh sách thể loại nỗi bật"
+                title="Danh sách thể loại nổi bật"
                 height={350}
             />
             <PieCard area="pie" />
