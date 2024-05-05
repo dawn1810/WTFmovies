@@ -1,6 +1,8 @@
-'use client';
-import { MovieForm } from '~/components/Dialog';
+import AdminDashboard from "~/components/AdminDashboard";
+import { getNumberStatistical } from "~/libs/getData/admin";
+export default async function OverView() {
 
-export default function OverViewPage() {
-    return <MovieForm></MovieForm>;
+    const numStatistical = await getNumberStatistical();
+
+    return <AdminDashboard numStatistical={numStatistical} />;
 }

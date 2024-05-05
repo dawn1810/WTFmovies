@@ -1,5 +1,5 @@
 'use client';
-import DataGridCom from '~/components/DataGridCom';
+import DataGridCom from '~/components/FilmManager';
 import { data } from './mockdata';
 
 const colum = [

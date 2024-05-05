@@ -8,7 +8,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
-import { changeAlertStatus } from '../DataGridCom/dataGridComSlice';
+import { changeAlertStatus } from '../FilmManager/filmManagerSlice';
 const cx = classNames.bind(style);
 
 

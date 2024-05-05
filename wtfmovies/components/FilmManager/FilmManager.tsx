@@ -1,5 +1,5 @@
 'use client';
-import style from './DataGridCom.module.scss';
+import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
@@ -22,6 +22,11 @@ import AlertDialog from '~/components/Dialog';
 import { useSelector } from 'react-redux';
 import { alertStatusSelector } from '~/redux/selectors';
 
+import { MovieForm } from '~/components/Dialog';
+
+
+
+
 const cx = classNames.bind(style);
 export default function DataGridCom({
     colum,
@@ -34,9 +39,10 @@ export default function DataGridCom({
 }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [open, setOpen] = useState(false);
+    const [openForm, setOpenForm] = useState(false);
 
     function handleEdit() {
-        console.log(rowSelectionModel);
+        setOpenForm(true);
     }
     const status = useSelector(alertStatusSelector);
 
@@ -45,11 +51,15 @@ export default function DataGridCom({
     }
 
     function handleAdd() {
-        setOpen(true);
+        setOpenForm(true);
+    }
+    function handleCloseForm() {
+        setOpenForm(false);
     }
     function CustomToolbar() {
         return (
             <div>
+                <MovieForm isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
                 <AlertDialog
                     listId={rowSelectionModel}
                     handleClose={() => {
