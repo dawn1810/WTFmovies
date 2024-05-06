@@ -1,11 +1,8 @@
 'use client';
 import { useState } from 'react';
 import classNames from 'classnames/bind';
-import { Box, Button } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { viVN } from '@mui/x-data-grid/locales';
-import AlertDialog from '~/components/Dialog';
 import { useSelector } from 'react-redux';
 import {
     DataGrid,
@@ -17,8 +14,9 @@ import {
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridColDef,
+    useGridApiContext,
 } from '@mui/x-data-grid';
-import { Add, Block } from '@mui/icons-material';
+import { Add, Block, LockOpen } from '@mui/icons-material';
 
 import style from './Table.module.scss';
 import { alertStatusSelector } from '~/redux/selectors';
@@ -30,80 +28,108 @@ export default function DataGridCom({
     dataset,
     title_name,
 }: {
-    column: readonly GridColDef<{ any: any }>[];
+    column: any[];
     dataset: any;
     title_name: string;
 }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
-    const [open, setOpen] = useState(false);
-    const [openForm, setOpenForm] = useState(false);
 
-    function handleEdit() {
-        setOpenForm(true);
-    }
     const status = useSelector(alertStatusSelector);
 
-    function handleDelete() {
-        setOpen(true);
-    }
+    const CustomToolbar = () => {
+        const apiRef = useGridApiContext();
 
-    function handleAdd() {
-        setOpenForm(true);
-    }
-    function handleCloseForm() {
-        setOpenForm(false);
-    }
+        const [open, setOpen] = useState(false);
+        const [dialogType, setDialogType] = useState(true);
 
-    function CustomToolbar() {
+        const handleOpenBan = () => {
+            setOpen(true);
+            setDialogType(true);
+        };
+
+        const handleOpenUnban = () => {
+            setOpen(true);
+            setDialogType(false);
+        };
+
+        const handleClose = () => {
+            setOpen(false);
+        };
+
+        const handleBan = () => {
+            apiRef.current.setEditCellValue({
+                id: 'binhminh0181@mail.com',
+                field: 'role',
+                value: false,
+                debounceMs: 200,
+            });
+            // rowSelectionModel.forEach(async (id: string) => {});
+            setOpen(false);
+        };
+
+        const handleUnban = () => {
+            rowSelectionModel.forEach((id: string) => {
+                console.log(id);
+            });
+        };
+
         return (
             <div>
-                <MovieForm isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
-                <AlertDialog
-                    listId={rowSelectionModel}
-                    handleClose={() => {
-                        setOpen(false);
-                    }}
-                    title={'Thông báo'}
+                <Dialog
                     open={open}
+                    onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
                 >
-                    Bạn có chắc chắc muốn xoá:
-                    <ul>
-                        {rowSelectionModel.map((item: string) => (
-                            <li key={item}>{item}</li>
-                        ))}
-                    </ul>
-                    không?
-                </AlertDialog>
+                    <DialogTitle id="alert-dialog-title">Bạn có muốn {dialogType ? 'cấm' : 'bỏ cấm'}:</DialogTitle>
+                    <DialogContent>
+                        <ul>
+                            {rowSelectionModel.map((item: string) => (
+                                <li key={item}>{item}</li>
+                            ))}
+                        </ul>
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={handleClose}>Huỷ</Button>
+                        <Button onClick={dialogType ? handleBan : handleUnban} autoFocus>
+                            {dialogType ? 'Cấm' : 'Bỏ cấm'}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
 
                 <GridToolbarContainer>
                     <GridToolbarColumnsButton />
                     <GridToolbarFilterButton />
                     <GridToolbarDensitySelector />
+                    <GridToolbarExport />
                     <Box sx={{ flexGrow: 1 }} />
 
-                    <GridToolbarExport
-                        slotProps={{
-                            button: { variant: 'outlined' },
-                        }}
-                        className={cx('btncustom')}
-                    />
-                    <Button variant="outlined" startIcon={<Add />} className={cx('btncustom')} onClick={handleAdd}>
+                    {/* <Button variant="outlined" startIcon={<Add />} className={cx('btncustom')} onClick={handleAdd}>
                         Thêm
-                    </Button>
+                    </Button> */}
                     <Button
                         variant="outlined"
                         startIcon={<Block />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
-                        onClick={handleDelete}
+                        onClick={handleOpenBan}
                     >
                         Cấm
+                    </Button>
+                    <Button
+                        variant="outlined"
+                        startIcon={<LockOpen />}
+                        disabled={rowSelectionModel.length === 0}
+                        className={cx('btncustom')}
+                        onClick={handleOpenUnban}
+                    >
+                        Bỏ cấm
                     </Button>
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>
             </div>
         );
-    }
+    };
 
     return (
         <div className={cx('dataGrid')}>
