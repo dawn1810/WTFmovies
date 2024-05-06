@@ -196,7 +196,7 @@ export default function AdminDashboard({
                 dataset={hotFilmList}
                 series={series}
                 ykey="name"
-                title="Danh sách phim nỗi bật"
+                title="Danh sách phim nổi bật"
                 height={350}
                 horizontal
             />
@@ -206,7 +206,7 @@ export default function AdminDashboard({
                 dataset={dataset}
                 series={series}
                 ykey="name"
-                title="Danh sách thể loại nỗi bật"
+                title="Danh sách thể loại nổi bật"
                 height={350}
             />
             <PieCard area="pie" />
