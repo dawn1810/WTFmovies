@@ -4,6 +4,7 @@ import style from './Admin.module.scss';
 import AdminDashboard from '~/components/AdminDashboard';
 import { getNumberStatistical, getTopHotFilm } from '~/libs/getData/admin';
 import { Link } from '@mui/material';
+import ManageEditorTable from '~/components/ManageEditorTable';
 
 const cx = classNames.bind(style);
 
@@ -14,6 +15,8 @@ async function getPage(params?: any) {
             const numStatistical = await getNumberStatistical();
 
             return <AdminDashboard numStatistical={numStatistical} hotFilmList={hotFilmList} />;
+        case 'editor':
+            return <ManageEditorTable />;
         default:
             return (
                 <div style={{ color: 'var(--text-color)' }}>

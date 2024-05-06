@@ -1,8 +1,12 @@
 'use client';
-import style from './FilmManager.module.scss';
-import classNames from 'classnames/bind';
 import { useState } from 'react';
-import Button from '@mui/material/Button';
+import classNames from 'classnames/bind';
+import { Box, Button } from '@mui/material';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { viVN } from '@mui/x-data-grid/locales';
+import AlertDialog from '~/components/Dialog';
+import { useSelector } from 'react-redux';
 import {
     DataGrid,
     GridToolbarQuickFilter,
@@ -14,24 +18,20 @@ import {
     GridToolbarDensitySelector,
     GridColDef,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
-import { viVN } from '@mui/x-data-grid/locales';
-import AlertDialog from '~/components/Dialog';
-import { useSelector } from 'react-redux';
-import { alertStatusSelector } from '~/redux/selectors';
+import { Add, Block } from '@mui/icons-material';
 
+import style from './Table.module.scss';
+import { alertStatusSelector } from '~/redux/selectors';
 import { MovieForm } from '~/components/Dialog';
 
 const cx = classNames.bind(style);
 export default function DataGridCom({
-    colum,
-    children,
+    column,
+    dataset,
     title_name,
 }: {
-    colum: readonly GridColDef<{ any: any }>[];
-    children: any;
+    column: readonly GridColDef<{ any: any }>[];
+    dataset: any;
     title_name: string;
 }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
@@ -85,28 +85,19 @@ export default function DataGridCom({
                         slotProps={{
                             button: { variant: 'outlined' },
                         }}
+                        className={cx('btncustom')}
                     />
-                    <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
-                        <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
+                    <Button variant="outlined" startIcon={<Add />} className={cx('btncustom')} onClick={handleAdd}>
                         Thêm
                     </Button>
                     <Button
+                        variant="outlined"
+                        startIcon={<Block />}
+                        disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={handleDelete}
-                        disabled={rowSelectionModel.length === 0}
-                        variant="outlined"
                     >
-                        <FontAwesomeIcon className={cx('iconBtn')} icon={faTrash} />
-                        Xoá
-                    </Button>
-                    <Button
-                        className={cx('btncustom')}
-                        onClick={handleEdit}
-                        disabled={rowSelectionModel.length !== 1}
-                        variant="outlined"
-                    >
-                        <FontAwesomeIcon className={cx('iconBtn')} icon={faPenToSquare} />
-                        Chỉnh sửa
+                        Cấm
                     </Button>
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>
@@ -118,13 +109,10 @@ export default function DataGridCom({
         <div className={cx('dataGrid')}>
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
-                columns={colum}
-                rows={children}
+                columns={column}
+                rows={dataset}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
-                onRowSelectionModelChange={(newRowSelectionModel) => {
-                    setRowSelectionModel(newRowSelectionModel);
-                }}
                 rowSelectionModel={rowSelectionModel}
                 slots={{ toolbar: CustomToolbar }}
                 initialState={{
@@ -138,6 +126,9 @@ export default function DataGridCom({
                     toolbar: {
                         showQuickFilter: true,
                     },
+                }}
+                onRowSelectionModelChange={(newRowSelectionModel) => {
+                    setRowSelectionModel(newRowSelectionModel);
                 }}
             />
         </div>
