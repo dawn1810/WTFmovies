@@ -27,6 +27,7 @@ export async function POST(request: NextRequest) {
             email: email,
             role: 'none',
             first: true,
+            status: true,
         });
 
         // insert data to user/information
@@ -35,7 +36,6 @@ export async function POST(request: NextRequest) {
             name: name,
             avatar: 'https://i.pinimg.com/736x/6d/88/fe/6d88fe4f5167ce5735d03dd09acc6933.jpg',
             birthDate: birthDate,
-            status: false,
         });
 
         return reply();

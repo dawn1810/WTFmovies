@@ -55,3 +55,40 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
         return [];
     }
 };
+
+export const getAllUser = async (): Promise<any[]> => {
+    try {
+        const userInfo: any[] = await mongodb()
+            .db('user')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    { $sort: { name: 1 } },
+                    {
+                        $lookup: {
+                            from: 'auth',
+                            localField: 'email',
+                            foreignField: 'email',
+                            as: 'auth',
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            id: '$email',
+                            name: 1,
+                            birthDate: 1,
+                            gender: 1,
+                            status: '$auth.status',
+                            role: '$auth.role',
+                        },
+                    },
+                ],
+            });
+
+        return userInfo;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopHotFilm function : ', err);
+        return [];
+    }
+};

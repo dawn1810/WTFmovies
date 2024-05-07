@@ -1,28 +1,30 @@
-'use client';
+import { getAllUser } from '~/libs/getData/admin';
 import Table from './Table';
+import { UserAdminInfoInfterface } from '~/libs/interfaces';
 
-const column = [
-    { headerName: 'STT', field: 'index', width: 10 },
-    { headerName: 'Email', field: 'id', width: 180 },
-    { headerName: 'Tên hiễn thị', field: 'name', width: 180 },
-    { headerName: 'Ngày sinh', field: 'birthdate', width: 180 },
-    { headerName: 'Giới tính', field: 'gender', width: 180 },
-    { headerName: 'Phân quyền', field: 'role', width: 180 },
-    { headerName: 'Trạng thái', field: 'status', type: 'boolean', width: 180 },
-];
+const convertGender = (gender: number) => {
+    switch (gender) {
+        case 0:
+            return 'nam';
+        case 1:
+            return 'nữ';
+        case 2:
+            return 'khác';
+        default:
+            return 'chưa có';
+    }
+};
 
-const data = [
-    {
-        index: 1,
-        id: 'binhminh0181@mail.com',
-        name: 'Nguyễn Bình Minh',
-        birthdate: '19-11-2003',
-        gender: 'name',
-        role: 'admin',
-        status: true,
-    },
-];
+export default async function FilmPage() {
+    const dataset = await getAllUser();
 
-export default function FilmPage() {
-    return <Table title_name="Quản lý biên tập viên" column={column} dataset={data} />;
+    const mappedDataset = dataset.map((data: UserAdminInfoInfterface, index: number) => ({
+        ...data,
+        index: index + 1,
+        gender: convertGender(data.gender),
+        status: data.status[0],
+        role: data.role[0],
+    }));
+
+    return <Table title_name="Quản lý biên tập viên" dataset={mappedDataset} />;
 }
