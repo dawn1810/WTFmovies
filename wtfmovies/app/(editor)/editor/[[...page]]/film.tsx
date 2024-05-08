@@ -1,5 +1,5 @@
 'use client';
-import DataGridCom from '~/components/FilmManager';
+import FilmManager from '~/components/FilmManager';
 import { data } from './mockdata';
 
 const colum = [
@@ -18,8 +18,8 @@ const colum = [
 ];
 export default function FilmPage() {
     return (
-        <DataGridCom title_name="Tổng quan" colum={colum}>
+        <FilmManager title_name="Tổng quan" colum={colum}>
             {data}
-        </DataGridCom>
+        </FilmManager>
     );
 }
