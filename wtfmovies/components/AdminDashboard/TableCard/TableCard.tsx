@@ -3,6 +3,7 @@ import { Card, CardActionArea, Table, TableHead, TableRow, TableCell, TableBody,
 import { useRouter } from 'next/navigation';
 
 import style from './TableCard.module.scss';
+import { timePassed } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
@@ -53,11 +54,16 @@ export default function TableCard({
                     <TableBody>
                         {rows.map((row) => (
                             <TableRow key={row.email || row.from}>
-                                <TableCell component="th" scope="row" className={cx('email-cell')}>
+                                {row.type && (
+                                    <TableCell component="th" scope="row" className={cx('table-cell')}>
+                                        {row.type}
+                                    </TableCell>
+                                )}
+                                <TableCell component="th" scope="row" className={cx('table-cell')}>
                                     {row.email || row.from}
                                 </TableCell>
-                                <TableCell align="left" className={cx('name-cell')}>
-                                    {row.name || row.type}
+                                <TableCell align="left" className={cx('table-cell')}>
+                                    {row.name || timePassed(row.time)}
                                 </TableCell>
                             </TableRow>
                         ))}

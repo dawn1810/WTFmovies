@@ -102,6 +102,7 @@ export const getNewReport = async (): Promise<UserAdminInfoInfterface[]> => {
                             _id: 0,
                             from: 1,
                             type: 1,
+                            time: 1,
                         },
                     },
                     { $limit: 6 },

@@ -62,7 +62,8 @@ export default function BarCard({
           };
 
     const [open, setOpen] = useState(false);
-    const [filter, setFilter] = useState({ time: 'week', sortBy: 'view' });
+    const [filter, setFilter] = useState({ time: 0, sortBy: 0 });
+    const [dataState, setDataState] = useState(dataset);
 
     // dialog
     const handleOpen = () => {
@@ -71,6 +72,21 @@ export default function BarCard({
 
     const handleClose = () => {
         setOpen(false);
+    };
+
+    const handleFilter = async () => {
+        setOpen(false);
+        const response = await fetch('/api/v1/admin/hotFilmFilter', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(filter),
+        });
+
+        if (response.ok) {
+            const res: FilmHotInterface[] = await response.json();
+
+            setDataState(res);
+        }
     };
 
     // filter
@@ -87,9 +103,9 @@ export default function BarCard({
                         <FilterList />
                     </IconButton>
                 </div>
-                {!!dataset && !!dataset.length ? (
+                {!!dataState && !!dataState.length ? (
                     <BarChart
-                        dataset={dataset}
+                        dataset={dataState}
                         series={series}
                         className={cx('chart')}
                         height={height}
@@ -107,7 +123,7 @@ export default function BarCard({
                 className={cx('dialog')}
             >
                 <DialogTitle className={cx('dialog-title')}>
-                    <span className={cx('title')}>{title}</span>
+                    <span className={cx('title')}>Bộ lọc</span>
                     <IconButton aria-label="delete" onClick={handleClose}>
                         <Close />
                     </IconButton>
@@ -115,7 +131,7 @@ export default function BarCard({
                 <DialogContent>
                     <DialogContentText id="alert-dialog-description">
                         <div className={cx('filter')}>
-                            <h3>Thời gian:</h3>
+                            <h4>Thời gian:</h4>
                             <RadioGroup
                                 row
                                 value={filter.time}
@@ -123,13 +139,13 @@ export default function BarCard({
                                 className={cx('radio')}
                                 onChange={handleFilterChange}
                             >
-                                <FormControlLabel value="week" control={<Radio />} label="Tuần" />
-                                <FormControlLabel value="month" control={<Radio />} label="Tháng" />
-                                <FormControlLabel value="year" control={<Radio />} label="Năm" />
+                                <FormControlLabel value={0} control={<Radio />} label="Tuần" />
+                                <FormControlLabel value={1} control={<Radio />} label="Tháng" />
+                                <FormControlLabel value={2} control={<Radio />} label="Năm" />
                             </RadioGroup>
                         </div>
                         <div className={cx('filter')}>
-                            <h3>Sắp xếp:</h3>
+                            <h4>Sắp xếp:</h4>
                             <RadioGroup
                                 row
                                 value={filter.sortBy}
@@ -137,15 +153,15 @@ export default function BarCard({
                                 className={cx('radio')}
                                 onChange={handleFilterChange}
                             >
-                                <FormControlLabel value="view" control={<Radio />} label="Lượt xem" />
-                                <FormControlLabel value="like" control={<Radio />} label="Lượt thích" />
-                                <FormControlLabel value="rating" control={<Radio />} label="Điểm đánh giá" />
+                                <FormControlLabel value={0} control={<Radio />} label="Lượt xem" />
+                                <FormControlLabel value={2} control={<Radio />} label="Lượt thích" />
+                                <FormControlLabel value={3} control={<Radio />} label="Điểm đánh giá" />
                             </RadioGroup>
                         </div>
                     </DialogContentText>
                     <DialogActions>
                         <Button onClick={handleClose}>HUỶ</Button>
-                        <Button onClick={handleClose}>XEM</Button>
+                        <Button onClick={handleFilter}>XEM</Button>
                     </DialogActions>
                 </DialogContent>
             </Dialog>

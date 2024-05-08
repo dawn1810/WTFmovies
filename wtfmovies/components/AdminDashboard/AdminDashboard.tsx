@@ -232,7 +232,7 @@ export default function AdminDashboard({
                 title="Danh sách báo cáo"
                 rows={newReports}
                 url="/admin/report"
-                cols={['Email', 'Thời gian']}
+                cols={['Loại', 'Email', 'Thời gian']}
             />
         </div>
     );
