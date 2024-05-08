@@ -112,7 +112,7 @@ export interface FilmInfo {
     videoType?: {
         title?: string;
         episode?: number[];
-    }[];
+    }[] | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
