@@ -27,6 +27,6 @@ yarn-error.log*
 
 # Exclude sw.js file in the public directory
 **/public/sw.js
-
+**/public/sw.js.map
 # Exclude worker.js files in the public directory
 **/public/worker-*.js
