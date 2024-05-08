@@ -6,15 +6,21 @@ import Button from '@mui/material/Button';
 import {
     DataGrid,
     GridToolbarQuickFilter,
-    GridToolbarExport,
     GridToolbarFilterButton,
     GridRowSelectionModel,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridColDef,
+    GridCsvExportMenuItem,
+    useGridApiContext,
+    gridVisibleColumnFieldsSelector,
+    gridFilteredSortedRowIdsSelector,
+    GridApi,
+    GridExportMenuItemProps,
+    GridToolbarExportContainer,
 } from '@mui/x-data-grid';
-import { Box } from '@mui/material';
+import { Box, MenuItem } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { viVN } from '@mui/x-data-grid/locales';
@@ -53,7 +59,58 @@ export default function DataGridCom({
     function handleCloseForm() {
         setOpenForm(false);
     }
+    const getJson = (apiRef: React.MutableRefObject<GridApi>) => {
+        // Select rows and columns
+        const filteredSortedRowIds = gridFilteredSortedRowIdsSelector(apiRef);
+        const visibleColumnsField = gridVisibleColumnFieldsSelector(apiRef);
 
+        // Format the data. Here we only keep the value
+        const data = filteredSortedRowIds.map((id) => {
+            const row: Record<string, any> = {};
+            visibleColumnsField.forEach((field) => {
+                row[field] = apiRef.current.getCellParams(id, field).value;
+            });
+            return row;
+        });
+        return JSON.stringify(data, null, 2);
+    };
+
+    const exportBlob = (blob: Blob, filename: string) => {
+        // Save the blob in a json file
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = filename;
+        a.click();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        });
+
+    };
+    function JsonExportMenuItem(props: GridExportMenuItemProps<{}>) {
+        const apiRef = useGridApiContext();
+
+        const { hideMenu } = props;
+
+        return (
+            <MenuItem
+                onClick={() => {
+                    const jsonString = getJson(apiRef);
+                    const blob = new Blob([jsonString], {
+                        type: 'text/json',
+                    });
+                    exportBlob(blob, 'Danh sách tập phim.json');
+
+                    // Hide the export menu after the export
+                    hideMenu?.();
+                }}
+            >
+                Xuất JSON
+            </MenuItem>
+        );
+    }
     function CustomToolbar() {
         return (
             <div>
@@ -80,17 +137,15 @@ export default function DataGridCom({
                     <GridToolbarFilterButton />
                     <GridToolbarDensitySelector />
                     <Box sx={{ flexGrow: 1 }} />
-
-                    <GridToolbarExport
-                        csvOptions={{
+                    <GridToolbarExportContainer>
+                        <GridCsvExportMenuItem options={{
                             fileName: 'Danh sách tập phim',
                             delimiter: ';',
                             utf8WithBom: true,
-                        }}
-                        slotProps={{
-                            button: { variant: 'outlined' },
-                        }}
-                    />
+                        }} />
+                        <JsonExportMenuItem />
+                    </GridToolbarExportContainer>
+
                     <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
                         <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
                         Thêm
@@ -122,7 +177,11 @@ export default function DataGridCom({
     return (
         <div className={cx('dataGrid')}>
             <h1 className={cx('title_name')}>{title_name}</h1>
-            <DataGrid
+            <DataGrid sx={{
+                '@media print': {
+                    '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
+                },
+            }}
                 columns={colum}
                 rows={children}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
