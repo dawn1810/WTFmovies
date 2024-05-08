@@ -318,3 +318,8 @@ export interface UserAdminInfoInfterface {
     role: string[];
     gender: number;
 }
+
+export interface TopSixUserInfoInfterface {
+    name: string;
+    email: string;
+}

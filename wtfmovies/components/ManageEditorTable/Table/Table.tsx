@@ -13,23 +13,18 @@ import {
     GridToolbarContainer,
     GridToolbarDensitySelector,
     useGridApiContext,
-    GridCellEditStopParams,
-    MuiEvent,
     GridRowModel,
-    GridValidRowModel,
 } from '@mui/x-data-grid';
 import { Block, LockOpen } from '@mui/icons-material';
 
 import style from './Table.module.scss';
-import { alertStatusSelector } from '~/redux/selectors';
-import { UserAdminInfoInfterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
 export default function DataGridCom({ dataset, title_name }: { dataset: any[]; title_name: string }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
-
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
+    const [listUpdate, setListUpdate] = useState(false);
 
     const processRowUpdate = useCallback(
         (newRow: GridRowModel, oldRow: GridRowModel) =>
@@ -38,7 +33,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     // Save the arguments to resolve or reject the promise later
                     setPromiseArguments({ resolve, reject, newRow, oldRow });
                 } else {
-                    resolve(oldRow); // Nothing was changed
+                    resolve(oldRow);
                 }
             }),
         [],
@@ -80,7 +75,13 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
             return null;
         }
 
-        const { newRow } = promiseArguments;
+        const { newRow, resolve } = promiseArguments;
+
+        if (listUpdate) {
+            resolve(newRow);
+            setPromiseArguments(null);
+            setListUpdate(false);
+        }
 
         return (
             <Dialog
@@ -140,6 +141,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                         apiRef.current.stopCellEditMode({ id, field: 'status' });
                     }
                 });
+                setListUpdate(true);
                 setOpen(false);
                 alert('Thay đổi trạng thái thành công 😎😎😎');
             } else if (response.status === 400) {
@@ -241,7 +243,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                         showQuickFilter: true,
                     },
                 }}
-                // onCellEditStop={handleOpenDialog}
                 processRowUpdate={processRowUpdate}
                 onProcessRowUpdateError={(error) => console.log(error)}
                 onRowSelectionModelChange={(newRowSelectionModel) => {

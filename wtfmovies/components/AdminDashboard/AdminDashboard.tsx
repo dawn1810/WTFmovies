@@ -6,7 +6,12 @@ import NumCard from './NumCard';
 import BarCard from './BarCard';
 import TableCard from './TableCard';
 import PieCard from './PieCard';
-import { FilmHotInterface, LineChartDataInterface, NumStatisticalInterface } from '~/libs/interfaces';
+import {
+    FilmHotInterface,
+    LineChartDataInterface,
+    NumStatisticalInterface,
+    TopSixUserInfoInfterface,
+} from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
@@ -151,9 +156,11 @@ const calcViewChange = (dataset: DatasetInterface, typeData: 'view' | 'user' | '
 export default function AdminDashboard({
     numStatistical,
     hotFilmList,
+    topSixUser,
 }: {
     numStatistical: NumStatisticalInterface[];
     hotFilmList: FilmHotInterface[];
+    topSixUser: TopSixUserInfoInfterface[];
 }) {
     const yearDataset = getDataCurrentYear(numStatistical);
     const allTimeDataset = getDataByYear(numStatistical);
@@ -200,7 +207,7 @@ export default function AdminDashboard({
                 height={350}
                 horizontal
             />
-            <TableCard area="table1" />
+            <TableCard area="table1" title="Danh sách người dùng" rows={topSixUser} />
             <BarCard
                 area="bar2"
                 dataset={dataset}
@@ -210,7 +217,7 @@ export default function AdminDashboard({
                 height={350}
             />
             <PieCard area="pie" />
-            <TableCard area="table2" />
+            <TableCard area="table2" title="Danh sách báo cáo" rows={topSixUser} />
         </div>
     );
 }

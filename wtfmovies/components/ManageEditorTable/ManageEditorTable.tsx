@@ -1,4 +1,4 @@
-import { getAllUser } from '~/libs/getData/admin';
+'use client';
 import Table from './Table';
 import { UserAdminInfoInfterface } from '~/libs/interfaces';
 
@@ -15,9 +15,7 @@ const convertGender = (gender: number) => {
     }
 };
 
-export default async function FilmPage() {
-    const dataset = await getAllUser();
-
+export default function FilmPage({ dataset }: { dataset: UserAdminInfoInfterface[] }) {
     const mappedDataset = dataset.map((data: UserAdminInfoInfterface, index: number) => ({
         ...data,
         index: index + 1,

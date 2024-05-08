@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 
 import style from './Admin.module.scss';
 import AdminDashboard from '~/components/AdminDashboard';
-import { getNumberStatistical, getTopHotFilm } from '~/libs/getData/admin';
+import { getAllUser, getNumberStatistical, getTopHotFilm, getTopSixUser } from '~/libs/getData/admin';
 import { Link } from '@mui/material';
 import ManageEditorTable from '~/components/ManageEditorTable';
 
@@ -13,10 +13,13 @@ async function getPage(params?: any) {
         case 'overview':
             const hotFilmList = await getTopHotFilm();
             const numStatistical = await getNumberStatistical();
+            const topSixUser = await getTopSixUser();
 
-            return <AdminDashboard numStatistical={numStatistical} hotFilmList={hotFilmList} />;
+            return <AdminDashboard numStatistical={numStatistical} hotFilmList={hotFilmList} topSixUser={topSixUser} />;
         case 'editor':
-            return <ManageEditorTable />;
+            const dataset = await getAllUser();
+
+            return <ManageEditorTable dataset={dataset} />;
         default:
             return (
                 <div style={{ color: 'var(--text-color)' }}>

@@ -1,5 +1,5 @@
 import { MongoDate, mongodb } from '~/libs/func';
-import { FilmHotInterface, NumStatisticalInterface } from '../interfaces';
+import { FilmHotInterface, NumStatisticalInterface, TopSixUserInfoInfterface } from '../interfaces';
 // import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getNumberStatistical = async (): Promise<NumStatisticalInterface[]> => {
@@ -88,7 +88,29 @@ export const getAllUser = async (): Promise<any[]> => {
 
         return userInfo;
     } catch (err) {
-        console.log('😨😨😨 error at admin/getTopHotFilm function : ', err);
+        console.log('😨😨😨 error at admin/getAllUser function : ', err);
+        return [];
+    }
+};
+
+export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
+    try {
+        const userInfo: TopSixUserInfoInfterface[] = await mongodb()
+            .db('user')
+            .collection('information')
+            .find({
+                projection: {
+                    _id: 0,
+                    email: 1,
+                    name: 1,
+                },
+                sort: { name: 1 },
+                limit: 6,
+            });
+
+        return userInfo;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopSixUser function : ', err);
         return [];
     }
 };

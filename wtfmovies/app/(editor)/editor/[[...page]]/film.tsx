@@ -2,7 +2,7 @@
 import DataGridCom from '~/components/FilmManager';
 import { data } from './mockdata';
 
-const colum = [
+export const colum = [
     { headerName: 'Phim ID', field: 'id', width: 280 },
     { headerName: 'Tên phim', field: 'name', width: 150 },
     { headerName: 'Mô tả', field: 'describe', width: 100 },
