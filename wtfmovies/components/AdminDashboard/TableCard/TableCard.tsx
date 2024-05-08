@@ -5,19 +5,19 @@ import style from './TableCard.module.scss';
 
 const cx = classNames.bind(style);
 
-function createData(email: string, name: string) {
-    return { email, name };
-}
+// function createData(email: string, name: string) {
+//     return { email, name };
+// }
 
-const rows = [
-    createData('nguyenvana@gmail.com', 'Nguyễn Văn A'),
-    createData('nguyenvanbb18102003@gmail.com', 'Nguyễn Thị B'),
-    createData('qwertyuioplkjhgfdsazxcvbnm123456789@gmail.com', 'Nguyễn Trần Chí C'),
-    createData('nguyenvana@gmail.com', 'Nguyễn Văn Thị Hà D'),
-    createData('nguyenvana@gmail.com', 'Nguyễn Trần Hoàng Na E'),
-];
+// const rows = [
+//     createData('nguyenvana@gmail.com', 'Nguyễn Văn A'),
+//     createData('nguyenvanbb18102003@gmail.com', 'Nguyễn Thị B'),
+//     createData('qwertyuioplkjhgfdsazxcvbnm123456789@gmail.com', 'Nguyễn Trần Chí C'),
+//     createData('nguyenvana@gmail.com', 'Nguyễn Văn Thị Hà D'),
+//     createData('nguyenvana@gmail.com', 'Nguyễn Trần Hoàng Na E'),
+// ];
 
-export default function TableCard({ area }: { area?: string }) {
+export default function TableCard({ area, title, rows }: { area?: string; title: string; rows: any[] }) {
     return (
         <Card style={{ gridArea: area }}>
             <CardActionArea
@@ -26,7 +26,7 @@ export default function TableCard({ area }: { area?: string }) {
                     console.log('aaaa');
                 }}
             >
-                <h4 className={cx('card-title')}>Danh sách người dùng</h4>
+                <h4 className={cx('card-title')}>{title}</h4>
                 <Table aria-label="customized table">
                     <TableHead>
                         <TableRow>

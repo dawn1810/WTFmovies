@@ -24,9 +24,6 @@ import { alertStatusSelector } from '~/redux/selectors';
 
 import { MovieForm } from '~/components/Dialog';
 
-
-
-
 const cx = classNames.bind(style);
 export default function DataGridCom({
     colum,
@@ -56,6 +53,7 @@ export default function DataGridCom({
     function handleCloseForm() {
         setOpenForm(false);
     }
+
     function CustomToolbar() {
         return (
             <div>
@@ -88,11 +86,7 @@ export default function DataGridCom({
                             button: { variant: 'outlined' },
                         }}
                     />
-                    <Button
-                        className={cx('btncustom')}
-                        onClick={handleAdd}
-                        variant="outlined"
-                    >
+                    <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
                         <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
                         Thêm
                     </Button>

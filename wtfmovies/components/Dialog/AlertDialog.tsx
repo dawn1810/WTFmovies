@@ -1,5 +1,4 @@
-"use client"
-import { Fragment } from 'react';
+'use client';
 import style from './AlertDialog.module.scss';
 import classNames from 'classnames/bind';
 import Button from '@mui/material/Button';
@@ -11,37 +10,54 @@ import { useDispatch } from 'react-redux';
 import { changeAlertStatus } from '../FilmManager/filmManagerSlice';
 const cx = classNames.bind(style);
 
-
-
-export default function AlertDialog({ listId, children, title, open, handleClose }: {
-    listId: any; title: string; children: React.ReactNode; open: boolean; handleClose: () => any
+export default function AlertDialog({
+    listId,
+    children,
+    title,
+    open,
+    handleClose,
+}: {
+    listId: any;
+    title: string;
+    children: React.ReactNode;
+    open: boolean;
+    handleClose: () => any;
 }) {
     const dispatch = useDispatch();
 
     return (
-        <Fragment>
+        <>
             <Dialog
-                scroll='paper'
+                scroll="paper"
                 open={open}
                 onClose={handleClose}
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {title}
-                </DialogTitle>
+                <DialogTitle id="alert-dialog-title">{title}</DialogTitle>
                 <DialogContent>
-                    <div id={cx("alert-dialog-description")}>
-                        {children}
-                    </div>
+                    <div id={cx('alert-dialog-description')}>{children}</div>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => { handleClose(); dispatch(changeAlertStatus({ content: listId, status: false })) }}>Huỷ</Button>
-                    <Button onClick={() => { handleClose(); dispatch(changeAlertStatus({ content: listId, status: true })) }} autoFocus>
+                    <Button
+                        onClick={() => {
+                            handleClose();
+                            dispatch(changeAlertStatus({ content: listId, status: false }));
+                        }}
+                    >
+                        Huỷ
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            handleClose();
+                            dispatch(changeAlertStatus({ content: listId, status: true }));
+                        }}
+                        autoFocus
+                    >
                         Chấp nhận
                     </Button>
                 </DialogActions>
             </Dialog>
-        </Fragment >
+        </>
     );
 }

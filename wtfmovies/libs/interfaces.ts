@@ -66,6 +66,7 @@ export interface ExtendedUser extends User {
     first?: boolean;
     avatar?: string;
     role?: string;
+    status?: boolean;
 }
 
 export interface CaptionsItemInterface {
@@ -307,4 +308,18 @@ export interface FilmHotInterface {
     views: number;
     likes?: number;
     rating: number;
+}
+
+export interface UserAdminInfoInfterface {
+    id: string;
+    name: string;
+    birthDate: string;
+    status: boolean[];
+    role: string[];
+    gender: number;
+}
+
+export interface TopSixUserInfoInfterface {
+    name: string;
+    email: string;
 }
