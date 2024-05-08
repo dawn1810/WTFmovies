@@ -2,20 +2,38 @@ import classNames from 'classnames/bind';
 
 import style from './Admin.module.scss';
 import AdminDashboard from '~/components/AdminDashboard';
-import { getAllUser, getNumberStatistical, getTopHotFilm, getTopSixUser } from '~/libs/getData/admin';
+import {
+    getAllUser,
+    getNewReport,
+    getNumberStatistical,
+    getTopHotFilm,
+    getTopHotGenre,
+    getTopSixUser,
+} from '~/libs/getData/admin';
 import { Link } from '@mui/material';
 import ManageEditorTable from '~/components/ManageEditorTable';
 
 const cx = classNames.bind(style);
+export const fetchCache = 'force-no-store';
 
 async function getPage(params?: any) {
     switch (params.page[0]) {
         case 'overview':
             const hotFilmList = await getTopHotFilm();
+            const hotGenreList = await getTopHotGenre();
             const numStatistical = await getNumberStatistical();
             const topSixUser = await getTopSixUser();
+            const newReports = await getNewReport();
 
-            return <AdminDashboard numStatistical={numStatistical} hotFilmList={hotFilmList} topSixUser={topSixUser} />;
+            return (
+                <AdminDashboard
+                    numStatistical={numStatistical}
+                    hotFilmList={hotFilmList}
+                    topSixUser={topSixUser}
+                    hotGenreList={hotGenreList}
+                    newReports={newReports}
+                />
+            );
         case 'editor':
             const dataset = await getAllUser();
 

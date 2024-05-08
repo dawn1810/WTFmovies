@@ -1,5 +1,10 @@
 import { MongoDate, mongodb } from '~/libs/func';
-import { FilmHotInterface, NumStatisticalInterface, TopSixUserInfoInfterface } from '../interfaces';
+import {
+    FilmHotInterface,
+    NumStatisticalInterface,
+    TopSixUserInfoInfterface,
+    UserAdminInfoInfterface,
+} from '../interfaces';
 // import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getNumberStatistical = async (): Promise<NumStatisticalInterface[]> => {
@@ -27,7 +32,6 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $sort: { weekViews: -1, likes: -1 /* add rating hear too how ??? */ } },
                     {
                         $lookup: {
                             from: 'episode',
@@ -45,6 +49,7 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                         },
                     },
+                    { $sort: { views: -1, likes: -1, rating: -1 } },
                     { $limit: 5 },
                 ],
             });
@@ -56,9 +61,85 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
     }
 };
 
-export const getAllUser = async (): Promise<any[]> => {
+export const getTopHotGenre = async (): Promise<FilmHotInterface[]> => {
     try {
-        const userInfo: any[] = await mongodb()
+        const genres: FilmHotInterface[] = await mongodb()
+            .db('film')
+            .collection('genre')
+            .aggregate({
+                pipeline: [
+                    {
+                        $project: {
+                            _id: 0,
+                            name: 1,
+                            views: 1,
+                            rating: 1,
+                            likes: 1,
+                        },
+                    },
+                    { $sort: { views: -1, likes: -1, rating: -1 } },
+                    { $limit: 5 },
+                ],
+            });
+
+        return genres;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopHotGenre function : ', err);
+        return [];
+    }
+};
+
+export const getNewReport = async (): Promise<UserAdminInfoInfterface[]> => {
+    try {
+        const reports: UserAdminInfoInfterface[] = await mongodb()
+            .db('statistical')
+            .collection('report')
+            .aggregate({
+                pipeline: [
+                    { $sort: { time: 1 } },
+                    {
+                        $project: {
+                            _id: 0,
+                            from: 1,
+                            type: 1,
+                        },
+                    },
+                    { $limit: 6 },
+                ],
+            });
+
+        return reports;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getNewReport function : ', err);
+        return [];
+    }
+};
+
+export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
+    try {
+        const userInfo: TopSixUserInfoInfterface[] = await mongodb()
+            .db('user')
+            .collection('information')
+            .find({
+                projection: {
+                    _id: 0,
+                    email: 1,
+                    name: 1,
+                },
+                sort: { name: 1 },
+                limit: 6,
+            });
+
+        return userInfo;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopSixUser function : ', err);
+        return [];
+    }
+};
+
+export const getAllUser = async (): Promise<UserAdminInfoInfterface[]> => {
+    try {
+        const userInfo: UserAdminInfoInfterface[] = await mongodb()
             .db('user')
             .collection('information')
             .aggregate({
@@ -85,32 +166,11 @@ export const getAllUser = async (): Promise<any[]> => {
                     },
                 ],
             });
+        console.log(userInfo);
 
         return userInfo;
     } catch (err) {
         console.log('😨😨😨 error at admin/getAllUser function : ', err);
-        return [];
-    }
-};
-
-export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
-    try {
-        const userInfo: TopSixUserInfoInfterface[] = await mongodb()
-            .db('user')
-            .collection('information')
-            .find({
-                projection: {
-                    _id: 0,
-                    email: 1,
-                    name: 1,
-                },
-                sort: { name: 1 },
-                limit: 6,
-            });
-
-        return userInfo;
-    } catch (err) {
-        console.log('😨😨😨 error at admin/getTopSixUser function : ', err);
         return [];
     }
 };

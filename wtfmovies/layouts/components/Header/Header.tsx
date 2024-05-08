@@ -27,7 +27,6 @@ import { changeModalShow } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
-import config from '~/config';
 import Button from '~/components/Button';
 import styles from './Header.module.scss';
 import images from '~/assets/image';
@@ -197,7 +196,7 @@ function Header({
                     {isDatabase ? (
                         <h1 className={cx('tileDtB')}>{title}</h1>
                     ) : (
-                        <Link href={config.routes.home} className={cx('logo-link')}>
+                        <Link href={'/'} className={cx('logo-link')}>
                             <img src={images.logo} alt="wtfmovies" />
                         </Link>
                     )}

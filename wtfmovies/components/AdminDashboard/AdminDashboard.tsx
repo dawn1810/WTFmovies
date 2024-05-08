@@ -50,8 +50,8 @@ const dataset = [
 
 const series = [
     { dataKey: 'views', label: 'lượt xem', stack: 'total' },
-    { dataKey: 'rating', label: 'lượt đánh giá', stack: 'total' },
     { dataKey: 'likes', label: 'lượt thích', stack: 'total' },
+    { dataKey: 'rating', label: 'điểm đánh giá', stack: 'total' },
 ];
 
 interface DatasetInterface {
@@ -157,10 +157,14 @@ export default function AdminDashboard({
     numStatistical,
     hotFilmList,
     topSixUser,
+    hotGenreList,
+    newReports,
 }: {
     numStatistical: NumStatisticalInterface[];
     hotFilmList: FilmHotInterface[];
+    hotGenreList: FilmHotInterface[];
     topSixUser: TopSixUserInfoInfterface[];
+    newReports: any[];
 }) {
     const yearDataset = getDataCurrentYear(numStatistical);
     const allTimeDataset = getDataByYear(numStatistical);
@@ -207,17 +211,29 @@ export default function AdminDashboard({
                 height={350}
                 horizontal
             />
-            <TableCard area="table1" title="Danh sách người dùng" rows={topSixUser} />
+            <TableCard
+                area="table1"
+                title="Danh sách người dùng"
+                rows={topSixUser}
+                url="/admin/editor"
+                cols={['Email', 'Tên hiển thị']}
+            />
             <BarCard
                 area="bar2"
-                dataset={dataset}
+                dataset={hotGenreList}
                 series={series}
                 ykey="name"
                 title="Danh sách thể loại nổi bật"
                 height={350}
             />
             <PieCard area="pie" />
-            <TableCard area="table2" title="Danh sách báo cáo" rows={topSixUser} />
+            <TableCard
+                area="table2"
+                title="Danh sách báo cáo"
+                rows={newReports}
+                url="/admin/report"
+                cols={['Email', 'Thời gian']}
+            />
         </div>
     );
 }
