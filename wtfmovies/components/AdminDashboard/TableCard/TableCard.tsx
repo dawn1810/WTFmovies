@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import { Card, CardActionArea, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
+import { useRouter } from 'next/navigation';
 
 import style from './TableCard.module.scss';
 
@@ -17,31 +18,46 @@ const cx = classNames.bind(style);
 //     createData('nguyenvana@gmail.com', 'Nguyễn Trần Hoàng Na E'),
 // ];
 
-export default function TableCard({ area, title, rows }: { area?: string; title: string; rows: any[] }) {
+export default function TableCard({
+    area,
+    title,
+    rows,
+    url,
+    cols,
+}: {
+    area?: string;
+    title: string;
+    rows: any[];
+    url: string;
+    cols: string[];
+}) {
+    const router = useRouter();
+
     return (
         <Card style={{ gridArea: area }}>
             <CardActionArea
                 className={cx('card-area')}
                 onClick={() => {
-                    console.log('aaaa');
+                    router.push(url);
                 }}
             >
                 <h4 className={cx('card-title')}>{title}</h4>
                 <Table aria-label="customized table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Email</TableCell>
-                            <TableCell align="left">Họ và tên</TableCell>
+                            {cols.map((col) => (
+                                <TableCell>{col}</TableCell>
+                            ))}
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {rows.map((row) => (
-                            <TableRow key={row.name}>
+                            <TableRow key={row.email || row.from}>
                                 <TableCell component="th" scope="row" className={cx('email-cell')}>
-                                    {row.email}
+                                    {row.email || row.from}
                                 </TableCell>
                                 <TableCell align="left" className={cx('name-cell')}>
-                                    {row.name}
+                                    {row.name || row.type}
                                 </TableCell>
                             </TableRow>
                         ))}
