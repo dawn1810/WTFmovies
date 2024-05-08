@@ -3,6 +3,28 @@ import { mongodb } from '~/libs/func';
 
 export const getFilm = async (): Promise<FilmInfo[]> => {
     try {
+        const convertSecondsToDHMS = (seconds: number) => {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((seconds % (60 * 60)) / 60);
+            const remainingSeconds = seconds % 60;
+
+            let result = '';
+            if (days > 0) {
+                result += `${days}d `;
+            }
+            if (hours > 0) {
+                result += `${hours}h `;
+            }
+            if (minutes > 0) {
+                result += `${minutes}m `;
+            }
+            if (remainingSeconds > 0) {
+                result += `${remainingSeconds}s`;
+            }
+
+            return result.trim();
+        }
         const films: any[] = await mongodb()
             .db('film')
             .collection('information')
@@ -81,7 +103,8 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                             author: '$authorDetails.name',
                             genre: '$genreDetails.name',
                             director: '$directorDetails.name',
-                            videoType: { $arrayElemAt: [{ $arrayElemAt: ['$videoType.episode', 0] }, -1] },
+                            videoType: 1,
+                            uploadedEp: { $arrayElemAt: [{ $arrayElemAt: ['$videoType.episode', 0] }, -1] },
                             views: 1,
                             maxEp: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
@@ -100,7 +123,12 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
 
         return films.map(film => {
-            return { ...film, id: film._id, _id: undefined };
+            return {
+                ...film, duration: convertSecondsToDHMS(film.duration), id: film._id, maxEp: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: [
+                    { title: 'Subs', episode: [] },
+                    { title: 'Thuyết minh', episode: [] },
+                ].map((videoType) => videoType.title)
+            };
         });
     } catch (err) {
         console.log('😨😨😨 error at editor/getFilm function : ', err);

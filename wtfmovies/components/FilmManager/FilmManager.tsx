@@ -82,6 +82,11 @@ export default function DataGridCom({
                     <Box sx={{ flexGrow: 1 }} />
 
                     <GridToolbarExport
+                        csvOptions={{
+                            fileName: 'Danh sách tập phim',
+                            delimiter: ';',
+                            utf8WithBom: true,
+                        }}
                         slotProps={{
                             button: { variant: 'outlined' },
                         }}
