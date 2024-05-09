@@ -1,8 +1,5 @@
-'use client'
 import FilmManager from '~/components/FilmManager';
-import { data } from './mockdata';
-import { getFilm } from '~/libs/getData/editor';
-
+import { getSideMovieFormInfo, getFilm } from '~/libs/getData/editor';
 export const colum = [
     { headerName: 'Phim ID', field: 'id', width: 190 },
     { headerName: 'Tên phim', field: 'name', width: 250 },
@@ -18,9 +15,11 @@ export const colum = [
     { headerName: 'Quốc gia', field: 'country', width: 100 },
     { headerName: 'Điểm đánh giá', field: 'rating', width: 120 },
 ];
-export default function FilmPage({ data }: { data: any }) {
+export default async function FilmPage() {
+    const data = await getFilm();
+    const sideMovieFormInfo = await getSideMovieFormInfo();
     return (
-        <FilmManager title_name="Tổng quan" colum={colum}>
+        <FilmManager title_name="Tổng quan" colum={colum} sideFormInfo={sideMovieFormInfo}>
             {data}
         </FilmManager>
     );

@@ -95,9 +95,18 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                         },
                     },
                     {
+                        $lookup: {
+                            from: 'country',
+                            localField: 'country',
+                            foreignField: '_id',
+                            as: 'country',
+                        },
+                    },
+                    {
                         $project: {
-                            _id: 1,
+                            _id: 0,
                             name: 1,
+                            film_id: 1,
                             searchName: 1,
                             describe: 1,
                             author: '$authorDetails.name',
@@ -113,7 +122,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                             duration: 1,
                             tag: '$tagDetails.name',
                             releaseYear: 1,
-                            country: 1,
+                            country: '$country.label',
                             actor: '$actorDetails.name',
                         },
                     },
@@ -124,7 +133,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
         return films.map(film => {
             return {
-                ...film, duration: convertSecondsToDHMS(film.duration), id: film._id, maxEp: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: [
+                ...film, duration: convertSecondsToDHMS(film.duration), id: film.film_id, maxEp: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: [
                     { title: 'Subs', episode: [] },
                     { title: 'Thuyết minh', episode: [] },
                 ].map((videoType) => videoType.title)
@@ -135,3 +144,51 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
         return [];
     }
 };
+
+
+
+
+const getAutoMutiData = async (collection: string): Promise<any[]> => {
+    try {
+        const data: any[] = await mongodb()
+            .db('film')
+            .collection(collection)
+            .find();
+
+        return data.map(item => {
+            const firstLetter = item.name.charAt(0);
+            return {
+                title: item.name,
+                id: item._id,
+                firstLetter: firstLetter
+            };
+        });
+    } catch (err) {
+        console.log('😨😨😨 error at editor/getAuthor function : ', err);
+        return [];
+    }
+};
+const getCountrys = async (): Promise<any[]> => {
+    try {
+        const countrys: any[] = await mongodb()
+            .db('film')
+            .collection('country')
+            .find({ projection: { _id: 0 } });
+
+        return countrys;
+    } catch (err) {
+        console.log('😨😨😨 error at editor/getCountrys function : ', err);
+        return [];
+    }
+};
+
+export const getSideMovieFormInfo = async (): Promise<any> => {
+    return {
+        author: await getAutoMutiData('author'),
+        countrys: await getCountrys(),
+        genres: await getAutoMutiData('genre'),
+        directors: await getAutoMutiData('director'),
+        actors: await getAutoMutiData('actor'),
+        tags: await getAutoMutiData('tag'),
+    }
+}; 

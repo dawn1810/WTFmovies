@@ -73,6 +73,14 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                         },
                     },
                     {
+                        $lookup: {
+                            from: 'country',
+                            localField: 'country',
+                            foreignField: '_id',
+                            as: 'country',
+                        },
+                    },
+                    {
                         $project: {
                             _id: 0,
                             name: 1,
@@ -90,7 +98,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                             duration: 1,
                             tag: '$tagDetails.name',
                             releaseYear: 1,
-                            country: 1,
+                            country: '$country.label',
                             actor: '$actorDetails.name',
                         },
                     },

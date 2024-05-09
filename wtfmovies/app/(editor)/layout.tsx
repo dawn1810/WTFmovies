@@ -14,8 +14,8 @@ import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
 import { HomeOutlined, MovieOutlined } from '@mui/icons-material';
 
-const APP_NAME = 'Editer';
-const APP_DEFAULT_TITLE = 'Editer';
+const APP_NAME = 'Editor';
+const APP_DEFAULT_TITLE = 'Editor';
 const APP_TITLE_TEMPLATE = '%s - WTFmovies';
 const APP_DESCRIPTION = 'Nơi thoả sức chỉnh sửa đam mê phim ảnh!';
 
@@ -72,7 +72,7 @@ export default async function AdminLayout({
                                         <Leftbar menuItems={menuItems} />
                                     </Col>
                                     <Col xs={10} id="main-container" >
-                                        <Header isDatabase title="Editer" />
+                                        <Header isDatabase title="Editor" />
                                         <section id="layout-main-content">{children}</section>
                                     </Col>
                                 </Row>

@@ -35,10 +35,12 @@ export default function DataGridCom({
     colum,
     children,
     title_name,
+    sideFormInfo,
 }: {
     colum: readonly GridColDef<{ any: any }>[];
     children: any;
     title_name: string;
+    sideFormInfo: any;
 }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [open, setOpen] = useState(false);
@@ -74,7 +76,6 @@ export default function DataGridCom({
         });
         return JSON.stringify(data, null, 2);
     };
-
     const exportBlob = (blob: Blob, filename: string) => {
         // Save the blob in a json file
         const url = URL.createObjectURL(blob);
@@ -114,7 +115,7 @@ export default function DataGridCom({
     function CustomToolbar() {
         return (
             <div>
-                <MovieForm isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
+                <MovieForm countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
                 <AlertDialog
                     listId={rowSelectionModel}
                     handleClose={() => {

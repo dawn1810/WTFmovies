@@ -34,7 +34,7 @@ function TabPanel(props: any) {
 
     );
 }
-export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClose: () => any }) {
+export function MovieForm({ countrys, authors, genres, directors, actors, tags, isOpen, handleClose }: { countrys: any[], authors: any[], genres: any[], directors: any[], actors: any[], tags: any[], isOpen: boolean, handleClose: () => any }) {
     const statusMovies = [
         {
             value: 'going',
@@ -53,36 +53,14 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
             label: 'Sắp chiếu',
         },
     ];
-    const kuniMovies = [
-        {
-            value: 'jp',
-            label: 'Nhật bản',
-        },
-        {
-            value: 'en',
-            label: 'Anh',
-        },
-        {
-            value: 'cn',
-            label: 'Trung quốc',
-        },
-    ];
-    const options = [
-        { title: "Movie 1", year: 2020, firstLetter: "M" },
-        { title: "Movie 2", year: 2021, firstLetter: "M" },
-        { title: "Movie 4", year: 2021, firstLetter: "M" },
-        { title: "Movied", year: 2021, firstLetter: "M" },
-
-
-    ];
 
     const [value, setValue] = useState(0);
-    const [valueAuto, setvalueAutof] = React.useState([options[0]]);
-    const handleChangeAuto = (event: any, newValue: any) => {
-        console.log(valueAuto);
-        setvalueAutof(newValue);
+    const [valueAuthors, setValueAuthors] = React.useState([]);
+    const [valueGenres, setValueGenres] = React.useState([]);
+    const [valueDirectors, setValueDirectors] = React.useState([]);
+    const [valueActors, setValueActors] = React.useState([]);
+    const [valueAuto, setvalueAutof] = React.useState('');
 
-    };
 
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
@@ -115,14 +93,12 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
 
                 </AppBar>
                 <TabPanel value={value} index={0} >
-
                     <Box sx={{
                         margin: '0 auto',
                         padding: '1rem',
                         height: '100%',
                         display: 'flex'
                     }}>
-
                         <Box
                             component="form"
                             sx={{
@@ -151,22 +127,20 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
 
                             }}>
                                 <TextField
-
                                     required
                                     id="movie-title"
                                     label="Tựa phim"
-                                    defaultValue="Rabit hole"
+                                    defaultValue=""
                                 />
 
 
                                 <TextField
-
                                     required
                                     id="movie-sumary"
                                     label="Mô tả"
                                     multiline
                                     rows={12.5}
-                                    defaultValue="Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole Rabit hole"
+                                    defaultValue=""
                                 />
                             </Box>
                             <Box sx={{
@@ -181,17 +155,18 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                             }}>
 
                                 <Autocomplete
-                                    limitTags={2}
-
+                                    limitTags={1}
                                     multiple
                                     id="movie-tacgia"
-                                    onChange={handleChangeAuto}
-                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    onChange={(event: any, newValue: any) => {
+                                        setValueAuthors(newValue);
+                                    }}
+                                    options={authors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                                     getOptionLabel={(option) => option.title}
                                     groupBy={(option) => option.firstLetter}
-                                    value={valueAuto}
+                                    value={valueAuthors}
                                     isOptionEqualToValue={(option, value) => {
-                                        return option.title === value.title && option.year === value.year;
+                                        return option.title === value.title && option.id === value.id;
                                     }}
                                     renderTags={(tagValue, getTagProps) =>
                                         tagValue.map((option, index) => (
@@ -202,7 +177,6 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                                             />
                                         ))
                                     }
-
                                     filterSelectedOptions
                                     renderInput={(params) => (
                                         <TextField
@@ -214,17 +188,18 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                                     )}
                                 />
                                 <Autocomplete
-                                    limitTags={2}
-
+                                    limitTags={1}
                                     multiple
                                     id="movie-theloai"
-                                    onChange={handleChangeAuto}
-                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    onChange={(event: any, newValue: any) => {
+                                        setValueGenres(newValue);
+
+                                    }} options={genres.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                                     getOptionLabel={(option) => option.title}
                                     groupBy={(option) => option.firstLetter}
-                                    value={valueAuto}
+                                    value={valueGenres}
                                     isOptionEqualToValue={(option, value) => {
-                                        return option.title === value.title && option.year === value.year;
+                                        return option.title === value.title && option.id === value.id;
                                     }}
                                     renderTags={(tagValue, getTagProps) =>
                                         tagValue.map((option, index) => (
@@ -247,16 +222,18 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                                     )}
                                 />
                                 <Autocomplete
-                                    limitTags={2}
+                                    limitTags={1}
 
                                     multiple
                                     id="movie-daodien"
-                                    onChange={handleChangeAuto}
+                                    onChange={(event: any, newValue: any) => {
+                                        setValueDirectors(newValue);
 
-                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                    value={valueAuto}
+                                    }}
+                                    options={directors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    value={valueDirectors}
                                     isOptionEqualToValue={(option, value) => {
-                                        return option.title === value.title && option.year === value.year;
+                                        return option.title === value.title && option.id === value.id;
                                     }}
                                     renderTags={(tagValue, getTagProps) =>
                                         tagValue.map((option, index) => (
@@ -279,52 +256,35 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                                         />
                                     )}
                                 />
-                                <Autocomplete
-                                    multiple
-                                    limitTags={2}
-
-                                    id="movie-lang"
-                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                                    onChange={handleChangeAuto}
+                                <TextField
+                                    id="movie-tag"
+                                    select
+                                    label="Nhãn"
+                                    required
                                     value={valueAuto}
-                                    isOptionEqualToValue={(option, value) => {
-                                        return option.title === value.title && option.year === value.year;
-                                    }}
-                                    renderTags={(tagValue, getTagProps) =>
-                                        tagValue.map((option, index) => (
-                                            <Chip
-                                                {...getTagProps({ index })}
-                                                key={option.title}
-                                                label={option.title}
-                                            />
-                                        ))
-                                    }
-                                    groupBy={(option) => option.firstLetter}
-                                    getOptionLabel={(option) => option.title}
-                                    filterSelectedOptions
-                                    renderInput={(params) => (
-                                        <TextField
-                                            required
-                                            {...params}
-                                            label="Ngôn ngữ"
-                                            placeholder="Chọn ngôn ngữ"
-                                        />
-                                    )}
-                                />
+                                >
+                                    {statusMovies.map((option) => (
+                                        <MenuItem key={option.value} value={option.value}>
+                                            {option.label}
+                                        </MenuItem>
+                                    ))}
+                                </TextField>
                                 <Autocomplete
                                     multiple
-                                    limitTags={2}
-
+                                    limitTags={1}
                                     autoSelect
                                     id="movie-actor"
-                                    onChange={handleChangeAuto}
-                                    value={valueAuto}
-                                    options={options.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                                    onChange={(event: any, newValue: any) => {
+                                        setValueActors(newValue);
+
+                                    }}
+                                    value={valueActors}
+                                    options={actors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                                     groupBy={(option) => option.firstLetter}
                                     getOptionLabel={(option) => option.title}
                                     filterSelectedOptions
                                     isOptionEqualToValue={(option, value) => {
-                                        return option.title === value.title && option.year === value.year;
+                                        return option.title === value.title && option.id === value.id;
                                     }}
                                     renderTags={(tagValue, getTagProps) =>
                                         tagValue.map((option, index) => (
@@ -358,36 +318,36 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                                     id="movie-kuni"
                                     select
                                     label="Quốc gia sản xuất"
-                                    value={undefined}
-                                // helperText="Please select your currency"
+                                    value={valueAuto}
+                                    required
                                 >
-                                    {kuniMovies.map((option) => (
+                                    {countrys.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
                                             {option.label}
                                         </MenuItem>
                                     ))}
                                 </TextField>
+
                                 <DatePicker label="Năm sản xuất" />
+
                                 <TextField
-                                    id="movie-tag"
-                                    select
-                                    label="Nhãn"
-                                    value={undefined}
-                                // helperText="Please select your currency"
-                                >
-                                    {statusMovies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
-                                        </MenuItem>
-                                    ))}
-                                </TextField>
+                                    id="outlined-number"
+                                    label="Tổng số tập"
+                                    required
+                                    type="number"
+                                    InputLabelProps={{
+                                        shrink: true,
+                                    }}
+                                />
                                 <MobileTimePicker label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
+
                                 <TextField
                                     id="movie-status"
                                     select
+                                    required
+                                    value={valueAuto}
                                     label="Trạng thái"
-                                // defaultValue="EUR"
-                                // helperText="Please select your currency"
+
                                 >
                                     {statusMovies.map((option) => (
                                         <MenuItem key={option.value} value={option.value}>
@@ -395,13 +355,9 @@ export function MovieForm({ isOpen, handleClose }: { isOpen: boolean, handleClos
                                         </MenuItem>
                                     ))}
                                 </TextField>
+
                             </Box>
-
-
-
                         </Box>
-
-
                         <ImageUpload></ImageUpload>
                     </Box>
 
