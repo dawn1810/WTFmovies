@@ -4,7 +4,7 @@ import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { emails: string[]; ban: boolean };
+type dataType = { ids: string[] };
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,18 +13,17 @@ export async function POST(request: NextRequest) {
         if (!session) return toError('Xác thực thất bại', 401);
 
         const extendedUser: ExtendedUser | undefined = session?.user;
-        const { emails, ban }: dataType = await request.json();
+        const { ids }: dataType = await request.json();
 
         if (extendedUser?.role === 'admin') {
             const response = await mongodb()
                 .db('user')
                 .collection('auth')
-                .updateOne({
-                    filter: { email: { $in: emails } },
-                    update: { $set: { status: ban } },
+                .deleteMany({
+                    filter: { _id: { $in: ids } },
                 });
 
-            if (response.modifiedCount === 1) {
+            if (response) {
                 return toJSON('Thay đổi trạng thái thành công');
             }
 

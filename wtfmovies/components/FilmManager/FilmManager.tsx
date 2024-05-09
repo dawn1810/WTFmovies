@@ -87,7 +87,6 @@ export default function DataGridCom({
         setTimeout(() => {
             URL.revokeObjectURL(url);
         });
-
     };
     function JsonExportMenuItem(props: GridExportMenuItemProps<{}>) {
         const apiRef = useGridApiContext();
@@ -138,11 +137,13 @@ export default function DataGridCom({
                     <GridToolbarDensitySelector />
                     <Box sx={{ flexGrow: 1 }} />
                     <GridToolbarExportContainer>
-                        <GridCsvExportMenuItem options={{
-                            fileName: 'Danh sách tập phim',
-                            delimiter: ';',
-                            utf8WithBom: true,
-                        }} />
+                        <GridCsvExportMenuItem
+                            options={{
+                                fileName: 'Danh sách tập phim',
+                                delimiter: ';',
+                                utf8WithBom: true,
+                            }}
+                        />
                         <JsonExportMenuItem />
                     </GridToolbarExportContainer>
 
@@ -177,11 +178,12 @@ export default function DataGridCom({
     return (
         <div className={cx('dataGrid')}>
             <h1 className={cx('title_name')}>{title_name}</h1>
-            <DataGrid sx={{
-                '@media print': {
-                    '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
-                },
-            }}
+            <DataGrid
+                sx={{
+                    '@media print': {
+                        '.MuiDataGrid-main': { color: 'rgba(0, 0, 0, 0.87)' },
+                    },
+                }}
                 columns={colum}
                 rows={children}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}

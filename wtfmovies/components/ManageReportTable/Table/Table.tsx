@@ -45,6 +45,23 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         };
 
         const handleApprove = async () => {
+            const response = await fetch('/api/v1/admin/approveReport', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids: rowSelectionModel }),
+            });
+
+            if (response.ok) {
+                alert('Thay đổi trạng thái thành công 😎😎😎');
+            } else if (response.status === 400) {
+                alert('Thay đổi trạng thái thất bại 😭😭😭');
+            } else if (response.status === 401) {
+                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+            } else if (response.status === 403) {
+                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+            } else if (response.status === 500) {
+                alert('Lỗi trong quá trình thay đổi trạng thái 😥😥😥');
+            }
             setOpen(false);
         };
 

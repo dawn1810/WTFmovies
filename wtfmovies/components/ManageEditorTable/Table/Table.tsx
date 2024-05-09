@@ -72,15 +72,17 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         if (response.ok) {
             resolve(newRow);
             alert('Thay đổi trạng thái thành công 😎😎😎');
-        } else if (response.status === 400) {
+        } else {
+            if (response.status === 400) {
+                alert('Thay đổi trạng thái thất bại 😭😭😭');
+            } else if (response.status === 401) {
+                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+            } else if (response.status === 403) {
+                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+            } else if (response.status === 500) {
+                alert('Lỗi trong quá trình thay đổi trạng thái 😥😥😥');
+            }
             reject(oldRow);
-            alert('Thay đổi trạng thái thất bại 😭😭😭');
-        } else if (response.status === 403) {
-            reject(oldRow);
-            alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
-        } else if (response.status === 500) {
-            reject(oldRow);
-            alert('Lỗi trong quá trình thay đổi trạng thái 😥😥😥');
         }
         setPromiseArguments(null);
     };
@@ -161,6 +163,8 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                 alert('Thay đổi trạng thái thành công 😎😎😎');
             } else if (response.status === 400) {
                 alert('Thay đổi trạng thái thất bại 😭😭😭');
+            } else if (response.status === 401) {
+                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
             } else if (response.status === 403) {
                 alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
             } else if (response.status === 500) {
