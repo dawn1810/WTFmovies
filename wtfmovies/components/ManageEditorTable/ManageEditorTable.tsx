@@ -24,5 +24,5 @@ export default function FilmPage({ dataset }: { dataset: UserAdminInfoInfterface
         role: data.role[0],
     }));
 
-    return <Table title_name="Quản lý biên tập viên" dataset={mappedDataset} />;
+    return <Table title_name="Quản lý người dùng" dataset={mappedDataset} />;
 }

@@ -1,5 +1,6 @@
 import { MongoDate, mongodb } from '~/libs/func';
 import {
+    AdminReportInfterface,
     FilmHotInterface,
     NumStatisticalInterface,
     TopSixUserInfoInfterface,
@@ -7,6 +8,7 @@ import {
 } from '../interfaces';
 // import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
+// admin dashboard
 export const getNumberStatistical = async (): Promise<NumStatisticalInterface[]> => {
     try {
         const statInfo: NumStatisticalInterface[] = await mongodb()
@@ -89,14 +91,14 @@ export const getTopHotGenre = async (): Promise<FilmHotInterface[]> => {
     }
 };
 
-export const getNewReport = async (): Promise<UserAdminInfoInfterface[]> => {
+export const getNewReport = async (): Promise<AdminReportInfterface[]> => {
     try {
-        const reports: UserAdminInfoInfterface[] = await mongodb()
+        const reports: AdminReportInfterface[] = await mongodb()
             .db('statistical')
             .collection('report')
             .aggregate({
                 pipeline: [
-                    { $sort: { time: 1 } },
+                    { $sort: { time: -1 } },
                     {
                         $project: {
                             _id: 0,
@@ -138,6 +140,7 @@ export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
     }
 };
 
+// user manage
 export const getAllUser = async (): Promise<UserAdminInfoInfterface[]> => {
     try {
         const userInfo: UserAdminInfoInfterface[] = await mongodb()
@@ -167,11 +170,27 @@ export const getAllUser = async (): Promise<UserAdminInfoInfterface[]> => {
                     },
                 ],
             });
-        console.log(userInfo);
 
         return userInfo;
     } catch (err) {
         console.log('😨😨😨 error at admin/getAllUser function : ', err);
+        return [];
+    }
+};
+
+// report manage
+export const getAllReport = async (): Promise<AdminReportInfterface[]> => {
+    try {
+        const reports: AdminReportInfterface[] = await mongodb()
+            .db('statistical')
+            .collection('report')
+            .aggregate({
+                pipeline: [{ $sort: { time: -1 } }],
+            });
+
+        return reports;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getAllReport function : ', err);
         return [];
     }
 };

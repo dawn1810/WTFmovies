@@ -21,6 +21,21 @@ import style from './Table.module.scss';
 
 const cx = classNames.bind(style);
 
+const columns: any[] = [
+    { headerName: 'STT', field: 'index', align: 'center', width: 10 },
+    { headerName: 'Email', field: 'id', width: 180 },
+    { headerName: 'Tên hiễn thị', field: 'name', width: 180 },
+    { headerName: 'Ngày sinh', field: 'birthDate', width: 180 },
+    { headerName: 'Giới tính', field: 'gender', width: 180 },
+    { headerName: 'Phân quyền', field: 'role', width: 180 },
+    {
+        headerName: 'Trạng thái',
+        field: 'status',
+        type: 'boolean',
+        editable: true,
+    },
+];
+
 export default function DataGridCom({ dataset, title_name }: { dataset: any[]; title_name: string }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
@@ -212,20 +227,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         <div className={cx('dataGrid')}>
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
-                columns={[
-                    { headerName: 'STT', field: 'index', align: 'center', width: 10 },
-                    { headerName: 'Email', field: 'id', width: 180 },
-                    { headerName: 'Tên hiễn thị', field: 'name', width: 180 },
-                    { headerName: 'Ngày sinh', field: 'birthDate', width: 180 },
-                    { headerName: 'Giới tính', field: 'gender', width: 180 },
-                    { headerName: 'Phân quyền', field: 'role', width: 180 },
-                    {
-                        headerName: 'Trạng thái',
-                        field: 'status',
-                        type: 'boolean',
-                        editable: true,
-                    },
-                ]}
+                columns={columns}
                 rows={dataset}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection

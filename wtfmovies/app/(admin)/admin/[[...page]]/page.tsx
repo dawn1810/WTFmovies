@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import style from './Admin.module.scss';
 import AdminDashboard from '~/components/AdminDashboard';
 import {
+    getAllReport,
     getAllUser,
     getNewReport,
     getNumberStatistical,
@@ -12,6 +13,8 @@ import {
 } from '~/libs/getData/admin';
 import { Link } from '@mui/material';
 import ManageEditorTable from '~/components/ManageEditorTable';
+import ManageReportTable from '~/components/ManageReportTable';
+import { AdminReportInfterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 export const fetchCache = 'force-no-store';
@@ -38,6 +41,10 @@ async function getPage(params?: any) {
             const dataset = await getAllUser();
 
             return <ManageEditorTable dataset={dataset} />;
+        case 'report':
+            const reports: AdminReportInfterface[] = await getAllReport();
+
+            return <ManageReportTable dataset={reports} />;
         default:
             return (
                 <div style={{ color: 'var(--text-color)' }}>

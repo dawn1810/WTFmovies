@@ -5,6 +5,7 @@ import style from './BarCard.module.scss';
 import {
     Button,
     Card,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -29,6 +30,7 @@ export default function BarCard({
     title,
     horizontal = false,
     height,
+    api,
 }: {
     area?: string;
     dataset: FilmHotInterface[];
@@ -37,6 +39,7 @@ export default function BarCard({
     title: string;
     horizontal?: boolean;
     height: number;
+    api: string;
 }) {
     const chartSetting: any = horizontal
         ? {
@@ -64,6 +67,7 @@ export default function BarCard({
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState({ time: 0, sortBy: 0 });
     const [dataState, setDataState] = useState(dataset);
+    const [loading, setLoading] = useState(false);
 
     // dialog
     const handleOpen = () => {
@@ -76,7 +80,8 @@ export default function BarCard({
 
     const handleFilter = async () => {
         setOpen(false);
-        const response = await fetch('/api/v1/admin/hotFilmFilter', {
+        setLoading(true);
+        const response = await fetch(`/api/v1/admin/${api}`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(filter),
@@ -84,7 +89,7 @@ export default function BarCard({
 
         if (response.ok) {
             const res: FilmHotInterface[] = await response.json();
-
+            setLoading(false);
             setDataState(res);
         }
     };
@@ -97,22 +102,30 @@ export default function BarCard({
     return (
         <>
             <Card style={{ gridArea: area }} className={cx('card')}>
-                <div className={cx('card-header')}>
-                    <h4 className={cx('card-title')}>{title}</h4>
-                    <IconButton aria-label="delete" onClick={handleOpen}>
-                        <FilterList />
-                    </IconButton>
-                </div>
-                {!!dataState && !!dataState.length ? (
-                    <BarChart
-                        dataset={dataState}
-                        series={series}
-                        className={cx('chart')}
-                        height={height}
-                        {...chartSetting}
-                    />
+                {loading ? (
+                    <div className={cx('chart')}>
+                        <CircularProgress />
+                    </div>
                 ) : (
-                    <div className={cx('chart')}>Chưa có dữ liệu</div>
+                    <>
+                        <div className={cx('card-header')}>
+                            <h4 className={cx('card-title')}>{title}</h4>
+                            <IconButton aria-label="delete" onClick={handleOpen}>
+                                <FilterList />
+                            </IconButton>
+                        </div>
+                        {!!dataState && !!dataState.length ? (
+                            <BarChart
+                                dataset={dataState}
+                                series={series}
+                                className={cx('chart')}
+                                height={height}
+                                {...chartSetting}
+                            />
+                        ) : (
+                            <div className={cx('chart')}>Chưa có dữ liệu</div>
+                        )}
+                    </>
                 )}
             </Card>
             <Dialog

@@ -109,10 +109,12 @@ export interface FilmInfo {
     author?: ObjectMongo[];
     director?: string[];
     duration?: number;
-    videoType?: {
-        title?: string;
-        episode?: number[];
-    }[] | any;
+    videoType?:
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -322,4 +324,12 @@ export interface UserAdminInfoInfterface {
 export interface TopSixUserInfoInfterface {
     name: string;
     email: string;
+}
+
+export interface AdminReportInfterface {
+    _id?: string;
+    from: string;
+    type: string;
+    time: string;
+    content?: string;
 }

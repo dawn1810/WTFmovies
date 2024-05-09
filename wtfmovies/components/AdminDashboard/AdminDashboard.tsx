@@ -210,6 +210,7 @@ export default function AdminDashboard({
                 title="Danh sách phim nổi bật"
                 height={350}
                 horizontal
+                api="hotFilmFilter"
             />
             <TableCard
                 area="table1"
@@ -225,6 +226,7 @@ export default function AdminDashboard({
                 ykey="name"
                 title="Danh sách thể loại nổi bật"
                 height={350}
+                api="hotGenreFilter"
             />
             <PieCard area="pie" />
             <TableCard
