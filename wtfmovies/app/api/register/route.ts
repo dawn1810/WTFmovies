@@ -28,13 +28,13 @@ export async function POST(request: NextRequest) {
             role: 'none',
             first: true,
             status: true,
+            avatar: 'https://i.pinimg.com/736x/6d/88/fe/6d88fe4f5167ce5735d03dd09acc6933.jpg',
         });
 
         // insert data to user/information
         await mongodb().db('user').collection('information').insertOne({
             email: email,
             name: name,
-            avatar: 'https://i.pinimg.com/736x/6d/88/fe/6d88fe4f5167ce5735d03dd09acc6933.jpg',
             birthDate: birthDate,
         });
 

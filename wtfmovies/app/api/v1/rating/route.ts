@@ -2,14 +2,15 @@ export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { ObjectId, mongodb, toError, toJSON } from '~/libs/func';
 import { MongoUpdate } from '~/libs/interfaces';
-import { auth } from '../../auth/[...nextauth]/auth';
+import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export async function POST(request: NextRequest) {
-    const data = await request.json() as any;
+    const data = (await request.json()) as any;
     const { epId, rating } = data;
     const session = await auth();
 
-    if (!session || !session.user || !session.user.id || !epId || !rating) return toError({ statusCode: 403, content: "missing data" }, 200);
+    if (!session || !session.user || !session.user.id || !epId || !rating)
+        return toError({ statusCode: 403, content: 'missing data' }, 200);
 
     const updateRes: MongoUpdate = await mongodb()
         .db('film')
@@ -17,12 +18,12 @@ export async function POST(request: NextRequest) {
         .updateOne({
             filter: { id_ep: ObjectId(epId), id_user: ObjectId(session.user.id) },
             update: {
-                "$set": {
-                    rating: { "$numberDouble": String(rating) }
-                }
+                $set: {
+                    rating: { $numberDouble: String(rating) },
+                },
             },
-            upsert: true
-        })
+            upsert: true,
+        });
     const avgRatingEp: any = await mongodb()
         .db('film')
         .collection('episode')
@@ -30,10 +31,9 @@ export async function POST(request: NextRequest) {
             pipeline: [
                 {
                     $match: {
-                        _id: ObjectId(epId)
-                    }
-                }
-                ,
+                        _id: ObjectId(epId),
+                    },
+                },
                 {
                     $lookup: {
                         from: 'rating',
@@ -46,24 +46,22 @@ export async function POST(request: NextRequest) {
                     $project: {
                         rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                     },
-
-                }]
-        })
+                },
+            ],
+        });
     const UpdateRatingEp: MongoUpdate = await mongodb()
         .db('film')
         .collection('episode')
         .updateOne({
-            filter: { _id: ObjectId(epId) }, update: {
+            filter: { _id: ObjectId(epId) },
+            update: {
                 $set: {
-                    rating: avgRatingEp[0].rating
-                }
-            }
+                    rating: avgRatingEp[0].rating,
+                },
+            },
         });
 
-
     if (updateRes.matchedCount === 1 && UpdateRatingEp.matchedCount === 1)
-        return toJSON({ statusCode: 200, content: "ok" });
-    else
-        return toError({ statusCode: 404, content: "wrong data" }, 200);
-
-}   
+        return toJSON({ statusCode: 200, content: 'ok' });
+    else return toError({ statusCode: 404, content: 'wrong data' }, 200);
+}

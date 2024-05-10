@@ -315,10 +315,10 @@ export interface FilmHotInterface {
 export interface UserAdminInfoInfterface {
     id: string;
     name: string;
-    birthDate: string;
-    status: boolean[];
-    role: string[];
-    gender: number;
+    birthDate?: string;
+    status?: boolean[];
+    role?: string[];
+    gender?: number;
 }
 
 export interface TopSixUserInfoInfterface {

@@ -15,6 +15,14 @@ export const getUserInfo = async (): Promise<any> => {
                 pipeline: [
                     { $match: { email: extendedUser?.email } },
                     {
+                        $lookup: {
+                            from: 'auth',
+                            localField: 'email',
+                            foreignField: 'email',
+                            as: 'auth',
+                        },
+                    },
+                    {
                         $project: {
                             _id: 0,
                             name: 1,
@@ -24,7 +32,7 @@ export const getUserInfo = async (): Promise<any> => {
                             genres: '$genres.label',
                             languages: '$languages.label',
                             status: 1,
-                            avatar: extendedUser?.avatar,
+                            avatar: '$auth.avatar',
                             email: extendedUser?.email,
                         },
                     },

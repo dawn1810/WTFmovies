@@ -3,7 +3,14 @@ import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
 import { DateMongo, ObjectMongo, ResponseTiktokOK } from './interfaces';
 export const { env } = getOptionalRequestContext() ?? {
-    env: { AUTH_SECRET: 'haha', APIKey: 'haha', URL_Endpoint: 'haha', TIKTOKCOOKIE: 'haha' },
+    env: {
+        AUTH_SECRET: 'haha',
+        APIKey: 'haha',
+        URL_Endpoint: 'haha',
+        TIKTOKCOOKIE: 'haha',
+        GOOGLE_CLIENT_ID: '',
+        GOOGLE_CLIENT_SECRET: '',
+    },
 };
 export function mongodb(): Mongodb {
     return new Mongodb({

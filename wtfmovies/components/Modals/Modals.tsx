@@ -32,6 +32,10 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
         setAlert(false);
     };
 
+    const handleSignInGoogle = async () => {
+        await signIn('google');
+    };
+
     const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
@@ -98,7 +102,12 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
             </Modal.Header>
             <Modal.Body className={cx('modal-body')}>
                 <Form.Group className={cx('btn-group')} controlId="formHorizontalAPI">
-                    <Button primary leftIcon={<FontAwesomeIcon icon={faGoogle} />} className={cx('gg-btn')}>
+                    <Button
+                        primary
+                        leftIcon={<FontAwesomeIcon icon={faGoogle} />}
+                        className={cx('gg-btn')}
+                        onClick={handleSignInGoogle}
+                    >
                         Google
                     </Button>
 

@@ -1,7 +1,7 @@
 import { randomBytes, randomUUID } from 'crypto';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { AnyIfEmpty } from 'react-redux';
+import GoogleProvider from 'next-auth/providers/google';
 import { comparePassWord, env, mongodb } from '~/libs/func';
 
 const login = async (credentials: any) => {
@@ -25,6 +25,40 @@ const login = async (credentials: any) => {
     return userAuth; // login successfull
 };
 
+const googleLogin = async (user: any) => {
+    // check for first time login
+    const checkUser = await mongodb()
+        .db('user')
+        .collection('auth')
+        .findOne({
+            filter: {
+                email: user.email,
+            },
+        });
+
+    // create new user
+    if (!checkUser) {
+        const newAuth = await mongodb().db('user').collection('auth').insertOne({
+            email: user.email,
+            avatar: user.image,
+            role: 'none',
+            first: true,
+            status: true,
+        });
+
+        const newInfo = await mongodb().db('user').collection('information').insertOne({
+            email: user.email,
+            name: user.name,
+            birthDate: '2003-10-18',
+        });
+
+        if (!!newAuth && !!newInfo) return user;
+        else throw new Error('Cập nhật user mới không thành công');
+    }
+
+    return checkUser;
+};
+
 const authOptions: NextAuthConfig = {
     session: {
         generateSessionToken: () => {
@@ -44,17 +78,40 @@ const authOptions: NextAuthConfig = {
                 return user;
             },
         }),
+        GoogleProvider({
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+        }),
     ],
     callbacks: {
-        // async signIn({ user, credentials }) {
-        //     if (user) {
-        //         return true;
-        //     }
-        //     // Return false to indicate failed authentication
-        //     // You can also return a custom error URL if needed
-        //     return false;
-        // },
-        async jwt({ token, user, trigger, session }: { token: any; user: any; trigger?: any; session?: any }) {
+        async signIn({ user, account, profile }): Promise<string | boolean> {
+            if (account?.provider === 'google') {
+                return !!profile?.email_verified;
+            }
+
+            if (!user) {
+                return false;
+            }
+
+            return true;
+        },
+        async jwt({
+            token,
+            user,
+            account,
+            trigger,
+            session,
+        }: {
+            token: any;
+            user: any;
+            account: any;
+            trigger?: any;
+            session?: any;
+        }) {
+            if (account?.provider === 'google') {
+                user = await googleLogin(user); // update session
+            }
+
             if (trigger === 'update' && session.user.avatar) {
                 token.avatar = session.user.avatar;
             }
@@ -64,7 +121,7 @@ const authOptions: NextAuthConfig = {
                 token.email = user.email;
                 token.role = user.role;
                 token.first = user.first;
-                token.avatar = user.avatar;
+                token.avatar = user.avatar || user.image;
                 token.status = user.status;
             }
 
