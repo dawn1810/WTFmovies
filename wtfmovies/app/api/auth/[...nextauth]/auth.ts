@@ -2,6 +2,7 @@ import { randomBytes, randomUUID } from 'crypto';
 import NextAuth, { NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
+import GitHubProvider from 'next-auth/providers/github';
 import { comparePassWord, env, mongodb } from '~/libs/func';
 
 const login = async (credentials: any) => {
@@ -82,6 +83,10 @@ const authOptions: NextAuthConfig = {
             clientId: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
         }),
+        GitHubProvider({
+            clientId: env.GITHUB_CLIENT_ID,
+            clientSecret: env.GITHUB_CLIENT_SECRET,
+        }),
     ],
     callbacks: {
         async signIn({ user, account, profile }): Promise<string | boolean> {
@@ -108,7 +113,7 @@ const authOptions: NextAuthConfig = {
             trigger?: any;
             session?: any;
         }) {
-            if (account?.provider === 'google') {
+            if (account?.provider === 'google' || account?.provider === 'github') {
                 user = await googleLogin(user); // update session
             }
 
