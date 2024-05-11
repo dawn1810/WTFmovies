@@ -36,6 +36,10 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
         await signIn('google');
     };
 
+    const handleSignInGithub = async () => {
+        await signIn('github');
+    };
+
     const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
@@ -115,7 +119,12 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                         Facebook
                     </Button>
 
-                    <Button primary leftIcon={<FontAwesomeIcon icon={faGithub} />} className={cx('git-btn')}>
+                    <Button
+                        primary
+                        leftIcon={<FontAwesomeIcon icon={faGithub} />}
+                        className={cx('git-btn')}
+                        onClick={handleSignInGithub}
+                    >
                         Github
                     </Button>
                 </Form.Group>

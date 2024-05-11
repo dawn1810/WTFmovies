@@ -10,6 +10,8 @@ export const { env } = getOptionalRequestContext() ?? {
         TIKTOKCOOKIE: 'haha',
         GOOGLE_CLIENT_ID: '',
         GOOGLE_CLIENT_SECRET: '',
+        GITHUB_CLIENT_ID: '',
+        GITHUB_CLIENT_SECRET: '',
     },
 };
 export function mongodb(): Mongodb {
