@@ -71,7 +71,7 @@ function FilmCard({
                             <FontAwesomeIcon icon={faEye} /> {views}
                         </h5>
                         <h5>
-                            <FontAwesomeIcon icon={faCloudArrowUp} /> {`${episodes} / ${maxEp === -1 ? '?' : maxEp}`}
+                            <FontAwesomeIcon icon={faCloudArrowUp} /> {`${episodes} / ${maxEp || '?'}`}
                         </h5>
                         <h5>
                             <FontAwesomeIcon icon={faCalendar} /> {releaseYear?.getFullYear()}

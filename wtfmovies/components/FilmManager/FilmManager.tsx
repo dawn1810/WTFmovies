@@ -45,8 +45,29 @@ export default function DataGridCom({
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [open, setOpen] = useState(false);
     const [openForm, setOpenForm] = useState(false);
+    const [valueFilm, setValueFilm] = useState<any>({});
 
-    function handleEdit() {
+    async function handleEdit(event: any) {
+        const selectedIDs = new Set(rowSelectionModel);
+        const rowData = children.filter((row: any) =>
+            selectedIDs.has(row.id),
+        );
+
+        const authorsList = new Set(rowData[0].author);
+        const genresList = new Set(rowData[0].genre);
+        const directorList = new Set(rowData[0].director);
+        const actorsList = new Set(rowData[0].actor);
+        const countrysList = new Set(rowData[0].country);
+
+        const data = {
+            ...rowData[0],
+            author: [...sideFormInfo.author.filter((item: any) => authorsList.has(item.title))],
+            genre: [...sideFormInfo.genres.filter((item: any) => genresList.has(item.title))],
+            director: [...sideFormInfo.directors.filter((item: any) => directorList.has(item.title))],
+            actor: [...sideFormInfo.actors.filter((item: any) => actorsList.has(item.title))],
+            country: [...sideFormInfo.countrys.filter((item: any) => countrysList.has(item.label))],
+        };
+        setValueFilm(data)
         setOpenForm(true);
     }
     const status = useSelector(alertStatusSelector);
@@ -60,6 +81,7 @@ export default function DataGridCom({
     }
     function handleCloseForm() {
         setOpenForm(false);
+        setValueFilm({});
     }
     const getJson = (apiRef: React.MutableRefObject<GridApi>) => {
         // Select rows and columns
@@ -114,7 +136,6 @@ export default function DataGridCom({
     function CustomToolbar() {
         return (
             <div>
-                <MovieForm countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
                 <AlertDialog
                     listId={rowSelectionModel}
                     handleClose={() => {
@@ -178,6 +199,8 @@ export default function DataGridCom({
 
     return (
         <div className={cx('dataGrid')}>
+            <MovieForm key={valueFilm.film_id} defaultValue={valueFilm} countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
+
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
                 sx={{

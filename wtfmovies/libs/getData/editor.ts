@@ -78,9 +78,9 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                     {
                         $lookup: {
                             from: 'tag',
-                            let: { tagIds: '$tag' }, // Define the local variable genreIds
+                            localField: 'tag',
+                            foreignField: '_id',
                             pipeline: [
-                                { $match: { $expr: { $in: ['$_id', '$$tagIds'] } } }, // Match the genre ids
                                 { $project: { _id: 0, name: 1 } }, // Get name only
                             ],
                             as: 'tagDetails',
@@ -133,10 +133,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
         return films.map(film => {
             return {
-                ...film, duration: convertSecondsToDHMS(film.duration), id: film.film_id, maxEp: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: [
-                    { title: 'Subs', episode: [] },
-                    { title: 'Thuyết minh', episode: [] },
-                ].map((videoType) => videoType.title)
+                ...film, duration: film.duration, durationAsString: convertSecondsToDHMS(film.duration), id: film.film_id, maxEp: film.maxEp, maxEpAsString: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: film.videoType.map((videoType: any) => videoType.title)
             };
         });
     } catch (err) {
@@ -164,7 +161,7 @@ const getAutoMutiData = async (collection: string): Promise<any[]> => {
             };
         });
     } catch (err) {
-        console.log('😨😨😨 error at editor/getAuthor function : ', err);
+        console.log('😨😨😨 error at editor/getAutoMutiData function : ', err);
         return [];
     }
 };
@@ -182,6 +179,19 @@ const getCountrys = async (): Promise<any[]> => {
     }
 };
 
+const getTags = async (): Promise<any[]> => {
+    try {
+        const tags: any[] = await mongodb()
+            .db('film')
+            .collection('tag')
+            .find({ projection: { _id: 0 } });
+
+        return tags;
+    } catch (err) {
+        console.log('😨😨😨 error at editor/getTags function : ', err);
+        return [];
+    }
+};
 export const getSideMovieFormInfo = async (): Promise<any> => {
     return {
         author: await getAutoMutiData('author'),
@@ -189,6 +199,6 @@ export const getSideMovieFormInfo = async (): Promise<any> => {
         genres: await getAutoMutiData('genre'),
         directors: await getAutoMutiData('director'),
         actors: await getAutoMutiData('actor'),
-        tags: await getAutoMutiData('tag'),
+        tags: await getTags(),
     }
 }; 

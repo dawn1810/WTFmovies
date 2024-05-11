@@ -8,12 +8,14 @@ export const colum = [
     { headerName: 'Tác giả', field: 'author', width: 100 },
     { headerName: 'Thể loại', field: 'genre', width: 100 },
     { headerName: 'Đạo diễn', field: 'director', width: 100 },
-    { headerName: 'Thời lượng', field: 'duration', width: 100 },
-    { headerName: 'Tổng số tập', field: 'maxEp', width: 100 },
+    { headerName: 'Thời lượng', field: 'durationAsString', width: 100 },
+    { headerName: 'Tổng số tập', field: 'maxEpAsString', width: 100 },
     { headerName: 'Loại video', field: 'videoType', width: 100 },
     { headerName: 'Năm xuất bản', field: 'releaseYear', width: 100 },
     { headerName: 'Quốc gia', field: 'country', width: 100 },
-    { headerName: 'Điểm đánh giá', field: 'rating', width: 120 },
+    { headerName: 'Giới hạn', field: 'tag', width: 130 },
+    { headerName: 'Đánh giá', field: 'rating', width: 120 },
+
 ];
 export default async function FilmPage() {
     const data = await getFilm();

@@ -47,7 +47,7 @@ interface SearchInterface {
     status: string,
     author: string[],
     tag: string[],
-    maxEp: number;
+    maxEp: number | null;
     genre: string[],
 }
 
@@ -89,9 +89,9 @@ async function getSerachByType(type: string, query: string, limit: number, full 
                 {
                     $lookup: {
                         from: 'tag',
-                        let: { tagIds: '$tag' }, // Define the local variable genreIds
+                        localField: 'tag',
+                        foreignField: '_id',
                         pipeline: [
-                            { $match: { $expr: { $in: ['$_id', '$$tagIds'] } } }, // Match the genre ids
                             { $project: { _id: 0, name: 1 } }, // Get name only
                         ],
                         as: 'tagDetails',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
@@ -8,6 +8,7 @@ import ListAltIcon from '@mui/icons-material/ListAlt';
 import Chip from '@mui/material/Chip';
 import { Input, Button, AppBar, Tabs, Box, Tab, Dialog, Autocomplete, IconButton, MenuItem, TextField, Toolbar, } from "@mui/material";
 import ImageUpload from './ImageUpload';
+import dayjs, { Dayjs } from 'dayjs';
 
 
 
@@ -34,7 +35,7 @@ function TabPanel(props: any) {
 
     );
 }
-export function MovieForm({ countrys, authors, genres, directors, actors, tags, isOpen, handleClose }: { countrys: any[], authors: any[], genres: any[], directors: any[], actors: any[], tags: any[], isOpen: boolean, handleClose: () => any }) {
+export function MovieForm({ defaultValue, countrys, authors, genres, directors, actors, tags, isOpen, handleClose }: { defaultValue?: any, countrys: any[], authors: any[], genres: any[], directors: any[], actors: any[], tags: any[], isOpen: boolean, handleClose: () => any }) {
     const statusMovies = [
         {
             value: 'going',
@@ -55,11 +56,20 @@ export function MovieForm({ countrys, authors, genres, directors, actors, tags, 
     ];
 
     const [value, setValue] = useState(0);
-    const [valueAuthors, setValueAuthors] = React.useState([]);
-    const [valueGenres, setValueGenres] = React.useState([]);
-    const [valueDirectors, setValueDirectors] = React.useState([]);
-    const [valueActors, setValueActors] = React.useState([]);
-    const [valueAuto, setvalueAutof] = React.useState('');
+    const [valueAuthors, setValueAuthors] = useState(defaultValue.author || []);
+    const [valueGenres, setValueGenres] = useState(defaultValue.genre || []);
+    const [valueDirectors, setValueDirectors] = useState(defaultValue.director || []);
+    const [valueActors, setValueActors] = useState(defaultValue.actor || []);
+    const [valueTag, setvValueTag] = useState(defaultValue.tag || '');
+    const [valueCountry, setValueCountry] = useState(defaultValue?.country?.[0].value || '');
+    const [sumaryMovie, setSumaryMovie] = useState(defaultValue.describe || '');
+    const [titleMovie, setTitleMovie] = useState(defaultValue.name || '');
+    const [year, setYear] = useState<Dayjs | null>(defaultValue.releaseYear ? dayjs(defaultValue.releaseYear) : null);
+    const [maxEp, setMaxEp] = useState(defaultValue.maxEp || undefined);
+    const [duration, setDuration] = useState<Dayjs | null>(defaultValue.duration ? dayjs()
+        .startOf('year')
+        .add(defaultValue.duration, 'seconds') : null);
+    const [valueStatus, setValueStatus] = useState(statusMovies.find(item => item.label === defaultValue.status)?.value || '');
 
 
     const handleChange = (event: any, newValue: any) => {
@@ -130,7 +140,10 @@ export function MovieForm({ countrys, authors, genres, directors, actors, tags, 
                                     required
                                     id="movie-title"
                                     label="Tựa phim"
-                                    defaultValue=""
+                                    value={titleMovie}
+                                    onChange={(event: any) => {
+                                        setTitleMovie(event.target.value);
+                                    }}
                                 />
 
 
@@ -140,7 +153,10 @@ export function MovieForm({ countrys, authors, genres, directors, actors, tags, 
                                     label="Mô tả"
                                     multiline
                                     rows={12.5}
-                                    defaultValue=""
+                                    value={sumaryMovie}
+                                    onChange={(event: any) => {
+                                        setSumaryMovie(event.target.value);
+                                    }}
                                 />
                             </Box>
                             <Box sx={{
@@ -261,11 +277,14 @@ export function MovieForm({ countrys, authors, genres, directors, actors, tags, 
                                     select
                                     label="Nhãn"
                                     required
-                                    value={valueAuto}
+                                    value={valueTag}
+                                    onChange={(event: any) => {
+                                        setvValueTag(event.target.value);
+                                    }}
                                 >
-                                    {statusMovies.map((option) => (
-                                        <MenuItem key={option.value} value={option.value}>
-                                            {option.label}
+                                    {tags.map((option) => (
+                                        <MenuItem key={option.age} value={option.name}>
+                                            {option.name}
                                         </MenuItem>
                                     ))}
                                 </TextField>
@@ -318,7 +337,10 @@ export function MovieForm({ countrys, authors, genres, directors, actors, tags, 
                                     id="movie-kuni"
                                     select
                                     label="Quốc gia sản xuất"
-                                    value={valueAuto}
+                                    value={valueCountry}
+                                    onChange={(event: any) => {
+                                        setValueCountry(event.target.value);
+                                    }}
                                     required
                                 >
                                     {countrys.map((option) => (
@@ -328,25 +350,45 @@ export function MovieForm({ countrys, authors, genres, directors, actors, tags, 
                                     ))}
                                 </TextField>
 
-                                <DatePicker label="Năm sản xuất" />
+                                <DatePicker
+                                    value={year}
+                                    onChange={(newValue) => setYear(newValue)}
+
+                                    label="Năm sản xuất" />
 
                                 <TextField
+                                    onChange={(event: any) => {
+                                        event.target.value < 1
+                                            ? (event.target.value = 1)
+                                            : event.target.value;
+                                        setMaxEp(event.target.value);
+                                    }
+                                    }
                                     id="outlined-number"
                                     label="Tổng số tập"
                                     required
                                     type="number"
+                                    value={maxEp}
+
                                     InputLabelProps={{
                                         shrink: true,
+
+                                    }}
+                                    InputProps={{
+                                        inputProps: { min: 1 }
                                     }}
                                 />
-                                <MobileTimePicker label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
+                                <MobileTimePicker value={duration} onChange={(newValue) => setDuration(newValue)}
+                                    label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
 
                                 <TextField
                                     id="movie-status"
                                     select
                                     required
-                                    value={valueAuto}
-                                    label="Trạng thái"
+                                    value={valueStatus}
+                                    onChange={(event: any) => {
+                                        setValueStatus(event.target.value);
+                                    }} label="Trạng thái"
 
                                 >
                                     {statusMovies.map((option) => (
