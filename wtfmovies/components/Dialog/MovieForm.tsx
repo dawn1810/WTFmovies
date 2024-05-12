@@ -6,8 +6,8 @@ import { DatePicker, LocalizationProvider, MobileTimePicker } from '@mui/x-date-
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import Chip from '@mui/material/Chip';
-import { Input, Button, AppBar, Tabs, Box, Tab, Dialog, Autocomplete, IconButton, MenuItem, TextField, Toolbar, } from "@mui/material";
-import ImageUpload from './ImageUpload';
+import { Button, AppBar, Tabs, Box, Tab, Dialog, Autocomplete, IconButton, MenuItem, TextField, Toolbar, Divider, } from "@mui/material";
+import ImageDropzone from './ImageDropzone';
 import dayjs, { Dayjs } from 'dayjs';
 
 
@@ -103,12 +103,15 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
 
                 </AppBar>
                 <TabPanel value={value} index={0} >
+
                     <Box sx={{
                         margin: '0 auto',
                         padding: '1rem',
                         height: '100%',
                         display: 'flex'
                     }}>
+                        <ImageDropzone></ImageDropzone>
+
                         <Box
                             component="form"
                             sx={{
@@ -400,7 +403,7 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
 
                             </Box>
                         </Box>
-                        <ImageUpload></ImageUpload>
+
                     </Box>
 
                 </TabPanel>
