@@ -1,40 +1,26 @@
-fetch(
-	"https://ads.tiktok.com/passport/sso/login/callback/?aid=1583&next=https%3A%2F%2Fads.tiktok.com%2Fpassport%2Fweb%2Faccount%2Finfo%2F%3Faid%3D1583&ticket=fe679e4757ca0d475fb780ba096bc37c&msToken=g007meJyY0qQsr_xrTFPQxqCwmJYUzsjRJGnCx2wDe-DgmmSjc1Y0e8Sb_mkS92AUZ2K-VoV5vRiZ8GM0p6TXFjDMfRAiNweLE96565lmYAMA-EyEjza4IKalkp9wt-WX6cngg==&X-Bogus=DFSzswVYSjbANG7HtEETkmsZrJiG&_signature=_02B4Z6wo00001tnh7qAAAIDCJo1wMHwT5.LZ4eoAANPRc1",
-	{
-		headers: {
-			accept: "*/*",
-			"accept-language": "en-US,en;q=0.9,vi;q=0.8",
-			"content-type": "application/x-www-form-urlencoded",
-			"sec-ch-ua": '"Not A(Brand";v="99", "Google Chrome";v="121", "Chromium";v="121"',
-			"sec-ch-ua-mobile": "?0",
-			"sec-ch-ua-platform": '"Windows"',
-			"sec-fetch-dest": "empty",
-			"sec-fetch-mode": "cors",
-			"sec-fetch-site": "same-origin",
-			"x-requested-with": "XMLHttpRequest",
-		},
-		referrer:
-			"https://ads.tiktok.com/i18n/login/?redirect=https%3A%2F%2Fads.tiktok.com%2Fi18n%2Fmaterial%2Fimage%3Faadvid%3D7330641590375137282",
-		referrerPolicy: "origin-when-cross-origin",
-		body: null,
-		method: "GET",
-		mode: "cors",
-		credentials: "include",
-	}
-).then(async function (response) {
+const a = {
+	"receiver": [
+		{
+			"name": "lorem",
+			"email": "binhminh19112003@gmail.com"
+		}
+	],
+	"subject": "Hello",
+	"description": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n  <meta charset=\"UTF-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n  <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\" />\n  <title>Static Template</title>\n\n  <link\n    href=\"https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap\"\n    rel=\"stylesheet\"\n  />\n</head>\n<body\n  style=\"\n    margin: 0;\n    font-family: 'Poppins', sans-serif;\n    background: #ffffff;\n    font-size: 14px;\n  \"\n>\n  <div\n    style=\"\n      max-width: 680px;\n      margin: 0 auto;\n      padding: 45px 30px 60px;\n      background: #f4f7ff;\n      background-image: url(https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1661497957196_595865/email-template-background-banner);\n      background-repeat: no-repeat;\n      background-size: 800px 452px;\n      background-position: top center;\n      font-size: 14px;\n      color: #434343;\n    \"\n  >\n    <header>\n      <table style=\"width: 100%;\">\n        <tbody>\n          <tr style=\"height: 0;\">\n            <td>\n              <img\n                alt=\"\"\n                src=\"https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1663574980688_114990/archisketch-logo\"\n                height=\"30px\"\n              />\n            </td>\n            <td style=\"text-align: right;\">\n              <span\n                style=\"font-size: 16px; line-height: 30px; color: #ffffff;\"\n                >12 Nov, 2021</span\n              >\n            </td>\n          </tr>\n        </tbody>\n      </table>\n    </header>\n\n    <main>\n      <div\n        style=\"\n          margin: 0;\n          margin-top: 70px;\n          padding: 92px 30px 115px;\n          background: #ffffff;\n          border-radius: 30px;\n          text-align: center;\n        \"\n      >\n        <div style=\"width: 100%; max-width: 489px; margin: 0 auto;\">\n          <h1\n            style=\"\n              margin: 0;\n              font-size: 24px;\n              font-weight: 500;\n              color: #1f1f1f;\n            \"\n          >\n            Your OTP\n          </h1>\n          <p\n            style=\"\n              margin: 0;\n              margin-top: 17px;\n              font-size: 16px;\n              font-weight: 500;\n            \"\n          >\n            Hey Tomy,\n          </p>\n          <p\n            style=\"\n              margin: 0;\n              margin-top: 17px;\n              font-weight: 500;\n              letter-spacing: 0.56px;\n            \"\n          >\n            Thank you for choosing Archisketch Company. Use the following OTP\n            to complete the procedure to change your email address. OTP is\n            valid for\n            <span style=\"font-weight: 600; color: #1f1f1f;\">5 minutes</span>.\n            Do not share this code with others, including Archisketch\n            employees.\n          </p>\n          <p\n            style=\"\n              margin: 0;\n              margin-top: 60px;\n              font-size: 40px;\n              font-weight: 600;\n              letter-spacing: 25px;\n              color: #ba3d4f;\n            \"\n          >\n            123456\n          </p>\n        </div>\n      </div>\n\n      <p\n        style=\"\n          max-width: 400px;\n          margin: 0 auto;\n          margin-top: 90px;\n          text-align: center;\n          font-weight: 500;\n          color: #8c8c8c;\n        \"\n      >\n        Need help? Ask at\n        <a\n          href=\"mailto:archisketch@gmail.com\"\n          style=\"color: #499fb6; text-decoration: none;\"\n          >archisketch@gmail.com</a\n        >\n        or visit our\n        <a\n          href=\"\"\n          target=\"_blank\"\n          style=\"color: #499fb6; text-decoration: none;\"\n          >Help Center</a\n        >\n      </p>\n    </main>\n\n    <footer\n      style=\"\n        width: 100%;\n        max-width: 490px;\n        margin: 20px auto 0;\n        text-align: center;\n        border-top: 1px solid #e6ebf1;\n      \"\n    >\n      <p\n        style=\"\n          margin: 0;\n          margin-top: 40px;\n          font-size: 16px;\n          font-weight: 600;\n          color: #434343;\n        \"\n      >\n        Archisketch Company\n      </p>\n      <p style=\"margin: 0; margin-top: 8px; color: #434343;\">\n        Address 540, City, State.\n      </p>\n      <div style=\"margin: 0; margin-top: 16px;\">\n        <a href=\"\" target=\"_blank\" style=\"display: inline-block;\">\n          <img\n            width=\"36px\"\n            alt=\"Facebook\"\n            src=\"https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1661502815169_682499/email-template-icon-facebook\"\n          />\n        </a>\n        <a\n          href=\"\"\n          target=\"_blank\"\n          style=\"display: inline-block; margin-left: 8px;\"\n        >\n          <img\n            width=\"36px\"\n            alt=\"Instagram\"\n            src=\"https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1661504218208_684135/email-template-icon-instagram\"\n          /></a>\n        <a\n          href=\"\"\n          target=\"_blank\"\n          style=\"display: inline-block; margin-left: 8px;\"\n        >\n          <img\n            width=\"36px\"\n            alt=\"Twitter\"\n            src=\"https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1661503043040_372004/email-template-icon-twitter\"\n          />\n        </a>\n        <a\n          href=\"\"\n          target=\"_blank\"\n          style=\"display: inline-block; margin-left: 8px;\"\n        >\n          <img\n            width=\"36px\"\n            alt=\"Youtube\"\n            src=\"https://archisketch-resources.s3.ap-northeast-2.amazonaws.com/vrstyler/1661503195931_210869/email-template-icon-youtube\"\n          /></a>\n      </div>\n      <p style=\"margin: 0; margin-top: 16px; color: #434343;\">\n        Copyright © 2022 Company. All rights reserved.\n      </p>\n    </footer>\n  </div>\n</body>\n</html>",
+	"mail_type": "text/html"
+}
+const b = async () => {
+
+	const response = await fetch(`https://mailwtfdev.binhminh19112003.workers.dev/api/mail/send`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/json' },
+		body: JSON.stringify(a),
+	});
+
 	if (response.ok) {
-		const responseData = await response.json();
-
-		// Update currentCookie for subsequent requests
-		// Update currentCookie with the new values
-		console.log(response);
-		// const responseCookieHeader = response.headers;
-		// if (responseCookieHeader) {
-		// 	console.log(responseCookieHeader);
-		// }
-
-		// console.log("Upload successful:", responseData);
-	} else {
-		console.error("Failed to upload:", await response.text());
+		const res = await response.json();
+		console.log(res);
 	}
-});
+}
+
+b()
