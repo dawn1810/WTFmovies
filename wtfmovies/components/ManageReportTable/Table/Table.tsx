@@ -1,7 +1,7 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
 import { viVN } from '@mui/x-data-grid/locales';
 import {
     DataGrid,
@@ -14,15 +14,20 @@ import {
     GridToolbarDensitySelector,
     GridActionsCellItem,
 } from '@mui/x-data-grid';
-import { Grading, LibraryBooks, Reply } from '@mui/icons-material';
+import { Close, Grading, LibraryBooks, Reply } from '@mui/icons-material';
 
 import style from './Table.module.scss';
+import { useDebounce } from '~/hooks';
+import EmailTemplate from '../EmailTemplate';
+import CurrentDialog from './CurrentDialog/CurrentDialog';
 
 const cx = classNames.bind(style);
 
 export default function DataGridCom({ dataset, title_name }: { dataset: any[]; title_name: string }) {
     const [open, setOpen] = useState<boolean>(false);
-    const [dialogData, setDialogData] = useState({ type: '', from: '', content: '', time: '' });
+    const [dialogData, setDialogData] = useState({ id: '', type: '', from: '', content: '', time: '' });
+    const [dialogType, setDialogType] = useState(true);
+
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
 
     const columns: any = [
@@ -58,10 +63,11 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
 
     const handleClose = () => {
         setOpen(false);
+        setDialogType(true);
     };
 
-    const handleReply = () => {
-        console.log('reply');
+    const handleReply = (type: boolean) => {
+        setDialogType(type);
     };
 
     const handleApprove = async (ids: string[]) => {
@@ -86,7 +92,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     };
 
     const CustomToolbar = () => {
-        // const apiRef = useGridApiContext();
         const [open, setOpen] = useState(false);
 
         const handleOpen = () => {
@@ -105,7 +110,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">Bạn có muốn DUYỆT:</DialogTitle>
+                    <DialogTitle>Bạn có muốn DUYỆT:</DialogTitle>
                     <DialogContent>
                         <ul>
                             {rowSelectionModel.map((item: string) => (
@@ -178,35 +183,14 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     setRowSelectionModel(newRowSelectionModel);
                 }}
             />
-            <Dialog
+            <CurrentDialog
                 open={open}
-                onClose={handleClose}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Chi tiết báo cáo</DialogTitle>
-                <DialogContent>
-                    <div>
-                        <span style={{ opacity: 0.6 }}>Type:</span> {dialogData.type}
-                    </div>
-                    <div>
-                        <span style={{ opacity: 0.6 }}>From:</span> {dialogData.from}
-                    </div>
-                    <div>
-                        <span style={{ opacity: 0.6 }}>Time:</span> {dialogData.time}
-                    </div>
-                    <div>
-                        <span style={{ opacity: 0.6 }}>Content:</span>
-                        <div style={{ marginLeft: '16px' }} dangerouslySetInnerHTML={{ __html: dialogData.content }} />
-                    </div>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleReply}>PHẢN HỒI</Button>
-                    <Button onClick={() => handleApprove(['a'])} autoFocus>
-                        DUYỆT
-                    </Button>
-                </DialogActions>
-            </Dialog>
+                dialogType={dialogType}
+                dialogData={dialogData}
+                handleClose={handleClose}
+                handleReply={handleReply}
+                handleApprove={handleApprove}
+            />
         </div>
     );
 }

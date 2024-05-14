@@ -23,3 +23,17 @@
     margin-left: -2px;
 
 }
+
+.dialog-title {
+    min-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mail-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
