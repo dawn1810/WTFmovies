@@ -238,3 +238,13 @@ export async function uploadImagetoTiktok(file_blob: File) {
         throw error;
     }
 }
+
+// otp
+export const generateOTP = (length: number = 5): string => {
+    let otp = '';
+    const chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    for (let i = 0; i < length; i++) {
+        otp += chars[Math.floor(Math.random() * chars.length)];
+    }
+    return otp;
+};

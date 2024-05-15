@@ -14,6 +14,10 @@ import { ExtendedUser } from '~/libs/interfaces';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import Button from '../Button';
 import style from './Modals.module.scss';
+import { LoadingButton } from '@mui/lab';
+import { Login } from '@mui/icons-material';
+import { TextField } from '@mui/material';
+import OtpForm from '../OtpForm';
 
 const cx = classNames.bind(style);
 
@@ -43,6 +47,7 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
     const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
+        setPending(true);
 
         const { email, password, remember } = info;
 
@@ -63,6 +68,7 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                 }
                 dispatch(changeModalShow(false));
             }
+            setPending(false);
         } catch (err) {
             console.log('Something went wrong!: ', err);
         }
@@ -170,10 +176,12 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                         </button>
                     </Form.Group>
 
-                    <Form.Group className="mb-3" controlId="formRemember">
-                        <Form.Check label="Ghi nhớ đăng nhập" name="remember" onChange={(e) => handleCheck(e)} />
+                    <Form.Group className={`mb-3, ${cx('forget-pass')}`} controlId="formRemember">
+                        <Link href="/forgetpass" onClick={handleSignUp}>
+                            Quên mật khẩu ?
+                        </Link>
                     </Form.Group>
-                    <Form.Group className="mb-5">
+                    <Form.Group className="mb-3">
                         <Form.Text id="passwordHelpBlock" className={cx('switch-page')}>
                             Bạn chưa có tài khoản?{' '}
                             <Link href="/register" onClick={handleSignUp}>
@@ -182,8 +190,8 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                         </Form.Text>
                     </Form.Group>
 
-                    <Button primary disabled={pending} className={cx('submit')} type="submit">
-                        {pending ? 'Đang đăng nhập' : 'Đăng nhập'}
+                    <Button disabled={pending} type="submit" className={cx('submit')}>
+                        {pending ? 'Đăng nhập...' : 'Đăng nhập'}
                     </Button>
                 </Form>
             </Modal.Body>

@@ -1,7 +1,8 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
-import { Close } from '@mui/icons-material';
+import { LoadingButton } from '@mui/lab';
+import { Close, Send } from '@mui/icons-material';
 
 import style from '../Table.module.scss';
 import EmailTemplate from '~/components/ManageReportTable/EmailTemplate';
@@ -24,6 +25,7 @@ function CurrentDialog({
     handleReply: (type: boolean) => void;
     handleApprove: (ids: string[]) => void;
 }) {
+    const [loading, setLoading] = useState<boolean>(false);
     const [formValue, setFormValue] = useState(
         'Chúng tôi đã đọc và xem xét cẩn thận những báo cáo của bạn. Chúng tôi thấy được rằng đây là một vấn đề cần giải quyết và đã lên kế hoạch để giải quyết vấn đề mà bạn đã báo cáo.\n\nNhờ vào những báo cáo của bạn và cộng đồng webside của chúng tôi đã có thể phát triễn ngày càng tốt hơn và phù hợp hơn đối với cộng đồng. Thế nên chúng tôi sẽ liên hệ để gửi lời cảm ơn và phần quà đến bạn trong thời gian sớm nhất.',
     );
@@ -34,8 +36,9 @@ function CurrentDialog({
         setFormValue(event.target.value);
     };
 
-    const handleSendReply = async () => {
+    const handleSendReply = async (event: any) => {
         try {
+            setLoading(true);
             const response = await fetch('/api/v1/sendMail', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -46,7 +49,17 @@ function CurrentDialog({
             });
 
             if (response.ok) {
+                handleClose(event);
                 alert('Phản hồi thành công 😎😎😎');
+                setLoading(false);
+            } else if (response.status === 400) {
+                alert('Phản hồi thất bại 😭😭😭');
+            } else if (response.status === 401) {
+                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+            } else if (response.status === 403) {
+                alert('Chức năng ngoài phạm trù của bạn 🤬🤬🤬');
+            } else if (response.status === 500) {
+                alert('Lỗi trong quá trình phản hồi 😥😥😥');
             }
         } catch (err) {
             console.log('có lỗi trong quá trình gửi mail');
@@ -109,9 +122,14 @@ function CurrentDialog({
                 ) : (
                     <>
                         <Button onClick={() => handleReply(true)}>TRỞ VỀ</Button>
-                        <Button onClick={handleSendReply} autoFocus>
+                        <LoadingButton
+                            loading={loading}
+                            loadingPosition="start"
+                            startIcon={<Send />}
+                            onClick={handleSendReply}
+                        >
                             GỬI
-                        </Button>
+                        </LoadingButton>
                     </>
                 )}
             </DialogActions>

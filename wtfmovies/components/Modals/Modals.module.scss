@@ -24,16 +24,13 @@
 
         .submit {
             margin-left: 0;
-            background-color: #0d6efd;
-            opacity: 0.8;
+            background: var(--submit-color);
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 16px;
 
             &:hover {
-                opacity: 1;
-            }
-
-            &:active {
-                opacity: 0.8;
-                color: var(--text-color);
+                opacity: .8;
             }
         }
 
@@ -53,6 +50,27 @@
             }
 
         }
+
+        .forget-pass {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 0;
+
+            a {
+                color: var(--submit-color);
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+        }
+    }
+
+    .otp-form {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+
     }
 
     .btn-group {

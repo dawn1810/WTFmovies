@@ -283,8 +283,8 @@ const MailTemplate = ({ userName, adminName, content }: { userName: string; admi
                                                                                     <img
                                                                                         align="center"
                                                                                         border="0"
-                                                                                        src=${images.logo}
-                                                                                        alt=""
+                                                                                        src="${images.logo}"
+                                                                                        alt="wtfmovies"
                                                                                         title=""
                                                                                         style="
                                                                                             outline: none;
