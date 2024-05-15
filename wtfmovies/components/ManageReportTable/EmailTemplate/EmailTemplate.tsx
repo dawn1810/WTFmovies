@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import mail from '~/mailTemplate/index';
+import mail from '~/mailTemplate/remailTemplate';
 
 function FilmPage({ userName, adminName, content }: { userName: string; adminName: string; content: string }) {
     return (

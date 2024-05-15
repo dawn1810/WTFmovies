@@ -7,8 +7,8 @@
     margin: 0 auto 30px;
 
 
-    .find-account {
-        max-width: 375px;
+    .card {
+        max-width: 475px;
 
         background-color: var(--card-background-color);
         color: var(--text-color);
@@ -22,5 +22,13 @@
             display: flex;
             justify-content: flex-end;
         }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
     }
+
 }

@@ -1,11 +1,11 @@
 export const runtime = 'edge';
-import mail from '~/mailTemplate/index';
+import mail from '~/mailTemplate/remailTemplate';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { userEmail: string; content: string };
+type dataType = { userEmail?: string; content: string };
 
 export async function POST(request: NextRequest) {
     try {
