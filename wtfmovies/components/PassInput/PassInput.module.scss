@@ -1,0 +1,19 @@
+.user-info {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    color: var(--text-color);
+
+    .user-info-txt-input {
+        min-width: 70%;
+    }
+
+    .user-info-tags {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+}

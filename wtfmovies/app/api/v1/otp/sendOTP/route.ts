@@ -23,28 +23,29 @@ export async function POST(request: NextRequest) {
             mail_type: 'text/html',
         };
 
-        const response = await fetch('https://mailwtfdev.binhminh19112003.workers.dev/api/mail/send', {
+        const response: any = await fetch('https://mailwtfdev.binhminh19112003.workers.dev/api/mail/send', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(body),
         });
 
-        if (response.ok) {
+        const res = await response.json();
+
+        if (res.success) {
             const today = new Date();
             const newOTP = await mongodb()
                 .db('user')
                 .collection('otpstore')
                 .insertOne({
-                    email: userEmail,
                     otp: OTP,
                     createAt: MongoDate(today),
                 });
 
-            if (!!newOTP) return toJSON('Gửi mail thành công', 200);
+            if (!!newOTP) return toJSON(newOTP.insertedId, 200);
             else return toError('Lưu mã đăng nhập thất bại', 400);
         }
 
-        return toError('Gửi mail thất bại', 400);
+        return toError('Gửi mail thất bại', 401);
     } catch (err) {
         return toError('Lỗi trong quá trình gửi mail', 500);
     }
