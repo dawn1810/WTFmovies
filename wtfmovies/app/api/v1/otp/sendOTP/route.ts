@@ -1,15 +1,13 @@
 export const runtime = 'edge';
 import mail from '~/mailTemplate/otpmailTemplate';
 import type { NextRequest } from 'next/server';
-import { generateOTP, mongodb, toError, toJSON } from '~/libs/func';
-import CacheManager from '~/cache';
+import { MongoDate, generateOTP, mongodb, toError, toJSON } from '~/libs/func';
 
 type dataType = { userEmail: string; userName: string };
 
 export async function POST(request: NextRequest) {
     try {
         const OTP = generateOTP();
-        const cacheManager = CacheManager.getInstance();
 
         const { userEmail, userName }: dataType = await request.json();
 
@@ -32,8 +30,18 @@ export async function POST(request: NextRequest) {
         });
 
         if (response.ok) {
-            cacheManager.set('otp', OTP, 30); // set cache in 30s
-            return toJSON('Gửi mail thành công', 200);
+            const today = new Date();
+            const newOTP = await mongodb()
+                .db('user')
+                .collection('otpstore')
+                .insertOne({
+                    email: userEmail,
+                    otp: OTP,
+                    createAt: MongoDate(today),
+                });
+
+            if (!!newOTP) return toJSON('Gửi mail thành công', 200);
+            else return toError('Lưu mã đăng nhập thất bại', 400);
         }
 
         return toError('Gửi mail thất bại', 400);

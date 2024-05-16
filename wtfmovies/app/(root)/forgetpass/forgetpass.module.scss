@@ -29,6 +29,21 @@
             align-items: center;
             gap: 10px;
         }
+
+        .otp-container {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            justify-content: flex-start;
+
+            .btn {
+                align-self: flex-end;
+            }
+
+            .count {
+                align-self: center;
+            }
+        }
     }
 
 }

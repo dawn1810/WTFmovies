@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
@@ -15,6 +15,15 @@ function ForgetPass() {
     const [otp, setOtp] = useState<string>('');
     const [page, setPage] = useState<number>(0);
     const [userInfo, setUserInfo] = useState<any>({ email: '', avatar: '', name: '' });
+    const [count, setCount] = useState<number>(60);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (count > 0) setCount((prev) => prev - 1);
+        }, 1000);
+
+        return () => clearTimeout(timeoutId);
+    }, [count]); // Here!
 
     const handleNextPage = () => {
         setPage((prev) => (prev < 4 ? prev + 1 : prev));
@@ -51,10 +60,26 @@ function ForgetPass() {
     };
 
     const handleSendOTP = async () => {
-        const response = await fetch('/api/v1/sendOTP', {
+        const response = await fetch('/api/v1/otp/sendOTP', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ userEmail: userInfo.email, userName: userInfo.name }),
+        });
+
+        if (response.ok) {
+            handleNextPage();
+        } else if (response.status === 400) {
+            alert('Gửi mã đăng nhập thất bại 😭😭😭');
+        } else if (response.status === 500) {
+            alert('Lỗi trong quá trình gữi mã xác nhận, vui lòng thử lại 🫤🫤🫤');
+        }
+    };
+
+    const handleCheckOTP = async () => {
+        const response = await fetch('/api/v1/otp/checkOTP', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ otp }),
         });
 
         if (response.ok) {
@@ -112,7 +137,7 @@ function ForgetPass() {
                         </CardContent>
                         <CardActions className={cx('action')}>
                             <Button variant="contained" onClick={handlePrevPage}>
-                                Không phải bạn
+                                Không phải tôi
                             </Button>
                             <Button variant="contained" onClick={handleSendOTP}>
                                 Tiếp tục
@@ -121,7 +146,30 @@ function ForgetPass() {
                     </Card>
                 );
             case 2:
-                return <OTP separator={<span>-</span>} value={otp} onChange={setOtp} length={5} />;
+                return (
+                    <Card className={cx('card')}>
+                        <CardContent className={cx('otp-container')}>
+                            <Typography gutterBottom variant="h5" component="div">
+                                Nhập mã đăng nhập của bạn
+                            </Typography>
+                            <OTP separator={<span>-</span>} value={otp} length={5} onChange={setOtp} />
+                            <Button className={cx('btn')} variant="text" onClick={handleSendOTP}>
+                                Gửi lại
+                            </Button>
+                            <div className={cx('count')}>
+                                {count !== 0 ? 'Hết hạn sau ' + count + 's' : 'Hết hạn 🥲🥲🥲'}
+                            </div>
+                        </CardContent>
+                        <CardActions className={cx('action')}>
+                            <Button variant="contained" onClick={handlePrevPage}>
+                                Huỷ
+                            </Button>
+                            <Button variant="contained" onClick={handleCheckOTP}>
+                                Tiếp tục
+                            </Button>
+                        </CardActions>
+                    </Card>
+                );
         }
     };
 
