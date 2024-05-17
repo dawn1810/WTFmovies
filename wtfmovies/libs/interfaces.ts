@@ -110,11 +110,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-    | {
-        title?: string;
-        episode?: number[];
-    }[]
-    | any;
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -316,8 +316,8 @@ export interface UserAdminInfoInfterface {
     id: string;
     name: string;
     birthDate?: string;
-    status?: boolean[];
-    role?: string[];
+    status: boolean[];
+    role: string[];
     gender?: number;
 }
 

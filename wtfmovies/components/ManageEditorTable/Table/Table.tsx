@@ -14,6 +14,7 @@ import {
     GridToolbarDensitySelector,
     useGridApiContext,
     GridRowModel,
+    GridColDef,
 } from '@mui/x-data-grid';
 import { Block, LockOpen } from '@mui/icons-material';
 
@@ -21,13 +22,24 @@ import style from './Table.module.scss';
 
 const cx = classNames.bind(style);
 
+// const renderSelectEditInputCell: GridColDef['renderCell'] = (params) => {
+//     return <SelectEditInputCell {...params} />;
+// };
+
 const columns: any[] = [
     { headerName: 'STT', field: 'index', align: 'center', width: 10 },
     { headerName: 'Email', field: 'id', width: 180 },
     { headerName: 'Tên hiễn thị', field: 'name', width: 180 },
     { headerName: 'Ngày sinh', field: 'birthDate', width: 180 },
     { headerName: 'Giới tính', field: 'gender', width: 180 },
-    { headerName: 'Phân quyền', field: 'role', width: 180 },
+    {
+        headerName: 'Phân quyền',
+        field: 'role',
+        width: 180,
+        type: 'singleSelect',
+        valueOptions: ['none', 'editor', 'admin'],
+        editable: true,
+    },
     {
         headerName: 'Trạng thái',
         field: 'status',
@@ -39,12 +51,17 @@ const columns: any[] = [
 export default function DataGridCom({ dataset, title_name }: { dataset: any[]; title_name: string }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
-    const [listUpdate, setListUpdate] = useState(false);
+    const [listUpdate, setListUpdate] = useState<boolean>(false);
+    const [editColumn, setEditCollumn] = useState<number>(-1);
 
     const processRowUpdate = useCallback(
         (newRow: GridRowModel, oldRow: GridRowModel) =>
             new Promise<GridRowModel>((resolve, reject) => {
-                if (newRow.status !== oldRow.status) {
+                console.log(newRow === oldRow);
+
+                if (newRow.status !== oldRow.status || newRow.role !== oldRow.role) {
+                    if (newRow.status !== oldRow.status) setEditCollumn(7);
+                    else if (newRow.role !== oldRow.role) setEditCollumn(6);
                     // Save the arguments to resolve or reject the promise later
                     setPromiseArguments({ resolve, reject, newRow, oldRow });
                 } else {
@@ -60,7 +77,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         setPromiseArguments(null);
     };
 
-    const handleCellEditStop = async () => {
+    const handleCellEditStatus = async () => {
         const { newRow, oldRow, reject, resolve } = promiseArguments;
 
         const response = await fetch('/api/v1/admin/banUser', {
@@ -87,6 +104,35 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         setPromiseArguments(null);
     };
 
+    const handleCellEditRole = async () => {
+        const { newRow, oldRow, reject, resolve } = promiseArguments;
+
+        const response = await fetch('/api/v1/admin/updateRole', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email: newRow.id, role: newRow.role }),
+        });
+
+        if (response.ok) {
+            resolve(newRow);
+            alert('Thay đổi phần quyền người dùng thành công 😎😎😎');
+        } else {
+            if (response.status === 400) {
+                alert('Thay đổi phần quyền người dùng thất bại 😭😭😭');
+            } else if (response.status === 401) {
+                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+            } else if (response.status === 403) {
+                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+            } else if (response.status === 500) {
+                alert('Lỗi trong quá trình thay đổi phần quyền người dùng 😥😥😥');
+            }
+            reject(oldRow);
+        }
+        setPromiseArguments(null);
+
+        setPromiseArguments(null);
+    };
+
     const renderConfirmDialog = () => {
         if (!promiseArguments) {
             return null;
@@ -107,18 +153,39 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">Bạn có muốn {newRow.status ? 'BỎ CẤM' : 'CẤM'}:</DialogTitle>
-                <DialogContent>
-                    <ul>
-                        <li>{newRow.id}</li>
-                    </ul>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Huỷ</Button>
-                    <Button onClick={() => handleCellEditStop()} autoFocus>
-                        {newRow.status ? 'BỎ CẤM' : 'CẤM'}
-                    </Button>
-                </DialogActions>
+                {editColumn === 7 ? (
+                    <>
+                        <DialogTitle id="alert-dialog-title">
+                            Bạn có muốn {newRow.status ? 'BỎ CẤM' : 'CẤM'}:
+                        </DialogTitle>
+                        <DialogContent>
+                            <ul>
+                                <li>{newRow.id}</li>
+                            </ul>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseDialog}>Huỷ</Button>
+                            <Button onClick={() => handleCellEditStatus()} autoFocus>
+                                {newRow.status ? 'BỎ CẤM' : 'CẤM'}
+                            </Button>
+                        </DialogActions>
+                    </>
+                ) : (
+                    <>
+                        <DialogTitle id="alert-dialog-title">Bạn có muốn thay đổi phân quyền:</DialogTitle>
+                        <DialogContent>
+                            <ul>
+                                <li>{newRow.id}</li>
+                            </ul>
+                        </DialogContent>
+                        <DialogActions>
+                            <Button onClick={handleCloseDialog}>Huỷ</Button>
+                            <Button onClick={() => handleCellEditRole()} autoFocus>
+                                Thay đổi
+                            </Button>
+                        </DialogActions>
+                    </>
+                )}
             </Dialog>
         );
     };

@@ -2,7 +2,6 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 
 import style from './forgetpass.module.scss';
 import OTP from '~/components/OtpForm/OtpForm';
@@ -10,7 +9,7 @@ import { Avatar, Button, Card, CardActions, CardContent, TextField, Typography }
 import { validatePassword } from '~/libs/clientFunc';
 import PassInput from '~/components/PassInput';
 import { LoadingButton } from '@mui/lab';
-import { SaveOutlined } from '@mui/icons-material';
+import { LockReset, SaveOutlined } from '@mui/icons-material';
 
 const cx = classNames.bind(style);
 
@@ -23,8 +22,10 @@ function ForgetPass() {
 
     // otp
     const [otp, setOtp] = useState<string>('');
-    const [count, setCount] = useState<number>(60);
+    const [count, setCount] = useState<number>(300);
     const [otpId, setOtpId] = useState<string>('');
+    const [sendLoading, setSendLoading] = useState<boolean>(false);
+    const [sendCount, setSendCount] = useState<number>(60);
 
     // change pass
     const [validated, setValidated] = useState({
@@ -32,7 +33,7 @@ function ForgetPass() {
         rnewPass: '',
     });
     const [info, setInfo] = useState({ newPass: '', rnewPass: '' });
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     useEffect(() => {
         const timeoutId = setTimeout(() => {
@@ -41,6 +42,15 @@ function ForgetPass() {
 
         return () => clearTimeout(timeoutId);
     }, [count]);
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            if (sendCount > 0) setSendCount((prev) => prev - 1);
+            else setSendLoading(true);
+        }, 1000);
+
+        return () => clearTimeout(timeoutId);
+    }, [sendCount]);
 
     const handleNextPage = () => {
         setPage((prev) => (prev < 4 ? prev + 1 : prev));
@@ -79,24 +89,33 @@ function ForgetPass() {
 
     // otp
     const handleSendOTP = async () => {
-        const response = await fetch('/api/v1/otp/sendOTP', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ userEmail: userInfo.email, userName: userInfo.name }),
-        });
+        if (!userInfo.email || !userInfo.name) {
+            const response = await fetch('/api/v1/otp/sendOTP', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ userEmail: userInfo.email, userName: userInfo.name }),
+            });
 
-        if (response.ok) {
-            const res: string = await response.json();
-            setOtpId(res);
-            setCount(60);
-            handleNextPage();
-        } else if (response.status === 400) {
-            alert('Gửi mã đăng nhập thất bại 😭😭😭');
-        } else if (response.status === 401) {
-            alert('Gửi mail thất bại 😭😭😭');
-        } else if (response.status === 500) {
-            alert('Lỗi trong quá trình gữi mã xác nhận, vui lòng thử lại 🫤🫤🫤');
+            if (response.ok) {
+                const res: string = await response.json();
+                setOtpId(res);
+                setCount(60);
+                handleNextPage();
+            } else if (response.status === 400) {
+                alert('Gửi mã đăng nhập thất bại 😭😭😭');
+            } else if (response.status === 401) {
+                alert('Gửi mail thất bại 😭😭😭');
+            } else if (response.status === 500) {
+                alert('Lỗi trong quá trình gữi mã xác nhận, vui lòng thử lại 🫤🫤🫤');
+            }
         }
+    };
+
+    const handleSendAgainOTP = async () => {
+        await handleSendOTP();
+        setSendLoading(true);
+        setSendCount(60);
+        setCount(300);
     };
 
     const handleCheckOTP = async () => {
@@ -238,9 +257,16 @@ function ForgetPass() {
                                 Nhập mã đăng nhập của bạn
                             </Typography>
                             <OTP separator={<span>-</span>} value={otp} length={5} onChange={setOtp} />
-                            <Button className={cx('btn')} variant="text" onClick={handleSendOTP}>
-                                Gửi lại
-                            </Button>
+                            <LoadingButton
+                                loading={sendLoading}
+                                loadingPosition="start"
+                                startIcon={<LockReset />}
+                                className={cx('btn')}
+                                variant="text"
+                                onClick={handleSendAgainOTP}
+                            >
+                                {sendLoading ? sendCount + 's' : 'Gửi lại'}
+                            </LoadingButton>
                             <div className={cx('count')}>
                                 {count !== 0 ? 'Hết hạn sau ' + count + 's' : 'Hết hạn 🥲🥲🥲'}
                             </div>

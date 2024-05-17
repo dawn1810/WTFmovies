@@ -20,15 +20,11 @@ export async function POST(request: NextRequest) {
         const otpCheck = await mongodb()
             .db('user')
             .collection('otpstore')
-            .findOne({
-                filter: { _id: ObjectId(otpId) },
-                projection: {
-                    _id: 0,
-                    otp: 1,
-                },
+            .deleteOne({
+                filter: { _id: ObjectId(otpId), otp: otp },
             });
 
-        if (!!otpCheck && otpCheck.otp !== otp) return toJSON('Mã đăng nhập không hợp lệ', 401);
+        if (otpCheck.deletedCount === 0) return toJSON('Mã đăng nhập không hợp lệ', 401);
 
         const response = await mongodb()
             .db('user')

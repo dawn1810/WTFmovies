@@ -50,7 +50,7 @@ const menuItems = [
         scene: 'report',
     },
     {
-        title: 'Quản lý biên tập viên',
+        title: 'Quản lý người dùng',
         icon: <BorderColorOutlined />,
         scene: 'editor',
     },
