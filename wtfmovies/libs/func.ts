@@ -248,3 +248,12 @@ export const generateOTP = (length: number = 5): string => {
     }
     return otp;
 };
+
+// uplaod film
+export const createSearchName = (name: string): string => {
+    return name
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/\s+/g, '-');
+};

@@ -12,12 +12,7 @@ import Button from '~/components/Button';
 
 const cx = classNames.bind(style);
 
-
-async function search({
-    searchParams,
-}: {
-    searchParams: { query: string, type: string };
-}) {
+async function search({ searchParams }: { searchParams: { query: string; type: string } }) {
     const data = await getSearch(searchParams);
     // console.log(data);
 
@@ -39,8 +34,9 @@ async function search({
                         title="Phim tìm kiếm"
                         icon={<FontAwesomeIcon icon={faMagnifyingGlass} className={cx('search-films-title')} />}
                     />
-                    <Button primary rightIcon={<FontAwesomeIcon icon={faFilter} />}>Bộ lọc</Button>
-
+                    <Button primary rightIcon={<FontAwesomeIcon icon={faFilter} />}>
+                        Bộ lọc
+                    </Button>
                 </div>
 
                 <div className={cx('films-list')}>
@@ -54,7 +50,7 @@ async function search({
                             author={item.author}
                             genre={item.genre}
                             tag={item.tag}
-                            maxEp={item.maxEp}
+                            maxEp={item.maxEp || 18} // Lỗi ở đây
                             releaseYear={new Date(item.releaseYear)}
                             rating={item.rating}
                             episodes={item.episodes}

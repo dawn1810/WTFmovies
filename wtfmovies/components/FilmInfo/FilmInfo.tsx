@@ -63,7 +63,8 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
             {
                 title: 'Đạo diễn',
                 info: filmInfo.director,
-                type: 'searchAble', category: 'director'
+                type: 'searchAble',
+                category: 'director',
             },
             { title: 'Thời lượng', info: filmInfo.duration ? filmInfo.duration / 60 + ' phút' : 'Unknown' },
             { title: 'Số tập', info: `${lastThreeEpisodes[lastThreeEpisodes.length - 1]} / ${filmInfo.maxEp || '?'}` },
@@ -75,7 +76,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                 title: 'Diễn viên',
                 info: filmInfo.actor,
                 type: 'searchAble',
-                category: 'actor'
+                category: 'actor',
             },
 
             {
@@ -150,7 +151,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                                             <Button
                                                 key={index}
                                                 primary
-                                                to={`/ watch / ${infoList.searchName} / tap${info}`}
+                                                to={`/watch/${infoList.searchName}/tap${info}`}
                                                 className={cx('episodes-btn')}
                                             >
                                                 {info}
@@ -167,7 +168,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                     </ul>
                     <div className={cx('btn-group')}>
                         <Button
-                            to={`/ watch / ${filmInfo.searchName}`}
+                            to={`/watch/${filmInfo.searchName}`}
                             primary
                             leftIcon={<FontAwesomeIcon icon={faPlay} />}
                         >
