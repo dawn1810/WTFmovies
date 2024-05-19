@@ -72,8 +72,6 @@ export async function POST(request: NextRequest) {
             };
         });
 
-        console.log(result);
-
         // up episodes
         // await getYoutubePlaylistItems(playlistId, email);
         // const episodeList: any[] = await getYoutubePlaylistItems(playlistId, email);

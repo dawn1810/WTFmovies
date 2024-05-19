@@ -54,6 +54,11 @@ const menuItems = [
         icon: <BorderColorOutlined />,
         scene: 'editor',
     },
+    {
+        title: 'Quản lý bảng đánh giá',
+        icon: <BorderColorOutlined />,
+        scene: 'evaluate',
+    },
 ];
 
 export const viewport: Viewport = {

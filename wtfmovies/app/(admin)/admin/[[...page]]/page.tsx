@@ -15,6 +15,7 @@ import { Link } from '@mui/material';
 import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface } from '~/libs/interfaces';
+import EvaluateTable from '~/components/EvaluateTable';
 
 const cx = classNames.bind(style);
 export const fetchCache = 'force-no-store';
@@ -45,6 +46,8 @@ async function getPage(params?: any) {
             const reports: AdminReportInfterface[] = await getAllReport();
 
             return <ManageReportTable dataset={reports} />;
+        case 'evaluate':
+            return <EvaluateTable />;
         default:
             return (
                 <div style={{ color: 'var(--text-color)' }}>
