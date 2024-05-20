@@ -16,6 +16,7 @@ import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface } from '~/libs/interfaces';
 import EvaluateTable from '~/components/EvaluateTable';
+import { getEvaluateList } from '~/libs/getData/evaluate';
 
 const cx = classNames.bind(style);
 export const fetchCache = 'force-no-store';
@@ -47,7 +48,9 @@ async function getPage(params?: any) {
 
             return <ManageReportTable dataset={reports} />;
         case 'evaluate':
-            return <EvaluateTable />;
+            const evaluateList = await getEvaluateList();
+
+            return <EvaluateTable evaluateList={evaluateList} />;
         default:
             return (
                 <div style={{ color: 'var(--text-color)' }}>

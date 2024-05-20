@@ -206,10 +206,18 @@ export const changeEpisode = (episode: any) => {
     };
 };
 
-//Profile
+// Profile
 export const changeAvatar = (avatar: any) => {
     return {
         type: 'profile/changeAvatar',
         payload: avatar,
+    };
+};
+
+// Evaluate
+export const changeRows = (rows: any) => {
+    return {
+        type: 'evaluate/changeRows',
+        payload: rows,
     };
 };

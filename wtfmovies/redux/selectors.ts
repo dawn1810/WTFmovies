@@ -1,6 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
+//evaluate
+export const rowsSelector = (state: reduxStateInterface) => state.evaluate.rows;
+
 //profile
 export const avatarSelector = (state: reduxStateInterface) => state.profile.avatar;
 

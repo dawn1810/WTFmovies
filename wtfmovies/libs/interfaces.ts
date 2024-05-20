@@ -55,6 +55,9 @@ export interface reduxStateInterface {
     profile: {
         avatar: ExtendedFile;
     };
+    evaluate: {
+        rows: RowInterface[];
+    };
 }
 
 interface EpisodeType {
@@ -332,4 +335,16 @@ export interface AdminReportInfterface {
     type: string;
     time: string;
     content?: string;
+}
+
+// Evaluate Table
+export interface CriteriaInterface {
+    name: string;
+    maxScore: number;
+}
+
+export interface RowInterface {
+    name: string;
+    maxScore: number;
+    criteria?: CriteriaInterface[];
 }

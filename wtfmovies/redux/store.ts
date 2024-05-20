@@ -6,6 +6,7 @@ import registerSlice from '~/components/RegisterForm/registerSlice';
 import filmManagerSlice from '~/components/FilmManager/filmManagerSlice';
 import watchSlice from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
 import profileSlice from '~/components/ProfileForm/profileSlice';
+import evaluateSlise from '~/components/EvaluateTable/evaluateSlise';
 
 const store = configureStore({
     reducer: {
@@ -15,6 +16,7 @@ const store = configureStore({
         dataGridCom: filmManagerSlice,
         watch: watchSlice,
         profile: profileSlice,
+        evaluate: evaluateSlise,
     },
 });
 

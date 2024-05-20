@@ -1,10 +1,9 @@
-'use client';
 import { createSlice } from '@reduxjs/toolkit';
 
 export const watchSlice = createSlice({
     name: 'watchSlice',
     initialState: {
-        episode: { _id: '', index: 1, rating: 0, link: '' }
+        episode: { _id: '', index: 1, rating: 0, link: '' },
     },
     reducers: {
         changeEpisode: (state, action) => {

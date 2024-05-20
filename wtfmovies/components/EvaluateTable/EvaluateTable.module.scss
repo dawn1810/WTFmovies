@@ -13,17 +13,3 @@
         margin: auto;
     }
 }
-
-.dialog {
-    min-width: 500px;
-    padding: 18px !important;
-    display: flex;
-    flex-direction: column;
-    gap: 18px;
-
-    .tab-dialog {
-        display: flex;
-        flex-direction: column;
-        gap: 18px;
-    }
-}
