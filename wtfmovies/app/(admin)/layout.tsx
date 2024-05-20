@@ -12,7 +12,7 @@ import { montserrat } from '../font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
-import { BorderColorOutlined, FlagOutlined, HomeOutlined } from '@mui/icons-material';
+import { BorderColorOutlined, FlagOutlined, HomeOutlined, TableChartOutlined } from '@mui/icons-material';
 
 const APP_NAME = 'Admin';
 const APP_DEFAULT_TITLE = 'Admin';
@@ -56,7 +56,7 @@ const menuItems = [
     },
     {
         title: 'Quản lý bảng đánh giá',
-        icon: <BorderColorOutlined />,
+        icon: <TableChartOutlined />,
         scene: 'evaluate',
     },
 ];
