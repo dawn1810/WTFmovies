@@ -1,76 +1,165 @@
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Tab, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { RowInterface } from '~/libs/interfaces';
 
 import style from './EvaluateDialog.module.scss';
 import { rowsSelector } from '~/redux/selectors';
 import { changeRow } from '../evaluateSlise';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
 export default function EvaluateDialog({
-    tabValue,
     dialogOpen,
     currentRow,
     dialogType,
     handleCloseDialog,
-    handleChange,
 }: {
-    tabValue: string;
     dialogOpen: boolean;
     currentRow: number;
     dialogType: any;
     handleCloseDialog: any;
-    handleChange: any;
 }) {
     const dispatch = useDispatch();
     const rows = useSelector(rowsSelector);
     const row: RowInterface = rows[currentRow];
+    const [value, setValue] = useState({ name: '', maxScore: 0 });
+    const [err, setErr] = useState({ nameErr: '', scoreErr: '' });
+
+    const handleChange = (event: any) => {
+        setValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+    };
+
+    const handleClose = () => {
+        setValue({ name: '', maxScore: 0 });
+        handleCloseDialog();
+    };
+
+    const handleAdd = async () => {
+        if (value.name.length <= 0) setErr({ scoreErr: '', nameErr: 'Cần nhập tên tiêu chuẩn' });
+        else if (value.maxScore === 0) setErr({ nameErr: '', scoreErr: 'Điểm tối đa cần lớn hơn 0' });
+        else {
+            setErr({ nameErr: '', scoreErr: '' });
+            const newValue = { name: value.name, maxScore: value.maxScore };
+            const response = await fetch('/api/v1/evaluate/addStandard', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(newValue),
+            });
+
+            if (response.ok) {
+                const res = await response.json();
+                dispatch(changeRow([...rows, { ...newValue, _id: res }]));
+                setValue({ name: '', maxScore: 0 });
+                handleCloseDialog();
+            } else if (response.status === 400) {
+                alert('Thêm tiêu chuẩn thất bại!');
+            } else if (response.status === 500) {
+                alert('Lỗi trong quá trình thêm tiêu chuẩn!');
+            }
+        }
+    };
+
+    const handleSave = async () => {
+        const newValue = { name: value.name || row.name, maxScore: value.maxScore || row.maxScore };
+        const response = await fetch('/api/v1/evaluate/updateStandard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...newValue, id: row._id }),
+        });
+
+        if (response.ok) {
+            dispatch(changeRow(rows.map((r, i) => (i === currentRow ? { ...r, ...newValue } : r))));
+            setValue({ name: '', maxScore: 0 });
+            handleCloseDialog();
+        } else if (response.status === 400) {
+            alert('Cập nhật tiêu chuẩn thất bại!');
+        } else if (response.status === 500) {
+            alert('Lỗi trong quá trình cập nhật tiêu chuẩn!');
+        }
+    };
+
+    const handleDelete = async () => {
+        const response = await fetch('/api/v1/evaluate/deleteStandard', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: row._id }),
+        });
+
+        if (response.ok) {
+            dispatch(changeRow(rows.filter((r, i) => i !== currentRow)));
+            handleCloseDialog();
+        } else if (response.status === 400) {
+            alert('Xoá tiêu chuẩn thất bại!');
+        } else if (response.status === 500) {
+            alert('Lỗi trong quá trình xoá tiêu chuẩn!');
+        }
+    };
 
     return (
-        <Dialog open={dialogOpen} onClose={handleCloseDialog}>
+        <Dialog open={dialogOpen} onClose={handleClose}>
             <DialogTitle>{dialogType.title}</DialogTitle>
             <DialogContent className={cx('dialog')}>
                 {dialogType.type === 0 ? (
                     <>
-                        <TextField autoFocus fullWidth multiline spellCheck="false" maxRows={5} label="Tên" value="" />
-                        <TextField fullWidth type="number" label="Điểm tối đa" value={undefined} />
-                    </>
-                ) : (
-                    <>
                         <TextField
-                            autoFocus
+                            error={!!err.nameErr}
                             fullWidth
                             multiline
                             spellCheck="false"
                             maxRows={5}
                             label="Tên"
-                            value={rows[currentRow].name}
+                            helperText={err.nameErr}
+                            name="name"
+                            value={value.name}
+                            onChange={handleChange}
                         />
-                        <TextField fullWidth type="number" label="Điểm tối đa" value={rows[currentRow].maxScore} />
-                        {row.criteria &&
-                            row.criteria.map((criteria, index) => (
-                                <>
-                                    <h4>{'Tiêu chí ' + (index + 1) + ':'}</h4>
-                                    <TextField
-                                        fullWidth
-                                        multiline
-                                        spellCheck="false"
-                                        maxRows={5}
-                                        label="Tên"
-                                        value={criteria.name}
-                                    />
-                                    <TextField fullWidth type="number" label="Điểm tối đa" value={criteria.maxScore} />
-                                </>
-                            ))}
+                        <TextField
+                            error={!!err.scoreErr}
+                            fullWidth
+                            type="number"
+                            label="Điểm tối đa"
+                            helperText={err.scoreErr}
+                            name="maxScore"
+                            value={value.maxScore}
+                            onChange={handleChange}
+                        />
                     </>
+                ) : dialogType.type === 1 ? (
+                    <>
+                        <TextField
+                            fullWidth
+                            multiline
+                            spellCheck="false"
+                            maxRows={5}
+                            label="Tên"
+                            name="name"
+                            value={value.name || row.name}
+                            onChange={handleChange}
+                        />
+                        <TextField
+                            fullWidth
+                            type="number"
+                            label="Điểm tối đa"
+                            name="maxScore"
+                            value={value.maxScore || row.maxScore}
+                            onChange={handleChange}
+                        />
+                    </>
+                ) : (
+                    <p>{row.name}</p>
                 )}
             </DialogContent>
             <DialogActions>
-                <Button onClick={handleCloseDialog}>Huỷ</Button>
-                <Button onClick={handleCloseDialog}>Lưu</Button>
+                <Button onClick={handleClose}>Huỷ</Button>
+                <Button
+                    onClick={() => {
+                        dialogType.type === 0 ? handleAdd() : dialogType.type === 1 ? handleSave() : handleDelete();
+                    }}
+                >
+                    {dialogType.type === 0 ? 'Thêm' : dialogType.type === 1 ? 'Cập nhật' : 'Xoá'}
+                </Button>
             </DialogActions>
         </Dialog>
     );

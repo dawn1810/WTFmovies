@@ -7,14 +7,7 @@ export const getEvaluateList = async (): Promise<RowInterface[]> => {
             .db('evaluate')
             .collection('table')
             .aggregate({
-                pipeline: [
-                    { $sort: { _id: 1 } },
-                    {
-                        $project: {
-                            _id: 0,
-                        },
-                    },
-                ],
+                pipeline: [{ $sort: { _id: 1 } }],
             });
 
         return evaluateList;

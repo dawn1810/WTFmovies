@@ -46,7 +46,11 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
         setDialogOpen(true);
     };
 
-    const handleAddCriteria = () => {};
+    const handleDeleteStandard = (index: number) => {
+        setDialogType({ title: 'Xoá tiêu chuẩn', type: 2 });
+        setCurrentRow(index);
+        setDialogOpen(true);
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -63,8 +67,8 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
                             <TableCell width={10} align="center">
                                 Điểm
                             </TableCell>
-                            <TableCell width={100} align="center">
-                                Cập nhật
+                            <TableCell width={200} align="center">
+                                Thao tác
                             </TableCell>
                         </TableRow>
                     </TableHead>
@@ -76,6 +80,7 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
                                 handleCloseDialog={handleCloseDialog}
                                 handleOpenDialog={handleOpenDialog}
                                 handleUpdateStandard={handleUpdateStandard}
+                                handleDeleteStandard={handleDeleteStandard}
                             />
                         ))}
                         <TableRow key={'new'} hover onClick={() => handleOpenDialog('Thêm tiêu chuẩn mới')}>
@@ -96,12 +101,10 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
                 </Table>
             </TableContainer>
             <EvaluateDialog
-                tabValue={tabValue}
                 dialogOpen={dialogOpen}
                 currentRow={currentRow}
                 dialogType={dialogType}
                 handleCloseDialog={handleCloseDialog}
-                handleChange={handleChange}
             />
         </div>
     );

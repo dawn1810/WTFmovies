@@ -1,4 +1,4 @@
-import { AddCircleOutline, KeyboardArrowDown, KeyboardArrowUp, Update } from '@mui/icons-material';
+import { AddCircleOutline, Delete, KeyboardArrowDown, KeyboardArrowUp, Update } from '@mui/icons-material';
 import { Button, IconButton, TableCell, TableRow } from '@mui/material';
 import { useState } from 'react';
 import { CriteriaInterface, RowInterface } from '~/libs/interfaces';
@@ -9,12 +9,14 @@ export default function Row({
     handleCloseDialog,
     handleOpenDialog,
     handleUpdateStandard,
+    handleDeleteStandard,
 }: {
     row: RowInterface;
     index: number;
     handleCloseDialog: any;
     handleOpenDialog: any;
     handleUpdateStandard: any;
+    handleDeleteStandard: any;
 }) {
     const [open, setOpen] = useState(false);
 
@@ -32,6 +34,9 @@ export default function Row({
                 <TableCell align="center">
                     <IconButton>
                         <Update onClick={() => handleUpdateStandard(index)} />
+                    </IconButton>
+                    <IconButton style={{ marginLeft: 18 }}>
+                        <Delete onClick={() => handleDeleteStandard(index)} />
                     </IconButton>
                 </TableCell>
             </TableRow>

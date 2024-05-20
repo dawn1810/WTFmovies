@@ -38,7 +38,7 @@ export async function POST(request: NextRequest) {
             return toJSON('Thay đổi mật khẩu thành công');
         }
 
-        return toJSON('Thay đổi mật khẩu thất bại');
+        return toError('Thay đổi mật khẩu thất bại', 404);
     } catch (err) {
         return toError('Lỗi trong quá trình thay đổi mật khẩu', 500);
     }

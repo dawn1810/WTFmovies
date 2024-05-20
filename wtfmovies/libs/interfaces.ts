@@ -344,6 +344,7 @@ export interface CriteriaInterface {
 }
 
 export interface RowInterface {
+    _id: string;
     name: string;
     maxScore: number;
     criteria?: CriteriaInterface[];
