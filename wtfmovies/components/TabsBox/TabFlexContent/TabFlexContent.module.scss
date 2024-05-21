@@ -2,7 +2,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    justify-content: center;
+    justify-content: flex-start;
 
 
     .expisode {
@@ -33,5 +33,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        justify-content: center;
     }
 }

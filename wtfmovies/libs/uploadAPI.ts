@@ -1,23 +1,13 @@
+import { MongoDate, ObjectId, createSearchName } from './func';
 import { DateMongo, ObjectMongo } from './interfaces';
 
-export function ObjectId(id: string): ObjectMongo {
-    return {
-        $oid: id,
-    };
-}
+const createDefaultEpisode = (number: number) => {
+    const list = [];
+    for (let index = 1; index <= number; index++) {
+        list.push(index);
+    }
 
-export function MongoDate(data: Date): DateMongo {
-    return {
-        $date: data.toISOString(),
-    };
-}
-
-export const createSearchName = (name: string): string => {
-    return name
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .toLowerCase()
-        .replace(/\s+/g, '-');
+    return list;
 };
 
 export const getYoutubePlaylistItems = async (playlistId: string, email?: string) => {
@@ -35,9 +25,8 @@ export const getYoutubePlaylistItems = async (playlistId: string, email?: string
 
     const res: any = await response.json();
 
-    console.log(res);
-
-    const result = await res.items.map(async (item: any, i: number) => {
+    const result = res.items.map((item: any, i: number) => {
+        const uploadDate = new Date(item.snippet.publishedAt);
         const yUrl = new URL('https://www.youtube.com/watch');
         const yParams = {
             v: item.snippet.resourceId.videoId,
@@ -50,15 +39,14 @@ export const getYoutubePlaylistItems = async (playlistId: string, email?: string
             index: i + 1,
             name: item.snippet.title,
             uploader_email: email || 'binhminh19112003@gmail.com',
-            upload_date: MongoDate(item.snippet.publishedAt),
+            upload_date: MongoDate(uploadDate),
             rating: null,
             views: 0,
             link: yUrl.href,
         };
     });
 
-    console.log(await result);
-    // return result;
+    return result;
 };
 
 export const getYoutubePlaylistInfo = async (
@@ -68,12 +56,14 @@ export const getYoutubePlaylistInfo = async (
     status?: string,
     author?: ObjectMongo[],
     director?: ObjectMongo[],
-    tag?: ObjectMongo,
+    tag?: string,
+    country?: string,
     actor?: ObjectMongo[],
     img?: string,
     poster?: string,
     genre?: ObjectMongo[],
     maxEp?: number,
+    episodeLength?: number,
 ) => {
     try {
         const today = new Date();
@@ -91,44 +81,48 @@ export const getYoutubePlaylistInfo = async (
 
         const res: any = await response.json();
 
-        const result = await res.items[0].snippet.map((item: any) => {
-            return {
-                film_id: playlistId,
-                name: nameInput || item.title,
-                describe: describe || item.description,
-                status: status || 'Đang ra',
-                author: author || [],
-                director: director || [],
-                duration: 1440,
-                videoType: [],
-                tag: tag || undefined,
-                releaseYear: MongoDate(item.publishedAt),
-                country: ObjectId('663cd72163a3b632fbebce49'),
-                updateTime: MongoDate(today),
-                actor: actor || [],
-                views: 0,
-                likes: 0,
-                img: img || item.maxres.url,
-                poster: poster || item.maxres.url,
-                genre: genre || [],
-                notification: {
-                    schedule: '',
-                    notification: '',
-                },
-                searchName: createSearchName(item.title),
-                comment: [''],
-                maxEp: maxEp || 18,
-                weekViews: 0,
-                monthViews: 0,
-                monthLikes: 0,
-                weekLikes: 0,
-            };
-        });
+        const item = res.items[0].snippet;
+        const publishDate = new Date(item.publishedAt);
 
-        return await result;
+        const result = {
+            film_id: playlistId,
+            name: nameInput || item.title,
+            describe: describe || item.description,
+            status: status || 'Đang ra',
+            author: author || [],
+            director: director || [],
+            duration: 1440,
+            videoType: [
+                {
+                    title: 'Subs',
+                    episode: episodeLength ? createDefaultEpisode(episodeLength) : [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11],
+                },
+            ],
+            tag: tag ? ObjectId(tag) : undefined,
+            releaseYear: MongoDate(publishDate),
+            country: country ? ObjectId(country) : ObjectId('663cd72163a3b632fbebce49'),
+            updateTime: MongoDate(today),
+            actor: actor || [],
+            views: 0,
+            likes: 0,
+            img: img || item.thumbnails.standard.url,
+            poster: poster || item.thumbnails.standard.url,
+            genre: genre || [],
+            notification: {
+                schedule: '',
+                notification: '',
+            },
+            searchName: createSearchName((nameInput || item.title) + '-' + playlistId),
+            comment: [''],
+            maxEp: maxEp || 18,
+            weekViews: 0,
+            monthViews: 0,
+            monthLikes: 0,
+            weekLikes: 0,
+        };
+
+        return result;
     } catch (e) {
         console.log(e);
     }
 };
-
-console.log(getYoutubePlaylistItems);

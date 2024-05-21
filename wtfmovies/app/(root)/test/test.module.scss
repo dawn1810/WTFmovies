@@ -1,0 +1,16 @@
+.wrapper {
+    width: 1250px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin: auto;
+
+    .title {
+        color: white;
+    }
+
+    .btn {
+        width: 200px;
+        align-self: flex-end;
+    }
+}

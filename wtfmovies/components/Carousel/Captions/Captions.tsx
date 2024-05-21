@@ -3,13 +3,16 @@ import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp91, faCat, faEye, faFeather, faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
 import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 
 import { CaptionsItemInterface } from '~/libs/interfaces';
 import Button from '~/components/Button';
 import style from './Captions.module.scss';
+import { Favorite, FavoriteBorder, PlayArrow, ShareOutlined } from '@mui/icons-material';
+import { IconButton } from '@mui/material';
+import { useDebounce } from '~/hooks';
 
 const cx = classNames.bind(style);
 
@@ -22,6 +25,48 @@ const icons = [
 ];
 
 function Captions({ item }: { item: CaptionsItemInterface }) {
+    const [love, setLove] = useState(false);
+    const [loading, setLoading] = useState(false);
+
+    const loveDebounce = useDebounce(love, 2000);
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            setLoading(true);
+
+            const result = await fetch('/api/v1/evaluate/addStandard', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ love: loveDebounce }),
+            });
+
+            // if (response.ok) {
+            //     const res = await response.json();
+            //     dispatch(changeRow([...rows, { ...newValue, _id: res }]));
+            //     setValue({ name: '', maxScore: 0 });
+            //     handleCloseDialog();
+            // } else if (response.status === 400) {
+            //     alert('Thêm tiêu chuẩn thất bại!');
+            // } else if (response.status === 500) {
+            //     alert('Lỗi trong quá trình thêm tiêu chuẩn!');
+            // }
+
+            // setSearchResult(result);
+            setLoading(false);
+        };
+
+        fetchApi();
+    }, [loveDebounce]);
+
+    const handleLike = () => {
+        setLove((prev) => !prev);
+    };
+
+    const handleShare = () => {
+        navigator.clipboard.writeText(`localhost:3000/review/${item.searchName}`);
+        alert('Copied 😽😽😽');
+    };
+
     return (
         <>
             <div className={cx('film-info')}>
@@ -60,15 +105,19 @@ function Captions({ item }: { item: CaptionsItemInterface }) {
                     ))}
                 </ul>
                 <div className={cx('btn-group')}>
-                    <Button to={`/review/${item.searchName}`} primary leftIcon={<FontAwesomeIcon icon={faPlay} />}>
+                    <Button to={`/review/${item.searchName}`} primary leftIcon={<PlayArrow />}>
                         Xem phim
                     </Button>
-                    <button className={cx('action-btn')}>
-                        <FontAwesomeIcon icon={faHeart} />
-                    </button>
-                    <button className={cx('action-btn')}>
-                        <FontAwesomeIcon icon={faShareFromSquare} />
-                    </button>
+                    <IconButton
+                        size="large"
+                        style={{ color: love ? 'var(--highlight-color)' : 'var(--text-color)' }}
+                        onClick={handleLike}
+                    >
+                        {love ? <Favorite fontSize="inherit" /> : <FavoriteBorder fontSize="inherit" />}
+                    </IconButton>
+                    <IconButton size="large" onClick={handleShare}>
+                        <ShareOutlined fontSize="inherit" />
+                    </IconButton>
                 </div>
             </div>
         </>

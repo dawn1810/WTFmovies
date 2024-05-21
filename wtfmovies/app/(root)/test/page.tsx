@@ -2,24 +2,43 @@
 import classNames from 'classnames/bind';
 
 import style from './test.module.scss';
+import { Button, TextField } from '@mui/material';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
 function Test() {
+    const [value, setValue] = useState(
+        JSON.stringify(
+            {
+                playlistId: '',
+                nameInput: '',
+                describe: '',
+                status: '',
+                author: [],
+                director: [],
+                tag: '',
+                country: '',
+                actor: [],
+                img: '',
+                poster: '',
+                genre: [],
+                maxEp: 18,
+            },
+            null,
+            2,
+        ),
+    );
+
+    const handleChange = (event: any) => {
+        setValue(event.target.value);
+    };
+
     const handleSend = async () => {
         const response = await fetch('/api/v1/editor/youtubeUpload', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                playlistId: 'PLON1ufyN39kVMnxWGuA6ZAkMBwPqDmuut',
-                // nameInput: 'Dororo',
-                // describe:
-                //     'Dororo là bộ anime kể về một đứa trẻ sinh ra với một lời nguyền khủng khiếp và hành trình đánh bại lũ quỷ đã nguyền rủa cậu. Đó là sự kết hợp tuyệt vời giữa chủ nghĩa hiện thực và truyện dân gian cổ xưa của Nhật Bản cũng như sự kết hợp tuyệt vời giữa hành động, kịch tính và bí ẩn.',
-                // status: 'Hoàn thành',
-                // img: 'https://w0.peakpx.com/wallpaper/833/389/HD-wallpaper-dororo-hyakkimaru-alone-mountain-japan-sad-90s-samurai-anime.jpg',
-                // poster: 'https://mrwallpaper.com/images/hd/hyakkimaru-and-miyo-dororo-spnmbgqcljs59oof.jpg',
-                // maxEp: 24,
-            }),
+            body: value,
         });
 
         if (response.ok) {
@@ -34,7 +53,19 @@ function Test() {
 
     return (
         <div className={cx('wrapper')}>
-            <button onClick={handleSend}>Send</button>
+            <h1 className={cx('title')}>YOUTUBE UPLOAD DEMO:</h1>
+            <TextField
+                autoFocus
+                label="body"
+                spellCheck={false}
+                multiline
+                fullWidth
+                value={value}
+                onChange={handleChange}
+            />
+            <Button variant="contained" className={cx('btn')} onClick={handleSend}>
+                SEND
+            </Button>
         </div>
     );
 }

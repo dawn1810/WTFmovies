@@ -2,6 +2,7 @@ export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { MongoDate, ObjectId, createSearchName, mongodb, toError, toJSON } from '~/libs/func';
 import { ObjectMongo } from '~/libs/interfaces';
+import { getYoutubePlaylistInfo, getYoutubePlaylistItems } from '~/libs/uploadAPI';
 
 type dataType = {
     email?: string;
@@ -9,14 +10,31 @@ type dataType = {
     nameInput?: string;
     describe?: string;
     status?: string;
-    author?: ObjectMongo[];
-    director?: ObjectMongo[];
-    tag?: ObjectMongo;
-    actor?: ObjectMongo;
+    author?: string[];
+    director?: string[];
+    tag?: string;
+    country?: string;
+    actor?: string[];
     img?: string;
     poster?: string;
-    genre?: ObjectMongo[];
+    genre?: string[];
     maxEp?: number;
+};
+
+const updateList = async (list: string[], collection: string): Promise<ObjectMongo[]> => {
+    for (const name of list) {
+        await mongodb()
+            .db('film')
+            .collection(collection)
+            .updateMany({ filter: { name }, update: { $set: { name } }, upsert: true });
+    }
+
+    const result = await mongodb()
+        .db('film')
+        .collection(collection)
+        .find({ filter: { name: { $in: list } }, projection: { _id: 1 } });
+
+    return result.map((r) => ObjectId(r._id));
 };
 
 export async function POST(request: NextRequest) {
@@ -30,6 +48,7 @@ export async function POST(request: NextRequest) {
             author,
             director,
             tag,
+            country,
             actor,
             img,
             poster,
@@ -37,76 +56,49 @@ export async function POST(request: NextRequest) {
             maxEp,
         }: dataType = await request.json();
 
-        const url = new URL('https://www.googleapis.com/youtube/v3/playlistItems');
-        const params: any = {
-            key: 'AIzaSyB6yUQdrzm1DXO4BVSWc75nubzIq6WbfnY',
-            part: 'snippet',
-            playlistId: playlistId,
-            maxResults: 2,
-        };
+        // up episodes
+        const episodeList: any[] = await getYoutubePlaylistItems(playlistId, email);
 
-        url.search = new URLSearchParams(params).toString();
+        episodeList.forEach(async (espisode, index) => {
+            const epUploadRes = await mongodb().db('film').collection('episode').insertOne(espisode);
 
-        const response = await fetch(url);
-
-        const res: any = await response.json();
-
-        const result = res.items.map((item: any, i: number) => {
-            const uploadDate = new Date(item.snippet.publishedAt);
-            const yUrl = new URL('https://www.youtube.com/watch');
-            const yParams = {
-                v: item.snippet.resourceId.videoId,
-            };
-
-            yUrl.search = new URLSearchParams(yParams).toString();
-
-            return {
-                film_id: playlistId,
-                index: i + 1,
-                name: item.snippet.title,
-                uploader_email: email || 'binhminh19112003@gmail.com',
-                upload_date: MongoDate(uploadDate),
-                rating: null,
-                views: 0,
-                link: yUrl.href,
-            };
+            if (!epUploadRes) {
+                return toError('Đăng tải tập phim không thành công', 400);
+            }
         });
 
-        // up episodes
-        // await getYoutubePlaylistItems(playlistId, email);
-        // const episodeList: any[] = await getYoutubePlaylistItems(playlistId, email);
-        // console.log(episodeList);
+        // add author, actor, director, tag, genre
+        const authors = author ? await updateList(author, 'author') : undefined;
+        const directors = director ? await updateList(director, 'director') : undefined;
+        const actors = actor ? await updateList(actor, 'actor') : undefined;
+        const genres = genre ? await updateList(genre, 'genre') : undefined;
 
-        // episodeList.forEach(async (espisode, index) => {
-        //     const epUploadRes = await mongodb().db('film').collection('information').insertOne(espisode);
+        // up film
+        const filmInfo: any = await getYoutubePlaylistInfo(
+            playlistId,
+            nameInput,
+            describe,
+            status,
+            authors,
+            directors,
+            tag,
+            country,
+            actors,
+            img,
+            poster,
+            genres,
+            maxEp,
+            episodeList.length,
+        );
 
-        //     if (!epUploadRes) {
-        //         throw new Error('Lỗi trong quá trình up tập: ' + index);
-        //     }
-        // });
+        const response: any = await mongodb().db('film').collection('information').insertOne(filmInfo);
 
-        // // up film
-        // const filmInfo: any = await getYoutubePlaylistInfo(
-        //     playlistId,
-        //     nameInput,
-        //     describe,
-        //     status,
-        //     author,
-        //     director,
-        //     tag,
-        //     actor,
-        //     img,
-        //     poster,
-        //     genre,
-        //     maxEp,
-        // );
-        // const response: any = await mongodb().db('film').collection('information').insertOne(filmInfo);
-
-        // if (!!response) {
-        //     return toJSON(response[0], 200);
-        // }
+        if (!!response) {
+            return toJSON(response, 200);
+        }
 
         return toError('Đăng tải phim không thành công', 400);
+        // return toJSON('😎😎😎', 200);
     } catch (err) {
         return toError('Lỗi' + err, 500);
     }

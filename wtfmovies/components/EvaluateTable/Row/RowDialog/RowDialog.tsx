@@ -39,7 +39,7 @@ export default function EvaluateDialog({
         setValue({ name: '', maxScore: 0 });
         handleCloseDialog();
     };
-    const handleAdd = async () => {)
+    const handleAdd = async () => {};
     // const handleAdd = async () => {
     //     if (value.name.length <= 0) setErr({ scoreErr: '', nameErr: 'Cần nhập tên tiêu chuẩn' });
     //     else if (value.maxScore === 0) setErr({ nameErr: '', scoreErr: 'Điểm tối đa cần lớn hơn 0' });
@@ -81,7 +81,7 @@ export default function EvaluateDialog({
         });
 
         if (response.ok) {
-            dispatch(changeRow(rows.map((c, i) => (i === currentCriteria ? { ...c, ...newValue } : r))));
+            dispatch(changeRow(rows.map((c, i) => (i === currentCriteria ? { ...c, ...newValue } : c))));
             setValue({ name: '', maxScore: 0 });
             handleCloseDialog();
         } else if (response.status === 400) {
