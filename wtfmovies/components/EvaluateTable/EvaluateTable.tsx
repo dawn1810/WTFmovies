@@ -22,15 +22,10 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogType, setDialogType] = useState<{ title: string; type: number }>({ title: '', type: 0 });
     const [currentRow, setCurrentRow] = useState(0);
-    const [tabValue, setTabValue] = useState('1');
 
     useEffect(() => {
         dispatch(changeRow(evaluateList));
     }, []);
-
-    const handleChange = (event: SyntheticEvent, newValue: string) => {
-        setTabValue(newValue);
-    };
 
     const handleCloseDialog = () => {
         setDialogOpen(false);
