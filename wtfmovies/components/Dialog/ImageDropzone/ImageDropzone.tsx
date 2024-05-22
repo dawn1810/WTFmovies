@@ -1,19 +1,18 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import style from './ImageDropzone.module.scss';
 import classNames from 'classnames/bind';
 import ImageCropPopup from "./ImageCropPopUp";
 import { Box } from "@mui/material";
 import ReviewImage from "./ImageReview";
 const cx = classNames.bind(style);
-export default function ImageDropzone() {
+export default function ImageDropzone({ imageDefault, imageBannerDefault }: { imageDefault?: string; imageBannerDefault?: string }) {
     const [openCropPopup, setOpenCropPopup] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<any>(null);
-    const [selectedImageBanner, setSelectedImageBanner] = useState<any>(null);
+    const [selectedImage, setSelectedImage] = useState<any>(imageDefault);
+    const [selectedImageBanner, setSelectedImageBanner] = useState<any>(imageBannerDefault);
     const [cropResultBanner, setCropResultBanner] = useState<any>(null);
     const [selectedImageCrop, setSelectedImageCrop] = useState<any>(null);
     const fileInputRef1 = useRef<any>(null);
     const fileInputRef2 = useRef<any>(null);
-
     const [cropResult, setCropResult] = useState<any>(null);
     const [aspectRatio, setAspectRatio] = useState<number>(0);
 

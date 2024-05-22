@@ -15,11 +15,12 @@ export const colum = [
     { headerName: 'Quốc gia', field: 'country', width: 100 },
     { headerName: 'Giới hạn', field: 'tag', width: 130 },
     { headerName: 'Đánh giá', field: 'rating', width: 120 },
-
 ];
+
 export default async function FilmPage() {
     const data = await getFilm();
     const sideMovieFormInfo = await getSideMovieFormInfo();
+
     return (
         <FilmManager title_name="Tổng quan" colum={colum} sideFormInfo={sideMovieFormInfo}>
             {data}

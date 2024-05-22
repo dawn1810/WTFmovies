@@ -18,6 +18,7 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ classname, imageSrc, croppedA
 
     useEffect(() => {
         const drawImage = async () => {
+
             const image = new Image();
             image.src = imageSrc;
 
@@ -26,7 +27,17 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ classname, imageSrc, croppedA
             const canvas = canvasRef.current!;
             const context = canvas.getContext('2d')!;
 
-
+            if (!croppedArea?.width) return (context.drawImage(
+                image,
+                0,
+                0,
+                image.width,
+                image.height,
+                0,
+                0,
+                canvas.width,
+                canvas.height
+            ))
 
             const croppedWidth = croppedArea.width;
             const croppedHeight = croppedArea.height;

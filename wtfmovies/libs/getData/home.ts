@@ -37,6 +37,8 @@ export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; l
             .collection('information')
             .aggregate({
                 pipeline: [
+                    { $match: { status: { $ne: 'delete' } } },
+
                     { $sort: { releaseYear: -1, updateTime: -1 } }, // Assuming you want newer updates and releases first
                     {
                         $lookup: {
@@ -102,7 +104,7 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $match: {} },
+                    { $match: { status: { $ne: 'delete' } } },
                     {
                         $lookup: {
                             from: 'episode',
@@ -143,6 +145,8 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
             .collection('information')
             .aggregate({
                 pipeline: [
+                    { $match: { status: { $ne: 'delete' } } },
+
                     queryMatch,
                     {
                         $lookup: {

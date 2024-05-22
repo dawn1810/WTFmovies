@@ -67,6 +67,7 @@ export default function DataGridCom({
             actor: [...sideFormInfo.actors.filter((item: any) => actorsList.has(item.title))],
             country: [...sideFormInfo.countrys.filter((item: any) => countrysList.has(item.label))],
         };
+
         setValueFilm(data)
         setOpenForm(true);
     }

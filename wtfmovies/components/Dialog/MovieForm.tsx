@@ -47,7 +47,7 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
         },
         {
             value: 'done',
-            label: 'Kết thúc',
+            label: 'Hoàn thành',
         },
         {
             value: 'will',
@@ -66,6 +66,9 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
     const [titleMovie, setTitleMovie] = useState(defaultValue.name || '');
     const [year, setYear] = useState<Dayjs | null>(defaultValue.releaseYear ? dayjs(defaultValue.releaseYear) : null);
     const [maxEp, setMaxEp] = useState(defaultValue.maxEp || undefined);
+    const [imgMovie, setImgMovie] = useState(defaultValue.img || undefined);
+    const [imgBannerMovie, setImgBannerMovie] = useState(defaultValue.poster || undefined);
+
     const [duration, setDuration] = useState<Dayjs | null>(defaultValue.duration ? dayjs()
         .startOf('year')
         .add(defaultValue.duration, 'seconds') : null);
@@ -110,7 +113,7 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
                         display: 'flex',
                         flexDirection: 'column'
                     }}>
-                        <ImageDropzone></ImageDropzone>
+                        <ImageDropzone key={imgBannerMovie} imageBannerDefault={imgBannerMovie} imageDefault={imgMovie}></ImageDropzone>
 
                         <Box
                             component="form"
@@ -281,7 +284,6 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
                                     id="movie-tag"
                                     select
                                     label="Nhãn"
-                                    required
                                     value={valueTag}
                                     onChange={(event: any) => {
                                         setvValueTag(event.target.value);

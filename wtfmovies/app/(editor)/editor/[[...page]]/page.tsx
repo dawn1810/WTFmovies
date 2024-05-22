@@ -12,6 +12,7 @@ function getPage(params?: any) {
             return <OverViewPage />;
     }
 }
+export const fetchCache = 'force-no-store';
 
 export default async function Editer({ params }: { params?: { page: string[] } }) {
     return <>{getPage(params)}</>;

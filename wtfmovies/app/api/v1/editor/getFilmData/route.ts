@@ -21,7 +21,7 @@ export async function POST(request: NextRequest) {
                 .collection('information')
                 .aggregate({
                     pipeline: [
-                        { $match: { film_id: id } },
+                        { $match: { film_id: id, status: { $ne: 'delete' } } },
                         {
                             $lookup: {
                                 from: 'author',

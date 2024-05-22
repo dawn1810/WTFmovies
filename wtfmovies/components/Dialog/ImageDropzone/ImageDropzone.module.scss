@@ -43,5 +43,6 @@
 .imgSellectContainer {
     display: flex;
     gap: 1rem;
-    justify-content: center
+    justify-content: flex-start;
+    padding-left: 2rem;
 }

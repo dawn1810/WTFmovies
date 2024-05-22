@@ -8,7 +8,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $match: { searchName: filmName } },
+                    { $match: { searchName: filmName, status: { $ne: 'delete' } } },
                     {
                         $lookup: {
                             from: 'author',
@@ -134,6 +134,8 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
             .collection('information')
             .aggregate({
                 pipeline: [
+                    { $match: { status: { $ne: 'delete' } } },
+
                     { $match: { searchName: filmName } },
                     { $match: { comment: { $exists: true, $ne: [] } } },
                     {
