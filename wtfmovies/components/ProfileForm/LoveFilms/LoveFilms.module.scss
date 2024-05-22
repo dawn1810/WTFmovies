@@ -1,0 +1,19 @@
+.list {
+    width: 100%;
+    color: var(--text-color);
+}
+
+.btn-group {
+    align-self: flex-end;
+}
+
+.divider {
+    width: 100%;
+    color: var(--text-color);
+    margin-bottom: 18px;
+
+    &::before,
+    &::after {
+        background-color: var(--text-color);
+    }
+}

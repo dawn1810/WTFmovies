@@ -7,6 +7,7 @@ import { UserInfoInterface } from '~/libs/interfaces';
 import style from './ProfileForm.module.scss';
 import ProfileInfo from './ProfileInfo';
 import PassChange from './PassChange';
+import LoveFilms from './LoveFilms';
 
 const cx = classNames.bind(style);
 
@@ -43,8 +44,8 @@ const cx = classNames.bind(style);
 //     };
 // }
 
-function Profile({ userInfo }: { userInfo: UserInfoInterface }) {
-    const [value, setValue] = useState('1');
+function Profile({ userInfo, loveFilmsInfo }: { userInfo: UserInfoInterface; loveFilmsInfo: any }) {
+    const [value, setValue] = useState('3');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -52,30 +53,12 @@ function Profile({ userInfo }: { userInfo: UserInfoInterface }) {
 
     return (
         <div className={cx('wrapper')}>
-            {/* <Box sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex' }}>
-                <Tabs
-                    orientation="vertical"
-                    variant="scrollable"
-                    value={value}
-                    onChange={handleChange}
-                    aria-label="Vertical tabs example"
-                    sx={{ borderRight: 1, borderColor: 'divider' }}
-                >
-                    <Tab label="Thông tin cá nhân" value={1} {...a11yProps(0)} />
-                    <Tab label="Thay đổi mật khẩu" value={2} {...a11yProps(1)} />
-                </Tabs>
-                <TabPanel value={value} index={1}>
-                    <ProfileInfo userInfo={userInfo} />
-                </TabPanel>
-                <TabPanel value={value} index={2}>
-                    <PassChange />
-                </TabPanel>
-            </Box> */}
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                     <TabList onChange={handleChange} aria-label="lab API tabs example">
                         <Tab label="Thông tin cá nhân" value="1" />
                         <Tab label="Thay đổi mật khẩu" value="2" />
+                        <Tab label="Danh sách film yêu thích" value="3" />
                     </TabList>
                 </Box>
                 <TabPanel value="1">
@@ -83,6 +66,9 @@ function Profile({ userInfo }: { userInfo: UserInfoInterface }) {
                 </TabPanel>
                 <TabPanel value="2">
                     <PassChange />
+                </TabPanel>
+                <TabPanel value="3">
+                    <LoveFilms loveFilmsInfo={loveFilmsInfo} />
                 </TabPanel>
             </TabContext>
         </div>

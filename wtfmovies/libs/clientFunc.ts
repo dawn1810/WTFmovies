@@ -92,6 +92,7 @@ export const mapFilms = (films: FilmInfoInterface[]): FilmsInterFace[] => {
     return mappedFilms;
 };
 
+// time format
 export const timePassed = (datestring: string): string => {
     const date = new Date(datestring);
     const now = new Date();
@@ -117,4 +118,18 @@ export const timePassed = (datestring: string): string => {
     } else {
         return `${diffYears} năm trước`;
     }
+};
+
+// number format
+export const formatNumber = (num: number): string => {
+    if (num >= 1000000000) {
+        return (num / 1000000000).toFixed(1).replace(/\.0$/, '') + 'B';
+    }
+    if (num >= 1000000) {
+        return (num / 1000000).toFixed(1).replace(/\.0$/, '') + 'M';
+    }
+    if (num >= 1000) {
+        return (num / 1000).toFixed(1).replace(/\.0$/, '') + 'K';
+    }
+    return num.toString();
 };

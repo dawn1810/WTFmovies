@@ -24,48 +24,6 @@ const icons = [
 ];
 
 function Captions({ item, loveState }: { item: CaptionsItemInterface; loveState: boolean }) {
-    // const isFirstRender = useRef(true);
-    // const [love, setLove] = useState(loveState);
-    // const [loading, setLoading] = useState(false);
-
-    // const loveDebounce = useDebounce(love, 1000);
-
-    // useEffect(() => {
-    //     if (isFirstRender.current) {
-    //         return;
-    //     }
-
-    //     const fetchApi = async () => {
-    //         setLoading(true);
-
-    //         const response = await fetch('/api/v1/updateLike', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ searchName: item.searchName, love: loveDebounce }),
-    //         });
-
-    //         if (response.ok) {
-    //             setLoading(false);
-    //         } else if (response.status === 400) {
-    //             alert('Cập nhật yêu thích thất bại!');
-    //         } else if (response.status === 500) {
-    //             alert('Lỗi trong quá trình cập nhật yêu thích');
-    //         }
-    //     };
-
-    //     fetchApi();
-    // }, [loveDebounce]);
-
-    // const handleLike = () => {
-    //     isFirstRender.current = false;
-    //     setLove((prev) => !prev);
-    // };
-
-    // const handleShare = () => {
-    //     navigator.clipboard.writeText(`localhost:3000/review/${item.searchName}`);
-    //     alert("film's link copied 😽😽😽");
-    // };
-
     return (
         <>
             <div className={cx('film-info')}>

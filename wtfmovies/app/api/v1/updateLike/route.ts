@@ -4,7 +4,7 @@ import { ObjectId, mongodb, toError, toJSON } from '~/libs/func';
 import { auth } from '../../auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { searchName: string; love: boolean };
+type dataType = { searchName: string[]; love: boolean };
 
 export async function POST(request: NextRequest) {
     try {
@@ -15,6 +15,7 @@ export async function POST(request: NextRequest) {
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { searchName, love }: dataType = await request.json();
 
+        const searchLength = searchName.length;
         if (love) {
             // update user love film list
             const userRes = await mongodb()
@@ -24,7 +25,7 @@ export async function POST(request: NextRequest) {
                     filter: {
                         email: extendedUser?.email,
                     },
-                    update: { $push: { loveFilms: searchName } },
+                    update: { $push: { loveFilms: { $each: searchName } } },
                     upsert: true,
                 });
 
@@ -34,7 +35,7 @@ export async function POST(request: NextRequest) {
                 .collection('information')
                 .updateOne({
                     filter: {
-                        searchName: searchName,
+                        searchName: { $in: searchName },
                     },
                     update: { $inc: { likes: 1, monthLikes: 1, weekLikes: 1 } },
                     upsert: true,
@@ -52,7 +53,7 @@ export async function POST(request: NextRequest) {
                     filter: {
                         email: extendedUser?.email,
                     },
-                    update: { $pull: { loveFilms: searchName } },
+                    update: { $pull: { loveFilms: { $in: searchName } } },
                     upsert: true,
                 });
 
@@ -62,7 +63,7 @@ export async function POST(request: NextRequest) {
                 .collection('information')
                 .updateOne({
                     filter: {
-                        searchName: searchName,
+                        searchName: { $in: searchName },
                     },
                     update: { $inc: { likes: -1, monthLikes: -1, weekLikes: -1 } },
                     upsert: true,

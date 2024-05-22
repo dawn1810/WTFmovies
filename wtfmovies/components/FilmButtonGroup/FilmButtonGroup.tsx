@@ -27,7 +27,7 @@ function FilmButtonGroup({ dir, loveState, searchName }: { dir?: string; loveSta
             const response = await fetch('/api/v1/updateLike', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ searchName, love: loveDebounce }),
+                body: JSON.stringify({ searchName: [searchName], love: loveDebounce }),
             });
 
             if (response.ok) {
