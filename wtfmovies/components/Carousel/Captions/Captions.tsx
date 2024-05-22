@@ -1,10 +1,8 @@
 'use client';
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp91, faCat, faEye, faFeather, faPlay, faStar } from '@fortawesome/free-solid-svg-icons';
-import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
-import { Fragment, useEffect, useState } from 'react';
-import PropTypes from 'prop-types';
+import { faArrowUp91, faCat, faEye, faFeather, faStar } from '@fortawesome/free-solid-svg-icons';
+import { Fragment, memo, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 
 import { CaptionsItemInterface } from '~/libs/interfaces';
@@ -13,6 +11,7 @@ import style from './Captions.module.scss';
 import { Favorite, FavoriteBorder, PlayArrow, ShareOutlined } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
 import { useDebounce } from '~/hooks';
+import FilmButtonGroup from '~/components/FilmButtonGroup/FilmButtonGroup';
 
 const cx = classNames.bind(style);
 
@@ -24,48 +23,48 @@ const icons = [
     <FontAwesomeIcon icon={faStar} />,
 ];
 
-function Captions({ item }: { item: CaptionsItemInterface }) {
-    const [love, setLove] = useState(false);
-    const [loading, setLoading] = useState(false);
+function Captions({ item, loveState }: { item: CaptionsItemInterface; loveState: boolean }) {
+    // const isFirstRender = useRef(true);
+    // const [love, setLove] = useState(loveState);
+    // const [loading, setLoading] = useState(false);
 
-    const loveDebounce = useDebounce(love, 2000);
+    // const loveDebounce = useDebounce(love, 1000);
 
-    useEffect(() => {
-        const fetchApi = async () => {
-            setLoading(true);
+    // useEffect(() => {
+    //     if (isFirstRender.current) {
+    //         return;
+    //     }
 
-            const result = await fetch('/api/v1/evaluate/addStandard', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ love: loveDebounce }),
-            });
+    //     const fetchApi = async () => {
+    //         setLoading(true);
 
-            // if (response.ok) {
-            //     const res = await response.json();
-            //     dispatch(changeRow([...rows, { ...newValue, _id: res }]));
-            //     setValue({ name: '', maxScore: 0 });
-            //     handleCloseDialog();
-            // } else if (response.status === 400) {
-            //     alert('Thêm tiêu chuẩn thất bại!');
-            // } else if (response.status === 500) {
-            //     alert('Lỗi trong quá trình thêm tiêu chuẩn!');
-            // }
+    //         const response = await fetch('/api/v1/updateLike', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify({ searchName: item.searchName, love: loveDebounce }),
+    //         });
 
-            // setSearchResult(result);
-            setLoading(false);
-        };
+    //         if (response.ok) {
+    //             setLoading(false);
+    //         } else if (response.status === 400) {
+    //             alert('Cập nhật yêu thích thất bại!');
+    //         } else if (response.status === 500) {
+    //             alert('Lỗi trong quá trình cập nhật yêu thích');
+    //         }
+    //     };
 
-        fetchApi();
-    }, [loveDebounce]);
+    //     fetchApi();
+    // }, [loveDebounce]);
 
-    const handleLike = () => {
-        setLove((prev) => !prev);
-    };
+    // const handleLike = () => {
+    //     isFirstRender.current = false;
+    //     setLove((prev) => !prev);
+    // };
 
-    const handleShare = () => {
-        navigator.clipboard.writeText(`localhost:3000/review/${item.searchName}`);
-        alert('Copied 😽😽😽');
-    };
+    // const handleShare = () => {
+    //     navigator.clipboard.writeText(`localhost:3000/review/${item.searchName}`);
+    //     alert("film's link copied 😽😽😽");
+    // };
 
     return (
         <>
@@ -104,11 +103,17 @@ function Captions({ item }: { item: CaptionsItemInterface }) {
                         </li>
                     ))}
                 </ul>
-                <div className={cx('btn-group')}>
+                <FilmButtonGroup
+                    dir={`/review/${item.searchName}`}
+                    loveState={loveState}
+                    searchName={item.searchName}
+                />
+                {/* <div className={cx('btn-group')}>
                     <Button to={`/review/${item.searchName}`} primary leftIcon={<PlayArrow />}>
                         Xem phim
                     </Button>
                     <IconButton
+                        disabled={loading}
                         size="large"
                         style={{ color: love ? 'var(--highlight-color)' : 'var(--text-color)' }}
                         onClick={handleLike}
@@ -118,14 +123,10 @@ function Captions({ item }: { item: CaptionsItemInterface }) {
                     <IconButton size="large" onClick={handleShare}>
                         <ShareOutlined fontSize="inherit" />
                     </IconButton>
-                </div>
+                </div> */}
             </div>
         </>
     );
 }
-
-Captions.propTypes = {
-    item: PropTypes.object.isRequired,
-};
 
 export default Captions;

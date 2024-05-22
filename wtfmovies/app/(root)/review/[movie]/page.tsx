@@ -7,7 +7,7 @@ import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 // import DefaultLayout from '~/layouts/DefaultLayout';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
-import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
+import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import NotFound from '~/app/(root)/not-found';
 
 const cx = classNames.bind(style);
@@ -17,6 +17,7 @@ async function Review({ params }: { params: { movie: string } }) {
 
     const currentUser = await getCurrentUserInfo();
     const filmReviewInfo = await getFilmReviewInfo(movie);
+    const loveFilms = await getUserLoveFilm();
     if (!filmReviewInfo) return NotFound();
 
     const commentsFilm = await getAllFilmsComment(movie);
@@ -35,7 +36,7 @@ async function Review({ params }: { params: { movie: string } }) {
         <div className={cx('wrapper')}>
             <div className={cx('home-top')}>
                 <div className={cx('info-content')}>
-                    <FilmInfo filmInfo={filmReviewInfo} />
+                    <FilmInfo filmInfo={filmReviewInfo} loveFilms={loveFilms} />
                 </div>
                 <FilmProposeList films={proposeListFilms} />
             </div>

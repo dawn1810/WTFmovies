@@ -6,7 +6,7 @@ import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
 // import DefaultLayout from '~/layouts/DefaultLayout';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
-import { getCurrentUserInfo, getProposeListFilms } from '~/libs/getData/home';
+import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
 
 import type { Metadata, ResolvingMetadata } from 'next';
@@ -60,6 +60,7 @@ export default async function Watch({ params }: Props) {
     const filmEpisode = await getFilmsEpisode(filmData?.film_id);
 
     const filmReviewInfo = await getFilmReviewInfo(movieName);
+    const loveFilms = await getUserLoveFilm();
 
     const proposeListFilms = await getProposeListFilms();
 
@@ -91,7 +92,7 @@ export default async function Watch({ params }: Props) {
         {
             title: '#THÔNG TIN PHIM',
             eventKey: 'film-info',
-            content: <FilmInfo filmInfo={filmReviewInfo} />,
+            content: <FilmInfo watch filmInfo={filmReviewInfo} loveFilms={loveFilms} />,
         },
     ];
 

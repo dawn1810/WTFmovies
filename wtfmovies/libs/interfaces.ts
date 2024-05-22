@@ -78,6 +78,7 @@ export interface CaptionsItemInterface {
     searchName: string;
     describe: string;
     infoList: { title: string; info: string[] | string | number; type?: string }[];
+    love: boolean;
 }
 
 export interface FilmsInterFace {
@@ -186,6 +187,7 @@ export interface TabInterface {
 }
 
 export interface FilmInfoInterface {
+    film_id?: string;
     name: string;
     searchName: string;
     describe: string;
@@ -239,6 +241,7 @@ export interface UserInfoInterface {
     languages?: OptionInterface[];
     status?: boolean;
     email?: string;
+    loveFilms?: string[];
 }
 
 export interface SuveyOptionsInterface {

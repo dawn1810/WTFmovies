@@ -27,13 +27,14 @@ const PrevButton = () => {
     );
 };
 
-function FilmCarousel({ items }: { items: FilmInfoInterface[] }) {
+function FilmCarousel({ items }: { items: { films: FilmInfoInterface[]; loveFilms: string[] } }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
-    const mappedItems: CaptionsItemInterface[] = items.map((item): CaptionsItemInterface => {
+    const mappedItems: CaptionsItemInterface[] = items.films.map((item): CaptionsItemInterface => {
         const subsType = item.videoType.find((type) => type.title === 'Subs') as any;
         const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+        const love = items.loveFilms.includes(item.searchName);
 
         return {
             img: item.poster,
@@ -47,6 +48,7 @@ function FilmCarousel({ items }: { items: FilmInfoInterface[] }) {
                 { title: 'Lượt xem', info: item.views },
                 { title: 'Đánh giá', info: item.rating },
             ],
+            love: !!love,
         };
     });
 
@@ -58,11 +60,11 @@ function FilmCarousel({ items }: { items: FilmInfoInterface[] }) {
                         <ImageCustom className={`d-block w-100 ${cx('bg-img')}`} src={item.img} alt={item.name} />
                         {isMobile ? (
                             <div className={cx('carousel-caption')}>
-                                <Captions item={item} />
+                                <Captions item={item} loveState={item.love} />
                             </div>
                         ) : (
                             <Carousel.Caption className={cx('carousel-caption')}>
-                                <Captions item={item} />
+                                <Captions item={item} loveState={item.love} />
                             </Carousel.Caption>
                         )}
                     </Carousel.Item>

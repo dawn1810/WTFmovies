@@ -26,6 +26,7 @@ import Link from 'next/link';
 import images from '~/assets/image';
 import Tippy from '@tippyjs/react';
 import { FilmInfoInterface, FilmReviewInfoInterface } from '~/libs/interfaces';
+import FilmButtonGroup from '../FilmButtonGroup/FilmButtonGroup';
 
 const cx = classNames.bind(style);
 
@@ -44,7 +45,15 @@ const icons = [
     <FontAwesomeIcon icon={faStar} />,
 ];
 
-function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
+function FilmInfo({
+    filmInfo,
+    loveFilms,
+    watch = false,
+}: {
+    filmInfo: FilmInfoInterface;
+    loveFilms: string[];
+    watch?: boolean;
+}) {
     const releaseYear = filmInfo.releaseYear ? new Date(filmInfo.releaseYear) : null;
     const subsType = filmInfo.videoType.find((type) => type.title === 'Subs') as any;
     const totalEpisodes = subsType.episode[subsType.episode.length - 1];
@@ -86,6 +95,7 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
             },
         ],
     };
+    const loveState = loveFilms.includes(filmInfo.searchName);
 
     const handleCopyTitle = () => {
         navigator.clipboard.writeText(infoList.title);
@@ -166,21 +176,11 @@ function FilmInfo({ filmInfo }: { filmInfo: FilmInfoInterface }) {
                             </li>
                         ))}
                     </ul>
-                    <div className={cx('btn-group')}>
-                        <Button
-                            to={`/watch/${filmInfo.searchName}`}
-                            primary
-                            leftIcon={<FontAwesomeIcon icon={faPlay} />}
-                        >
-                            Xem phim
-                        </Button>
-                        <button className={cx('action-btn')}>
-                            <FontAwesomeIcon icon={faHeart} />
-                        </button>
-                        <button className={cx('action-btn')}>
-                            <FontAwesomeIcon icon={faShareFromSquare} />
-                        </button>
-                    </div>
+                    <FilmButtonGroup
+                        dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
+                        loveState={loveState}
+                        searchName={filmInfo.searchName}
+                    />
                 </div>
             </div>
         </div>

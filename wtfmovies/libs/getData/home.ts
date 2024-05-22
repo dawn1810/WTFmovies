@@ -2,8 +2,36 @@ import { mongodb } from '~/libs/func';
 import { ExtendedUser, FilmInfoInterface, UserInfoInterface } from '../interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
-export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
+export const getUserLoveFilm = async (): Promise<string[]> => {
     try {
+        const session = await auth();
+
+        if (!session) return [];
+
+        const extendedUser: ExtendedUser | undefined = session?.user;
+
+        const loveList: UserInfoInterface = await mongodb()
+            .db('user')
+            .collection('information')
+            .findOne({
+                filter: { email: extendedUser?.email },
+                projection: {
+                    _id: 0,
+                    loveFilms: 1,
+                },
+            });
+
+        return loveList.loveFilms || [];
+    } catch (err) {
+        console.log('😨😨😨 error at home/getCaroselFilms function  : ', err);
+        return [];
+    }
+};
+
+export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; loveFilms: string[] }> => {
+    try {
+        const loveFilms = await getUserLoveFilm();
+
         const films: FilmInfoInterface[] = await mongodb()
             .db('film')
             .collection('information')
@@ -60,10 +88,10 @@ export const getCaroselFilms = async (): Promise<FilmInfoInterface[]> => {
                 ],
             });
 
-        return films;
+        return { films, loveFilms };
     } catch (err) {
         console.log('😨😨😨 error at home/getCaroselFilms function  : ', err);
-        return [];
+        return { films: [], loveFilms: [] };
     }
 };
 
