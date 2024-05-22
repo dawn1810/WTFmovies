@@ -30,7 +30,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $match: {} },
+                    { $match: { status: { $ne: 'delete' } } },
                     {
                         $lookup: {
                             from: 'author',
@@ -118,6 +118,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                             maxEp: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                             img: 1,
+                            poster: 1,
                             status: 1,
                             duration: 1,
                             tag: '$tagDetails.name',
@@ -151,7 +152,9 @@ const getAutoMutiData = async (collection: string): Promise<any[]> => {
             .db('film')
             .collection(collection)
             .find();
-
+        if (collection == 'director') {
+            console.log(data);
+        }
         return data.map(item => {
             const firstLetter = item.name.charAt(0);
             return {

@@ -20,8 +20,8 @@ export async function POST(request: NextRequest) {
             sortBy === 0
                 ? { views: -1, likes: -1, rating: -1 }
                 : sortBy === 1
-                ? { likes: -1, views: -1, rating: -1 }
-                : { rating: -1, views: -1, likes: -1 };
+                    ? { likes: -1, views: -1, rating: -1 }
+                    : { rating: -1, views: -1, likes: -1 };
 
         if (extendedUser?.role === 'admin') {
             const response = await mongodb()
@@ -29,6 +29,8 @@ export async function POST(request: NextRequest) {
                 .collection('information')
                 .aggregate({
                     pipeline: [
+                        { $match: { status: { $ne: 'delete' } } },
+
                         {
                             $lookup: {
                                 from: 'episode',

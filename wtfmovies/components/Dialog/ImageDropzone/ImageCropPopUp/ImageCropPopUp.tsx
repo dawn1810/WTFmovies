@@ -24,7 +24,7 @@ export default function ImageCropPopup({ selectedImage, open, setOpen, aspectRat
                         image={selectedImage}
                         crop={crop}
                         zoom={zoom}
-                        aspect={16 / 9}
+                        aspect={aspectRatio}
                         onCropChange={setCrop}
                         onCropComplete={handleCrop}
                         onZoomChange={setZoom}
@@ -35,7 +35,7 @@ export default function ImageCropPopup({ selectedImage, open, setOpen, aspectRat
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose}>Huỷ</Button>
-                <Button onClick={() => { handleClose(); onCropComplete(croppedArea) }}>Cắt</Button>
+                <Button onClick={() => { handleClose(); onCropComplete(croppedArea, aspectRatio) }}>Cắt</Button>
             </DialogActions>
         </Dialog>
     );

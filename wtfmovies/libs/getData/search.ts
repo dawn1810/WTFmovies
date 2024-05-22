@@ -61,6 +61,7 @@ async function getSerachByType(type: string, query: string, limit: number, full 
         .collection('information')
         .aggregate({
             pipeline: [
+                { $match: { status: { $ne: 'delete' } } },
 
                 {
                     $lookup: {

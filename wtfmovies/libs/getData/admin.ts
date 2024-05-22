@@ -34,6 +34,7 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
             .collection('information')
             .aggregate({
                 pipeline: [
+                    { $match: { status: { $ne: 'delete' } } },
                     {
                         $lookup: {
                             from: 'episode',
