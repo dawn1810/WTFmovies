@@ -106,9 +106,9 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
 
                     <Box sx={{
                         margin: '0 auto',
-                        padding: '1rem',
                         height: '100%',
-                        display: 'flex'
+                        display: 'flex',
+                        flexDirection: 'column'
                     }}>
                         <ImageDropzone></ImageDropzone>
 
@@ -124,6 +124,8 @@ export function MovieForm({ defaultValue, countrys, authors, genres, directors, 
                                 },
                                 '& .MuiFormHelperText-root': { marginLeft: 0 },
                                 display: 'flex',
+                                padding: '1rem',
+
                                 alignItems: 'stretch',
                                 gap: '1rem',
                                 width: '100%',

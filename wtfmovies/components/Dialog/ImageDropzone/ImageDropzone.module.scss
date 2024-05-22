@@ -1,6 +1,26 @@
-.imgInput {
-    width: 300px;
-    height: 150px;
+.imgInput,
+.imgInputbanner {
+    width: 150px;
+    height: 84.38px;
+    border: 1px dashed black;
+    background-color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+.reviewImage {
+    width: 150px;
+    height: 84.38px;
+}
+
+.reviewImageBaner {
+    width: 63px;
+    height: 84.375px;
+}
+
+.imgInputbanner {
+    width: 63px;
+    height: 84.375px;
     border: 1px dashed black;
     background-color: white;
     position: relative;
@@ -8,7 +28,8 @@
 
 
 
-.imgInput input[type="file"] {
+.imgInput input[type="file"],
+.imgInputbanner input[type="file"] {
     position: absolute;
     left: 0;
     top: 0;
@@ -21,7 +42,6 @@
 
 .imgSellectContainer {
     display: flex;
-    flex-direction: column;
     gap: 1rem;
     justify-content: center
 }
