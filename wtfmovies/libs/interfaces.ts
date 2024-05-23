@@ -1,3 +1,4 @@
+import { AlertColor } from '@mui/material';
 import { File } from 'buffer';
 import { User } from 'next-auth';
 import { ReactNode } from 'react';
@@ -57,6 +58,11 @@ export interface reduxStateInterface {
     };
     evaluate: {
         rows: RowInterface[];
+    };
+    notify: {
+        open: boolean;
+        content: string;
+        type?: AlertColor;
     };
 }
 
@@ -203,6 +209,7 @@ export interface FilmInfoInterface {
     country?: string;
     actor?: string[];
     views: number;
+    likes: number;
     rating: number;
     poster?: string;
     img?: string;

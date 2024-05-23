@@ -71,7 +71,7 @@ export default async function AdminLayout({
                                     <Col xs={2} id="sidebar-container">
                                         <Leftbar menuItems={menuItems} />
                                     </Col>
-                                    <Col xs={10} id="main-container" >
+                                    <Col xs={10} id="main-container">
                                         <Header isDatabase title="Editor" />
                                         <section id="layout-main-content">{children}</section>
                                     </Col>

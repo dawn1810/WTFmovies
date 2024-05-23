@@ -7,6 +7,7 @@ import { registerSlice } from '~/components/RegisterForm/registerSlice';
 import { watchSlice } from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
 import { profileSlice } from '~/components/ProfileForm/profileSlice';
 import { evaluateSlice } from '~/components/EvaluateTable/evaluateSlise';
+import { notifySlice } from '~/components/Notify/notifySlide';
 
 const rootReducer = combineReducers({
     player: playerSlice,
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
     watch: watchSlice,
     profile: profileSlice,
     evaluate: evaluateSlice,
+    notify: notifySlice,
 });
 
 export default rootReducer;

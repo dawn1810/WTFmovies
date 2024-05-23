@@ -27,6 +27,7 @@ import images from '~/assets/image';
 import Tippy from '@tippyjs/react';
 import { FilmInfoInterface, FilmReviewInfoInterface } from '~/libs/interfaces';
 import FilmButtonGroup from '../FilmButtonGroup/FilmButtonGroup';
+import { formatNumber } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
@@ -66,6 +67,8 @@ function FilmInfo({
         episodes: totalEpisodes,
         describe: filmInfo.describe,
         info: [
+            { title: 'Lượt xem', info: formatNumber(filmInfo.views), type: 'highLight' },
+            { title: 'Lượt yêu thích', info: formatNumber(filmInfo.likes), type: 'highLight' },
             { title: 'Trạng thái', info: filmInfo.status, type: 'highLight' },
             { title: 'Tác giả', info: filmInfo.author, type: 'searchAble', category: 'author' },
             { title: 'Thể loại', info: filmInfo.genre, type: 'searchAble', category: 'genre' },

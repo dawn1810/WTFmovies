@@ -1,6 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
+//notify
+export const notifyOpenSelector = (state: reduxStateInterface) => state.notify.open;
+export const notifyContentSelector = (state: reduxStateInterface) => state.notify.content;
+export const notifyTypeSelector = (state: reduxStateInterface) => state.notify.type;
+
 //evaluate
 export const rowsSelector = (state: reduxStateInterface) => state.evaluate.rows;
 
@@ -206,5 +211,16 @@ export const contactPlayerSelector = createSelector(
         contactShow,
         pip,
         resolution,
+    }),
+);
+
+export const notifySelector = createSelector(
+    notifyOpenSelector,
+    notifyContentSelector,
+    notifyTypeSelector,
+    (open, content, type) => ({
+        open,
+        content,
+        type,
     }),
 );

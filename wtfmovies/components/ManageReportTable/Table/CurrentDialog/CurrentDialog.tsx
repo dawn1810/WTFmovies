@@ -1,12 +1,23 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton, TextField } from '@mui/material';
+import {
+    AlertColor,
+    Button,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    IconButton,
+    TextField,
+} from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import { Close, Send } from '@mui/icons-material';
 
 import style from '../Table.module.scss';
 import EmailTemplate from '~/components/ManageReportTable/EmailTemplate';
 import { useDebounce } from '~/hooks';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -25,6 +36,15 @@ function CurrentDialog({
     handleReply: (type: boolean) => void;
     handleApprove: (ids: string[]) => void;
 }) {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const [loading, setLoading] = useState<boolean>(false);
     const [formValue, setFormValue] = useState(
         'Chúng tôi đã đọc và xem xét cẩn thận những báo cáo của bạn. Chúng tôi thấy được rằng đây là một vấn đề cần giải quyết và đã lên kế hoạch để giải quyết vấn đề mà bạn đã báo cáo.\n\nNhờ vào những báo cáo của bạn và cộng đồng webside của chúng tôi đã có thể phát triễn ngày càng tốt hơn và phù hợp hơn đối với cộng đồng. Thế nên chúng tôi sẽ liên hệ để gửi lời cảm ơn và phần quà đến bạn trong thời gian sớm nhất.',
@@ -50,16 +70,16 @@ function CurrentDialog({
 
             if (response.ok) {
                 handleClose(event);
-                alert('Phản hồi thành công 😎😎😎');
+                showAlert('Phản hồi thành công 😎😎😎', 'success');
                 setLoading(false);
             } else if (response.status === 400) {
-                alert('Phản hồi thất bại 😭😭😭');
+                showAlert('Phản hồi thất bại 😭😭😭', 'error');
             } else if (response.status === 401) {
-                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
             } else if (response.status === 403) {
-                alert('Chức năng ngoài phạm trù của bạn 🤬🤬🤬');
+                showAlert('Chức năng ngoài phạm trù của bạn 🤬🤬🤬', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình phản hồi 😥😥😥');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         } catch (err) {
             console.log('có lỗi trong quá trình gửi mail');

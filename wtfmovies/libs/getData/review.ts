@@ -91,6 +91,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                             director: '$directorDetails.name',
                             videoType: 1,
                             views: 1,
+                            likes: 1,
                             maxEp: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                             img: 1,
@@ -118,6 +119,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
             maxEp: null,
             videoType: [],
             views: 0,
+            likes: 0,
             rating: 0,
         };
     }

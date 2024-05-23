@@ -57,15 +57,18 @@ export async function POST(request: NextRequest) {
         }: dataType = await request.json();
 
         // up episodes
-        const episodeList: any[] = await getYoutubePlaylistItems(playlistId, email);
+        const episodeList: { result: any[]; filmExisted?: any } = await getYoutubePlaylistItems(playlistId, email);
 
-        episodeList.forEach(async (espisode, index) => {
-            const epUploadRes = await mongodb().db('film').collection('episode').insertOne(espisode);
+        // console.log(episodeList);
 
-            if (!epUploadRes) {
-                return toError('Đăng tải tập phim không thành công', 400);
-            }
-        });
+        episodeList.result &&
+            episodeList.result.forEach(async (espisode, index) => {
+                const epUploadRes = await mongodb().db('film').collection('episode').insertOne(espisode);
+
+                if (!epUploadRes) {
+                    return toError('Đăng tải tập phim không thành công', 400);
+                }
+            });
 
         // add author, actor, director, tag, genre
         const authors = author ? await updateList(author, 'author') : undefined;
@@ -74,31 +77,44 @@ export async function POST(request: NextRequest) {
         const genres = genre ? await updateList(genre, 'genre') : undefined;
 
         // up film
-        const filmInfo: any = await getYoutubePlaylistInfo(
-            playlistId,
-            nameInput,
-            describe,
-            status,
-            authors,
-            directors,
-            tag,
-            country,
-            actors,
-            img,
-            poster,
-            genres,
-            maxEp,
-            episodeList.length,
-        );
 
-        const response: any = await mongodb().db('film').collection('information').insertOne(filmInfo);
+        if (!!episodeList.result) {
+            const filmInfo: any = await getYoutubePlaylistInfo(
+                playlistId,
+                nameInput,
+                describe,
+                status,
+                authors,
+                directors,
+                tag,
+                country,
+                actors,
+                img,
+                poster,
+                genres,
+                maxEp,
+                episodeList.result.length,
+                episodeList.filmExisted,
+            );
 
-        if (!!response) {
-            return toJSON(response, 200);
+            const response: any = await mongodb()
+                .db('film')
+                .collection('information')
+                .updateOne({
+                    filter: {
+                        film_id: playlistId,
+                    },
+                    update: { $set: filmInfo },
+                    upsert: true,
+                });
+
+            if (!!response) {
+                return toJSON(response, 200);
+            }
+
+            return toError('Đăng tải phim không thành công', 400);
         }
-
-        return toError('Đăng tải phim không thành công', 400);
-        // return toJSON('😎😎😎', 200);
+        return toJSON('😎😎😎', 200);
     } catch (err) {
         return toError('Lỗi' + err, 500);
     }

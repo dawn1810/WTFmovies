@@ -5,15 +5,26 @@ import { useRouter } from 'next/navigation';
 
 import style from './forgetpass.module.scss';
 import OTP from '~/components/OtpForm/OtpForm';
-import { Avatar, Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
+import { AlertColor, Avatar, Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 import { validatePassword } from '~/libs/clientFunc';
 import PassInput from '~/components/PassInput';
 import { LoadingButton } from '@mui/lab';
 import { LockReset, SaveOutlined } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
 function ForgetPass() {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const router = useRouter();
     const [page, setPage] = useState<number>(0);
 
@@ -81,9 +92,9 @@ function ForgetPass() {
             setUserInfo(res);
             handleNextPage();
         } else if (response.status === 400) {
-            alert('Người dùng không tồn tại 🧐🧐🧐');
+            showAlert('Người dùng không tồn tại 🧐🧐🧐', 'error');
         } else if (response.status === 500) {
-            alert('Lỗi trong quá trình tìm kiếm, vui lòng thử lại 🫤🫤🫤');
+            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
         }
     };
 
@@ -102,11 +113,11 @@ function ForgetPass() {
                 setCount(60);
                 handleNextPage();
             } else if (response.status === 400) {
-                alert('Gửi mã đăng nhập thất bại 😭😭😭');
+                showAlert('Gửi mã đăng nhập thất bại 😭😭😭', 'error');
             } else if (response.status === 401) {
-                alert('Gửi mail thất bại 😭😭😭');
+                showAlert('Gửi mail thất bại 😭😭😭', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình gữi mã xác nhận, vui lòng thử lại 🫤🫤🫤');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         }
     };
@@ -130,11 +141,11 @@ function ForgetPass() {
             setOtpId(res);
             handleNextPage();
         } else if (response.status === 400) {
-            alert('Lưu mã đăng nhập thất bại 😭😭😭');
+            showAlert('Lưu mã đăng nhập thất bại 😭😭😭', 'error');
         } else if (response.status === 401) {
-            alert('Mã đăng nhập không hợp lệ 😭😭😭');
+            showAlert('Mã đăng nhập không hợp lệ 😭😭😭', 'error');
         } else if (response.status === 500) {
-            alert('Lỗi trong quá trình gữi mã xác nhận, vui lòng thử lại 🫤🫤🫤');
+            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn ', 'error');
         }
     };
 
@@ -181,15 +192,15 @@ function ForgetPass() {
 
             if (response.ok) {
                 setInfo({ newPass: '', rnewPass: '' });
-                alert('Thay đổi mật khẩu thành công');
+                showAlert('Thay đổi mật khẩu thành công', 'success');
             } else if (response.status === 400) {
-                alert('Email không tồn tại');
+                showAlert('Email không tồn tại', 'warning');
                 setLoading(false);
             } else if (response.status === 401) {
-                alert('Email không tồn tại');
+                showAlert('Email không tồn tại', 'error');
                 setLoading(false);
             } else if (response.status === 500) {
-                alert('Thay đổi mật khẩu thất bại');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
             setLoading(false);
         }

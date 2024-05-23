@@ -7,6 +7,7 @@ import filmManagerSlice from '~/components/FilmManager/filmManagerSlice';
 import watchSlice from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
 import profileSlice from '~/components/ProfileForm/profileSlice';
 import evaluateSlise from '~/components/EvaluateTable/evaluateSlise';
+import notifySlice from '~/components/Notify/notifySlide';
 
 const store = configureStore({
     reducer: {
@@ -17,6 +18,7 @@ const store = configureStore({
         watch: watchSlice,
         profile: profileSlice,
         evaluate: evaluateSlise,
+        notify: notifySlice,
     },
 });
 

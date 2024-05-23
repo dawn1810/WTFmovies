@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
     // user exist or not
     const exist = await mongodb().db('user').collection('auth').findOne({ filter: { email } });
 
-    if (exist) {
+    if (!!exist) {
         return new Response(null, { status: 500 });
     } else {
         // insert data to user/auth

@@ -1,12 +1,13 @@
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { AlertColor, Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { CriteriaInterface, RowInterface } from '~/libs/interfaces';
 
 import style from './RowDialog.module.scss';
 import { rowsSelector } from '~/redux/selectors';
 import { changeRow } from '~/components/EvaluateTable/evaluateSlise';
 import { useState } from 'react';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -30,6 +31,14 @@ export default function EvaluateDialog({
 
     const [value, setValue] = useState({ name: '', maxScore: 0 });
     const [err, setErr] = useState({ nameErr: '', scoreErr: '' });
+
+    //alert
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
 
     const handleChange = (event: any) => {
         setValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
@@ -85,9 +94,9 @@ export default function EvaluateDialog({
             setValue({ name: '', maxScore: 0 });
             handleCloseDialog();
         } else if (response.status === 400) {
-            alert('Cập nhật tiêu chuẩn thất bại!');
+            showAlert('Cập nhật tiêu chuẩn thất bại!', 'error');
         } else if (response.status === 500) {
-            alert('Lỗi trong quá trình cập nhật tiêu chuẩn!');
+            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
         }
     };
 
@@ -110,9 +119,9 @@ export default function EvaluateDialog({
             );
             handleCloseDialog();
         } else if (response.status === 400) {
-            alert('Xoá tiêu chuẩn thất bại!');
+            showAlert('Xoá tiêu chuẩn thất bại!', 'error');
         } else if (response.status === 500) {
-            alert('Lỗi trong quá trình xoá tiêu chuẩn!');
+            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
         }
     };
 

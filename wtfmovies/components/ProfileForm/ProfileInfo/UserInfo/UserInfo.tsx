@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { Button, Divider, MenuItem, Select, TextField } from '@mui/material';
+import { AlertColor, Button, Divider, MenuItem, Select, TextField } from '@mui/material';
 import {
     AlternateEmailOutlined,
     CelebrationOutlined,
@@ -16,6 +16,8 @@ import dayjs from 'dayjs';
 import style from '../UserInfo.module.scss';
 import { LoadingButton } from '@mui/lab';
 import AvatarUpload from '../AvatarUpload';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -43,6 +45,15 @@ function UserInfo({
     avatar?: string;
     userInfoList: { email?: string; name?: string; birthDate?: string; gender?: number };
 }) {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const { data: session, update } = useSession();
 
     const initialInfo: { name?: string; birthDate?: string; gender?: number } = {
@@ -89,15 +100,15 @@ function UserInfo({
             const res = await response.json();
             setLoading(false);
             setCanSave(false);
-            alert('Cập nhật thông tin thành công!');
+            showAlert('Cập nhật thông tin thành công!', 'success');
 
             if (res !== 'Không cập nhật hình') update({ user: { ...session?.user, avatar: res } });
         } else if (response.status === 400) {
             setInfo(initialInfo);
-            alert('Cập nhật không thành công!');
+            showAlert('Cập nhật không thành công!', 'error');
         } else {
             setInfo(initialInfo);
-            alert('Cập nhật không thành công!');
+            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error'); // cho các lỗi 500
         }
     };
 

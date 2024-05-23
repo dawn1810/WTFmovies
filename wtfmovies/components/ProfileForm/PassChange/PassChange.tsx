@@ -1,12 +1,14 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { LoadingButton } from '@mui/lab';
-import { Divider } from '@mui/material';
+import { AlertColor, Divider } from '@mui/material';
 import { SaveOutlined } from '@mui/icons-material';
 
 import style from '~/components/ProfileForm/ProfileInfo/UserInfo.module.scss';
 import { validatePassword } from '~/libs/clientFunc';
 import PassInput from '~/components/PassInput';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -67,6 +69,15 @@ const cx = classNames.bind(style);
 // };
 
 function PassChange() {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const [validated, setValidated] = useState({
         oldPass: '',
         newPass: '',
@@ -120,19 +131,16 @@ function PassChange() {
 
             if (response.ok) {
                 setInfo({ oldPass: '', newPass: '', rnewPass: '' });
-                setLoading(false);
-                alert('Thay đổi mật khẩu thành công');
+                showAlert('Thay đổi mật khẩu thành công', 'success');
             } else if (response.status === 400) {
                 setValidated({ oldPass: '何？', newPass: '', rnewPass: '' });
-                setLoading(false);
             } else if (response.status === 401) {
                 setInfo((prev) => ({ ...prev, oldPass: '' }));
                 setValidated({ oldPass: 'Mật khẩu không chính xác', newPass: '', rnewPass: '' });
-                setLoading(false);
             } else if (response.status === 500) {
-                setLoading(false);
-                alert('Thay đổi mật khẩu thất bại');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
+            setLoading(false);
         }
     };
 

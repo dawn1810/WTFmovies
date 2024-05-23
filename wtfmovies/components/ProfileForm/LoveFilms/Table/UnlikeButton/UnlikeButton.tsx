@@ -1,8 +1,18 @@
 import { HeartBrokenOutlined } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import { AlertColor, IconButton } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 export default function UnklikeButton({ searchName, unLikeFilm }: { searchName: string; unLikeFilm: any }) {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
     const [loading, setLoading] = useState(false);
 
     const handleUnlike = () => {
@@ -19,9 +29,9 @@ export default function UnklikeButton({ searchName, unLikeFilm }: { searchName: 
                 unLikeFilm(searchName);
                 setLoading(false);
             } else if (response.status === 400) {
-                alert('Cập nhật yêu thích thất bại!');
+                showAlert('Cập nhật yêu thích thất bại!', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình cập nhật yêu thích');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         };
 

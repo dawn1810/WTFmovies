@@ -9,6 +9,7 @@ import ImageCustom from '../ImageCustom';
 import style from './FilmCarousel.module.scss';
 import Captions from './Captions';
 import { CaptionsItemInterface, FilmInfoInterface } from '~/libs/interfaces';
+import { formatNumber } from '~/libs/clientFunc';
 const cx = classNames.bind(style);
 
 const NextButton = () => {
@@ -45,7 +46,7 @@ function FilmCarousel({ items }: { items: { films: FilmInfoInterface[]; loveFilm
                 { title: 'Tác giả', info: item.author, type: 'searchAble' },
                 { title: 'Thể loại', info: item.genre, type: 'searchAble' },
                 { title: 'Số tập', info: totalEpisodes },
-                { title: 'Lượt xem', info: item.views },
+                { title: 'Lượt xem', info: formatNumber(item.views) },
                 { title: 'Đánh giá', info: item.rating },
             ],
             love: !!love,

@@ -1,3 +1,5 @@
+import { AlertColor } from '@mui/material';
+
 // signup
 export const changeSignUpEmailAlert = (emailAlert: boolean) => {
     return {
@@ -219,5 +221,27 @@ export const changeRows = (rows: any) => {
     return {
         type: 'evaluate/changeRows',
         payload: rows,
+    };
+};
+
+// Notify
+export const changeNotifyOpen = (open: boolean) => {
+    return {
+        type: 'notify/changeOpen',
+        payload: open,
+    };
+};
+
+export const changeNotifyContent = (content: string) => {
+    return {
+        type: 'notify/changeContent',
+        payload: content,
+    };
+};
+
+export const changeNotifyType = (type?: AlertColor) => {
+    return {
+        type: 'notify/changeType',
+        payload: type,
     };
 };

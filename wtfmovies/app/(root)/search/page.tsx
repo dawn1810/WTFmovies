@@ -14,8 +14,6 @@ const cx = classNames.bind(style);
 
 async function search({ searchParams }: { searchParams: { query: string; type: string } }) {
     const data = await getSearch(searchParams);
-    // console.log(data);
-
     return (
         // <DefaultLayout>
         <div className={cx('wrapper')}>

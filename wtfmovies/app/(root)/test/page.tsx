@@ -2,12 +2,22 @@
 import classNames from 'classnames/bind';
 
 import style from './test.module.scss';
-import { Button, TextField } from '@mui/material';
+import { AlertColor, Button, TextField } from '@mui/material';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
 function Test() {
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const [value, setValue] = useState(
         JSON.stringify(
             {
@@ -41,13 +51,15 @@ function Test() {
             body: value,
         });
 
+        console.log(value);
+
         if (response.ok) {
-            const res = await response.json();
-            console.log(res);
+            showAlert('Đăng tải phim thành công 😎😎😎', 'success');
         } else if (response.status === 400) {
-            console.log('Người dùng không tồn tại 🧐🧐🧐');
+            showAlert('Đăng tải phim thất bại, vui lòng thử lại 😞😞😞', 'info');
         } else if (response.status === 500) {
-            console.log('Lỗi 🫤🫤🫤');
+            const res = await response.text();
+            showAlert(res, 'error');
         }
     };
 

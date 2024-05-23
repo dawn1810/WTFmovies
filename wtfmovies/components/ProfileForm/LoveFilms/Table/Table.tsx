@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { AlertColor, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
 import { viVN } from '@mui/x-data-grid/locales';
 import {
     DataGrid,
@@ -22,10 +22,21 @@ import ImageCustom from '~/components/ImageCustom';
 import { formatNumber, timePassed } from '~/libs/clientFunc';
 import NotifyButton from './NotifyButton';
 import UnlikeButton from './UnlikeButton';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
 export default function DataGridCom({ dataset }: { dataset: any[] }) {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [rows, setRows] = useState<any[]>(dataset);
 
@@ -121,15 +132,15 @@ export default function DataGridCom({ dataset }: { dataset: any[] }) {
                 rowSelectionModel.forEach((element: string) => {
                     unLikeFilm(element);
                 });
-                alert('Thay đổi trạng thái thành công 😎😎😎');
+                showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {
-                alert('Thay đổi trạng thái thất bại 😭😭😭');
+                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
             } else if (response.status === 401) {
-                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
             } else if (response.status === 403) {
-                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình thay đổi trạng thái 😥😥😥');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
             setOpen(false);
         };

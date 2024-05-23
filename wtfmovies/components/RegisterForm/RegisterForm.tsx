@@ -53,6 +53,7 @@ function RegisterForm() {
     const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
+        setPending(true);
 
         const { email, password, againPass, name, birthDate } = info;
 
@@ -94,7 +95,6 @@ function RegisterForm() {
         } else if (bd.getTime() > today.getTime()) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            setPending(true);
             const response = await fetch('/api/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -192,7 +192,7 @@ function RegisterForm() {
                     </Form.Text>
                 </Form.Group>
 
-                <Button primary className={cx('submit')} type="submit">
+                <Button disabled={pending} primary className={cx('submit')} type="submit">
                     {pending ? 'Đang đăng ký' : 'Đăng ký'}
                 </Button>
             </Form>

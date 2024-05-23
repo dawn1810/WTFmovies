@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { AlertColor, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 import { viVN } from '@mui/x-data-grid/locales';
 import {
     DataGrid,
@@ -19,6 +19,8 @@ import {
 import { Block, LockOpen } from '@mui/icons-material';
 
 import style from './Table.module.scss';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -49,6 +51,15 @@ const columns: any[] = [
 ];
 
 export default function DataGridCom({ dataset, title_name }: { dataset: any[]; title_name: string }) {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
@@ -88,16 +99,16 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
 
         if (response.ok) {
             resolve(newRow);
-            alert('Thay đổi trạng thái thành công 😎😎😎');
+            showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
         } else {
             if (response.status === 400) {
-                alert('Thay đổi trạng thái thất bại 😭😭😭');
+                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
             } else if (response.status === 401) {
-                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
             } else if (response.status === 403) {
-                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình thay đổi trạng thái 😥😥😥');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
             reject(oldRow);
         }
@@ -115,16 +126,16 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
 
         if (response.ok) {
             resolve(newRow);
-            alert('Thay đổi phần quyền người dùng thành công 😎😎😎');
+            showAlert('Thay đổi phần quyền người dùng thành công 😎😎😎', 'success');
         } else {
             if (response.status === 400) {
-                alert('Thay đổi phần quyền người dùng thất bại 😭😭😭');
+                showAlert('Thay đổi phần quyền người dùng thất bại 😭😭😭', 'error');
             } else if (response.status === 401) {
-                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
             } else if (response.status === 403) {
-                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình thay đổi phần quyền người dùng 😥😥😥');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
             reject(oldRow);
         }
@@ -227,15 +238,15 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                 });
                 setListUpdate(true);
                 setOpen(false);
-                alert('Thay đổi trạng thái thành công 😎😎😎');
+                showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {
-                alert('Thay đổi trạng thái thất bại 😭😭😭');
+                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
             } else if (response.status === 401) {
-                alert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️');
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
             } else if (response.status === 403) {
-                alert('Api không trong phạm trù quyền của bạn 🤬🤬🤬');
+                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình thay đổi trạng thái 😥😥😥');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         };
 

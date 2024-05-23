@@ -1,4 +1,5 @@
 'use client';
+import { useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faBookOpen,
@@ -17,6 +18,7 @@ import ImageCustom from '../ImageCustom';
 import style from './FilmCard.module.scss';
 import { FilmCardInterface } from '~/libs/interfaces';
 import Link from 'next/link';
+import { formatNumber } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
@@ -37,6 +39,7 @@ function FilmCard({
     episodes,
     className,
 }: FilmCardInterface) {
+    const formatViews = useRef(formatNumber(views));
     return (
         <div
             className={cx('wrapper', className, {
@@ -68,7 +71,7 @@ function FilmCard({
                 {noOverlay || largeNoOverlay ? (
                     <div className={cx('nooverlay-subinfo-list', { 'large-nooverlay-subinfo-list': largeNoOverlay })}>
                         <h5>
-                            <FontAwesomeIcon icon={faEye} /> {views}
+                            <FontAwesomeIcon icon={faEye} /> {formatViews.current}
                         </h5>
                         <h5>
                             <FontAwesomeIcon icon={faCloudArrowUp} /> {`${episodes} / ${maxEp || '?'}`}
@@ -79,19 +82,22 @@ function FilmCard({
                         {largeNoOverlay && (
                             <>
                                 <h5>
-                                    <FontAwesomeIcon icon={faFeather} /> {author?.length && author.length > 0 ? author?.join(', ') : 'Chưa cập nhật'}
+                                    <FontAwesomeIcon icon={faFeather} />{' '}
+                                    {author?.length && author.length > 0 ? author?.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                                 <h5>
-                                    <FontAwesomeIcon icon={faCat} /> {genre?.length && genre?.length > 0 ? genre?.join(', ') : 'Chưa cập nhật'}
+                                    <FontAwesomeIcon icon={faCat} />{' '}
+                                    {genre?.length && genre?.length > 0 ? genre?.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                                 <h5>
-                                    <FontAwesomeIcon icon={faUnlock} /> {tag?.length && tag.length > 0 ? tag.join(', ') : 'Chưa cập nhật'}
+                                    <FontAwesomeIcon icon={faUnlock} />{' '}
+                                    {tag?.length && tag.length > 0 ? tag.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                             </>
                         )}
                     </div>
                 ) : (
-                    <h5>Lượt xem: {views}</h5>
+                    <h5>Lượt xem: {formatViews.current}</h5>
                 )}
             </div>
             <div

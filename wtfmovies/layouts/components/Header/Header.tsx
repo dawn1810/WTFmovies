@@ -34,6 +34,7 @@ import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
 import { ExtendedUser } from '~/libs/interfaces';
+import Notify from '~/components/Notify';
 
 const cx = classNames.bind(styles);
 
@@ -288,6 +289,7 @@ function Header({
             )}
 
             <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
+            <Notify />
         </header>
     );
 }

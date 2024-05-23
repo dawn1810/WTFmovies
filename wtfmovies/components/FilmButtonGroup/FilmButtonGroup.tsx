@@ -1,15 +1,26 @@
 import classNames from 'classnames/bind';
-import { IconButton } from '@mui/material';
+import { AlertColor, IconButton } from '@mui/material';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from '~/hooks';
 
 import style from './FilmButtonGroup.module.scss';
 import { Favorite, FavoriteBorder, PlayArrow, ShareOutlined } from '@mui/icons-material';
 import Button from '../Button';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { useDispatch } from 'react-redux';
 
 const cx = classNames.bind(style);
 
 function FilmButtonGroup({ dir, loveState, searchName }: { dir?: string; loveState: boolean; searchName: string }) {
+    //alert
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+
     const isFirstRender = useRef(true);
     const [love, setLove] = useState(loveState);
     const [loading, setLoading] = useState(false);
@@ -33,9 +44,9 @@ function FilmButtonGroup({ dir, loveState, searchName }: { dir?: string; loveSta
             if (response.ok) {
                 setLoading(false);
             } else if (response.status === 400) {
-                alert('Cập nhật yêu thích thất bại!');
+                showAlert('Cập nhật yêu thích thất bại!', 'error');
             } else if (response.status === 500) {
-                alert('Lỗi trong quá trình cập nhật yêu thích');
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         };
 
@@ -49,7 +60,7 @@ function FilmButtonGroup({ dir, loveState, searchName }: { dir?: string; loveSta
 
     const handleShare = () => {
         navigator.clipboard.writeText(`localhost:3000/review/${searchName}`);
-        alert("film's link copied 😽😽😽");
+        showAlert('Copied 😽😽😽', 'info');
     };
 
     return (
