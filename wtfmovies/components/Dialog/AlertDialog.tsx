@@ -6,24 +6,26 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { useDispatch } from 'react-redux';
-import { changeAlertStatus } from '../FilmManager/filmManagerSlice';
+import { LoadingButton } from '@mui/lab';
+import SaveIcon from '@mui/icons-material/Save';
+
 const cx = classNames.bind(style);
 
 export default function AlertDialog({
     listId,
     children,
+    loading,
     title,
     open,
     handleClose,
 }: {
     listId: any;
+    loading: boolean;
     title: string;
     children: React.ReactNode;
     open: boolean;
-    handleClose: () => any;
+    handleClose: (any: any) => any;
 }) {
-    const dispatch = useDispatch();
 
     return (
         <>
@@ -39,23 +41,24 @@ export default function AlertDialog({
                     <div id={cx('alert-dialog-description')}>{children}</div>
                 </DialogContent>
                 <DialogActions>
-                    <Button
+                    <LoadingButton
+                        loading={loading}
+
                         onClick={() => {
-                            handleClose();
-                            dispatch(changeAlertStatus({ content: listId, status: false }));
+                            handleClose({ content: listId, status: true });
                         }}
                     >
-                        Huỷ
-                    </Button>
+                        Chấp nhận
+                    </LoadingButton>
                     <Button
                         onClick={() => {
-                            handleClose();
-                            dispatch(changeAlertStatus({ content: listId, status: true }));
+                            handleClose({ content: listId, status: false });
                         }}
                         autoFocus
                     >
-                        Chấp nhận
+                        Huỷ
                     </Button>
+
                 </DialogActions>
             </Dialog>
         </>
