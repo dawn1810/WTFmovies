@@ -39,7 +39,7 @@ async function getPage(params?: any) {
                     newReports={newReports}
                 />
             );
-        case 'editor':
+        case 'users':
             const dataset = await getAllUser();
 
             return <ManageEditorTable dataset={dataset} />;
@@ -51,6 +51,8 @@ async function getPage(params?: any) {
             const evaluateList = await getEvaluateList();
 
             return <EvaluateTable evaluateList={evaluateList} />;
+        case 'films':
+            return <p>Quản lý films</p>;
         default:
             return (
                 <div style={{ color: 'var(--text-color)' }}>

@@ -33,6 +33,7 @@ import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
 import { ExtendedUser } from '~/libs/interfaces';
 import Notify from '~/components/Notify';
+import { Badge, IconButton } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -68,11 +69,11 @@ const MENU_ITEMS = [
     //     title: 'Nâng cấp VIP',
     //     to: '/vip',
     // },
-    {
-        icon: <SettingsOutlined />,
-        title: 'Cài đặt',
-        to: '/settings',
-    },
+    // {
+    //     icon: <SettingsOutlined />,
+    //     title: 'Cài đặt',
+    //     to: '/settings',
+    // },
     {
         icon: <HelpOutline />,
         title: 'Trợ giúp & phản hồi',
@@ -110,11 +111,13 @@ function Header({
     isDatabase = false,
     title,
     genres,
+    notifyLength,
 }: {
     currentUser?: ExtendedUser;
     isDatabase?: boolean;
     title?: string;
     genres?: { name: string; to: string; special?: boolean }[] | any;
+    notifyLength?: number;
 }) {
     //router
     const router = useRouter();
@@ -150,6 +153,11 @@ function Header({
                 break;
             default:
         }
+    };
+
+    // Handle notification
+    const handleNotification = () => {
+        router.push(`/notification`);
     };
 
     const [headerClass, setHeaderClass] = useState('wrapper-database');
@@ -231,10 +239,11 @@ function Header({
                         {isLogged || (!!session && !!extendedUser) ? (
                             <>
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
-                                    <button className={cx('action-btn')}>
-                                        <NotificationsNone />
-                                        <span className={cx('badge')}>12</span>
-                                    </button>
+                                    <IconButton onClick={handleNotification}>
+                                        <Badge badgeContent={notifyLength} max={999} color="error">
+                                            <NotificationsNone />
+                                        </Badge>
+                                    </IconButton>
                                 </Tippy>
 
                                 <Menu

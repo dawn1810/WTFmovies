@@ -98,7 +98,7 @@ function FilmInfo({
             },
         ],
     };
-    const loveState = loveFilms.includes(filmInfo.searchName);
+    const loveState = loveFilms.includes(filmInfo.film_id);
 
     const handleCopyTitle = () => {
         navigator.clipboard.writeText(infoList.title);
@@ -182,7 +182,7 @@ function FilmInfo({
                     <FilmButtonGroup
                         dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
                         loveState={loveState}
-                        searchName={filmInfo.searchName}
+                        searchName={filmInfo.film_id}
                     />
                 </div>
             </div>

@@ -47,7 +47,7 @@ function LoveFilms({ loveFilmsInfo }: { loveFilmsInfo: any }) {
 
     const dataset = loveFilmsInfo.map((info: any) => ({
         ...info,
-        id: info.searchName,
+        id: info.film_id,
         notification: true,
     }));
 

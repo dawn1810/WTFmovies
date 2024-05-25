@@ -25,7 +25,7 @@ function CommentInputForm({
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
     const [currentUser, setCurrentUser] = useState({ avatar: currUser?.avatar, name: currUser?.name });
-    const [commentInfo, setCommentInfo] = useState({ name: '', content: '' });
+    const [commentInfo, setCommentInfo] = useState({ name: currUser?.name || '', content: '' });
 
     useEffect(() => {
         const getUserInfo = async () => {

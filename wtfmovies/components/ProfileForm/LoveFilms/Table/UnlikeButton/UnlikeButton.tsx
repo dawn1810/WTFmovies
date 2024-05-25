@@ -22,7 +22,7 @@ export default function UnklikeButton({ searchName, unLikeFilm }: { searchName: 
             const response = await fetch('/api/v1/updateLike', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ searchName: [searchName], love: false }),
+                body: JSON.stringify({ filmId: [searchName], love: false }),
             });
 
             if (response.ok) {
