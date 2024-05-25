@@ -1,0 +1,105 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 30x;
+
+    .home-top {
+        width: var(--default-layout-width);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 80px;
+
+        .title {
+            align-self: flex-start;
+            grid-area: title;
+            width: 200px;
+            font-size: 4.8rem;
+        }
+
+        .carosel {
+            padding: 10px;
+            width: 100%;
+            height: 725px;
+        }
+
+        .propose-list {
+            padding: 10px;
+            width: 100%;
+            height: 300px;
+        }
+
+    }
+
+    .film-classify {
+        width: var(--default-layout-width);
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        margin-bottom: 80px;
+
+        .title {
+            grid-area: title;
+            width: 200px;
+            font-size: 4.8rem;
+        }
+
+        .tab-box {
+            grid-area: tabbox;
+            width: 100%;
+            height: 500px;
+        }
+    }
+
+
+    // watch
+    .film-name {
+        width: 30%;
+        font-size: 4.8rem;
+    }
+
+    .film-notify {
+        width: var(--default-layout-width);
+        display: flex;
+        flex-direction: column;
+        margin-bottom: 80px;
+
+        .title {
+            grid-area: title;
+            width: 200px;
+            font-size: 4.8rem;
+        }
+
+        .tab-box {
+            grid-area: tabbox;
+            width: 100%;
+            height: 100px;
+        }
+    }
+
+    .player {
+        width: var(--default-layout-width);
+        min-height: calc(var(--default-layout-width) * 9 / 16);
+        max-height: var(--default-max-height);
+    }
+
+    // profile
+    .profile {
+        width: var(--default-layout-width);
+        min-height: 500px;
+    }
+}
+
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        .player {
+            min-height: 225px;
+        }
+    }
+}

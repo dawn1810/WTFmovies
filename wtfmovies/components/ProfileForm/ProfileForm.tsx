@@ -45,7 +45,7 @@ const cx = classNames.bind(style);
 // }
 
 function Profile({ userInfo, loveFilmsInfo }: { userInfo: UserInfoInterface; loveFilmsInfo: any }) {
-    const [value, setValue] = useState('3');
+    const [value, setValue] = useState('1');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
