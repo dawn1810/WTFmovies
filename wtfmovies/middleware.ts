@@ -16,6 +16,9 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
+    if (!userSession && request.nextUrl.pathname.startsWith('/editor')) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
     if (
         request.nextUrl.pathname.startsWith('/editor') &&
         !editer_path.some((path) => request.nextUrl.pathname.endsWith(path))

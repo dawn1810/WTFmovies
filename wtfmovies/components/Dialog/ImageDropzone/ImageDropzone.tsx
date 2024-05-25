@@ -5,15 +5,32 @@ import ImageCropPopup from "./ImageCropPopUp";
 import { Box } from "@mui/material";
 import ReviewImage from "./ImageReview";
 const cx = classNames.bind(style);
-export default function ImageDropzone({ imageDefault, imageBannerDefault }: { imageDefault?: string; imageBannerDefault?: string }) {
+
+interface imageDrop {
+    setImageF: any,
+    setImageBannerF: any,
+    imageDefault: string;
+    imageBannerDefault: string
+    cropResultBanner: any,
+    cropResult: any,
+    setCropResultBanner: any,
+    setCropResult: any
+}
+export default function ImageDropzone({
+    cropResultBanner,
+    setCropResult,
+    setCropResultBanner,
+    cropResult,
+    setImageF,
+    setImageBannerF,
+    imageDefault,
+    imageBannerDefault }: imageDrop) {
     const [openCropPopup, setOpenCropPopup] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<any>(imageDefault);
-    const [selectedImageBanner, setSelectedImageBanner] = useState<any>(imageBannerDefault);
-    const [cropResultBanner, setCropResultBanner] = useState<any>(null);
     const [selectedImageCrop, setSelectedImageCrop] = useState<any>(null);
+
+
     const fileInputRef1 = useRef<any>(null);
     const fileInputRef2 = useRef<any>(null);
-    const [cropResult, setCropResult] = useState<any>(null);
     const [aspectRatio, setAspectRatio] = useState<number>(0);
 
     const handleDrop = (event: any, type: string) => {
@@ -44,11 +61,11 @@ export default function ImageDropzone({ imageDefault, imageBannerDefault }: { im
 
     const handleCropComplete = (croppedArea: any, aspectRatio: any) => {
         if (aspectRatio === 16 / 9) {
-            setSelectedImageBanner(selectedImageCrop);
+            setImageBannerF(selectedImageCrop);
             setCropResultBanner(croppedArea.croppedAreaPixels);
         }
         else {
-            setSelectedImage(selectedImageCrop);
+            setImageF(selectedImageCrop);
             setCropResult(croppedArea.croppedAreaPixels);
         }
 
@@ -58,13 +75,13 @@ export default function ImageDropzone({ imageDefault, imageBannerDefault }: { im
 
             <div className={cx("imgInput")} onDragOver={handleDragOver}
                 onDrop={() => handleDrop(event, 'banner')}>
-                <ReviewImage classname="reviewImage" imageSrc={selectedImageBanner} croppedArea={cropResultBanner} />
+                <ReviewImage classname="reviewImage" imageSrc={imageBannerDefault} croppedArea={cropResultBanner} />
                 <input type="file" accept="image/png, image/jpeg"
                     onChange={() => handleClick(event, 'banner')} ref={fileInputRef1} onClick={() => fileInputRef1.current.value = null} />
             </div>
             <div id={cx("banner")} className={cx("imgInputbanner")} onDragOver={handleDragOver}
                 onDrop={() => handleDrop(event, 'image')}>
-                <ReviewImage classname="reviewImageBaner" imageSrc={selectedImage} croppedArea={cropResult} />
+                <ReviewImage classname="reviewImageBaner" imageSrc={imageDefault} croppedArea={cropResult} />
                 <input type="file" accept="image/png, image/jpeg"
                     onChange={() => handleClick(event, 'image')} ref={fileInputRef2} onClick={() => fileInputRef2.current.value = null} />
             </div>

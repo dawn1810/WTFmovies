@@ -152,9 +152,7 @@ const getAutoMutiData = async (collection: string): Promise<any[]> => {
             .db('film')
             .collection(collection)
             .find();
-        if (collection == 'director') {
-            console.log(data);
-        }
+
         return data.map(item => {
             const firstLetter = item.name.charAt(0);
             return {

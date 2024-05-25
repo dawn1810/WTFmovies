@@ -20,15 +20,15 @@ import {
     GridExportMenuItemProps,
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
-import { Box, MenuItem } from '@mui/material';
+import { AlertColor, Box, MenuItem } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { viVN } from '@mui/x-data-grid/locales';
 import AlertDialog from '~/components/Dialog';
-import { useSelector } from 'react-redux';
-import { alertStatusSelector } from '~/redux/selectors';
 
 import { MovieForm } from '~/components/Dialog';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 export default function DataGridCom({
@@ -46,10 +46,19 @@ export default function DataGridCom({
     const [open, setOpen] = useState(false);
     const [openForm, setOpenForm] = useState(false);
     const [valueFilm, setValueFilm] = useState<any>({});
+    const [dataGrid, setDataGrid] = useState<any>(children);
+    const [loadingDelete, setLoadingDelete] = useState(false);
 
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
     async function handleEdit(event: any) {
         const selectedIDs = new Set(rowSelectionModel);
-        const rowData = children.filter((row: any) =>
+        const rowData = dataGrid.filter((row: any) =>
             selectedIDs.has(row.id),
         );
 
@@ -71,11 +80,11 @@ export default function DataGridCom({
         setValueFilm(data)
         setOpenForm(true);
     }
-    const status = useSelector(alertStatusSelector);
 
     function handleDelete() {
         setOpen(true);
     }
+
 
     function handleAdd() {
         setOpenForm(true);
@@ -134,72 +143,96 @@ export default function DataGridCom({
             </MenuItem>
         );
     }
+
+    async function handleDeleteComf(status: any) {
+        setLoadingDelete(true);
+        function removeItemsById(arr: any, ids: any) {
+            return arr.filter((item: any) => !ids.includes(item.id));
+        }
+        if (status.status) {
+            const res = await fetch('/api/v1/editor/deleteMovies', {
+                method: "POST",
+                body: JSON.stringify({ ids: status.content })
+            })
+            const decodeData: { statusCode: number, content: string } = await res.json();
+            if (decodeData.statusCode === 200) {
+                setDataGrid(removeItemsById(dataGrid, status.content));
+                showAlert("Xoá thành công!", "success");
+            }
+
+            else showAlert("Có lỗi xảy ra, vui lòng tải lại trang và thử lại!", "error");
+        }
+
+        setOpen(false);
+        setLoadingDelete(false);
+
+
+    }
     function CustomToolbar() {
         return (
-            <div>
-                <AlertDialog
-                    listId={rowSelectionModel}
-                    handleClose={() => {
-                        setOpen(false);
-                    }}
-                    title={'Thông báo'}
-                    open={open}
+
+
+            <GridToolbarContainer>
+                <GridToolbarColumnsButton />
+                <GridToolbarFilterButton />
+                <GridToolbarDensitySelector />
+                <Box sx={{ flexGrow: 1 }} />
+                <GridToolbarExportContainer>
+                    <GridCsvExportMenuItem
+                        options={{
+                            fileName: 'Danh sách tập phim',
+                            delimiter: ';',
+                            utf8WithBom: true,
+                        }}
+                    />
+                    <JsonExportMenuItem />
+                </GridToolbarExportContainer>
+
+                <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
+                    <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
+                    Thêm
+                </Button>
+                <Button
+                    className={cx('btncustom')}
+                    onClick={handleDelete}
+                    disabled={rowSelectionModel.length === 0}
+                    variant="outlined"
                 >
-                    Bạn có chắc chắc muốn xoá:
-                    <ul>
-                        {rowSelectionModel.map((item: string) => (
-                            <li key={item}>{item}</li>
-                        ))}
-                    </ul>
-                    không?
-                </AlertDialog>
+                    <FontAwesomeIcon className={cx('iconBtn')} icon={faTrash} />
+                    Xoá
+                </Button>
+                <Button
+                    className={cx('btncustom')}
+                    onClick={handleEdit}
+                    disabled={rowSelectionModel.length !== 1}
+                    variant="outlined"
+                >
+                    <FontAwesomeIcon className={cx('iconBtn')} icon={faPenToSquare} />
+                    Chỉnh sửa
+                </Button>
+                <GridToolbarQuickFilter />
+            </GridToolbarContainer>
 
-                <GridToolbarContainer>
-                    <GridToolbarColumnsButton />
-                    <GridToolbarFilterButton />
-                    <GridToolbarDensitySelector />
-                    <Box sx={{ flexGrow: 1 }} />
-                    <GridToolbarExportContainer>
-                        <GridCsvExportMenuItem
-                            options={{
-                                fileName: 'Danh sách tập phim',
-                                delimiter: ';',
-                                utf8WithBom: true,
-                            }}
-                        />
-                        <JsonExportMenuItem />
-                    </GridToolbarExportContainer>
-
-                    <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
-                        <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
-                        Thêm
-                    </Button>
-                    <Button
-                        className={cx('btncustom')}
-                        onClick={handleDelete}
-                        disabled={rowSelectionModel.length === 0}
-                        variant="outlined"
-                    >
-                        <FontAwesomeIcon className={cx('iconBtn')} icon={faTrash} />
-                        Xoá
-                    </Button>
-                    <Button
-                        className={cx('btncustom')}
-                        onClick={handleEdit}
-                        disabled={rowSelectionModel.length !== 1}
-                        variant="outlined"
-                    >
-                        <FontAwesomeIcon className={cx('iconBtn')} icon={faPenToSquare} />
-                        Chỉnh sửa
-                    </Button>
-                    <GridToolbarQuickFilter />
-                </GridToolbarContainer>
-            </div>
         );
     }
 
     return (
         <div className={cx('dataGrid')}>
+            <AlertDialog
+                loading={loadingDelete}
+                listId={rowSelectionModel}
+                handleClose={handleDeleteComf}
+                title={'Thông báo'}
+                open={open}
+            >
+                Bạn có chắc chắc muốn xoá:
+                <ul>
+                    {rowSelectionModel.map((item: string) => (
+                        <li key={item}>{item}</li>
+                    ))}
+                </ul>
+                không?
+            </AlertDialog>
             <MovieForm key={valueFilm.film_id} defaultValue={valueFilm} countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
 
             <h1 className={cx('title_name')}>{title_name}</h1>
@@ -210,7 +243,7 @@ export default function DataGridCom({
                     },
                 }}
                 columns={colum}
-                rows={children}
+                rows={dataGrid}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
                 onRowSelectionModelChange={(newRowSelectionModel) => {

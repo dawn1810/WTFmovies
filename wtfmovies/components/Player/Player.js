@@ -22,7 +22,8 @@ import Cover from './Cover';
 
 const cx = classNames.bind(style);
 
-const Player = ({ url }) => {
+const Player = ({ url, className
+}) => {
     let i;
 
     // redux
@@ -194,7 +195,8 @@ const Player = ({ url }) => {
 
 
             </div>
-            : <div className={cx('wrapper')}>Loading Player</div>
+            : <div className={cx(`wrapper ${className}`)
+            }> Loading Player</div >
     );
 };
 
