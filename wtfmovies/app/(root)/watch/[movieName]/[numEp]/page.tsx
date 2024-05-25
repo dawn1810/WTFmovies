@@ -68,9 +68,14 @@ export default async function Watch({ params }: Props) {
     const regex = /^tap\d+$/;
     const matchNumEp = numEp.match(regex);
 
+    if (!filmData.notification)
+        filmData.notification = {
+            schedule: 'Phim đã hoàn thành',
+            notification: 'Không có thông báo',
+        };
+
     //re check info film
-    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType || !filmData.notification)
-        return NotFound();
+    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType) return NotFound();
 
     //spit to get "{number}"
     const regexGetEp = /(\d+)/;
@@ -81,8 +86,9 @@ export default async function Watch({ params }: Props) {
     if (
         numberEp > filmData.videoType[0].episode[filmData.videoType[0].episode.length - 1] ||
         numberEp < filmData.videoType[0].episode[0]
-    )
+    ) {
         return NotFound();
+    }
     const commentTabs = [
         {
             title: '#BÌNH LUẬN',

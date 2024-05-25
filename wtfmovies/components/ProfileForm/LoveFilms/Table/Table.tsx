@@ -170,12 +170,6 @@ export default function DataGridCom({ dataset }: { dataset: any[] }) {
                 </Dialog>
 
                 <GridToolbarContainer>
-                    <GridToolbarColumnsButton />
-                    <GridToolbarFilterButton />
-                    <GridToolbarDensitySelector />
-                    <GridToolbarExport />
-                    <Box sx={{ flexGrow: 1 }} />
-
                     <Button
                         variant="outlined"
                         startIcon={<HeartBrokenOutlined />}
@@ -203,6 +197,9 @@ export default function DataGridCom({ dataset }: { dataset: any[] }) {
                     >
                         Tắt thông báo
                     </Button> */}
+
+                    <Box sx={{ flexGrow: 1 }} />
+
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>
             </div>
