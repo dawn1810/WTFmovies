@@ -115,7 +115,7 @@ export function MovieForm({
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                     <EpForm
-                        defaultValue={defaultValue}
+                        defaultValue={defaultValue.listEp}
 
                     ></EpForm>
                 </TabPanel>

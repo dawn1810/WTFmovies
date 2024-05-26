@@ -17,6 +17,129 @@
     }
 }
 
+.mobile-player-contact-wrapper-bottom {
+    opacity: 1;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    position: absolute;
+    height: 100%;
+    transition: linear 0.2s;
+    z-index: 2;
+
+    &:hover {
+        opacity: 1;
+    }
+
+    .mobile-btn-list {
+        height: 100%;
+        position: relative;
+
+        .action-btn {
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 5px;
+            font-size: 2.2rem;
+            background-color: transparent;
+            color: var(--text-color);
+            opacity: 0.5;
+
+            &:hover {
+                opacity: 1;
+            }
+        }
+
+        .mobile-top-right-btn-list {
+            position: absolute;
+            display: flex;
+            justify-content: flex-end;
+            top: 0;
+            width: 100%;
+        }
+
+        .mobile-top-left-btn-list {
+            position: absolute;
+            top: 0;
+            display: flex;
+            width: 50%;
+            z-index: 5;
+        }
+
+        .mobile-right-btn-list {
+            align-items: center;
+            position: absolute;
+            width: 100%;
+            bottom: 0;
+            z-index: 6;
+            display: flex;
+            width: 30%;
+
+            .volumn-input-box {
+                width: 0px;
+                height: 100%;
+                display: flex;
+                align-items: center;
+                opacity: 0;
+                transition: 0.2s linear;
+
+                .volumn-input {
+                    width: 100%;
+                    accent-color: var(--highlight-color);
+                    height: 5px;
+                }
+
+                &:hover {
+                    width: 80px;
+                    opacity: 1;
+                }
+            }
+
+            .vol-btn {
+                &:hover~.volumn-input-box {
+                    width: 80px;
+                    opacity: 1;
+                }
+            }
+
+
+        }
+
+
+
+
+        .mobile-center-btn-list {
+            display: flex;
+            width: 100%;
+            height: 30%;
+            bottom: 0;
+            position: absolute;
+            justify-content: center;
+            align-items: flex-end;
+
+            .duration {
+                width: max-content;
+                top: 0;
+                position: absolute;
+                color: var(--text-color);
+            }
+        }
+
+
+        .action2-btn {
+            width: max-content;
+            padding: 0 10px;
+            text-align: center;
+            font-size: 1.6rem;
+        }
+
+    }
+}
+
+
 .contact-show {
     opacity: 1;
 }
@@ -135,7 +258,7 @@
         }
 
         .vol-btn {
-            &:hover ~ .volumn-input-box {
+            &:hover~.volumn-input-box {
                 width: 80px;
                 opacity: 1;
             }
@@ -143,6 +266,7 @@
 
         .duration {
             margin-left: 10px;
+            width: max-content;
             color: var(--text-color);
         }
     }
@@ -161,6 +285,7 @@
         width: 40px;
         height: 40px;
         display: flex;
+        padding: 10px;
         justify-content: center;
         align-items: center;
         border-radius: 5px;
@@ -169,13 +294,23 @@
         color: var(--text-color);
         opacity: 0.5;
 
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+
         &:hover {
             opacity: 1;
+        }
+
+        svg {
+            width: 100%;
+            height: 100%;
         }
     }
 
     .action2-btn {
-        width: fit-content;
+        width: max-content;
         padding: 0 10px;
         text-align: center;
         font-size: 1.6rem;

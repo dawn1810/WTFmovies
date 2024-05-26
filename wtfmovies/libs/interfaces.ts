@@ -120,11 +120,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-        | {
-              title?: string;
-              episode?: number[];
-          }[]
-        | any;
+    | {
+        title?: string;
+        episode?: number[];
+    }[]
+    | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -257,7 +257,7 @@ export interface SuveyOptionsInterface {
 }
 
 export interface HeaderMenuItemsInterface {
-    icon: JSX.Element;
+    icon: JSX.Element | null;
     title: string;
     to?: string;
     type?: string;

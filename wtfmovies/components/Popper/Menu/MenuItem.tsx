@@ -1,5 +1,4 @@
 'use client';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
 import Button from '~/components/Button';
 import styles from './Menu.module.scss';
@@ -7,7 +6,7 @@ import { HeaderMenuItemsInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(styles);
 
-function MenuItem({ data, onClick }: { data: HeaderMenuItemsInterface; onClick: () => void }) {
+function MenuItem({ data, onClick }: { data: HeaderMenuItemsInterface; onClick: (e: any) => void }) {
     const classes = cx('menu-item', {
         separate: data.separate,
     });
@@ -18,9 +17,6 @@ function MenuItem({ data, onClick }: { data: HeaderMenuItemsInterface; onClick: 
     );
 }
 
-MenuItem.propTypes = {
-    data: PropTypes.object.isRequired,
-    onClick: PropTypes.func,
-};
+
 
 export default MenuItem;
