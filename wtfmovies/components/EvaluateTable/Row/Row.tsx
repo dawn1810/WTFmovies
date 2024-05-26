@@ -25,7 +25,8 @@ export default function Row({
     const [dialogType, setDialogType] = useState<{ title: string; type: number }>({ title: '', type: 0 });
     const [currentCriteria, setCurrentCriteria] = useState(0);
 
-    const maxRowScore: number = row.criteria.reduce((sum, currCriteria) => sum + +currCriteria.maxScore, 0);
+    const maxRowScore: number =
+        row && row.criteria && row.criteria.reduce((sum, currCriteria) => sum + +currCriteria.maxScore, 0);
 
     const handleClose = () => {
         setDialogOpen(false);

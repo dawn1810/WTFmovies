@@ -363,5 +363,12 @@ export interface RowInterface {
 export interface EvalTableInterface {
     _id: string;
     table: RowInterface[];
-    version: number;
+    time: string;
+}
+
+export interface ScoreInterface {
+    _id: string;
+    userScore: any[];
+    adminScore?: any[];
+    time: string;
 }

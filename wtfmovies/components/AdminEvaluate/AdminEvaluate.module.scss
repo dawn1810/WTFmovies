@@ -1,0 +1,20 @@
+.wrapper {
+    width: 100%;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+
+    .title_name {
+        color: var(--text-color);
+    }
+
+    .container {
+        margin: auto;
+    }
+
+    .save-btn {
+        width: 100px;
+        align-self: flex-end;
+    }
+}

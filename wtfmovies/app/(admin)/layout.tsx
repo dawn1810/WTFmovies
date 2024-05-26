@@ -16,6 +16,7 @@ import {
     BorderColorOutlined,
     FlagOutlined,
     HomeOutlined,
+    HowToReg,
     MovieOutlined,
     TableChartOutlined,
 } from '@mui/icons-material';
@@ -72,6 +73,11 @@ const menuItems = [
         title: 'Quản lý bảng đánh giá',
         icon: <TableChartOutlined />,
         scene: 'evaluate',
+    },
+    {
+        title: 'Quản lý đánh giá hội viên',
+        icon: <HowToReg />,
+        scene: 'userevaluate',
     },
 ];
 

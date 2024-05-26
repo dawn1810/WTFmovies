@@ -27,7 +27,16 @@ import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux
 
 const cx = classNames.bind(style);
 
-export default function EvaluateTable({ evaluateList }: { evaluateList: RowInterface[] }) {
+const checkCondition = (rows: RowInterface[]) => {
+    let total = 0;
+    rows.forEach((row) => {
+        total += row && row.criteria ? row.criteria.reduce((sum, currCriteria) => sum + +currCriteria.maxScore, 0) : 0;
+    });
+
+    return total === 100 && rows.length === 10;
+};
+
+export default function EvaluateTable({ evaluateList }: { evaluateList?: RowInterface[] }) {
     const dispatch = useDispatch();
     const rows = useSelector(rowsSelector);
 
@@ -37,7 +46,7 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
     const [currentRow, setCurrentRow] = useState(0);
 
     useEffect(() => {
-        dispatch(changeRow(evaluateList));
+        dispatch(changeRow(evaluateList || []));
     }, []);
 
     const showAlert = (content: string, type: AlertColor) => {
@@ -69,25 +78,33 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
     // save table
     const handleSubmit = async () => {
         setLoading(true);
-        const response = await fetch('/api/v1/evaluate/updateTable', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ table: rows }),
-        });
 
-        if (response.ok) {
-            setLoading(false);
-            showAlert('Đã lưu phiên bản bảng mới!', 'success');
-        } else if (response.status === 400) {
-            showAlert('Lưu bảng đánh giá thất bại!', 'error');
-        } else if (response.status === 500) {
-            showAlert('Lỗi lưu bảng đánh giá, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+        console.log(checkCondition(rows));
+
+        if (checkCondition(rows)) {
+            const response = await fetch('/api/v1/evaluate/updateTable', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ table: rows }),
+            });
+
+            if (response.ok) {
+                showAlert('Đã lưu phiên bản bảng mới!', 'success');
+            } else if (response.status === 400) {
+                showAlert('Lưu bảng đánh giá thất bại!', 'error');
+            } else if (response.status === 500) {
+                showAlert('Lỗi lưu bảng đánh giá, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+        } else {
+            showAlert('Bảng chưa đạt chuẩn!', 'warning');
         }
+
+        setLoading(false);
     };
 
     return (
         <div className={cx('wrapper')}>
-            <h1 className={cx('title_name')}>{'Quản lý đánh giá hội viên'}</h1>
+            <h1 className={cx('title_name')}>{'Quản lý bảng đánh giá hội viên'}</h1>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }}>
                     <TableHead>
@@ -106,16 +123,17 @@ export default function EvaluateTable({ evaluateList }: { evaluateList: RowInter
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row, index) => (
-                            <Row
-                                row={row}
-                                index={index}
-                                handleCloseDialog={handleCloseDialog}
-                                handleOpenDialog={handleOpenDialog}
-                                handleUpdateStandard={handleUpdateStandard}
-                                handleDeleteStandard={handleDeleteStandard}
-                            />
-                        ))}
+                        {rows &&
+                            rows.map((row, index) => (
+                                <Row
+                                    row={row}
+                                    index={index}
+                                    handleCloseDialog={handleCloseDialog}
+                                    handleOpenDialog={handleOpenDialog}
+                                    handleUpdateStandard={handleUpdateStandard}
+                                    handleDeleteStandard={handleDeleteStandard}
+                                />
+                            ))}
                         <TableRow key={'new'} hover onClick={() => handleOpenDialog('Thêm tiêu chuẩn mới')}>
                             <TableCell />
                             <TableCell />

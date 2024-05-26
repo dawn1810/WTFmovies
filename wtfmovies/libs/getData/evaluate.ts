@@ -8,7 +8,7 @@ export const getEvaluateList = async (): Promise<EvalTableInterface | undefined>
             .db('evaluate')
             .collection('table')
             .aggregate({
-                pipeline: [{ $sort: { version: -1 } }, { $limit: 1 }],
+                pipeline: [{ $sort: { time: -1 } }, { $limit: 1 }],
             });
 
         return evaluateList[0];
@@ -29,11 +29,28 @@ export const getCurrentScore = async (): Promise<EvalTableInterface | undefined>
             .db('user')
             .collection('evaluate')
             .find({
-                filter: { email: extendedUser?.email },
+                filter: { _id: extendedUser?.email },
             });
 
         return evaluateList[0];
     } catch (err) {
         console.log('😨😨😨 error at home/getCurrentScore function  : ', err);
+    }
+};
+
+export const getAllUserScore = async (): Promise<any | undefined> => {
+    try {
+        const session = await auth();
+
+        if (!session) return undefined;
+
+        const getAllUserScore: ExtendedUser | undefined = session?.user;
+
+        if (getAllUserScore?.role === 'admin') {
+            const scores: any = await mongodb().db('user').collection('evaluate').find();
+            return scores;
+        }
+    } catch (err) {
+        console.log('😨😨😨 error at home/getAllUserScore function  : ', err);
     }
 };

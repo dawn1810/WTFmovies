@@ -3,7 +3,7 @@ import type { NextRequest } from 'next/server';
 import { auth } from './app/api/auth/[...nextauth]/auth';
 import { ExtendedUser } from './libs/interfaces';
 const editer_path = ['film', 'overview'];
-const admin_path = ['overview', 'users', 'report', 'evaluate', 'films'];
+const admin_path = ['overview', 'users', 'report', 'evaluate', 'userevaluate', 'films'];
 export async function middleware(request: NextRequest) {
     const userSession = await auth();
     const extendedUser: ExtendedUser | undefined = userSession?.user;
@@ -16,9 +16,14 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL('/', request.url));
     }
 
+    if (!userSession && request.nextUrl.pathname.startsWith('/evaluate')) {
+        return NextResponse.redirect(new URL('/', request.url));
+    }
+
     if (!userSession && request.nextUrl.pathname.startsWith('/editor')) {
         return NextResponse.redirect(new URL('/', request.url));
     }
+
     if (
         request.nextUrl.pathname.startsWith('/editor') &&
         !editer_path.some((path) => request.nextUrl.pathname.endsWith(path))

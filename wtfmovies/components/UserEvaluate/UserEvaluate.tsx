@@ -2,18 +2,28 @@
 import classNames from 'classnames/bind';
 
 import style from './UserEvaluate.module.scss';
-import { Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from '@mui/material';
-import { CriteriaInterface, RowInterface } from '~/libs/interfaces';
-import { useState } from 'react';
+import {
+    AlertColor,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    TextField,
+} from '@mui/material';
+import { CriteriaInterface, ExtendedUser, RowInterface, ScoreInterface } from '~/libs/interfaces';
+import { useEffect, useState } from 'react';
 import NotFound from '~/app/(root)/not-found';
 import { LoadingButton } from '@mui/lab';
 import { Save } from '@mui/icons-material';
+import { useSession } from 'next-auth/react';
+import { useDispatch } from 'react-redux';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { calcTotal } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
-
-const createData = (name: string, criteria: CriteriaInterface[]) => {
-    return { name, criteria };
-};
 
 const createArray = (rows: RowInterface[]) => {
     const result = rows.map((row) => {
@@ -22,36 +32,103 @@ const createArray = (rows: RowInterface[]) => {
     return result;
 };
 
-const calcTotal = (store: any[]) => {
-    const result = store.reduce(
-        (total: number, row: number[]) => total + row.reduce((sum: number, c: number) => sum + +c, 0),
-        0,
-    );
-    return result;
-};
-
-function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any }) {
+function UserEvaluateTable({
+    rows,
+    score,
+    isAdmin,
+}: {
+    rows?: RowInterface[];
+    score: ScoreInterface;
+    isAdmin?: boolean;
+}) {
     if (!rows) return NotFound();
 
-    const [userScore, setUserScore] = useState(score.userScore || createArray(rows));
-    const [adminScore, setAdminScore] = useState(score.adminScore || createArray(rows));
+    const dispatch = useDispatch();
+
+    const { data: session } = useSession();
+    const extendedUser: ExtendedUser | undefined = session?.user;
+
+    const [userScore, setUserScore] = useState(score && score.userScore ? score.userScore : createArray(rows));
+    const [adminScore, setAdminScore] = useState(score && score.adminScore ? score.adminScore : createArray(rows));
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        setAdminScore(score && score.adminScore ? score.adminScore : createArray(rows));
+    }, [score.adminScore]);
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
 
     const handleChange = (event: any, index: number, criteriaIndex: number, maxValue: number) => {
         const value =
-            event?.target.value < 0 || !event?.target.value
+            +event?.target.value < 0 || !event?.target.value
                 ? 0
-                : event?.target.value > maxValue
+                : +event?.target.value > maxValue
                 ? maxValue
                 : +event?.target.value;
 
         const newScoreStore = [...userScore];
         newScoreStore[index] = [...newScoreStore[index]];
-        newScoreStore[index][criteriaIndex] = '' + value;
+        newScoreStore[index][criteriaIndex] = String(value);
 
         setUserScore(newScoreStore);
     };
 
-    const handleSubmit = async () => {};
+    const handleAdminChange = (event: any, index: number, criteriaIndex: number, maxValue: number) => {
+        const value =
+            +event?.target.value < 0 || !event?.target.value
+                ? 0
+                : +event?.target.value > maxValue
+                ? maxValue
+                : +event?.target.value;
+
+        const newScoreStore = [...adminScore];
+        newScoreStore[index] = [...newScoreStore[index]];
+        newScoreStore[index][criteriaIndex] = String(value);
+
+        setAdminScore(newScoreStore);
+    };
+
+    const handleSubmit = async () => {
+        setLoading(true);
+        if (extendedUser?.role === 'admin') {
+            const response = await fetch('/api/v1/evaluate/adminScore', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ score: adminScore }),
+            });
+
+            if (response.ok) {
+                showAlert('Lưu điểm chấm thành công!', 'success');
+            } else if (response.status === 400) {
+                showAlert('Lưu điểm chấm thất bại!', 'error');
+            } else if (response.status === 403) {
+                showAlert('API ngoài thẩm quyền của bạn!', 'error');
+            } else if (response.status === 500) {
+                showAlert('Lỗi lưu điểm chấm, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+        } else {
+            const response = await fetch('/api/v1/evaluate/userScore', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: extendedUser?.email, score: userScore }),
+            });
+
+            if (response.ok) {
+                showAlert('Lưu điểm chấm thành công!', 'success');
+            } else if (response.status === 400) {
+                showAlert('Lưu điểm chấm thất bại!', 'error');
+            } else if (response.status === 403) {
+                showAlert('API ngoài thẩm quyền của bạn!', 'error');
+            } else if (response.status === 500) {
+                showAlert('Lỗi lưu điểm chấm, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+        }
+        setLoading(false);
+    };
 
     return (
         <div className={cx('wrapper')}>
@@ -59,12 +136,12 @@ function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any 
                 <Table>
                     <TableHead>
                         <TableRow>
-                            <TableCell>STT</TableCell>
+                            <TableCell align="center">STT</TableCell>
                             <TableCell>Nội dung tiêu chuẩn</TableCell>
                             <TableCell>Nội dung tiêu chí</TableCell>
-                            <TableCell>Điểm tối đa</TableCell>
-                            <TableCell>Điểm của bạn</TableCell>
-                            <TableCell>Điểm của quản lý</TableCell>
+                            <TableCell align="center">Điểm tối đa</TableCell>
+                            <TableCell align="center">Điểm của bạn</TableCell>
+                            <TableCell align="center">Điểm của quản lý</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -76,12 +153,12 @@ function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any 
                             return (
                                 <>
                                     <TableRow key={index} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                                        <TableCell>{index + 1}</TableCell>
+                                        <TableCell align="center">{index + 1}</TableCell>
                                         <TableCell component="th" scope="row">
                                             {row.name}
                                         </TableCell>
                                         <TableCell></TableCell>
-                                        <TableCell>{maxRowScore}</TableCell>
+                                        <TableCell align="center">{maxRowScore}</TableCell>
                                         <TableCell></TableCell>
                                         <TableCell></TableCell>
                                     </TableRow>
@@ -94,9 +171,9 @@ function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any 
                                                 <TableCell></TableCell>
                                                 <TableCell></TableCell>
                                                 <TableCell>{criteria.name}</TableCell>
-                                                <TableCell>{criteria.maxScore}</TableCell>
-                                                <TableCell>
-                                                    {score.adminScore ? (
+                                                <TableCell align="center">{criteria.maxScore}</TableCell>
+                                                <TableCell align="center">
+                                                    {(score && score.adminScore) || !!isAdmin ? (
                                                         userScore[index][criteriaIndex]
                                                     ) : (
                                                         <TextField
@@ -113,7 +190,24 @@ function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any 
                                                         />
                                                     )}
                                                 </TableCell>
-                                                <TableCell>{adminScore[index][criteriaIndex]}</TableCell>
+                                                <TableCell align="center">
+                                                    {!isAdmin ? (
+                                                        adminScore[index][criteriaIndex]
+                                                    ) : (
+                                                        <TextField
+                                                            type="number"
+                                                            value={adminScore[index][criteriaIndex]}
+                                                            onChange={(event) =>
+                                                                handleAdminChange(
+                                                                    event,
+                                                                    index,
+                                                                    criteriaIndex,
+                                                                    criteria.maxScore,
+                                                                )
+                                                            }
+                                                        />
+                                                    )}
+                                                </TableCell>
                                             </TableRow>
                                         ))}
                                 </>
@@ -126,8 +220,8 @@ function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any 
                             </TableCell>
                             <TableCell></TableCell>
                             <TableCell></TableCell>
-                            <TableCell>{calcTotal(userScore)}</TableCell>
-                            <TableCell>{calcTotal(adminScore)}</TableCell>
+                            <TableCell align="center">{calcTotal(userScore)}</TableCell>
+                            <TableCell align="center">{calcTotal(adminScore)}</TableCell>
                         </TableRow>
                     </TableBody>
                 </Table>
@@ -135,7 +229,7 @@ function UserEvaluateTable({ rows, score }: { rows?: RowInterface[]; score: any 
             <LoadingButton
                 color="error"
                 onClick={handleSubmit}
-                // loading={loading}
+                loading={loading}
                 loadingPosition="start"
                 startIcon={<Save />}
                 variant="contained"

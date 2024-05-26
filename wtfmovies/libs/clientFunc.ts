@@ -134,3 +134,12 @@ export const formatNumber = (num: number): string => {
 
     return num.toString();
 };
+
+// evaluate
+export const calcTotal = (store: any[]) => {
+    const result = store.reduce(
+        (total: number, row: number[]) => total + row.reduce((sum: number, c: number) => sum + +c, 0),
+        0,
+    );
+    return result;
+};
