@@ -17,6 +17,7 @@ import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface } from '~/libs/interfaces';
 import EvaluateTable from '~/components/EvaluateTable';
 import { getEvaluateList } from '~/libs/getData/evaluate';
+import NotFound from '~/app/(root)/not-found';
 
 const cx = classNames.bind(style);
 export const fetchCache = 'force-no-store';
@@ -50,7 +51,9 @@ async function getPage(params?: any) {
         case 'evaluate':
             const evaluateList = await getEvaluateList();
 
-            return <EvaluateTable evaluateList={evaluateList} />;
+            if (!evaluateList) return NotFound();
+
+            return <EvaluateTable evaluateList={evaluateList.table} />;
         case 'films':
             return <p>Quản lý films</p>;
         default:

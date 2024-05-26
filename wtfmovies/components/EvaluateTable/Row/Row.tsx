@@ -25,6 +25,8 @@ export default function Row({
     const [dialogType, setDialogType] = useState<{ title: string; type: number }>({ title: '', type: 0 });
     const [currentCriteria, setCurrentCriteria] = useState(0);
 
+    const maxRowScore: number = row.criteria.reduce((sum, currCriteria) => sum + +currCriteria.maxScore, 0);
+
     const handleClose = () => {
         setDialogOpen(false);
     };
@@ -56,7 +58,7 @@ export default function Row({
                 </TableCell>
                 <TableCell align="center">{index + 1}</TableCell>
                 <TableCell>{row.name}</TableCell>
-                <TableCell align="center">{row.maxScore}</TableCell>
+                <TableCell align="center">{maxRowScore}</TableCell>
                 <TableCell align="center">
                     <IconButton>
                         <Update onClick={() => handleUpdateStandard(index)} />

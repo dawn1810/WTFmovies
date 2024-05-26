@@ -355,8 +355,13 @@ export interface CriteriaInterface {
 }
 
 export interface RowInterface {
-    _id: string;
     name: string;
     maxScore: number;
     criteria: CriteriaInterface[];
+}
+
+export interface EvalTableInterface {
+    _id: string;
+    table: RowInterface[];
+    version: number;
 }

@@ -25,85 +25,37 @@ export default function EvaluateDialog({
     const dispatch = useDispatch();
     const rows = useSelector(rowsSelector);
     const row: RowInterface = rows[currentRow];
-    const [value, setValue] = useState({ name: '', maxScore: 0 });
+    const [value, setValue] = useState({ name: '' });
     const [err, setErr] = useState({ nameErr: '', scoreErr: '' });
-
-    //alert
-
-    const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
-    };
 
     const handleChange = (event: any) => {
         setValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     };
 
     const handleClose = () => {
-        setValue({ name: '', maxScore: 0 });
+        setValue({ name: '' });
         handleCloseDialog();
     };
 
     const handleAdd = async () => {
-        if (value.name.length <= 0) setErr({ scoreErr: '', nameErr: 'Cần nhập tên tiêu chuẩn' });
-        else if (value.maxScore === 0) setErr({ nameErr: '', scoreErr: 'Điểm tối đa cần lớn hơn 0' });
-        else {
-            setErr({ nameErr: '', scoreErr: '' });
-            const newValue = { name: value.name, maxScore: value.maxScore };
-            const response = await fetch('/api/v1/evaluate/addStandard', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(newValue),
-            });
+        const newValue = { name: value.name };
 
-            if (response.ok) {
-                const res = await response.json();
-                dispatch(changeRow([...rows, { ...newValue, _id: res }]));
-                setValue({ name: '', maxScore: 0 });
-                handleCloseDialog();
-            } else if (response.status === 400) {
-                showAlert('Thêm tiêu chuẩn thất bại!', 'error');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-            }
-        }
+        dispatch(changeRow([...rows, { ...newValue }]));
+        setValue({ name: '' });
+        handleCloseDialog();
     };
 
     const handleSave = async () => {
-        const newValue = { name: value.name || row.name, maxScore: value.maxScore || row.maxScore };
-        const response = await fetch('/api/v1/evaluate/updateStandard', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...newValue, id: row._id }),
-        });
+        const newValue = { name: value.name || row.name };
 
-        if (response.ok) {
-            dispatch(changeRow(rows.map((r, i) => (i === currentRow ? { ...r, ...newValue } : r))));
-            setValue({ name: '', maxScore: 0 });
-            handleCloseDialog();
-        } else if (response.status === 400) {
-            showAlert('Cập nhật tiêu chuẩn thất bại!', 'error');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        }
+        dispatch(changeRow(rows.map((r, i) => (i === currentRow ? { ...r, ...newValue } : r))));
+        setValue({ name: '' });
+        handleCloseDialog();
     };
 
     const handleDelete = async () => {
-        const response = await fetch('/api/v1/evaluate/deleteStandard', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: row._id }),
-        });
-
-        if (response.ok) {
-            dispatch(changeRow(rows.filter((r, i) => i !== currentRow)));
-            handleCloseDialog();
-        } else if (response.status === 400) {
-            showAlert('Xoá tiêu chuẩn thất bại!', 'error');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        }
+        dispatch(changeRow(rows.filter((r, i) => i !== currentRow)));
+        handleCloseDialog();
     };
 
     return (
@@ -124,16 +76,6 @@ export default function EvaluateDialog({
                             value={value.name}
                             onChange={handleChange}
                         />
-                        <TextField
-                            error={!!err.scoreErr}
-                            fullWidth
-                            type="number"
-                            label="Điểm tối đa"
-                            helperText={err.scoreErr}
-                            name="maxScore"
-                            value={value.maxScore}
-                            onChange={handleChange}
-                        />
                     </>
                 ) : dialogType.type === 1 ? (
                     <>
@@ -145,14 +87,6 @@ export default function EvaluateDialog({
                             label="Tên"
                             name="name"
                             value={value.name || row.name}
-                            onChange={handleChange}
-                        />
-                        <TextField
-                            fullWidth
-                            type="number"
-                            label="Điểm tối đa"
-                            name="maxScore"
-                            value={value.maxScore || row.maxScore}
                             onChange={handleChange}
                         />
                     </>
