@@ -75,6 +75,7 @@ export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; l
                     {
                         $project: {
                             _id: 0,
+                            film_id: 1,
                             name: 1,
                             searchName: 1,
                             describe: 1,
@@ -116,6 +117,7 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
                     {
                         $project: {
                             _id: 0,
+                            film_id: 1,
                             img: 1,
                             name: 1,
                             searchName: 1,
@@ -124,7 +126,6 @@ export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                         },
                     },
-
                     { $limit: 10 },
                     { $sort: { likes: -1, views: -1, rating: -1 } },
                 ],

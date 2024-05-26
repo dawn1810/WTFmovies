@@ -80,6 +80,7 @@ export interface ExtendedUser extends User {
 
 export interface CaptionsItemInterface {
     img?: string;
+    film_id: string;
     name: string;
     searchName: string;
     describe: string;
@@ -193,7 +194,7 @@ export interface TabInterface {
 }
 
 export interface FilmInfoInterface {
-    film_id?: string;
+    film_id: string;
     name: string;
     searchName: string;
     describe: string;
@@ -354,8 +355,13 @@ export interface CriteriaInterface {
 }
 
 export interface RowInterface {
-    _id: string;
     name: string;
     maxScore: number;
     criteria: CriteriaInterface[];
+}
+
+export interface EvalTableInterface {
+    _id: string;
+    table: RowInterface[];
+    version: number;
 }

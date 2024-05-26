@@ -8,6 +8,7 @@ import FilmClassify from '~/components/FilmClassify';
 import style from './Home.module.scss';
 // import DefaultLayout from '~/layouts/DefaultLayout';
 import { getCaroselFilms, getHotClassifyFilms, getNewClassifyFilms, getProposeListFilms } from '~/libs/getData/home';
+import { AccessTime, FavoriteBorder, LocalFireDepartmentOutlined, VisibilityOutlined } from '@mui/icons-material';
 
 const cx = classNames.bind(style);
 
@@ -38,9 +39,9 @@ async function Home() {
                     mainDir: '/new_update',
                     extraDir: '/most_views',
                     mainTitle: 'MỚI CẬP NHẬT',
-                    extraTitle: 'XEM NHIỀU NHẤT',
-                    mainIcon: <FontAwesomeIcon icon={faClock} />,
-                    extraIcon: <FontAwesomeIcon icon={faEye} />,
+                    extraTitle: 'XEM NHIỀU',
+                    mainIcon: <AccessTime fontSize="large" />,
+                    extraIcon: <VisibilityOutlined fontSize="large" />,
                 }}
             />
             <FilmClassify
@@ -50,9 +51,9 @@ async function Home() {
                     mainDir: '/hot',
                     extraDir: '/most_likes',
                     mainTitle: 'PHIM HOT',
-                    extraTitle: 'YÊU THÍCH NHẤT',
-                    mainIcon: <FontAwesomeIcon icon={faFire} />,
-                    extraIcon: <FontAwesomeIcon icon={faHeart} />,
+                    extraTitle: 'YÊU THÍCH',
+                    mainIcon: <LocalFireDepartmentOutlined fontSize="large" />,
+                    extraIcon: <FavoriteBorder fontSize="large" />,
                 }}
             />
         </div>

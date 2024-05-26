@@ -10,6 +10,8 @@ import Header from '~/layouts/components/Header';
 import Footer from '~/layouts/components/Footer';
 import { getCurrentUser } from '~/libs/getData/home';
 import { getGenres } from '~/libs/getData/search';
+import { getNotificationList } from '~/libs/getData/notification';
+import NotFound from './not-found';
 
 const APP_NAME = 'WTFmovies';
 const APP_DEFAULT_TITLE = 'WTFmovies';
@@ -71,6 +73,9 @@ export default async function RootLayout({
 }>) {
     const currentUser = await getCurrentUser();
     const genres = await getGenres();
+    const notifications = await getNotificationList();
+
+    if (!notifications || !genres) return NotFound();
 
     return (
         <ReduxProvider>
@@ -78,7 +83,11 @@ export default async function RootLayout({
                 <SessionProvider>
                     <html lang="en">
                         <body className={montserrat.className}>
-                            <Header currentUser={currentUser} genres={genres} />
+                            <Header
+                                currentUser={currentUser}
+                                genres={genres}
+                                notifyLength={notifications[0].list.length}
+                            />
                             <section>{children}</section>
                             <Footer />
                             <BottomBar />

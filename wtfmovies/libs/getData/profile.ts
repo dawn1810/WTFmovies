@@ -59,11 +59,11 @@ export const getUserLoveFilmsInfo = async (): Promise<any> => {
             .collection('information')
             .find({
                 filter: {
-                    searchName: { $in: loveFilms },
+                    film_id: { $in: loveFilms },
                 },
                 projection: {
                     _id: 0,
-                    searchName: 1,
+                    film_id: 1,
                     name: 1,
                     img: 1,
                     views: 1,
@@ -75,6 +75,6 @@ export const getUserLoveFilmsInfo = async (): Promise<any> => {
 
         return filmsInfo;
     } catch (err) {
-        console.log('😨😨😨 error at profile/getUserInfo function  : ', err);
+        console.log('😨😨😨 error at profile/getUserLoveFilmsInfo function  : ', err);
     }
 };

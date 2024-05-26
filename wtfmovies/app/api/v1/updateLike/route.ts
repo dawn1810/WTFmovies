@@ -4,7 +4,7 @@ import { ObjectId, mongodb, toError, toJSON } from '~/libs/func';
 import { auth } from '../../auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { searchName: string[]; love: boolean };
+type dataType = { filmId: string[]; love: boolean };
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,9 +13,8 @@ export async function POST(request: NextRequest) {
         if (!session) return undefined;
 
         const extendedUser: ExtendedUser | undefined = session?.user;
-        const { searchName, love }: dataType = await request.json();
+        const { filmId, love }: dataType = await request.json();
 
-        const searchLength = searchName.length;
         if (love) {
             // update user love film list
             const userRes = await mongodb()
@@ -25,7 +24,7 @@ export async function POST(request: NextRequest) {
                     filter: {
                         email: extendedUser?.email,
                     },
-                    update: { $push: { loveFilms: { $each: searchName } } },
+                    update: { $push: { loveFilms: { $each: filmId } } },
                     upsert: true,
                 });
 
@@ -35,10 +34,9 @@ export async function POST(request: NextRequest) {
                 .collection('information')
                 .updateOne({
                     filter: {
-                        searchName: { $in: searchName },
+                        film_id: { $in: filmId },
                     },
                     update: { $inc: { likes: 1, monthLikes: 1, weekLikes: 1 } },
-                    upsert: true,
                 });
 
             if (userRes.modifiedCount === 1 && filmRes.modifiedCount === 1) {
@@ -53,7 +51,7 @@ export async function POST(request: NextRequest) {
                     filter: {
                         email: extendedUser?.email,
                     },
-                    update: { $pull: { loveFilms: { $in: searchName } } },
+                    update: { $pull: { loveFilms: { $in: filmId } } },
                     upsert: true,
                 });
 
@@ -63,10 +61,9 @@ export async function POST(request: NextRequest) {
                 .collection('information')
                 .updateOne({
                     filter: {
-                        searchName: { $in: searchName },
+                        film_id: { $in: filmId },
                     },
                     update: { $inc: { likes: -1, monthLikes: -1, weekLikes: -1 } },
-                    upsert: true,
                 });
 
             if (userRes.modifiedCount === 1 && filmRes.modifiedCount === 1) {

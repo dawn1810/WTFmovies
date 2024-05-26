@@ -1,0 +1,34 @@
+.list-film {
+    min-height: 500px;
+    width: var(--default-layout-width);
+    margin: 0 auto;
+    padding: 18px;
+    border-radius: 5px;
+    background-color: var(--card-background-color);
+
+
+    .list-item {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        color: var(--text-color);
+
+        .item {
+            border-radius: 5px;
+            border: 1px solid var(--text-color);
+        }
+
+
+    }
+
+    .divider {
+        width: 100%;
+        color: var(--text-color);
+        margin-bottom: 18px;
+
+        &::before,
+        &::after {
+            background-color: var(--text-color);
+        }
+    }
+}

@@ -83,6 +83,7 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
                     {
                         $project: {
                             _id: 0,
+                            film_id: 1,
                             name: 1,
                             searchName: 1,
                             describe: 1,
@@ -111,8 +112,9 @@ export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInter
     } catch (err) {
         console.log('😨😨😨 error at review/getFilmReviewInfo function  : ', err);
         return {
-            name: 'unknown',
-            searchName: 'unknown',
+            name: '',
+            film_id: '',
+            searchName: '',
             describe: '',
             author: [],
             genre: [],
@@ -137,7 +139,6 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
-
                     { $match: { searchName: filmName } },
                     { $match: { comment: { $exists: true, $ne: [] } } },
                     {

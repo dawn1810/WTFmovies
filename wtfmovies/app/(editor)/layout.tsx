@@ -13,6 +13,9 @@ import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
 import { HomeOutlined, MovieOutlined } from '@mui/icons-material';
+import NotFound from '../(root)/not-found';
+import { getNotificationList } from '~/libs/getData/notification';
+import { getCurrentUser } from '~/libs/getData/home';
 
 const APP_NAME = 'Editor';
 const APP_DEFAULT_TITLE = 'Editor';
@@ -60,6 +63,11 @@ export default async function AdminLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const currentUser = await getCurrentUser();
+    const notifications = await getNotificationList();
+
+    if (!notifications) return NotFound();
+
     return (
         <ReduxProvider>
             <ThemeP>
@@ -72,7 +80,12 @@ export default async function AdminLayout({
                                         <Leftbar menuItems={menuItems} />
                                     </Col>
                                     <Col xs={10} id="main-container">
-                                        <Header isDatabase title="Editor" />
+                                        <Header
+                                            isDatabase
+                                            title="Editor"
+                                            currentUser={currentUser}
+                                            notifyLength={notifications[0].list.length}
+                                        />
                                         <section id="layout-main-content">{children}</section>
                                     </Col>
                                 </Row>

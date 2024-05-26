@@ -4,23 +4,21 @@ import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
 import classNames from 'classnames/bind';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBell,
-    faCircleQuestion,
-    faCrown,
-    faEarthAsia,
-    faEllipsisVertical,
-    faGear,
-    faMagnifyingGlass,
-    faRightToBracket,
-    faSignOut,
-    faUser,
-    faXmark,
-} from '@fortawesome/free-solid-svg-icons';
 import Link from 'next/link';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
+import {
+    Close,
+    HelpOutline,
+    Login,
+    Logout,
+    ManageAccountsOutlined,
+    MoreVert,
+    NotificationsNone,
+    PersonOutline,
+    SettingsOutlined,
+    Search as SearchIcon,
+} from '@mui/icons-material';
 
 import { headerSelector } from '~/redux/selectors';
 import { changeModalShow } from './headerSlice';
@@ -35,6 +33,7 @@ import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
 import { ExtendedUser } from '~/libs/interfaces';
 import Notify from '~/components/Notify';
+import { Badge, IconButton } from '@mui/material';
 
 const cx = classNames.bind(styles);
 
@@ -70,13 +69,13 @@ const MENU_ITEMS = [
     //     title: 'Nâng cấp VIP',
     //     to: '/vip',
     // },
+    // {
+    //     icon: <SettingsOutlined />,
+    //     title: 'Cài đặt',
+    //     to: '/settings',
+    // },
     {
-        icon: <FontAwesomeIcon icon={faGear} />,
-        title: 'Cài đặt',
-        to: '/settings',
-    },
-    {
-        icon: <FontAwesomeIcon icon={faCircleQuestion} />,
+        icon: <HelpOutline />,
         title: 'Trợ giúp & phản hồi',
         to: '/feedbacks',
     },
@@ -84,18 +83,27 @@ const MENU_ITEMS = [
 
 const userMenu = [
     {
-        icon: <FontAwesomeIcon icon={faUser} />,
+        icon: <PersonOutline />,
         title: 'Thông tin tài khoản',
         type: 'profile',
     },
 
     ...MENU_ITEMS,
     {
-        icon: <FontAwesomeIcon icon={faSignOut} />,
+        icon: <Logout />,
         title: 'Đăng xuất',
         type: 'logout',
         separate: true,
     },
+];
+
+const adminMenu = [
+    {
+        icon: <ManageAccountsOutlined />,
+        title: 'Admin',
+        to: '/admin',
+    },
+    ...userMenu,
 ];
 
 function Header({
@@ -103,11 +111,13 @@ function Header({
     isDatabase = false,
     title,
     genres,
+    notifyLength,
 }: {
     currentUser?: ExtendedUser;
     isDatabase?: boolean;
     title?: string;
     genres?: { name: string; to: string; special?: boolean }[] | any;
+    notifyLength?: number;
 }) {
     //router
     const router = useRouter();
@@ -143,6 +153,11 @@ function Header({
                 break;
             default:
         }
+    };
+
+    // Handle notification
+    const handleNotification = () => {
+        router.push(`/notification`);
     };
 
     const [headerClass, setHeaderClass] = useState('wrapper-database');
@@ -205,7 +220,7 @@ function Header({
                         (isMobile ? (
                             <div className={cx('search-box', { 'search-box-show': searchShow })}>
                                 <button className={cx('back-btn')} onClick={handleSearchClose}>
-                                    <FontAwesomeIcon icon={faXmark} />
+                                    <Close />
                                 </button>
                                 <Search />
                             </div>
@@ -217,22 +232,27 @@ function Header({
                         {isMobile && (
                             <Tippy delay={[0, 50]} content="Search" placement="bottom">
                                 <button className={cx('action-btn')} onClick={handleSearchShow}>
-                                    <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                    <SearchIcon />
                                 </button>
                             </Tippy>
                         )}
                         {isLogged || (!!session && !!extendedUser) ? (
                             <>
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
-                                    <button className={cx('action-btn')}>
-                                        <FontAwesomeIcon icon={faBell} />
-                                        <span className={cx('badge')}>12</span>
-                                    </button>
+                                    <IconButton onClick={handleNotification}>
+                                        <Badge badgeContent={notifyLength} max={999} color="error">
+                                            <NotificationsNone />
+                                        </Badge>
+                                    </IconButton>
                                 </Tippy>
 
                                 <Menu
                                     key="loginyet"
-                                    items={userMenu}
+                                    items={
+                                        extendedUser?.role === 'admin' || currentUser?.role === 'admin'
+                                            ? adminMenu
+                                            : userMenu
+                                    }
                                     placement="bottom-end"
                                     delay={[0, 500]}
                                     onChange={handleMenuChange}
@@ -248,12 +268,12 @@ function Header({
                                         className={cx('mb-login-btn')}
                                         onClick={() => dispatch(changeModalShow(true))}
                                     >
-                                        <FontAwesomeIcon icon={faRightToBracket} />
+                                        <Login />
                                     </Button>
                                 ) : (
                                     <Button
                                         primary
-                                        leftIcon={<FontAwesomeIcon icon={faRightToBracket} />}
+                                        leftIcon={<Login />}
                                         onClick={() => dispatch(changeModalShow(true))}
                                     >
                                         Đăng Nhập
@@ -268,7 +288,7 @@ function Header({
                                     onChange={handleMenuChange}
                                 >
                                     <button className={cx('more-btn')}>
-                                        <FontAwesomeIcon icon={faEllipsisVertical} />
+                                        <MoreVert />
                                     </button>
                                 </Menu>
                             </>

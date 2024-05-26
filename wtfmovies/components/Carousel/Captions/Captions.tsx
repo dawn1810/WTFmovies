@@ -2,15 +2,11 @@
 import Link from 'next/link';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUp91, faCat, faEye, faFeather, faStar } from '@fortawesome/free-solid-svg-icons';
-import { Fragment, memo, useEffect, useRef, useState } from 'react';
+import { Fragment } from 'react';
 import classNames from 'classnames/bind';
 
 import { CaptionsItemInterface } from '~/libs/interfaces';
-import Button from '~/components/Button';
 import style from './Captions.module.scss';
-import { Favorite, FavoriteBorder, PlayArrow, ShareOutlined } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
-import { useDebounce } from '~/hooks';
 import FilmButtonGroup from '~/components/FilmButtonGroup/FilmButtonGroup';
 
 const cx = classNames.bind(style);
@@ -61,11 +57,7 @@ function Captions({ item, loveState }: { item: CaptionsItemInterface; loveState:
                         </li>
                     ))}
                 </ul>
-                <FilmButtonGroup
-                    dir={`/review/${item.searchName}`}
-                    loveState={loveState}
-                    searchName={item.searchName}
-                />
+                <FilmButtonGroup dir={`/review/${item.searchName}`} loveState={loveState} searchName={item.film_id} />
                 {/* <div className={cx('btn-group')}>
                     <Button to={`/review/${item.searchName}`} primary leftIcon={<PlayArrow />}>
                         Xem phim

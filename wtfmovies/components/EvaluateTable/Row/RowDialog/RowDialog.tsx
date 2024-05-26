@@ -32,14 +32,6 @@ export default function EvaluateDialog({
     const [value, setValue] = useState({ name: '', maxScore: 0 });
     const [err, setErr] = useState({ nameErr: '', scoreErr: '' });
 
-    //alert
-
-    const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
-    };
-
     const handleChange = (event: any) => {
         setValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
     };
@@ -48,81 +40,63 @@ export default function EvaluateDialog({
         setValue({ name: '', maxScore: 0 });
         handleCloseDialog();
     };
-    const handleAdd = async () => {};
-    // const handleAdd = async () => {
-    //     if (value.name.length <= 0) setErr({ scoreErr: '', nameErr: 'Cần nhập tên tiêu chuẩn' });
-    //     else if (value.maxScore === 0) setErr({ nameErr: '', scoreErr: 'Điểm tối đa cần lớn hơn 0' });
-    //     else {
-    //         setErr({ nameErr: '', scoreErr: '' });
-    //         const newValue = { name: value.name, maxScore: value.maxScore };
-    //         const response = await fetch('/api/v1/evaluate/addCriteria', {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify({ ...newValue, _id: rows[currentRow]._id }),
-    //         });
 
-    //         if (response.ok) {
-    //             const res = await response.json();
-    //             dispatch(
-    //                 changeRow(
-    //                     rows.map((r, index) => {
-    //                         if (index === currentRow) return { ...r, criteria: [...row, { ...newValue, _id: res }] };
-    //                         else row;
-    //                     }),
-    //                 ),
-    //             );
-    //             setValue({ name: '', maxScore: 0 });
-    //             handleCloseDialog();
-    //         } else if (response.status === 400) {
-    //             alert('Thêm tiêu chuẩn thất bại!');
-    //         } else if (response.status === 500) {
-    //             alert('Lỗi trong quá trình thêm tiêu chuẩn!');
-    //         }
-    //     }
-    // };
+    const handleAdd = async () => {
+        console.log('aaa');
+
+        const newValue = { name: value.name || criteria.name, maxScore: value.maxScore || criteria.maxScore };
+
+        dispatch(
+            changeRow(
+                rows.map((r, index) => {
+                    if (index === currentRow)
+                        if (r.criteria)
+                            return {
+                                ...r,
+                                criteria: [...r.criteria, newValue],
+                            };
+                        else
+                            return {
+                                ...r,
+                                criteria: [newValue],
+                            };
+                    else return r;
+                }),
+            ),
+        );
+        setValue({ name: '', maxScore: 0 });
+        handleCloseDialog();
+    };
 
     const handleSave = async () => {
         const newValue = { name: value.name || criteria.name, maxScore: value.maxScore || criteria.maxScore };
-        const response = await fetch('/api/v1/evaluate/updateCriteria', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ...newValue, id: rows[currentRow]._id }),
-        });
-
-        if (response.ok) {
-            dispatch(changeRow(rows.map((c, i) => (i === currentCriteria ? { ...c, ...newValue } : c))));
-            setValue({ name: '', maxScore: 0 });
-            handleCloseDialog();
-        } else if (response.status === 400) {
-            showAlert('Cập nhật tiêu chuẩn thất bại!', 'error');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        }
+        dispatch(
+            changeRow(
+                rows.map((r, index) => {
+                    if (index === currentRow)
+                        return {
+                            ...r,
+                            criteria: r.criteria.map((c, i) => (i === currentCriteria ? { ...c, ...newValue } : c)),
+                        };
+                    else return r;
+                }),
+            ),
+        );
+        setValue({ name: '', maxScore: 0 });
+        handleCloseDialog();
     };
 
     const handleDelete = async () => {
-        const response = await fetch('/api/v1/evaluate/deleteCriteria', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: rows[currentRow]._id, name: value.name || criteria.name }),
-        });
-
-        if (response.ok) {
-            dispatch(
-                changeRow(
-                    rows.map((r, index) => {
-                        if (index === currentRow)
-                            return { ...r, criteria: r.criteria.filter((c, i) => i !== currentCriteria) };
-                        else row;
-                    }),
-                ),
-            );
-            handleCloseDialog();
-        } else if (response.status === 400) {
-            showAlert('Xoá tiêu chuẩn thất bại!', 'error');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        }
+        dispatch(
+            changeRow(
+                rows.map((r, index) => {
+                    if (index === currentRow)
+                        return { ...r, criteria: r.criteria.filter((c, i) => i !== currentCriteria) };
+                    else return r;
+                }),
+            ),
+        );
+        handleCloseDialog();
     };
 
     return (
