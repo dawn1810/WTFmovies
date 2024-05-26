@@ -1,15 +1,6 @@
 'use client';
 import React from 'react';
-
-export default function Duration({ className, seconds }) {
-    return (
-        <time dateTime={`P${Math.round(seconds)}S`} className={className}>
-            {format(seconds)}
-        </time>
-    );
-}
-
-function format(seconds) {
+function format(seconds: number) {
     const date = new Date(seconds * 1000);
     const hh = date.getUTCHours();
     const mm = date.getUTCMinutes();
@@ -20,6 +11,16 @@ function format(seconds) {
     return `${mm}:${ss}`;
 }
 
-function pad(string) {
+function pad(string: number) {
     return ('0' + string).slice(-2);
 }
+
+export default function Duration({ className, seconds }: { className?: any, seconds: number }) {
+    return (
+        <time dateTime={`P${Math.round(seconds)}S`
+        } className={className} >
+            {format(seconds)}
+        </time>
+    );
+}
+

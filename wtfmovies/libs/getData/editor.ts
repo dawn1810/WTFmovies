@@ -33,6 +33,20 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                     { $match: { status: { $ne: 'delete' } } },
                     {
                         $lookup: {
+                            from: 'episode',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            pipeline: [
+                                { $project: { _id: 0, link: 1, index: 1 } },
+                                { $sort: { index: 1 } },
+
+
+                            ],
+                            as: 'listEp',
+                        },
+                    },
+                    {
+                        $lookup: {
                             from: 'author',
                             let: { authorIds: '$author' }, // Define the local variable authorIds
                             pipeline: [
@@ -121,6 +135,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                             poster: 1,
                             status: 1,
                             duration: 1,
+                            listEp: '$listEp',
                             tag: '$tagDetails.name',
                             releaseYear: 1,
                             country: '$country.label',
@@ -134,7 +149,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
         return films.map(film => {
             return {
-                ...film, duration: film.duration, durationAsString: convertSecondsToDHMS(film.duration), id: film.film_id, maxEp: film.maxEp, maxEpAsString: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: film.videoType.map((videoType: any) => videoType.title)
+                ...film, duration: film.duration, durationAsString: convertSecondsToDHMS(film.duration), id: film.film_id, maxEp: film.maxEp, maxEpAsString: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', listEp: film.listEp, videoType: film.videoType.map((videoType: any) => videoType.title)
             };
         });
     } catch (err) {

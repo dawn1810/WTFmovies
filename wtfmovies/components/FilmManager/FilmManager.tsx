@@ -68,6 +68,7 @@ export default function DataGridCom({
         const actorsList = new Set(rowData[0].actor);
         const countrysList = new Set(rowData[0].country);
 
+
         const data = {
             ...rowData[0],
             author: [...sideFormInfo.author.filter((item: any) => authorsList.has(item.title))],

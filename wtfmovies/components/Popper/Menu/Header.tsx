@@ -18,9 +18,5 @@ function Header({ title, onBack }: { title: string; onBack: () => void }) {
     );
 }
 
-Header.propTypes = {
-    title: PropTypes.string.isRequired,
-    onBack: PropTypes.func.isRequired,
-};
 
 export default Header;

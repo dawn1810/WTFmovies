@@ -11,7 +11,7 @@ import Footer from '~/layouts/components/Footer';
 import { getCurrentUser } from '~/libs/getData/home';
 import { getGenres } from '~/libs/getData/search';
 import { getNotificationList } from '~/libs/getData/notification';
-// import NotFound from './not-found';
+// import NotFound from './not-found'; ĐÂY LỖI
 
 const APP_NAME = 'WTFmovies';
 const APP_DEFAULT_TITLE = 'WTFmovies';
@@ -75,7 +75,7 @@ export default async function RootLayout({
     const genres = await getGenres();
     const notifications = await getNotificationList();
 
-    // if (!notifications || !genres) return NotFound();
+    // if (!notifications || !genres) return NotFound(); ĐÂY LỖI
 
     return (
         <ReduxProvider>

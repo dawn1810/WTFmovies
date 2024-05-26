@@ -4,19 +4,21 @@ import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const response = await mongodb()
-            .db('user')
-            .collection('information')
-            .find({
-                filter: {
-                    loveFilms: { $in: ['PLdM751AKK4aO-1m2VuDCEKL40SUMnkUI9'] },
-                },
-                projection: {
-                    _id: 1,
-                },
-            });
+        const authorNames = ['Kanehito Yamada', 'aaa', 'bbb'];
 
-        return toJSON(response);
+        for (const name of authorNames) {
+            await mongodb()
+                .db('film')
+                .collection('author')
+                .updateMany({ filter: { name }, update: { $set: { name } }, upsert: true });
+        }
+
+        const authors = await mongodb()
+            .db('film')
+            .collection('author')
+            .find({ filter: { name: { $in: authorNames } }, projection: { _id: 1 } });
+
+        return toJSON(authors);
     } catch (err) {
         return toError('Lỗi ' + err, 500);
     }

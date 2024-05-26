@@ -10,7 +10,7 @@ import styles from './Menu.module.scss';
 import { HeaderMenuInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(styles);
-const defaultFn = () => {};
+const defaultFn = () => { };
 
 function Menu({
     playerMenu = false,
@@ -31,10 +31,14 @@ function Menu({
             const isParent = !!item.children;
 
             return (
+
                 <MenuItem
                     key={index}
                     data={item}
-                    onClick={() => {
+
+                    onClick={(e: any) => {
+                        e.preventDefault();
+
                         if (isParent) {
                             setHistory((prev) => [...prev, item.children]);
                         } else {

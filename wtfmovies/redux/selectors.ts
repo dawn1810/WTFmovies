@@ -183,6 +183,7 @@ export const contactPlayerSelector = createSelector(
     contactShowSelector,
     pipSelector,
     resolutionSelector,
+    seekingSelector,
     (
         ready,
         url,
@@ -197,6 +198,7 @@ export const contactPlayerSelector = createSelector(
         contactShow,
         pip,
         resolution,
+        seeking,
     ) => ({
         ready,
         url,
@@ -211,6 +213,7 @@ export const contactPlayerSelector = createSelector(
         contactShow,
         pip,
         resolution,
+        seeking,
     }),
 );
 

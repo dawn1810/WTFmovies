@@ -1,5 +1,9 @@
-import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, TextField, styled } from "@mui/material";
+import { Box, Button, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, RadioGroup, TextField, styled } from "@mui/material";
+import classNames from 'classnames/bind';
+import Radio from '@mui/material/Radio';
+
 import Select, { SelectChangeEvent } from '@mui/material/Select';
+import Player from "~/components/Player";
 import style from './EpForm.module.scss';
 const cx = classNames.bind(style);
 
@@ -8,8 +12,6 @@ interface MovieForm {
     defaultValue: any,
 }
 import { CloudUpload } from '@mui/icons-material';
-import Player from "~/components/Player";
-import classNames from "classnames";
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -23,9 +25,10 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 export default function InfoForm({ defaultValue }: MovieForm) {
+    console.log(defaultValue);
 
 
-    const [episode, setEpisode] = useState('');
+    const [episode, setEpisode] = useState(defaultValue[0].link);
     const handleChange = (event: SelectChangeEvent) => {
         setEpisode(event.target.value);
     };
@@ -61,26 +64,27 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                 gap: 1,
 
             }}>
-                <FormControl sx={{ m: 1, minWidth: 120 }}>
-                    <InputLabel id="demo-simple-select-helper-label">Age</InputLabel>
+                <FormControl sx={{
+                    m: 1, minWidth: 450
+
+                }}>
+                    <InputLabel id="demo-simple-select-helper-label">Chọn tập</InputLabel>
                     <Select
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
                         value={episode}
-                        label="Age"
+                        label="Chọn tập"
                         onChange={handleChange}
                     >
-                        <MenuItem value="">
-                            <em>None</em>
-                        </MenuItem>
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        {defaultValue.map((item: { link: string, index: 1 }) => <MenuItem key={item.index} value={item.link}>{item.index}</MenuItem>)}
                     </Select>
-                    <FormHelperText>With label + helper text</FormHelperText>
                 </FormControl>
 
+                <RadioGroup sx={{ display: 'flex', flexDirection: 'row' }} name="use-radio-group" defaultValue="sub">
+                    <FormControlLabel value="sub" control={<Radio />} label="Subs" />
+                    <FormControlLabel value="tm" control={<Radio />} label="Thuyết minh" />
 
+                </RadioGroup>
                 <Button
                     component="label"
                     role={undefined}
@@ -95,14 +99,13 @@ export default function InfoForm({ defaultValue }: MovieForm) {
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
-
+                justifyContent: 'center',
                 width: '30vw',
-
+                alignItems: 'center',
                 gap: 1,
 
             }}>
-                {/* <Player className={cx('uploadPlayer')} url={'https://rurimeiko.pages.dev/dadada.m3u8'}></Player> */}
+                <Player isMobile className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'}></Player>
 
             </Box>
         </Box>
