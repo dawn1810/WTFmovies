@@ -125,7 +125,7 @@ export default function DataGridCom({ dataset }: { dataset: any[] }) {
             const response = await fetch('/api/v1/updateLike', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ searchName: rowSelectionModel, love: false }),
+                body: JSON.stringify({ filmId: rowSelectionModel, love: false }),
             });
 
             if (response.ok) {

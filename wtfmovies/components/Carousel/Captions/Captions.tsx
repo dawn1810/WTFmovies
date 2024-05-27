@@ -57,7 +57,12 @@ function Captions({ item, loveState }: { item: CaptionsItemInterface; loveState:
                         </li>
                     ))}
                 </ul>
-                <FilmButtonGroup dir={`/review/${item.searchName}`} loveState={loveState} searchName={item.film_id} />
+                <FilmButtonGroup
+                    dir={`/review/${item.searchName}`}
+                    loveState={loveState}
+                    filmId={item.film_id}
+                    searchName={item.searchName}
+                />
                 {/* <div className={cx('btn-group')}>
                     <Button to={`/review/${item.searchName}`} primary leftIcon={<PlayArrow />}>
                         Xem phim

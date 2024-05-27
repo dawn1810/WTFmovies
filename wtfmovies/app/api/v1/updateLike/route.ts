@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { ObjectId, mongodb, toError, toJSON } from '~/libs/func';
+import { mongodb, toError, toJSON } from '~/libs/func';
 import { auth } from '../../auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
 

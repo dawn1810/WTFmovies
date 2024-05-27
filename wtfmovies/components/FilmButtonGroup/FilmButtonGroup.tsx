@@ -11,7 +11,17 @@ import { useDispatch } from 'react-redux';
 
 const cx = classNames.bind(style);
 
-function FilmButtonGroup({ dir, loveState, searchName }: { dir?: string; loveState: boolean; searchName: string }) {
+function FilmButtonGroup({
+    dir,
+    loveState,
+    filmId,
+    searchName,
+}: {
+    dir?: string;
+    loveState: boolean;
+    filmId: string;
+    searchName: string;
+}) {
     //alert
     const dispatch = useDispatch();
 
@@ -38,7 +48,7 @@ function FilmButtonGroup({ dir, loveState, searchName }: { dir?: string; loveSta
             const response = await fetch('/api/v1/updateLike', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ searchName: [searchName], love: loveDebounce }),
+                body: JSON.stringify({ filmId: [filmId], love: loveDebounce }),
             });
 
             if (response.ok) {

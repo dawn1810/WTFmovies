@@ -182,7 +182,8 @@ function FilmInfo({
                     <FilmButtonGroup
                         dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
                         loveState={loveState}
-                        searchName={filmInfo.film_id}
+                        filmId={filmInfo.searchName}
+                        searchName={filmInfo.searchName}
                     />
                 </div>
             </div>

@@ -5,6 +5,7 @@ export const headerSlice = createSlice({
     initialState: {
         modalShow: false,
         query: '',
+        feedbackDialog: false,
     },
     reducers: {
         changeModalShow: (state, action) => {

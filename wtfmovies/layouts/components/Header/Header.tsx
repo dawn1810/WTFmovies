@@ -18,6 +18,7 @@ import {
     PersonOutline,
     SettingsOutlined,
     Search as SearchIcon,
+    FeedbackOutlined,
 } from '@mui/icons-material';
 
 import { headerSelector } from '~/redux/selectors';
@@ -76,8 +77,13 @@ const MENU_ITEMS = [
     // },
     {
         icon: <HelpOutline />,
-        title: 'Trợ giúp & phản hồi',
-        to: '/feedbacks',
+        title: 'Trợ giúp',
+        type: 'feedbacks',
+    },
+    {
+        icon: <FeedbackOutlined />,
+        title: 'Gởi ý kiến phản hồi',
+        type: 'feedbacks',
     },
 ];
 
@@ -153,6 +159,9 @@ function Header({
                 break;
             case 'profile':
                 router.push(`/profile/${extendedUser?.email}`);
+                break;
+            case 'feedbacks':
+                router.push(`/feedbacks`);
                 break;
             default:
         }
@@ -312,6 +321,7 @@ function Header({
             )}
 
             <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
+
             <Notify />
         </header>
     );
