@@ -16,7 +16,7 @@ import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface } from '~/libs/interfaces';
 import EvaluateTable from '~/components/EvaluateTable';
-import { getAllUserScore, getEvaluateList } from '~/libs/getData/evaluate';
+import { getAllUserScore, getEvaluateList, getVersionList } from '~/libs/getData/evaluate';
 import NotFound from '~/app/(root)/not-found';
 import AdminEvaluate from '~/components/AdminEvaluate';
 
@@ -51,13 +51,25 @@ async function getPage(params?: any) {
             return <ManageReportTable dataset={reports} />;
         case 'evaluate':
             const evaluateList = await getEvaluateList();
+            console.log(evaluateList);
 
-            return <EvaluateTable evaluateList={evaluateList?.table} />;
+            return <EvaluateTable evaluateList={evaluateList?.table} ver={evaluateList?.version || '0'} />;
         case 'userevaluate':
+            const versionList = await getVersionList();
             const table = await getEvaluateList();
-            const scores = await getAllUserScore();
+            const scores = await getAllUserScore(versionList[0].version);
 
-            return <AdminEvaluate table={table?.table} scores={scores} />;
+            console.log(scores);
+
+            const mappedScores = scores.map((score: any) => ({
+                ...score,
+                _id: score.email,
+                adminScore: score.adminScore[0],
+                userScore: score.userScore[0],
+                time: score.time[0],
+            }));
+
+            return <AdminEvaluate table={table?.table} scores={mappedScores} versionList={versionList} />;
         case 'films':
             return <p>Quản lý films</p>;
         default:

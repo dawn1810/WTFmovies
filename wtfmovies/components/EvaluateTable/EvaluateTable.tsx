@@ -2,7 +2,7 @@
 
 import classNames from 'classnames/bind';
 import { useDispatch, useSelector } from 'react-redux';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
     AlertColor,
     Button,
@@ -13,6 +13,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
 } from '@mui/material';
 import { AddCircleOutline, Save } from '@mui/icons-material';
 
@@ -27,16 +28,20 @@ import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux
 
 const cx = classNames.bind(style);
 
-const checkCondition = (rows: RowInterface[]) => {
+const calcFinalTotal = (rows: RowInterface[]) => {
     let total = 0;
     rows.forEach((row) => {
         total += row && row.criteria ? row.criteria.reduce((sum, currCriteria) => sum + +currCriteria.maxScore, 0) : 0;
     });
+    return total;
+};
 
+const checkCondition = (rows: RowInterface[]) => {
+    let total = calcFinalTotal(rows);
     return total === 100 && rows.length === 10;
 };
 
-export default function EvaluateTable({ evaluateList }: { evaluateList?: RowInterface[] }) {
+export default function EvaluateTable({ evaluateList, ver }: { evaluateList?: RowInterface[]; ver: string }) {
     const dispatch = useDispatch();
     const rows = useSelector(rowsSelector);
 
@@ -44,6 +49,7 @@ export default function EvaluateTable({ evaluateList }: { evaluateList?: RowInte
     const [dialogOpen, setDialogOpen] = useState(false);
     const [dialogType, setDialogType] = useState<{ title: string; type: number }>({ title: '', type: 0 });
     const [currentRow, setCurrentRow] = useState(0);
+    const [version, setVersion] = useState(ver);
 
     useEffect(() => {
         dispatch(changeRow(evaluateList || []));
@@ -75,17 +81,19 @@ export default function EvaluateTable({ evaluateList }: { evaluateList?: RowInte
         setDialogOpen(true);
     };
 
+    const handleChangeVersion = (event: any) => {
+        setVersion(event.target.value);
+    };
+
     // save table
     const handleSubmit = async () => {
         setLoading(true);
-
-        console.log(checkCondition(rows));
 
         if (checkCondition(rows)) {
             const response = await fetch('/api/v1/evaluate/updateTable', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ table: rows }),
+                body: JSON.stringify({ table: rows, version }),
             });
 
             if (response.ok) {
@@ -105,6 +113,13 @@ export default function EvaluateTable({ evaluateList }: { evaluateList?: RowInte
     return (
         <div className={cx('wrapper')}>
             <h1 className={cx('title_name')}>{'Quản lý bảng đánh giá hội viên'}</h1>
+            <TextField
+                style={{ alignSelf: 'flex-end' }}
+                label="Version"
+                variant="outlined"
+                value={version}
+                onChange={handleChangeVersion}
+            />
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }}>
                     <TableHead>
@@ -134,6 +149,13 @@ export default function EvaluateTable({ evaluateList }: { evaluateList?: RowInte
                                     handleDeleteStandard={handleDeleteStandard}
                                 />
                             ))}
+                        <TableRow key={'total'}>
+                            <TableCell />
+                            <TableCell />
+                            <TableCell>Tổng điểm:</TableCell>
+                            <TableCell align="center">{calcFinalTotal(rows)}</TableCell>
+                            <TableCell />
+                        </TableRow>
                         <TableRow key={'new'} hover onClick={() => handleOpenDialog('Thêm tiêu chuẩn mới')}>
                             <TableCell />
                             <TableCell />

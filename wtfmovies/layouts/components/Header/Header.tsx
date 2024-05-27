@@ -101,7 +101,7 @@ const adminMenu = [
     {
         icon: <ManageAccountsOutlined />,
         title: 'Admin',
-        to: '/admin',
+        type: 'admin',
     },
     ...userMenu,
 ];
@@ -147,6 +147,9 @@ function Header({
                 break;
             case 'logout':
                 signOut();
+                break;
+            case 'admin':
+                router.push(`/admin/overviews`);
                 break;
             case 'profile':
                 router.push(`/profile/${extendedUser?.email}`);

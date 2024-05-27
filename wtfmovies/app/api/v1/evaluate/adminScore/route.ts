@@ -1,10 +1,10 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { score: any };
+type dataType = { email: string; score: any; version: string };
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,15 +13,17 @@ export async function POST(request: NextRequest) {
         if (!session) return undefined;
 
         const extendedUser: ExtendedUser | undefined = session?.user;
-        const { score }: dataType = await request.json();
+        const { email, score, version }: dataType = await request.json();
 
-        if (extendedUser?.role === 'admin') {
+        if (extendedUser?.role === 'admin' || !!email) {
+            const today = new Date();
             const response = await mongodb()
                 .db('user')
                 .collection('evaluate')
                 .updateOne({
-                    filter: { _id: extendedUser?.email, adminScore: { $exists: false } },
-                    update: { $set: { adminScore: score } },
+                    filter: { _id: email, version },
+                    update: { $set: { adminScore: score, time: MongoDate(today), version } },
+                    upsert: true,
                 });
 
             if (response.modifiedCount === 1 || !!response.upsertedId) return toJSON('Chấm điểm thành công');

@@ -36,10 +36,12 @@ function UserEvaluateTable({
     rows,
     score,
     isAdmin,
+    version,
 }: {
     rows?: RowInterface[];
-    score: ScoreInterface;
+    score?: ScoreInterface;
     isAdmin?: boolean;
+    version?: string;
 }) {
     if (!rows) return NotFound();
 
@@ -54,7 +56,8 @@ function UserEvaluateTable({
 
     useEffect(() => {
         setAdminScore(score && score.adminScore ? score.adminScore : createArray(rows));
-    }, [score.adminScore]);
+        setUserScore(score && score.userScore ? score.userScore : createArray(rows));
+    }, [score]);
 
     const showAlert = (content: string, type: AlertColor) => {
         dispatch(changeNotifyContent(content));
@@ -98,7 +101,7 @@ function UserEvaluateTable({
             const response = await fetch('/api/v1/evaluate/adminScore', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ score: adminScore }),
+                body: JSON.stringify({ email: score ? score._id : '', score: adminScore, version }),
             });
 
             if (response.ok) {
@@ -114,7 +117,7 @@ function UserEvaluateTable({
             const response = await fetch('/api/v1/evaluate/userScore', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: extendedUser?.email, score: userScore }),
+                body: JSON.stringify({ email: extendedUser?.email, score: userScore, version }),
             });
 
             if (response.ok) {
@@ -226,17 +229,19 @@ function UserEvaluateTable({
                     </TableBody>
                 </Table>
             </TableContainer>
-            <LoadingButton
-                color="error"
-                onClick={handleSubmit}
-                loading={loading}
-                loadingPosition="start"
-                startIcon={<Save />}
-                variant="contained"
-                className={cx('save-btn')}
-            >
-                <span>Save</span>
-            </LoadingButton>
+            {(score && score.adminScore && !isAdmin) || (
+                <LoadingButton
+                    color="error"
+                    onClick={handleSubmit}
+                    loading={loading}
+                    loadingPosition="start"
+                    startIcon={<Save />}
+                    variant="contained"
+                    className={cx('save-btn')}
+                >
+                    <span>Save</span>
+                </LoadingButton>
+            )}
         </div>
     );
 }

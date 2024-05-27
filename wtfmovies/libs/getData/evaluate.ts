@@ -1,5 +1,5 @@
 import { mongodb } from '~/libs/func';
-import { EvalTableInterface, ExtendedUser } from '../interfaces';
+import { EvalTableInterface, ExtendedUser, ScoreInterface } from '../interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getEvaluateList = async (): Promise<EvalTableInterface | undefined> => {
@@ -17,7 +17,7 @@ export const getEvaluateList = async (): Promise<EvalTableInterface | undefined>
     }
 };
 
-export const getCurrentScore = async (): Promise<EvalTableInterface | undefined> => {
+export const getCurrentScore = async (): Promise<ScoreInterface | undefined> => {
     try {
         const session = await auth();
 
@@ -25,7 +25,7 @@ export const getCurrentScore = async (): Promise<EvalTableInterface | undefined>
 
         const extendedUser: ExtendedUser | undefined = session?.user;
 
-        const evaluateList: EvalTableInterface[] = await mongodb()
+        const evaluateList: ScoreInterface[] = await mongodb()
             .db('user')
             .collection('evaluate')
             .find({
@@ -38,7 +38,7 @@ export const getCurrentScore = async (): Promise<EvalTableInterface | undefined>
     }
 };
 
-export const getAllUserScore = async (): Promise<any | undefined> => {
+export const getAllUserScore = async (version: string): Promise<any | undefined> => {
     try {
         const session = await auth();
 
@@ -47,10 +47,62 @@ export const getAllUserScore = async (): Promise<any | undefined> => {
         const getAllUserScore: ExtendedUser | undefined = session?.user;
 
         if (getAllUserScore?.role === 'admin') {
-            const scores: any = await mongodb().db('user').collection('evaluate').find();
-            return scores;
+            const userInfo: any[] = await mongodb()
+                .db('user')
+                .collection('information')
+                .aggregate({
+                    pipeline: [
+                        {
+                            $lookup: {
+                                from: 'evaluate',
+                                let: { userId: '$email', specifiedVersion: 1 }, // Define your outside variables
+                                pipeline: [
+                                    {
+                                        $match: {
+                                            $expr: {
+                                                $and: [{ $eq: ['$_id', '$$userId'] }, { $eq: ['$version', version] }],
+                                            },
+                                        },
+                                    },
+                                    { $limit: 1 },
+                                ],
+                                as: 'scores',
+                            },
+                        },
+                        {
+                            $project: {
+                                _id: 0,
+                                email: 1,
+                                name: 1,
+                                userScore: '$scores.userScore',
+                                adminScore: '$scores.adminScore',
+                                time: '$scores.time',
+                            },
+                        },
+                    ],
+                });
+            return userInfo;
         }
     } catch (err) {
         console.log('😨😨😨 error at home/getAllUserScore function  : ', err);
+    }
+};
+
+export const getVersionList = async (): Promise<any | undefined> => {
+    try {
+        const versionList: any[] = await mongodb()
+            .db('evaluate')
+            .collection('table')
+            .find({
+                projection: {
+                    _id: 0,
+                    version: 1,
+                },
+                sort: { time: -1 },
+            });
+
+        return versionList;
+    } catch (err) {
+        console.log('😨😨😨 error at home/getCurrentScore function  : ', err);
     }
 };

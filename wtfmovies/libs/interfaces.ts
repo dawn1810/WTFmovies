@@ -121,11 +121,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-    | {
-        title?: string;
-        episode?: number[];
-    }[]
-    | any;
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -364,11 +364,14 @@ export interface EvalTableInterface {
     _id: string;
     table: RowInterface[];
     time: string;
+    version: string;
 }
 
 export interface ScoreInterface {
     _id: string;
+    name?: string;
     userScore: any[];
     adminScore?: any[];
     time: string;
+    version: string;
 }
