@@ -15,6 +15,7 @@ import BottomBar from '~/layouts/components/BottomBar';
 import {
     BorderColorOutlined,
     FlagOutlined,
+    ForumOutlined,
     HomeOutlined,
     HowToReg,
     MovieOutlined,
@@ -55,14 +56,19 @@ const menuItems = [
         scene: 'overview',
     },
     {
+        title: 'Quản lý người dùng',
+        icon: <BorderColorOutlined />,
+        scene: 'users',
+    },
+    {
         title: 'Quản lý báo cáo',
         icon: <FlagOutlined />,
         scene: 'report',
     },
     {
-        title: 'Quản lý người dùng',
-        icon: <BorderColorOutlined />,
-        scene: 'users',
+        title: 'Quản lý bình luận',
+        icon: <ForumOutlined />,
+        scene: 'comment',
     },
     {
         title: 'Quản lý phim',

@@ -8,7 +8,7 @@ export const getSurveyOptions = async (): Promise<{
     try {
         const genres = await mongodb()
             .db('film')
-            .collection('gerne')
+            .collection('genre')
             .find({ projection: { name: 1 } });
 
         const languages = await mongodb()

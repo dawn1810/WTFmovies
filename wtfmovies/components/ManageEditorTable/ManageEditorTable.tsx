@@ -20,8 +20,8 @@ export default function FilmPage({ dataset }: { dataset: UserAdminInfoInfterface
         ...data,
         index: index + 1,
         gender: convertGender(data.gender),
-        status: data.status,
-        role: data.role,
+        status: data.status[0],
+        role: data.role[0],
     }));
 
     return <Table title_name="Quản lý người dùng" dataset={mappedDataset} />;

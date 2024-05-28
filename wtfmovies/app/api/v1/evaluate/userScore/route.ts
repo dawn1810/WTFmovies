@@ -2,8 +2,8 @@ export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { version } from 'os';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
-import { ExtendedUser } from '~/libs/interfaces';
+import { MongoDate, checkScoreData, mongodb, toError, toJSON } from '~/libs/func';
+import { EvalTableInterface, ExtendedUser } from '~/libs/interfaces';
 
 type dataType = { email?: string; score: any; version: string };
 
@@ -17,6 +17,17 @@ export async function POST(request: NextRequest) {
         const { email, score, version }: dataType = await request.json();
 
         if (!email && email != extendedUser?.email) return toError('Api ngoài thẩm quyền của bạn', 403);
+
+        const currTable: EvalTableInterface[] = await mongodb()
+            .db('evaluate')
+            .collection('table')
+            .find({
+                sort: { time: -1 },
+                limit: 1,
+            });
+
+        if (currTable[0].version) return toError('Phiên bản không còn phù hợp', 410);
+        if (checkScoreData(currTable[0].table, score)) return toError('Điểm số nhập liệu không hợp lệ', 422);
 
         const today = new Date();
         const response = await mongodb()

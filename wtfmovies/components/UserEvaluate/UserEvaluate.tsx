@@ -126,6 +126,10 @@ function UserEvaluateTable({
                 showAlert('Lưu điểm chấm thất bại!', 'error');
             } else if (response.status === 403) {
                 showAlert('API ngoài thẩm quyền của bạn!', 'error');
+            } else if (response.status === 410) {
+                showAlert('Phiên bản bảng đánh giá của bạn đã cũ hãy thử tải lại trang và đánh giá lại!', 'warning');
+            } else if (response.status === 422) {
+                showAlert('Điểm đánh giá của bạn không hợp lệ', 'error');
             } else if (response.status === 500) {
                 showAlert('Lỗi lưu điểm chấm, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }

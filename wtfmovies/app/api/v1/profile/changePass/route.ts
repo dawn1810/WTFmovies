@@ -1,6 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
+import { validatePassword } from '~/libs/clientFunc';
 import { comparePassWord, getSHA256Hash, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
@@ -14,6 +15,8 @@ export async function POST(request: NextRequest) {
 
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { oldPass, newPass }: dataType = await request.json();
+
+        if (validatePassword(newPass) !== 0) return toJSON('Email không tồn tại', 422);
 
         const hashPassword = await getSHA256Hash(oldPass);
         const newHashPassword = await getSHA256Hash(newPass);

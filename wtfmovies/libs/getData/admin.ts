@@ -186,10 +186,27 @@ export const getAllReport = async (): Promise<AdminReportInfterface[]> => {
             .db('statistical')
             .collection('report')
             .aggregate({
-                pipeline: [{ $sort: { time: -1 } }],
+                pipeline: [{ $match: { status: { $ne: false } } }, { $sort: { time: -1 } }],
             });
 
         return reports;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getAllReport function : ', err);
+        return [];
+    }
+};
+
+// comment manage
+export const getAllComment = async (): Promise<any[]> => {
+    try {
+        const comments: any[] = await mongodb()
+            .db('film')
+            .collection('comment')
+            .aggregate({
+                pipeline: [{ $sort: { time: -1 } }],
+            });
+
+        return comments;
     } catch (err) {
         console.log('😨😨😨 error at admin/getAllReport function : ', err);
         return [];

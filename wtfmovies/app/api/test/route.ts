@@ -4,43 +4,36 @@ import type { NextRequest } from 'next/server';
 
 export async function GET(request: NextRequest) {
     try {
-        const version = '1.1';
-        const userInfo: any[] = await mongodb()
-            .db('user')
+        const comments: any[] = await mongodb()
+            .db('film')
             .collection('information')
             .aggregate({
                 pipeline: [
+                    { $match: { status: { $ne: 'delete' } } },
+                    { $match: { searchName: 'inuyashiki' } },
+                    { $match: { comment: { $exists: true, $ne: [] } } },
                     {
                         $lookup: {
-                            from: 'evaluate',
-                            let: { userId: '$email', specifiedVersion: 1 }, // Define your outside variables
+                            from: 'comment',
+                            let: { commentIds: '$comment' },
                             pipeline: [
-                                {
-                                    $match: {
-                                        $expr: {
-                                            $and: [{ $eq: ['$_id', '$$userId'] }, { $eq: ['$version', version] }],
-                                        },
-                                    },
-                                },
-                                { $limit: 1 },
+                                { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
+                                { $match: { status: true } }, // This line includes only documents with status true
+                                { $sort: { time: -1 } },
                             ],
-                            as: 'scores',
+                            as: 'commentDetails',
                         },
                     },
                     {
                         $project: {
-                            _id: 0,
-                            email: 1,
-                            name: 1,
-                            userScore: '$scores.userScore',
-                            adminScore: '$scores.adminScore',
-                            time: '$scores.time',
+                            comments: '$commentDetails',
                         },
                     },
+                    { $limit: 1 },
                 ],
             });
 
-        return toJSON(userInfo);
+        return toJSON(comments);
     } catch (err) {
         return toError('Lỗi ' + err, 500);
     }

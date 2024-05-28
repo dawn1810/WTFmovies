@@ -100,11 +100,13 @@ export default function EvaluateTable({ evaluateList, ver }: { evaluateList?: Ro
                 showAlert('Đã lưu phiên bản bảng mới!', 'success');
             } else if (response.status === 400) {
                 showAlert('Lưu bảng đánh giá thất bại!', 'error');
+            } else if (response.status === 422) {
+                showAlert('Bảng đánh giá không hợp lệ!', 'warning');
             } else if (response.status === 500) {
                 showAlert('Lỗi lưu bảng đánh giá, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         } else {
-            showAlert('Bảng chưa đạt chuẩn!', 'warning');
+            showAlert('Bảng đánh giá không hợp lệ!', 'warning');
         }
 
         setLoading(false);

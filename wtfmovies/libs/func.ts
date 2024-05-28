@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
-import { DateMongo, ObjectMongo, ResponseTiktokOK } from './interfaces';
+import { DateMongo, ObjectMongo, ResponseTiktokOK, RowInterface, ScoreInterface } from './interfaces';
 export const { env } = getOptionalRequestContext() ?? {
     env: {
         AUTH_SECRET: 'haha',
@@ -256,4 +256,32 @@ export const createSearchName = (name: string): string => {
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase()
         .replace(/\s+/g, '-');
+};
+
+// evaluate
+const calcFinalTotal = (rows: RowInterface[]) => {
+    let total = 0;
+    rows.forEach((row) => {
+        total += row && row.criteria ? row.criteria.reduce((sum, currCriteria) => sum + +currCriteria.maxScore, 0) : 0;
+    });
+    return total;
+};
+
+export const checkCondition = (rows: RowInterface[]) => {
+    let total = calcFinalTotal(rows);
+    return total === 100 && rows.length === 10;
+};
+
+export const checkScoreData = (table: RowInterface[], score: any) => {
+    if (table.length !== score.length) return false;
+
+    table.forEach((row, index) => {
+        if (row.criteria.length !== score[index].length) return false;
+
+        row.criteria.map((criteria, criIndex) => {
+            if (Number(criteria) < 0 || Number(criteria) > Number(score[index][criIndex])) return false;
+        });
+    });
+
+    return true;
 };

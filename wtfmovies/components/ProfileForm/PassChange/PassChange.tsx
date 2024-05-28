@@ -137,6 +137,8 @@ function PassChange() {
             } else if (response.status === 401) {
                 setInfo((prev) => ({ ...prev, oldPass: '' }));
                 setValidated({ oldPass: 'Mật khẩu không chính xác', newPass: '', rnewPass: '' });
+            } else if (response.status === 422) {
+                showAlert('Thông tin thay đổi mật khẩu không hợp lệ', 'error');
             } else if (response.status === 500) {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }

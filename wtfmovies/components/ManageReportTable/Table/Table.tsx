@@ -23,6 +23,7 @@ import {
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridActionsCellItem,
+    useGridApiRef,
 } from '@mui/x-data-grid';
 import { Close, Grading, LibraryBooks, Reply } from '@mui/icons-material';
 
@@ -36,6 +37,7 @@ import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux
 const cx = classNames.bind(style);
 
 export default function DataGridCom({ dataset, title_name }: { dataset: any[]; title_name: string }) {
+    const [rows, setRows] = useState(dataset);
     //alert
     const dispatch = useDispatch();
 
@@ -77,7 +79,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     ];
 
     const handleOpen = (id: string) => {
-        const selected_row = dataset.filter((data) => data.id === id);
+        const selected_row = rows.filter((data) => data.id === id);
         setDialogData(selected_row[0]);
         setOpen(true);
     };
@@ -91,6 +93,13 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         setDialogType(type);
     };
 
+    const handleDeleteRow = (id: string) => {
+        if (rows.length === 0) {
+            return;
+        }
+        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
+    };
+
     const handleApprove = async (ids: string[]) => {
         const response = await fetch('/api/v1/admin/approveReport', {
             method: 'POST',
@@ -100,6 +109,9 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
 
         if (response.ok) {
             showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
+            ids.forEach((id) => {
+                handleDeleteRow(id);
+            });
         } else if (response.status === 400) {
             showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
         } else if (response.status === 401) {
@@ -183,7 +195,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
                 columns={columns}
-                rows={dataset}
+                rows={rows}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
                 rowSelectionModel={rowSelectionModel}

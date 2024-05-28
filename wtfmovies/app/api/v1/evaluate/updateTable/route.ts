@@ -1,10 +1,10 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
-import { EvalTableInterface, ExtendedUser } from '~/libs/interfaces';
+import { MongoDate, checkCondition, mongodb, toError, toJSON } from '~/libs/func';
+import { ExtendedUser, RowInterface } from '~/libs/interfaces';
 
-type dataType = { table: EvalTableInterface; version: string };
+type dataType = { table: RowInterface[]; version: string };
 
 export async function POST(request: NextRequest) {
     try {
@@ -14,6 +14,10 @@ export async function POST(request: NextRequest) {
 
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { table, version }: dataType = await request.json();
+
+        if (!checkCondition(table)) {
+            return toError('Bảng đánh giá không hợp lệ', 422);
+        }
 
         if (extendedUser?.role === 'admin') {
             const today = new Date();

@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import style from './Admin.module.scss';
 import AdminDashboard from '~/components/AdminDashboard';
 import {
+    getAllComment,
     getAllReport,
     getAllUser,
     getNewReport,
@@ -19,6 +20,7 @@ import EvaluateTable from '~/components/EvaluateTable';
 import { getAllUserScore, getEvaluateList, getVersionList } from '~/libs/getData/evaluate';
 import NotFound from '~/app/(root)/not-found';
 import AdminEvaluate from '~/components/AdminEvaluate';
+import ManageCommentTable from '~/components/ManageCommentTable';
 
 const cx = classNames.bind(style);
 export const fetchCache = 'force-no-store';
@@ -49,9 +51,12 @@ async function getPage(params?: any) {
             const reports: AdminReportInfterface[] = await getAllReport();
 
             return <ManageReportTable dataset={reports} />;
+        case 'comment':
+            const comments: any[] = await getAllComment();
+
+            return <ManageCommentTable dataset={comments} />;
         case 'evaluate':
             const evaluateList = await getEvaluateList();
-            console.log(evaluateList);
 
             return <EvaluateTable evaluateList={evaluateList?.table} ver={evaluateList?.version || '0'} />;
         case 'userevaluate':

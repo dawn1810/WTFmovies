@@ -133,13 +133,13 @@ interface CommentsFilmsInterface {
 
 export const getAllFilmsComment = async (filmName: string): Promise<CommentInterface[]> => {
     try {
-        const comments: CommentsFilmsInterface[] = await mongodb()
+        const comments: any[] = await mongodb()
             .db('film')
             .collection('information')
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
-                    { $match: { searchName: filmName } },
+                    { $match: { searchName: 'inuyashiki' } },
                     { $match: { comment: { $exists: true, $ne: [] } } },
                     {
                         $lookup: {
@@ -147,6 +147,7 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
                             let: { commentIds: '$comment' },
                             pipeline: [
                                 { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
+                                { $match: { status: true } }, // This line includes only documents with status true
                                 { $sort: { time: -1 } },
                             ],
                             as: 'commentDetails',

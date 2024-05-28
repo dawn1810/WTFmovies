@@ -14,9 +14,9 @@ import {
     GridToolbarDensitySelector,
     useGridApiContext,
     GridRowModel,
-    GridColDef,
+    GridActionsCellItem,
 } from '@mui/x-data-grid';
-import { Block, LockOpen } from '@mui/icons-material';
+import { Block, LibraryBooks, LockOpen } from '@mui/icons-material';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
@@ -28,29 +28,7 @@ const cx = classNames.bind(style);
 //     return <SelectEditInputCell {...params} />;
 // };
 
-const columns: any[] = [
-    { headerName: 'STT', field: 'index', align: 'center', width: 10 },
-    { headerName: 'Email', field: 'id', width: 180 },
-    { headerName: 'Tên hiễn thị', field: 'name', width: 180 },
-    { headerName: 'Ngày sinh', field: 'birthDate', width: 180 },
-    { headerName: 'Giới tính', field: 'gender', width: 180 },
-    {
-        headerName: 'Phân quyền',
-        field: 'role',
-        width: 180,
-        type: 'singleSelect',
-        valueOptions: ['none', 'editor', 'admin'],
-        editable: true,
-    },
-    {
-        headerName: 'Trạng thái',
-        field: 'status',
-        type: 'boolean',
-        editable: true,
-    },
-];
-
-export default function ManageEditorTable({ dataset, title_name }: { dataset: any[]; title_name: string }) {
+export default function DataGridCom({ dataset, title_name }: { dataset: any; title_name: string }) {
     //alert
     const dispatch = useDispatch();
 
@@ -63,17 +41,11 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
-    const [editColumn, setEditCollumn] = useState<number>(-1);
 
     const processRowUpdate = useCallback(
         (newRow: GridRowModel, oldRow: GridRowModel) =>
             new Promise<GridRowModel>((resolve, reject) => {
-                console.log(newRow === oldRow);
-
-                if (newRow.status !== oldRow.status || newRow.role !== oldRow.role) {
-                    if (newRow.status !== oldRow.status) setEditCollumn(7);
-                    else if (newRow.role !== oldRow.role) setEditCollumn(6);
-                    // Save the arguments to resolve or reject the promise later
+                if (newRow.status !== oldRow.status) {
                     setPromiseArguments({ resolve, reject, newRow, oldRow });
                 } else {
                     resolve(oldRow);
@@ -91,10 +63,10 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const handleCellEditStatus = async () => {
         const { newRow, oldRow, reject, resolve } = promiseArguments;
 
-        const response = await fetch('/api/v1/admin/banUser', {
+        const response = await fetch('/api/v1/admin/banComment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ emails: [newRow.id], ban: newRow.status }),
+            body: JSON.stringify({ commentIds: [newRow.id], ban: newRow.status }),
         });
 
         if (response.ok) {
@@ -112,35 +84,6 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             }
             resolve(oldRow);
         }
-        setPromiseArguments(null);
-    };
-
-    const handleCellEditRole = async () => {
-        const { newRow, oldRow, reject, resolve } = promiseArguments;
-
-        const response = await fetch('/api/v1/admin/updateRole', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: newRow.id, role: newRow.role }),
-        });
-
-        if (response.ok) {
-            resolve(newRow);
-            showAlert('Thay đổi phần quyền người dùng thành công 😎😎😎', 'success');
-        } else {
-            if (response.status === 400) {
-                showAlert('Thay đổi phần quyền người dùng thất bại 😭😭😭', 'error');
-            } else if (response.status === 401) {
-                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
-            } else if (response.status === 403) {
-                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-            }
-            resolve(oldRow);
-        }
-        setPromiseArguments(null);
-
         setPromiseArguments(null);
     };
 
@@ -164,39 +107,18 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                {editColumn === 7 ? (
-                    <>
-                        <DialogTitle id="alert-dialog-title">
-                            Bạn có muốn {newRow.status ? 'BỎ CẤM' : 'CẤM'}:
-                        </DialogTitle>
-                        <DialogContent>
-                            <ul>
-                                <li>{newRow.id}</li>
-                            </ul>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDialog}>Huỷ</Button>
-                            <Button onClick={() => handleCellEditStatus()} autoFocus>
-                                {newRow.status ? 'BỎ CẤM' : 'CẤM'}
-                            </Button>
-                        </DialogActions>
-                    </>
-                ) : (
-                    <>
-                        <DialogTitle id="alert-dialog-title">Bạn có muốn thay đổi phân quyền:</DialogTitle>
-                        <DialogContent>
-                            <ul>
-                                <li>{newRow.id}</li>
-                            </ul>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDialog}>Huỷ</Button>
-                            <Button onClick={() => handleCellEditRole()} autoFocus>
-                                Thay đổi
-                            </Button>
-                        </DialogActions>
-                    </>
-                )}
+                <DialogTitle id="alert-dialog-title">Bạn có muốn {newRow.status ? 'BỎ CẤM' : 'CẤM'}:</DialogTitle>
+                <DialogContent>
+                    <ul>
+                        <li>{newRow.id}</li>
+                    </ul>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Huỷ</Button>
+                    <Button onClick={() => handleCellEditStatus()} autoFocus>
+                        {newRow.status ? 'BỎ CẤM' : 'CẤM'}
+                    </Button>
+                </DialogActions>
             </Dialog>
         );
     };
@@ -216,10 +138,10 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
         };
 
         const handleBan = async (status: boolean) => {
-            const response = await fetch('/api/v1/admin/banUser', {
+            const response = await fetch('/api/v1/admin/banComment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ emails: rowSelectionModel, ban: status }),
+                body: JSON.stringify({ commentIds: rowSelectionModel, ban: status }),
             });
 
             if (response.ok) {
@@ -237,7 +159,6 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                     }
                 });
                 setListUpdate(true);
-                setOpen(false);
                 showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {
                 showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
@@ -248,6 +169,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             } else if (response.status === 500) {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
+            setOpen(false);
         };
 
         return (
@@ -304,6 +226,38 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             </div>
         );
     };
+
+    const columns: any[] = [
+        { headerName: 'Id', field: 'id', width: 250 },
+        { headerName: 'Email người gửi', field: 'email', width: 300 },
+        { headerName: 'Tên người gửi', field: 'username', width: 230 },
+        // { headerName: 'Nội dung', field: 'content', width: 180 },
+        { headerName: 'Thời gian', field: 'time', width: 150 },
+        {
+            headerName: 'Trạng thái',
+            field: 'status',
+            type: 'boolean',
+            editable: true,
+            width: 100,
+        },
+        {
+            field: 'detail',
+            type: 'actions',
+            headerName: 'Chi tiết',
+            width: 100,
+            cellClassName: 'actions',
+            getActions: ({ id }: { id: string }) => {
+                return [
+                    <GridActionsCellItem
+                        icon={<LibraryBooks />}
+                        label="detail"
+                        // onClick={() => handleOpen(id)}
+                        color="inherit"
+                    />,
+                ];
+            },
+        },
+    ];
 
     return (
         <div className={cx('dataGrid')}>

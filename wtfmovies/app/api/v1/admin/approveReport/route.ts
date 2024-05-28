@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { mongodb, toError, toJSON } from '~/libs/func';
+import { ObjectId, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
 type dataType = { ids: string[] };
@@ -15,12 +15,15 @@ export async function POST(request: NextRequest) {
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { ids }: dataType = await request.json();
 
+        const newIds = ids.map((id) => ObjectId(id));
+
         if (extendedUser?.role === 'admin') {
             const response = await mongodb()
-                .db('user')
-                .collection('auth')
-                .deleteMany({
-                    filter: { _id: { $in: ids } },
+                .db('statistical')
+                .collection('report')
+                .updateMany({
+                    filter: { _id: { $in: newIds } },
+                    update: { $set: { status: false } },
                 });
 
             if (response) {

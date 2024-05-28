@@ -23,7 +23,6 @@ export async function POST(request: NextRequest) {
             .updateOne({
                 filter: { email: extendedUser?.email },
                 update: { $set: { name, birthDate, gender } },
-                upsert: true,
             });
 
         const response2 = imageLink
@@ -33,7 +32,6 @@ export async function POST(request: NextRequest) {
                   .updateOne({
                       filter: { email: extendedUser?.email },
                       update: { $set: { avatar: imageLink } },
-                      upsert: true,
                   })
             : undefined;
 

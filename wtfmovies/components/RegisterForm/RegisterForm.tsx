@@ -21,6 +21,8 @@ import { signupSelector } from '~/redux/selectors';
 import Button from '~/components/Button';
 import style from './RegisterForm.module.scss';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
+import { AlertColor } from '@mui/material';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -32,6 +34,12 @@ function RegisterForm() {
     // redux
     const state = useSelector(signupSelector);
     const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
 
     const handlePassEye = () => {
         setPassEye((prev) => !prev);
@@ -102,15 +110,18 @@ function RegisterForm() {
 
             if (response.ok) {
                 dispatch(changeModalShow(true));
-                setPending(false);
                 setInfo({ email: '', password: '', againPass: '', name: '', birthDate: '' });
-            }
-            if (response.status === 500) {
+                showAlert('Đăng ký thành công', 'success');
+            } else if (response.status === 400) {
                 dispatch(changeSignUpEmailAlert(true));
                 dispatch(changeSignupEmailAlertContent('Email đã tồn tại!'));
-                setPending(false);
+            } else if (response.status === 422) {
+                showAlert('Thông tin đăng ký không hợp lệ', 'error');
+            } else if (response.status === 500) {
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         }
+        setPending(false);
     };
 
     return (

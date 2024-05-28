@@ -62,7 +62,7 @@ export default function FormDialog() {
 
     const handleSendReport = async () => {
         const reportContent =
-            'Báo cáo vi phạm ' + state.rpContent + '<br/>Nội dung:<br/> ' + violate + '<br/>Mô tả:<br/> ' + content;
+            'Báo cáo vi phạm ' + state.rpContent + '<br/>Nội dung: ' + violate + '<br/>Mô tả: ' + content;
 
         const response = await fetch('/api/v1/sendReport', {
             method: 'POST',
