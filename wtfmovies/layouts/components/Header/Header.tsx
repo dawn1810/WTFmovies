@@ -22,7 +22,7 @@ import {
 } from '@mui/icons-material';
 
 import { headerSelector } from '~/redux/selectors';
-import { changeModalShow } from './headerSlice';
+import { changeFbDialog, changeFbDialogType, changeModalShow } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
@@ -35,6 +35,7 @@ import Search from '../Search';
 import { ExtendedUser } from '~/libs/interfaces';
 import Notify from '~/components/Notify';
 import { Badge, IconButton } from '@mui/material';
+import FeedbackDialog from '~/components/FeedbackDialog';
 
 const cx = classNames.bind(styles);
 
@@ -161,7 +162,8 @@ function Header({
                 router.push(`/profile/${extendedUser?.email}`);
                 break;
             case 'feedbacks':
-                router.push(`/feedbacks`);
+                dispatch(changeFbDialog(true));
+                dispatch(changeFbDialogType('feedback'));
                 break;
             default:
         }
@@ -321,7 +323,7 @@ function Header({
             )}
 
             <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
-
+            <FeedbackDialog />
             <Notify />
         </header>
     );

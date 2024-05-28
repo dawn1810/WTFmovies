@@ -147,7 +147,6 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
                             let: { commentIds: '$comment' },
                             pipeline: [
                                 { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
-                                { $project: { _id: 0 } },
                                 { $sort: { time: -1 } },
                             ],
                             as: 'commentDetails',

@@ -5,9 +5,12 @@ import classNames from 'classnames/bind';
 import { useViewport } from '~/hooks';
 import ImageCustom from '~/components/ImageCustom';
 import style from './Comment.module.scss';
-import images from '~/assets/image';
 import { CommentInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
+import { IconButton } from '@mui/material';
+import { FlagOutlined } from '@mui/icons-material';
+import { useDispatch } from 'react-redux';
+import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
@@ -15,6 +18,8 @@ const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
 const Comment = ({ comment }: { comment: CommentInterface }) => {
+    const dispatch = useDispatch();
+
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -46,22 +51,38 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
 
     const shownComment = isExpanded ? comment.content : calculateShortVersion();
 
+    const handleOpenReport = () => {
+        dispatch(changeFbDialog(true));
+        dispatch(changeFbDialogType('report'));
+        dispatch(changeRpContent('bình luận: ' + comment._id));
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
                 <ImageCustom className={cx('avatar')} src={comment.avatar} alt={comment.username} />
                 {isMobile && (
-                    <div>
-                        <div className={cx('user-name')}>{comment.username}</div>
-                        <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
+                    <div className={cx('header')}>
+                        <div>
+                            <div className={cx('user-name')}>{comment.username}</div>
+                            <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
+                        </div>
+                        <IconButton onClick={handleOpenReport}>
+                            <FlagOutlined />
+                        </IconButton>
                     </div>
                 )}
             </div>
             <div className={cx('content')}>
                 {isMobile || (
-                    <div>
-                        <h3>{comment.username}</h3>
-                        <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
+                    <div className={cx('header')}>
+                        <div>
+                            <h3>{comment.username}</h3>
+                            <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
+                        </div>
+                        <IconButton onClick={handleOpenReport}>
+                            <FlagOutlined />
+                        </IconButton>
                     </div>
                 )}
                 <div

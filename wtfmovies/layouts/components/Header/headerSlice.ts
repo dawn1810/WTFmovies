@@ -5,15 +5,26 @@ export const headerSlice = createSlice({
     initialState: {
         modalShow: false,
         query: '',
-        feedbackDialog: false,
+        fbDialog: false,
+        fbDialogType: 'report',
+        rpContent: '',
     },
     reducers: {
         changeModalShow: (state, action) => {
             state.modalShow = action.payload;
         },
+        changeFbDialog: (state, action) => {
+            state.fbDialog = action.payload;
+        },
+        changeFbDialogType: (state, action) => {
+            state.fbDialogType = action.payload;
+        },
+        changeRpContent: (state, action) => {
+            state.rpContent = action.payload;
+        },
     },
 });
 
-export const { changeModalShow } = headerSlice.actions;
+export const { changeModalShow, changeFbDialog, changeFbDialogType, changeRpContent } = headerSlice.actions;
 
 export default headerSlice.reducer;

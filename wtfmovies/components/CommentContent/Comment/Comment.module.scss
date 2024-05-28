@@ -3,6 +3,7 @@
     gap: 40px;
     justify-content: center;
 
+
     .user-info {
         min-width: 120px;
         display: flex;
@@ -15,6 +16,13 @@
             height: 100px;
             border-radius: 50%;
         }
+
+    }
+
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
 
         .user-name {
             width: 250px;

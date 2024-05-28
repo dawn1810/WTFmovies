@@ -37,6 +37,9 @@ export interface reduxStateInterface {
     header: {
         modalShow: boolean;
         query: string;
+        fbDialog: boolean;
+        fbDialogType: 'report' | 'feedback';
+        rpContent: string;
     };
     register: {
         signupEmailAlert: boolean;
@@ -227,6 +230,7 @@ export interface FilmReviewInfoInterface {
 }
 
 export interface CommentInterface {
+    _id: string;
     avatar?: string;
     content: string;
     time: string;

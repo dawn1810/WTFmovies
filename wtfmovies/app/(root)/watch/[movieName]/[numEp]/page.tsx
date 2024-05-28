@@ -68,7 +68,7 @@ export default async function Watch({ params }: Props) {
     const regex = /^tap\d+$/;
     const matchNumEp = numEp.match(regex);
 
-    if (!filmData.notification)
+    if (!filmData || !filmData.notification)
         filmData.notification = {
             schedule: 'Phim đã hoàn thành',
             notification: 'Không có thông báo',

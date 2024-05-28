@@ -245,3 +245,26 @@ export const changeNotifyType = (type?: AlertColor) => {
         payload: type,
     };
 };
+
+// Feedback
+
+export const changeFbDialog = (open: boolean) => {
+    return {
+        type: 'header/changeFbDialog',
+        payload: open,
+    };
+};
+
+export const changeFbDialogType = (type: 'report' | 'feedback') => {
+    return {
+        type: 'header/changeFbDialogType',
+        payload: type,
+    };
+};
+
+export const changeRpContent = (content: string) => {
+    return {
+        type: 'header/changeRpContent',
+        payload: content,
+    };
+};

@@ -1,6 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
+//feedback
+export const fbDialogSelector = (state: reduxStateInterface) => state.header.fbDialog;
+export const fbDialogTypeSelector = (state: reduxStateInterface) => state.header.fbDialogType;
+export const rpContentSelector = (state: reduxStateInterface) => state.header.rpContent;
+
 //notify
 export const notifyOpenSelector = (state: reduxStateInterface) => state.notify.open;
 export const notifyContentSelector = (state: reduxStateInterface) => state.notify.content;
@@ -81,9 +86,18 @@ export const signupSelector = createSelector(
     }),
 );
 
-export const headerSelector = createSelector(modalShowSelector, (modalShow) => ({
-    modalShow,
-}));
+export const headerSelector = createSelector(
+    modalShowSelector,
+    fbDialogSelector,
+    fbDialogTypeSelector,
+    rpContentSelector,
+    (modalShow, fbDialog, fbDialogType, rpContent) => ({
+        modalShow,
+        fbDialog,
+        fbDialogType,
+        rpContent,
+    }),
+);
 
 export const playerSelector = createSelector(
     urlSelector,
