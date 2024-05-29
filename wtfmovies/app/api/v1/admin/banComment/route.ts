@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
         const { commentIds, ban }: dataType = await request.json();
 
         const newCommentIds = commentIds.map((id: string) => ObjectId(id));
-        console.log(newCommentIds);
+        // console.log(newCommentIds);
 
         if (extendedUser?.role === 'admin') {
             const response = await mongodb()

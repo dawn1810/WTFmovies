@@ -25,10 +25,10 @@ const VisuallyHiddenInput = styled('input')({
     width: 1,
 });
 export default function InfoForm({ defaultValue }: MovieForm) {
-    console.log(defaultValue);
+    // console.log(defaultValue);
 
 
-    const [episode, setEpisode] = useState(defaultValue[0].link);
+    const [episode, setEpisode] = useState(defaultValue ? defaultValue[0].link : null);
     const handleChange = (event: SelectChangeEvent) => {
         setEpisode(event.target.value);
     };

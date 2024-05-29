@@ -42,7 +42,7 @@ export default function EvaluateDialog({
     };
 
     const handleAdd = async () => {
-        console.log('aaa');
+        // console.log('aaa');
 
         const newValue = { name: value.name || criteria.name, maxScore: value.maxScore || criteria.maxScore };
 

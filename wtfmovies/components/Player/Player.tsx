@@ -16,6 +16,8 @@ import {
     changeLoading,
     showContact,
     changeUrl,
+    changeVolume,
+
 } from './playerSlice';
 import { playerSelector } from '~/redux/selectors';
 import Contact from './Contact';
@@ -40,6 +42,9 @@ const Player = ({ url, className, isMobile }: {
     const wrapperRef = useRef<Element | any>(undefined);
     const contactRef = useRef(null);
     const [isClient, setIsClient] = useState(false)
+
+
+
 
     useEffect(() => {
         dispatch(changeUrl(url));
@@ -116,7 +121,7 @@ const Player = ({ url, className, isMobile }: {
         return (<div ref={wrapperRef} className={classes} >
             <ReactPlayer
                 ref={playerRef}
-                className="react-player"
+                className={cx("react-player")}
                 width="100%"
                 height="100%"
                 url={state.url}
@@ -182,7 +187,8 @@ const Player = ({ url, className, isMobile }: {
                         hlsVersion: 'latest', // use the version you prefer
                     },
                     youtube: {
-                        playerVars: { showinfo: 1 }
+
+                        playerVars: { showinfo: 0, autoplay: 1, }
                     },
                 }}
             />

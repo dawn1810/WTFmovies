@@ -212,6 +212,10 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
     const handleToggleMuted = useCallback((e: any) => {
         e.preventDefault();
+
+        if (contactState.volume == 0) {
+            dispatch(changeVolume(0.5));
+        }
         dispatch(toggleMuted(!contactState.muted));
     }, [contactState.muted]);
 
