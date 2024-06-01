@@ -11,9 +11,6 @@ export const notifyOpenSelector = (state: reduxStateInterface) => state.notify.o
 export const notifyContentSelector = (state: reduxStateInterface) => state.notify.content;
 export const notifyTypeSelector = (state: reduxStateInterface) => state.notify.type;
 
-//evaluate
-export const rowsSelector = (state: reduxStateInterface) => state.evaluate.rows;
-
 //profile
 export const avatarSelector = (state: reduxStateInterface) => state.profile.avatar;
 

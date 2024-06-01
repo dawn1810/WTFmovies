@@ -216,14 +216,6 @@ export const changeAvatar = (avatar: any) => {
     };
 };
 
-// Evaluate
-export const changeRows = (rows: any) => {
-    return {
-        type: 'evaluate/changeRows',
-        payload: rows,
-    };
-};
-
 // Notify
 export const changeNotifyOpen = (open: boolean) => {
     return {

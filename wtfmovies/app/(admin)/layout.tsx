@@ -12,15 +12,7 @@ import { montserrat } from '../font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
-import {
-    BorderColorOutlined,
-    FlagOutlined,
-    ForumOutlined,
-    HomeOutlined,
-    HowToReg,
-    MovieOutlined,
-    TableChartOutlined,
-} from '@mui/icons-material';
+import { BorderColorOutlined, FlagOutlined, ForumOutlined, HomeOutlined, MovieOutlined } from '@mui/icons-material';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../(root)/not-found';
 import { getCurrentUser } from '~/libs/getData/home';
@@ -74,16 +66,6 @@ const menuItems = [
         title: 'Quản lý phim',
         icon: <MovieOutlined />,
         scene: 'films',
-    },
-    {
-        title: 'Quản lý bảng đánh giá',
-        icon: <TableChartOutlined />,
-        scene: 'evaluate',
-    },
-    {
-        title: 'Quản lý đánh giá hội viên',
-        icon: <HowToReg />,
-        scene: 'userevaluate',
     },
 ];
 

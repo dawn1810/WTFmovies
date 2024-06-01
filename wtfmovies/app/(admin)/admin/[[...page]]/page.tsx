@@ -16,10 +16,7 @@ import { Link } from '@mui/material';
 import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface } from '~/libs/interfaces';
-import EvaluateTable from '~/components/EvaluateTable';
-import { getAllUserScore, getEvaluateList, getVersionList } from '~/libs/getData/evaluate';
 import NotFound from '~/app/(root)/not-found';
-import AdminEvaluate from '~/components/AdminEvaluate';
 import ManageCommentTable from '~/components/ManageCommentTable';
 
 const cx = classNames.bind(style);
@@ -55,26 +52,6 @@ async function getPage(params?: any) {
             const comments: any[] = await getAllComment();
 
             return <ManageCommentTable dataset={comments} />;
-        case 'evaluate':
-            const evaluateList = await getEvaluateList();
-
-            return <EvaluateTable evaluateList={evaluateList?.table} ver={evaluateList?.version || '0'} />;
-        case 'userevaluate':
-            const versionList = await getVersionList();
-            const table = await getEvaluateList();
-            const scores = await getAllUserScore(versionList[0].version);
-
-            // console.log(scores);
-
-            const mappedScores = scores.map((score: any) => ({
-                ...score,
-                _id: score.email,
-                adminScore: score.adminScore[0],
-                userScore: score.userScore[0],
-                time: score.time[0],
-            }));
-
-            return <AdminEvaluate table={table?.table} scores={mappedScores} versionList={versionList} />;
         case 'films':
             return <p>Quản lý films</p>;
         default:

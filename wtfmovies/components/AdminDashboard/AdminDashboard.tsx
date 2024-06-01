@@ -216,7 +216,7 @@ export default function AdminDashboard({
                 area="table1"
                 title="Danh sách người dùng"
                 rows={topSixUser}
-                url="/admin/editor"
+                url="/admin/users"
                 cols={['Email', 'Tên hiển thị']}
             />
             <BarCard

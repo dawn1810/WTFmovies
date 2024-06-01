@@ -6,7 +6,6 @@ import { filmManagerSlice } from '~/components/FilmManager/filmManagerSlice';
 import { registerSlice } from '~/components/RegisterForm/registerSlice';
 import { watchSlice } from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
 import { profileSlice } from '~/components/ProfileForm/profileSlice';
-import { evaluateSlice } from '~/components/EvaluateTable/evaluateSlise';
 import { notifySlice } from '~/components/Notify/notifySlide';
 
 const rootReducer = combineReducers({
@@ -16,7 +15,6 @@ const rootReducer = combineReducers({
     dataGridCom: filmManagerSlice,
     watch: watchSlice,
     profile: profileSlice,
-    evaluate: evaluateSlice,
     notify: notifySlice,
 });
 
