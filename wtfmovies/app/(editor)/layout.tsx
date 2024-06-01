@@ -84,7 +84,7 @@ export default async function AdminLayout({
                                             isDatabase
                                             title="Editor"
                                             currentUser={currentUser}
-                                            notifyLength={notifications[0].list.length}
+                                            notifyLength={notifications[0]?.list.length}
                                         />
                                         <section id="layout-main-content">{children}</section>
                                     </Col>

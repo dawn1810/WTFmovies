@@ -81,7 +81,7 @@ export default function AdminEvaluate({
 
         if (response.ok) {
             const res: any = await response.json();
-            console.log(res);
+            // console.log(res);
 
             const mappedScores = res.scores.map((score: any) => ({
                 ...score,

@@ -51,7 +51,7 @@ function Test() {
             body: value,
         });
 
-        console.log(value);
+        // console.log(value);
 
         if (response.ok) {
             showAlert('Đăng tải phim thành công 😎😎😎', 'success');

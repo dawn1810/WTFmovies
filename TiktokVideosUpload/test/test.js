@@ -73,8 +73,7 @@ async function runFFmpegCommand(inputFile, outputDir) {
 		const videoEncoder = gpuEncoder ? gpuEncoder : "libx264"; // Fallback to libx264 if no GPU encoder is found
 		command +=
 			"-map 0:v:0 -map 0:a:0 ".repeat(validResolutions.length) +
-			`-c:v ${videoEncoder} -profile:v main -crf 20 -sc_threshold 0 -g ${
-				videoInfo.fps * 2
+			`-c:v ${videoEncoder} -profile:v main -crf 20 -sc_threshold 0 -g ${videoInfo.fps * 2
 			} -keyint_min ${videoInfo.fps * 2} -c:a aac -ar 48000 `;
 		let var_stream_map = ``;
 		validResolutions.forEach(([key, { video, audio }], index) => {

@@ -64,7 +64,7 @@ async function getPage(params?: any) {
             const table = await getEvaluateList();
             const scores = await getAllUserScore(versionList[0].version);
 
-            console.log(scores);
+            // console.log(scores);
 
             const mappedScores = scores.map((score: any) => ({
                 ...score,

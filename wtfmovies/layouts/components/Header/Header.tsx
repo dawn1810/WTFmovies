@@ -149,8 +149,7 @@ function Header({
     const handleMenuChange = (menuItem: MenuItem) => {
         switch (menuItem.type) {
             case 'language':
-                console.log('aaaa');
-                // Handle change language
+                // /                // Handle change language
                 break;
             case 'logout':
                 signOut();
