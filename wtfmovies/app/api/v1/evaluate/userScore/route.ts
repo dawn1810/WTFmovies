@@ -26,8 +26,9 @@ export async function POST(request: NextRequest) {
                 limit: 1,
             });
 
-        if (currTable[0].version) return toError('Phiên bản không còn phù hợp', 410);
-        if (checkScoreData(currTable[0].table, score)) return toError('Điểm số nhập liệu không hợp lệ', 422);
+        if (currTable[0].version !== version) return toError('Phiên bản không còn phù hợp', 410);
+
+        if (!checkScoreData(currTable[0].table, score)) return toError('Điểm số nhập liệu không hợp lệ', 422);
 
         const today = new Date();
         const response = await mongodb()

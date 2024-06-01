@@ -4,6 +4,7 @@ import classNames from 'classnames/bind';
 import style from './UserEvaluate.module.scss';
 import {
     AlertColor,
+    Button,
     Paper,
     Table,
     TableBody,
@@ -17,7 +18,7 @@ import { CriteriaInterface, ExtendedUser, RowInterface, ScoreInterface } from '~
 import { useEffect, useState } from 'react';
 import NotFound from '~/app/(root)/not-found';
 import { LoadingButton } from '@mui/lab';
-import { Save } from '@mui/icons-material';
+import { CopyAll, Save } from '@mui/icons-material';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
@@ -93,6 +94,10 @@ function UserEvaluateTable({
         newScoreStore[index][criteriaIndex] = String(value);
 
         setAdminScore(newScoreStore);
+    };
+
+    const handleCopy = () => {
+        setAdminScore(userScore);
     };
 
     const handleSubmit = async () => {
@@ -234,17 +239,28 @@ function UserEvaluateTable({
                 </Table>
             </TableContainer>
             {(score && score.adminScore && !isAdmin) || (
-                <LoadingButton
-                    color="error"
-                    onClick={handleSubmit}
-                    loading={loading}
-                    loadingPosition="start"
-                    startIcon={<Save />}
-                    variant="contained"
-                    className={cx('save-btn')}
-                >
-                    <span>Save</span>
-                </LoadingButton>
+                <div className={cx('btn-group')}>
+                    <Button
+                        color="success"
+                        startIcon={<CopyAll />}
+                        variant="contained"
+                        onClick={handleCopy}
+                        className={cx('save-btn')}
+                    >
+                        Copy
+                    </Button>
+                    <LoadingButton
+                        color="error"
+                        onClick={handleSubmit}
+                        loading={loading}
+                        loadingPosition="start"
+                        startIcon={<Save />}
+                        variant="contained"
+                        className={cx('save-btn')}
+                    >
+                        <span>Save</span>
+                    </LoadingButton>
+                </div>
             )}
         </div>
     );

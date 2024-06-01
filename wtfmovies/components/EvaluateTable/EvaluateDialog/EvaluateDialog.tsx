@@ -91,7 +91,7 @@ export default function EvaluateDialog({
                         />
                     </>
                 ) : (
-                    <p>{row.name}</p>
+                    <p>{!!row && row.name}</p>
                 )}
             </DialogContent>
             <DialogActions>
