@@ -139,7 +139,7 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
-                    { $match: { searchName: 'inuyashiki' } },
+                    { $match: { searchName: filmName } },
                     { $match: { comment: { $exists: true, $ne: [] } } },
                     {
                         $lookup: {

@@ -71,6 +71,24 @@ export const validatePassword = (password: string): number => {
     return 0;
 };
 
+export const validateBirthDate = (birthDate: string) => {
+    let today = new Date();
+    let bd = new Date(birthDate);
+
+    // Calculate the difference in milliseconds
+    let difference = today.getTime() - bd.getTime();
+
+    // Convert the difference into years
+    let yearsDifference = difference / (1000 * 60 * 60 * 24 * 365);
+
+    // Check if the difference is greater than 10 years
+    if (yearsDifference > 10) {
+        return true;
+    } else {
+        return false;
+    }
+};
+
 // map films data
 export const mapFilms = (films: FilmInfoInterface[]): FilmsInterFace[] => {
     const mappedFilms: FilmsInterFace[] = films.map(
@@ -105,7 +123,9 @@ export const timePassed = (datestring: string): string => {
     const diffMonths = Math.ceil(diffDays / 30.44);
     const diffYears = Math.floor(diffDays / 365.25);
 
-    if (diffSeconds <= 60) {
+    if (diffSeconds <= 10) {
+        return `bây giờ`;
+    } else if (diffSeconds <= 60) {
         return `${diffSeconds} giây trước`;
     } else if (diffMinutes <= 60) {
         return `${diffMinutes} phút trước`;

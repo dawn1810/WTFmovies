@@ -21,7 +21,9 @@ function CommentContent({
     const [commentList, setCommentList] = useState(comments);
 
     const addComment = (comment: CommentInterface) => {
-        setCommentList((prev) => [comment, ...prev]);
+        const today = new Date();
+        const newComment = { ...comment, time: String(today) };
+        setCommentList((prev) => [newComment, ...prev]);
     };
 
     return (

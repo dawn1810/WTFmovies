@@ -7,7 +7,7 @@ import { faEye } from '@fortawesome/free-regular-svg-icons';
 import { Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
-import { validateEmail, validatePassword } from '~/libs/clientFunc';
+import { validateBirthDate, validateEmail, validatePassword } from '~/libs/clientFunc';
 import {
     changeSignUpEmailAlert,
     changeSignupEmailAlertContent,
@@ -65,7 +65,6 @@ function RegisterForm() {
         const { email, password, againPass, name, birthDate } = info;
 
         const today = new Date();
-        const bd = new Date(birthDate);
 
         if (!validateEmail(email)) {
             // email validate
@@ -99,10 +98,10 @@ function RegisterForm() {
             dispatch(changeSignupAgainPassAlert(true));
         } else if (name.trim().length === 0) {
             dispatch(changeSignUpNameAlert(true));
-        } else if (bd.getTime() > today.getTime()) {
+        } else if (!validateBirthDate(birthDate)) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            const response = await fetch('/api/register', {
+            const response = await fetch('/api/v1/register', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password, name, birthDate }),

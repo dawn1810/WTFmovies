@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { validateEmail, validatePassword } from '~/libs/clientFunc';
+import { validateBirthDate, validateEmail, validatePassword } from '~/libs/clientFunc';
 import { getSHA256Hash, reply, toError } from '~/libs/func';
 import { mongodb } from '~/libs/func';
 
@@ -8,7 +8,7 @@ type dataType = {
     email: string;
     password: string;
     name: string;
-    birthDate: Date;
+    birthDate: string;
 };
 
 export async function POST(request: NextRequest) {
@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
                 validateEmail(email) &&
                 validatePassword(password) === 0 &&
                 name.length !== 0 &&
-                bd.getTime() < today.getTime()
+                validateBirthDate(birthDate)
             ) {
                 // insert data to user/auth
                 await mongodb().db('user').collection('auth').insertOne({
