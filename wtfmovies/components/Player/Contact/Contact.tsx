@@ -79,11 +79,11 @@ const VIDEO_SPEED: HeaderMenuItemsInterface[] = [
 interface ContactPlayer {
     handleClickFullscreen: (e: any) => Promise<void>,
     playerRef: any,
-    isMobile?: boolean,
+    isEdior?: boolean,
     handlePlayPause: (e: any) => void,
     handleMouseMove: () => void
 }
-const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause, handleMouseMove, isMobile }: ContactPlayer, ref: any) => {
+const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause, handleMouseMove, isEdior }: ContactPlayer, ref: any) => {
     let x: NodeJS.Timeout, y: NodeJS.Timeout, z: NodeJS.Timeout;
 
     const contactState = useSelector(contactPlayerSelector);
@@ -297,7 +297,6 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
 
 
 
-    // if (isMobile)
 
     // else
     return (
@@ -351,7 +350,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                         </button>
                     </Tooltip>
                     <Tooltip title="Âm lượng" placement="top">
-                        <div className={cx('volumn-input-box')}>
+                        <div className={cx('volumn-input-box', isEdior && 'volumn-input-box-editor')}>
                             <input
                                 type="range"
                                 min={0}
@@ -364,7 +363,7 @@ const Contact = forwardRef(({ handleClickFullscreen, playerRef, handlePlayPause,
                         </div>
                     </Tooltip>
 
-                    <div className={cx('duration')}>
+                    <div className={cx('duration', isEdior && 'duration-editor')}>
                         <Duration seconds={contactState.duration * contactState.played} /> /{' '}
                         <Duration seconds={contactState.duration} />
                     </div>

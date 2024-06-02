@@ -14,8 +14,6 @@ function FilmInteract() {
             <Rating />
             <Form.Select aria-label="Default select example" className={cx('server-list')}>
                 <option value="1">#Máy chủ miền Tây</option>
-                <option value="2">#Máy chủ miền Đất Hứa</option>
-                <option value="3">#Máy chủ miền Đất Trống</option>
             </Form.Select>
             <Button primary className={cx('report-btn')}>
                 #Méc bọ

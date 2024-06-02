@@ -124,11 +124,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-        | {
-              title?: string;
-              episode?: number[];
-          }[]
-        | any;
+    | {
+        title?: string;
+        episode?: number[];
+    }[]
+    | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -224,7 +224,7 @@ export interface FilmReviewInfoInterface {
     title: string;
     searchName: string;
     rating: number;
-    episodes: number;
+    episodes: number | string;
     describe: string;
     info: { title: string; info?: string[] | string | number[] | number; type?: string; category?: string }[];
 }

@@ -1,0 +1,43 @@
+.card-area {
+    padding: 18px;
+    border-bottom: 3px solid var(--highlight-color);
+    height: 100%;
+
+    .card-title {
+        opacity: 0.5;
+    }
+
+    .card-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+
+        .number {
+            font-size: 2.8rem;
+        }
+
+        .change {
+            font-weight: 700;
+            color: var(--highlight-color);
+        }
+    }
+}
+
+.card-green {
+    border-bottom: solid var(--green-highlight-color);
+}
+
+
+.dialog {
+    .dialog-title {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .filter {
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+}

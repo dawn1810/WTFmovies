@@ -26,13 +26,15 @@ function TabPanel(props: any) {
         >
             {value === index && (
                 <Box sx={{
-                    p: 3, alignItems: "center",
+                    p: 3
+                    , alignItems: "center",
                     justifyContent: "center",
                 }}>
                     <div>{children}</div>
                 </Box>
-            )}
-        </div>
+            )
+            }
+        </div >
 
     );
 }
@@ -77,7 +79,7 @@ export function MovieForm({
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Dialog maxWidth={'xl'} open={isOpen} onClose={handleClose}>
+            <Dialog maxWidth={'xl'} open={isOpen} onClose={() => (handleClose(), setValue(0))}>
                 <AppBar position="static" >
                     <Toolbar >
                         <IconButton
