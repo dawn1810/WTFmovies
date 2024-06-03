@@ -1,8 +1,16 @@
-import AdminDashboard from "~/components/AdminDashboard";
-import { getNumberStatistical } from "~/libs/getData/admin";
+import EditorDashboard from "~/components/EditorDashboard";
+import { getNumberStatistical, getTopHotFilm, getTopSixUser } from "~/libs/getData/editor";
 export default async function OverView() {
 
+    const hotFilmList = await getTopHotFilm();
     const numStatistical = await getNumberStatistical();
+    const topSixUser = await getTopSixUser();
 
-    return <AdminDashboard numStatistical={numStatistical} />;
+    return (
+        <EditorDashboard
+            numStatistical={numStatistical}
+            hotFilmList={hotFilmList}
+            topSixUser={topSixUser}
+        />
+    );
 }

@@ -84,6 +84,7 @@ export default async function Watch({ params }: Props) {
     let numberEp: string = matchEp[1];
 
     if (
+        !filmData.videoType[0] ||
         numberEp > filmData.videoType[0].episode[filmData.videoType[0].episode.length - 1] ||
         numberEp < filmData.videoType[0].episode[0]
     ) {

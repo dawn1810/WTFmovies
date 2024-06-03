@@ -36,7 +36,8 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
     const mappedFilms: FilmsInterFace[] = films.map(
         ({ img, name, searchName, videoType, views, rating }): FilmsInterFace => {
             const subsType = videoType.find((type) => type.title === 'Subs') as any;
-            const totalEpisodes = subsType.episode[subsType.episode.length - 1];
+            if (!subsType) return { img, name, searchName, views, rating, episodes: 0 };
+            const totalEpisodes = subsType?.episode[subsType.episode.length - 1];
 
             return {
                 img,

@@ -1,6 +1,7 @@
-import { Box, Button, FormControl, FormControlLabel, FormHelperText, InputLabel, MenuItem, RadioGroup, TextField, styled } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, IconButton, InputLabel, MenuItem, RadioGroup, Typography, styled } from "@mui/material";
 import classNames from 'classnames/bind';
 import Radio from '@mui/material/Radio';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Player from "~/components/Player";
@@ -9,7 +10,7 @@ const cx = classNames.bind(style);
 
 import { useState } from 'react';
 interface MovieForm {
-    defaultValue: any,
+    defaultValue?: any,
 }
 import { CloudUpload } from '@mui/icons-material';
 
@@ -27,18 +28,55 @@ const VisuallyHiddenInput = styled('input')({
 export default function InfoForm({ defaultValue }: MovieForm) {
     // console.log(defaultValue);
 
+    const [listEpisode, setListEpisode] = useState<{ link: string, index: number }[]>(defaultValue ? defaultValue : []);
+    const [deleteIndex, setDeleteIndex] = useState<number>(0);
 
-    const [episode, setEpisode] = useState(defaultValue ? defaultValue[0].link : null);
+    const [episode, setEpisode] = useState((listEpisode.length > 0) ? listEpisode[0].link : '');
+    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
     const handleChange = (event: SelectChangeEvent) => {
+
         setEpisode(event.target.value);
     };
 
+
+    function handleCloseDeleteDialog(event: any): void {
+        setOpenDeleteDialog(false);
+    }
+
+    function handleConfirmDelete(event: any): void {
+
+        setListEpisode((prevArray: { link: string, index: number }[]) => {
+
+            const updatedArray = prevArray.filter(item => item.index !== deleteIndex);
+            console.log(deleteIndex, updatedArray);
+
+            return updatedArray;
+        });
+        console.log('delelte');
+        handleCloseDeleteDialog(event);
+    }
+    function handleAddItem(event: any): void {
+        setListEpisode((prevArray: { link: string, index: number }[]) => [...prevArray, { link: 'https://rurimeiko.pages.dev/dadada.m3u8', index: prevArray.length + 1 }]);
+        setEpisode('https://rurimeiko.pages.dev/dadada.m3u8');
+    }
+
+    function handleItemChange(e: any, index: number) {
+
+    }
+    function handleDeleteItem(index: number) {
+        setDeleteIndex(index);
+        setOpenDeleteDialog(true);
+
+
+        setEpisode('');
+    }
 
     return (
         <Box
             component="form"
             sx={{
-                '& .MuiTextField-root': { m: 1, width: '100%' },
+                '& .Muiem-root': { m: 1, width: '100%' },
                 '& #movie-title': {
                     width: '50ch'
                 },
@@ -48,12 +86,9 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                 '& .MuiFormHelperText-root': { marginLeft: 0 },
                 display: 'flex',
                 padding: '1rem',
-
                 alignItems: 'stretch',
                 gap: '1rem',
                 width: '100%',
-
-
             }}
             autoComplete="off"
         >
@@ -62,29 +97,48 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                 flexDirection: 'column',
                 justifyContent: 'space-between',
                 gap: 1,
-
             }}>
                 <FormControl sx={{
                     m: 1, minWidth: 450
-
                 }}>
                     <InputLabel id="demo-simple-select-helper-label">Chọn tập</InputLabel>
                     <Select
+                        key={episode}
                         labelId="demo-simple-select-helper-label"
                         id="demo-simple-select-helper"
                         value={episode}
+                        sx={{ display: 'flex', justifyContent: 'space-between' }}
                         label="Chọn tập"
                         onChange={handleChange}
                     >
-                        {defaultValue.map((item: { link: string, index: 1 }) => <MenuItem key={item.index} value={item.link}>{item.index}</MenuItem>)}
+                        <MenuItem sx={{ padding: 0 }}>
+                            <Button sx={{ width: '100%', height: '60px' }} onClick={handleAddItem}>Thêm</Button>
+
+
+                        </MenuItem>
+
+                        {/* Item list */}
+                        {listEpisode && listEpisode.map((item: { link: string, index: number }) => (
+
+                            <MenuItem value={episode} key={item.index} sx={{ display: 'flex', justifyContent: 'space-between' }}>
+                                {item.index}
+                                <IconButton onClick={() => handleDeleteItem(item.index)}>
+                                    <DeleteIcon />
+                                </IconButton>
+                            </MenuItem>
+                        ))}
+                        {/* {defaultValue && defaultValue.map((item: { link: string, index: 1 }) => <MenuItem key={item.index} value={item.link}>{item.index}</MenuItem>)}
+                        <MenuItem value={null}>Thêm tập</MenuItem> */}
+
+
                     </Select>
                 </FormControl>
 
                 <RadioGroup sx={{ display: 'flex', flexDirection: 'row' }} name="use-radio-group" defaultValue="sub">
                     <FormControlLabel value="sub" control={<Radio />} label="Subs" />
                     <FormControlLabel value="tm" control={<Radio />} label="Thuyết minh" />
-
                 </RadioGroup>
+
                 <Button
                     component="label"
                     role={undefined}
@@ -96,6 +150,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                     <VisuallyHiddenInput type="file" />
                 </Button>
             </Box>
+
             <Box sx={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -103,11 +158,23 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                 width: '30vw',
                 alignItems: 'center',
                 gap: 1,
-
             }}>
-                <Player isMobile className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'}></Player>
-
+                <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'}></Player>
             </Box>
-        </Box>
+
+
+
+            {/* Delete confirmation dialog */}
+            <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
+                <DialogTitle>Delete Item</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>Are you sure you want to delete this item?</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
+                    <Button onClick={handleConfirmDelete}>Delete</Button>
+                </DialogActions>
+            </Dialog>
+        </Box >
     )
 }

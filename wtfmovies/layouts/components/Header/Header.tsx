@@ -113,6 +113,15 @@ const adminMenu = [
     ...userMenu,
 ];
 
+const editorMenu = [
+    {
+        icon: <ManageAccountsOutlined />,
+        title: 'Editor',
+        type: 'editor',
+    },
+    ...userMenu,
+];
+
 function Header({
     currentUser,
     isDatabase = false,
@@ -156,6 +165,9 @@ function Header({
                 break;
             case 'admin':
                 router.push(`/admin/overviews`);
+                break;
+            case 'editor':
+                router.push(`/editor/overviews`);
                 break;
             case 'profile':
                 router.push(`/profile/${extendedUser?.email}`);
@@ -264,7 +276,9 @@ function Header({
                                     items={
                                         extendedUser?.role === 'admin' || currentUser?.role === 'admin'
                                             ? adminMenu
-                                            : userMenu
+                                            : extendedUser?.role === 'editor' || currentUser?.role === 'editor'
+                                                ? editorMenu
+                                                : userMenu
                                     }
                                     placement="bottom-end"
                                     delay={[0, 500]}

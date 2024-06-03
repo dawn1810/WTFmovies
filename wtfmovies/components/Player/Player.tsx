@@ -25,8 +25,8 @@ import Cover from './Cover';
 
 const cx = classNames.bind(style);
 
-const Player = ({ url, className, isMobile }: {
-    url: string, className?: any, isMobile?: boolean
+const Player = ({ url, className, isEdior }: {
+    url: string, className?: any, isEdior?: boolean
 }) => {
     let i: NodeJS.Timeout;
     const classes = cx('wrapper', {
@@ -197,7 +197,7 @@ const Player = ({ url, className, isMobile }: {
             < Contact
                 ref={contactRef}
                 playerRef={playerRef}
-                isMobile={isMobile}
+                isEdior={isEdior}
                 handlePlayPause={handlePlayPause}
                 handleClickFullscreen={handleClickFullscreen}
                 handleMouseMove={handleMouseMove}

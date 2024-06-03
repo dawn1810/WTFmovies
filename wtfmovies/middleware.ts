@@ -9,6 +9,7 @@ export async function middleware(request: NextRequest) {
     const userSession = await auth();
     const extendedUser: ExtendedUser | undefined = userSession?.user;
 
+
     if (!!userSession && request.nextUrl.pathname.startsWith('/register')) {
         return NextResponse.redirect(new URL('/', request.url));
     }

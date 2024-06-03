@@ -1,4 +1,4 @@
-import { FilmInfo } from "../interfaces";
+import { FilmHotInterface, FilmInfo, NumStatisticalInterface, TopSixUserInfoInfterface } from "../interfaces";
 import { mongodb } from '~/libs/func';
 
 export const getFilm = async (): Promise<FilmInfo[]> => {
@@ -217,4 +217,84 @@ export const getSideMovieFormInfo = async (): Promise<any> => {
         actors: await getAutoMutiData('actor'),
         tags: await getTags(),
     }
-}; 
+};
+
+
+// editor dashboard
+export const getNumberStatistical = async (): Promise<NumStatisticalInterface[]> => {
+    try {
+        const statInfo: NumStatisticalInterface[] = await mongodb()
+            .db('statistical')
+            .collection('webstats')
+            .find({
+                projection: {
+                    _id: 0,
+                },
+            });
+
+        return statInfo;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getNumberStatistical function : ', err);
+        return [];
+    }
+};
+
+export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
+    try {
+        const filmList: FilmHotInterface[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    { $match: { status: { $ne: 'delete' } } },
+                    {
+                        $lookup: {
+                            from: 'episode',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'reviews',
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            name: 1,
+                            views: '$weekViews',
+                            likes: 1,
+                            rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                        },
+                    },
+                    { $sort: { views: -1, likes: -1, rating: -1 } },
+                    { $limit: 5 },
+                ],
+            });
+
+        return filmList;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopHotFilm function : ', err);
+        return [];
+    }
+};
+
+
+export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
+    try {
+        const userInfo: TopSixUserInfoInfterface[] = await mongodb()
+            .db('user')
+            .collection('information')
+            .find({
+                projection: {
+                    _id: 0,
+                    email: 1,
+                    name: 1,
+                },
+                sort: { name: 1 },
+                limit: 6,
+            });
+
+        return userInfo;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopSixUser function : ', err);
+        return [];
+    }
+};

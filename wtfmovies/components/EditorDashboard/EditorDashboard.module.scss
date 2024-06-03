@@ -1,0 +1,14 @@
+.wrapper {
+    width: var(--default-layout-width);
+    margin: 0 5px;
+    padding: 10px;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(3, calc(100% / 3));
+    grid-template-rows: repeat(2, auto);
+    gap: 10px;
+    grid-template-areas:
+        "num1 num2 num3"
+        "table1 table1 table2"
+
+}

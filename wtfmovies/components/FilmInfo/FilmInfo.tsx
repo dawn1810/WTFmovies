@@ -57,8 +57,12 @@ function FilmInfo({
 }) {
     const releaseYear = filmInfo.releaseYear ? new Date(filmInfo.releaseYear) : null;
     const subsType = filmInfo.videoType.find((type) => type.title === 'Subs') as any;
-    const totalEpisodes = subsType.episode[subsType.episode.length - 1];
-    const lastThreeEpisodes = subsType.episode.slice(Math.max(subsType.episode.length - 3, 1));
+    let totalEpisodes = '?'
+    let lastThreeEpisodes = [];
+    if (subsType) {
+        totalEpisodes = subsType.episode[subsType.episode.length - 1];
+        lastThreeEpisodes = subsType.episode.slice(Math.max(subsType.episode.length - 3, 1));
+    }
     const infoList: FilmReviewInfoInterface = {
         searchName: filmInfo.searchName,
         image: filmInfo.img,
@@ -69,7 +73,7 @@ function FilmInfo({
         info: [
             { title: 'Lượt xem', info: formatNumber(filmInfo.views), type: 'highLight' },
             { title: 'Lượt yêu thích', info: formatNumber(filmInfo.likes), type: 'highLight' },
-            { title: 'Trạng thái', info: filmInfo.status, type: 'highLight' },
+            { title: 'Trạng thái', info: (subsType && subsType.episode.length > 0) ? filmInfo.status : "Sắp phát hành", type: 'highLight' },
             { title: 'Tác giả', info: filmInfo.author, type: 'searchAble', category: 'author' },
             { title: 'Thể loại', info: filmInfo.genre, type: 'searchAble', category: 'genre' },
             {
@@ -79,7 +83,7 @@ function FilmInfo({
                 category: 'director',
             },
             { title: 'Thời lượng', info: filmInfo.duration ? filmInfo.duration / 60 + ' phút' : 'Unknown' },
-            { title: 'Số tập', info: `${lastThreeEpisodes[lastThreeEpisodes.length - 1]} / ${filmInfo.maxEp || '?'}` },
+            { title: 'Số tập', info: `${lastThreeEpisodes[lastThreeEpisodes.length - 1] || 0} / ${filmInfo.maxEp || '?'}` },
 
             { title: 'Nhãn', info: filmInfo.tag, type: 'highLight' },
             { title: 'Năm sản xuất', info: releaseYear?.getFullYear() },
@@ -90,7 +94,6 @@ function FilmInfo({
                 type: 'searchAble',
                 category: 'actor',
             },
-
             {
                 title: 'Tập mới cập nhật',
                 info: lastThreeEpisodes,
@@ -157,7 +160,7 @@ function FilmInfo({
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span> <span className={cx('high-light')}>{info.info}</span>
                                     </span>
-                                ) : info.type === 'watchAble' && typeof info.info === 'object' ? (
+                                ) : (info.type === 'watchAble' && typeof info.info === 'object' && subsType && subsType.episode.length > 0) ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>
                                         {info.info.map((info, index) => (
@@ -179,12 +182,13 @@ function FilmInfo({
                             </li>
                         ))}
                     </ul>
-                    <FilmButtonGroup
-                        dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
-                        loveState={loveState}
-                        filmId={filmInfo.searchName}
-                        searchName={filmInfo.searchName}
-                    />
+                    {(subsType && subsType.episode.length > 0) &&
+                        (<FilmButtonGroup
+                            dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
+                            loveState={loveState}
+                            filmId={filmInfo.searchName}
+                            searchName={filmInfo.searchName}
+                        />)}
                 </div>
             </div>
         </div>

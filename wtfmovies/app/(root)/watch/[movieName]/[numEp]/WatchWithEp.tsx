@@ -12,7 +12,19 @@ const cx = classNames.bind(style);
 
 export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any; numEp: number }) {
     const dispatch = useDispatch();
+    useEffect(() => {
+        const timer = setTimeout(async () => {
+            await fetch('/api/v1/updateView', {
+                method: 'POST',
+                body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id })
+            });
+            console.log('update view');
+        }, 5000);
 
+        return () => {
+            clearTimeout(timer);
+        };
+    }, []);
     useEffect(() => {
         dispatch(changeEpisode(filmEpisode[numEp - 1]));
     }, [filmEpisode[numEp - 1]]);
