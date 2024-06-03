@@ -1,6 +1,6 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Carousel } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -15,7 +15,7 @@ const cx = classNames.bind(style);
 const NextButton = () => {
     return (
         <button className={cx('slide-btn')}>
-            <FontAwesomeIcon icon={faAngleRight} />
+            <ArrowForwardIosIcon />
         </button>
     );
 };
@@ -23,7 +23,7 @@ const NextButton = () => {
 const PrevButton = () => {
     return (
         <button className={cx('slide-btn')}>
-            <FontAwesomeIcon icon={faAngleLeft} />
+            <ArrowBackIosNewIcon />
         </button>
     );
 };

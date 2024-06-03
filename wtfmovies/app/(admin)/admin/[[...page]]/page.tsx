@@ -55,12 +55,7 @@ async function getPage(params?: any) {
         case 'films':
             return <p>Quản lý films</p>;
         default:
-            return (
-                <div style={{ color: 'var(--text-color)' }}>
-                    Có lỗi click vào đường <Link href="https://youtu.be/dQw4w9WgXcQ?si=dzkuRbxmFUbdfbmu">link</Link> để
-                    báo cáo lỗi. Cảm ơn bạn rất nhiều xin hậu tạ về sau.
-                </div>
-            );
+            return NotFound();
     }
 }
 

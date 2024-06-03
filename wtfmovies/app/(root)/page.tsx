@@ -1,14 +1,14 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faEye, faFire, faHeart } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
 import FilmCarousel from '~/components/Carousel/FilmCarousel';
 import FilmProposeList from '~/components/FilmProposeList';
 import FilmClassify from '~/components/FilmClassify';
 import style from './Home.module.scss';
-// import DefaultLayout from '~/layouts/DefaultLayout';
 import { getCaroselFilms, getHotClassifyFilms, getNewClassifyFilms, getProposeListFilms } from '~/libs/getData/home';
-import { AccessTime, FavoriteBorder, LocalFireDepartmentOutlined, VisibilityOutlined } from '@mui/icons-material';
+import AccessTimeIcon from '@mui/icons-material/AccessTime';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 const cx = classNames.bind(style);
 
@@ -40,8 +40,8 @@ async function Home() {
                     extraDir: '/most_views',
                     mainTitle: 'MỚI CẬP NHẬT',
                     extraTitle: 'XEM NHIỀU',
-                    mainIcon: <AccessTime fontSize="large" />,
-                    extraIcon: <VisibilityOutlined fontSize="large" />,
+                    mainIcon: <AccessTimeIcon fontSize="large" />,
+                    extraIcon: <VisibilityOutlinedIcon fontSize="large" />,
                 }}
             />
             <FilmClassify
@@ -52,8 +52,8 @@ async function Home() {
                     extraDir: '/most_likes',
                     mainTitle: 'PHIM HOT',
                     extraTitle: 'YÊU THÍCH',
-                    mainIcon: <LocalFireDepartmentOutlined fontSize="large" />,
-                    extraIcon: <FavoriteBorder fontSize="large" />,
+                    mainIcon: <LocalFireDepartmentOutlinedIcon fontSize="large" />,
+                    extraIcon: <FavoriteBorderIcon fontSize="large" />,
                 }}
             />
         </div>

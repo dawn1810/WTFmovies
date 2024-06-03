@@ -15,50 +15,17 @@ import {
 
 const cx = classNames.bind(style);
 
-const dataset = [
-    {
-        views: 4000,
-        likes: 150,
-        rating: 2000,
-        name: 'Inuyashiki',
-    },
-    {
-        views: 3500,
-        likes: 100,
-        rating: 1006,
-        name: 'Boku no Hero Academia',
-    },
-    {
-        views: 3490,
-        likes: 300,
-        rating: 1070,
-        name: 'Tensei shitara Slime Datta Ken',
-    },
-    {
-        views: 2900,
-        likes: 100,
-        rating: 1000,
-        name: "An Archdemon's Dilemma: How to Love Your Elf Bride",
-    },
-    {
-        views: 1500,
-        likes: 300,
-        rating: 906,
-        name: 'Tsuki ga Michibiku Isekai Douchuu',
-    },
-];
+interface DatasetInterface {
+    view: LineChartDataInterface[];
+    user: LineChartDataInterface[];
+    film: LineChartDataInterface[];
+}
 
 const series = [
     { dataKey: 'views', label: 'lượt xem', stack: 'total' },
     { dataKey: 'likes', label: 'lượt thích', stack: 'total' },
     { dataKey: 'rating', label: 'điểm đánh giá', stack: 'total' },
 ];
-
-interface DatasetInterface {
-    view: LineChartDataInterface[];
-    user: LineChartDataInterface[];
-    film: LineChartDataInterface[];
-}
 
 const convertNumberToMonth = (number: number) => {
     const months = [

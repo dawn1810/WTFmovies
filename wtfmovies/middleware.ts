@@ -4,6 +4,7 @@ import { auth } from './app/api/auth/[...nextauth]/auth';
 import { ExtendedUser } from './libs/interfaces';
 const editer_path = ['film', 'overview'];
 const admin_path = ['overview', 'users', 'report', 'evaluate', 'userevaluate', 'films', 'comment'];
+
 export async function middleware(request: NextRequest) {
     const userSession = await auth();
     const extendedUser: ExtendedUser | undefined = userSession?.user;
@@ -46,8 +47,10 @@ export async function middleware(request: NextRequest) {
         return NextResponse.redirect(new URL(request.nextUrl.pathname + '/tap1', request.url));
     }
 
+    // const url = request.nextUrl;
     // const { device } = userAgent(request);
     // const viewport = device.type === 'mobile' ? 'mobile' : 'desktop';
+    // url.searchParams.set('viewport', viewport);
 
     return NextResponse.next();
 }
