@@ -1,14 +1,17 @@
 import classNames from 'classnames/bind';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { AlertColor, Button, Divider, MenuItem, Select, TextField } from '@mui/material';
-import {
-    AlternateEmailOutlined,
-    CelebrationOutlined,
-    PermIdentityOutlined,
-    SaveOutlined,
-    TransgenderOutlined,
-} from '@mui/icons-material';
+import { AlertColor } from '@mui/material';
+import Divider from '@mui/material/Divider';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TextField from '@mui/material/TextField';
+import AlternateEmailOutlinedIcon from '@mui/icons-material/AlternateEmailOutlined';
+import CelebrationOutlinedIcon from '@mui/icons-material/CelebrationOutlined';
+import PermIdentityOutlinedIcon from '@mui/icons-material/PermIdentityOutlined';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+import TransgenderOutlinedIcon from '@mui/icons-material/TransgenderOutlined';
+
 import { DatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from 'dayjs';
@@ -120,7 +123,7 @@ function UserInfo({
 
     const userInfo = [
         {
-            icon: <AlternateEmailOutlined />,
+            icon: <AlternateEmailOutlinedIcon />,
             tag: 'Email',
             input: (
                 <TextField
@@ -134,7 +137,7 @@ function UserInfo({
             ),
         },
         {
-            icon: <PermIdentityOutlined />,
+            icon: <PermIdentityOutlinedIcon />,
             tag: 'Họ và tên',
             input: (
                 <TextField
@@ -148,7 +151,7 @@ function UserInfo({
             ),
         },
         {
-            icon: <TransgenderOutlined />,
+            icon: <TransgenderOutlinedIcon />,
             tag: 'Giới tính',
             input: (
                 <Select
@@ -166,7 +169,7 @@ function UserInfo({
             ),
         },
         {
-            icon: <CelebrationOutlined />,
+            icon: <CelebrationOutlinedIcon />,
             tag: 'Sinh nhật',
             input: (
                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -202,7 +205,7 @@ function UserInfo({
                     loading={loading}
                     disabled={canSave}
                     variant="contained"
-                    startIcon={<SaveOutlined />}
+                    startIcon={<SaveOutlinedIcon />}
                     className={cx('bottom-button')}
                     onClick={handleSave}
                 >

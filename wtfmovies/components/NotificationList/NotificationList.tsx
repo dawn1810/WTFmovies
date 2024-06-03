@@ -1,24 +1,23 @@
 'use client';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import {
-    AlertColor,
-    Avatar,
-    Divider,
-    IconButton,
-    List,
-    ListItem,
-    ListItemAvatar,
-    ListItemButton,
-    ListItemText,
-} from '@mui/material';
-import { Close, NotificationsNone } from '@mui/icons-material';
+import { useRouter } from 'next/navigation';
+import { AlertColor } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemAvatar from '@mui/material/ListItemAvatar';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
+import CloseIcon from '@mui/icons-material/Close';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 
 import style from './NotificationList.module.scss';
 import { timePassed } from '~/libs/clientFunc';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
-import { useRouter } from 'next/navigation';
 
 const cx = classNames.bind(style);
 
@@ -69,7 +68,7 @@ function Notification({ notify }: { notify: any[] }) {
                         className={cx('item')}
                         secondaryAction={
                             <IconButton edge="end" onClick={() => handleRemove(index)}>
-                                <Close />
+                                <CloseIcon />
                             </IconButton>
                         }
                         disablePadding
@@ -77,7 +76,7 @@ function Notification({ notify }: { notify: any[] }) {
                         <ListItemButton role={undefined} onClick={() => handleRedirect(index)}>
                             <ListItemAvatar>
                                 <Avatar>
-                                    <NotificationsNone />
+                                    <NotificationsNoneIcon />
                                 </Avatar>
                             </ListItemAvatar>
                             <ListItemText primary={note.content} secondary={timePassed(note.time)} />

@@ -1,13 +1,13 @@
 'use client';
-import style from './AlertDialog.module.scss';
 import classNames from 'classnames/bind';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import { LoadingButton } from '@mui/lab';
-import SaveIcon from '@mui/icons-material/Save';
+import LoadingButton from '@mui/lab/LoadingButton';
+
+import style from './AlertDialog.module.scss';
 
 const cx = classNames.bind(style);
 
@@ -26,7 +26,6 @@ export default function AlertDialog({
     open: boolean;
     handleClose: (any: any) => any;
 }) {
-
     return (
         <>
             <Dialog
@@ -43,7 +42,6 @@ export default function AlertDialog({
                 <DialogActions>
                     <LoadingButton
                         loading={loading}
-
                         onClick={() => {
                             handleClose({ content: listId, status: true });
                         }}
@@ -58,7 +56,6 @@ export default function AlertDialog({
                     >
                         Huỷ
                     </Button>
-
                 </DialogActions>
             </Dialog>
         </>

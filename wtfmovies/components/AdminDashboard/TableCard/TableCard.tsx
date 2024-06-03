@@ -1,5 +1,11 @@
 import classNames from 'classnames/bind';
-import { Card, CardActionArea, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
 import { useRouter } from 'next/navigation';
 
 import style from './TableCard.module.scss';

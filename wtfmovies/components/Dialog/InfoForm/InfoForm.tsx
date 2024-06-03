@@ -1,17 +1,21 @@
 import ImageDropzone from '../ImageDropzone';
 import dayjs, { Dayjs } from 'dayjs';
-import Chip from '@mui/material/Chip';
 import { DatePicker, MobileTimePicker } from '@mui/x-date-pickers';
-import { Box, Autocomplete, MenuItem, TextField } from "@mui/material";
+import Chip from '@mui/material/Chip';
+import Box from '@mui/material/Box';
+import Autocomplete from '@mui/material/Autocomplete';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
+
 import { useState } from 'react';
 interface MovieForm {
-    defaultValue: any,
-    countrys: any[],
-    authors: any[],
-    genres: any[],
-    directors: any[],
-    actors: any[],
-    tags: any[],
+    defaultValue: any;
+    countrys: any[];
+    authors: any[];
+    genres: any[];
+    directors: any[];
+    actors: any[];
+    tags: any[];
 }
 export default function InfoForm({ defaultValue, countrys, authors, genres, directors, actors, tags }: MovieForm) {
     const statusMovies = [
@@ -46,19 +50,23 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
     const [imgMovie, setImgMovie] = useState(defaultValue.img || undefined);
     const [imgBannerMovie, setImgBannerMovie] = useState(defaultValue.poster || undefined);
 
-    const [duration, setDuration] = useState<Dayjs | null>(defaultValue.duration ? dayjs()
-        .startOf('year')
-        .add(defaultValue.duration, 'seconds') : null);
-    const [valueStatus, setValueStatus] = useState(statusMovies.find(item => item.label === defaultValue.status)?.value || '');
+    const [duration, setDuration] = useState<Dayjs | null>(
+        defaultValue.duration ? dayjs().startOf('year').add(defaultValue.duration, 'seconds') : null,
+    );
+    const [valueStatus, setValueStatus] = useState(
+        statusMovies.find((item) => item.label === defaultValue.status)?.value || '',
+    );
     const [cropResultBanner, setCropResultBanner] = useState<any>(null);
     const [cropResult, setCropResult] = useState<any>(null);
     return (
-        <Box sx={{
-            margin: '0 auto',
-            height: '100%',
-            display: 'flex',
-            flexDirection: 'column'
-        }}>
+        <Box
+            sx={{
+                margin: '0 auto',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
             <ImageDropzone
                 cropResult={cropResult}
                 setCropResultBanner={setCropResultBanner}
@@ -67,13 +75,14 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                 setImageF={setImgMovie}
                 setImageBannerF={setImgBannerMovie}
                 imageBannerDefault={imgBannerMovie}
-                imageDefault={imgMovie}></ImageDropzone>
+                imageDefault={imgMovie}
+            ></ImageDropzone>
             <Box
                 component="form"
                 sx={{
                     '& .MuiTextField-root': { m: 1, width: '100%' },
                     '& #movie-title': {
-                        width: '50ch'
+                        width: '50ch',
                     },
                     '& #movie-sumary': {
                         width: '50ch',
@@ -85,18 +94,17 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                     alignItems: 'stretch',
                     gap: '1rem',
                     width: '100%',
-
-
                 }}
                 autoComplete="off"
             >
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    gap: 1,
-
-                }}>
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                    }}
+                >
                     <TextField
                         required
                         id="movie-title"
@@ -106,7 +114,6 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                             setTitleMovie(event.target.value);
                         }}
                     />
-
 
                     <TextField
                         required
@@ -120,17 +127,17 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         }}
                     />
                 </Box>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
 
-                    width: '30vw',
+                        width: '30vw',
 
-                    gap: 1,
-
-                }}>
-
+                        gap: 1,
+                    }}
+                >
                     <Autocomplete
                         limitTags={1}
                         multiple
@@ -147,21 +154,12 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         }}
                         renderTags={(tagValue, getTagProps) =>
                             tagValue.map((option, index) => (
-                                <Chip
-                                    {...getTagProps({ index })}
-                                    key={option.title}
-                                    label={option.title}
-                                />
+                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
                             ))
                         }
                         filterSelectedOptions
                         renderInput={(params) => (
-                            <TextField
-                                required
-                                {...params}
-                                label="Tác giả"
-                                placeholder="Chọn tác giả"
-                            />
+                            <TextField required {...params} label="Tác giả" placeholder="Chọn tác giả" />
                         )}
                     />
                     <Autocomplete
@@ -170,8 +168,8 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         id="movie-theloai"
                         onChange={(event: any, newValue: any) => {
                             setValueGenres(newValue);
-
-                        }} options={genres.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                        }}
+                        options={genres.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                         getOptionLabel={(option) => option.title}
                         groupBy={(option) => option.firstLetter}
                         value={valueGenres}
@@ -180,32 +178,20 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         }}
                         renderTags={(tagValue, getTagProps) =>
                             tagValue.map((option, index) => (
-                                <Chip
-                                    {...getTagProps({ index })}
-                                    key={option.title}
-                                    label={option.title}
-                                />
+                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
                             ))
                         }
-
                         filterSelectedOptions
                         renderInput={(params) => (
-                            <TextField
-                                required
-                                {...params}
-                                label="Thể loại"
-                                placeholder="Chọn thể loại"
-                            />
+                            <TextField required {...params} label="Thể loại" placeholder="Chọn thể loại" />
                         )}
                     />
                     <Autocomplete
                         limitTags={1}
-
                         multiple
                         id="movie-daodien"
                         onChange={(event: any, newValue: any) => {
                             setValueDirectors(newValue);
-
                         }}
                         options={directors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                         value={valueDirectors}
@@ -214,23 +200,14 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         }}
                         renderTags={(tagValue, getTagProps) =>
                             tagValue.map((option, index) => (
-                                <Chip
-                                    {...getTagProps({ index })}
-                                    key={option.title}
-                                    label={option.title}
-                                />
+                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
                             ))
                         }
                         groupBy={(option) => option.firstLetter}
                         getOptionLabel={(option) => option.title}
                         filterSelectedOptions
                         renderInput={(params) => (
-                            <TextField
-                                required
-                                {...params}
-                                label="Đạo diễn"
-                                placeholder="Chọn đạo diễn"
-                            />
+                            <TextField required {...params} label="Đạo diễn" placeholder="Chọn đạo diễn" />
                         )}
                     />
                     <TextField
@@ -255,7 +232,6 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         id="movie-actor"
                         onChange={(event: any, newValue: any) => {
                             setValueActors(newValue);
-
                         }}
                         value={valueActors}
                         options={actors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
@@ -267,32 +243,22 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         }}
                         renderTags={(tagValue, getTagProps) =>
                             tagValue.map((option, index) => (
-                                <Chip
-                                    {...getTagProps({ index })}
-                                    key={option.title}
-                                    label={option.title}
-                                />
+                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
                             ))
                         }
                         renderInput={(params) => (
-                            <TextField
-                                required
-                                {...params}
-                                label="Diễn viên"
-                                placeholder="Chọn diễn viên"
-                            />
+                            <TextField required {...params} label="Diễn viên" placeholder="Chọn diễn viên" />
                         )}
                     />
                 </Box>
-                <Box sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    gap: 1,
-
-                }}>
-
-
+                <Box
+                    sx={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'space-between',
+                        gap: 1,
+                    }}
+                >
                     <TextField
                         id="movie-kuni"
                         select
@@ -310,36 +276,32 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         ))}
                     </TextField>
 
-                    <DatePicker
-                        value={year}
-                        onChange={(newValue) => setYear(newValue)}
-
-                        label="Năm sản xuất" />
+                    <DatePicker value={year} onChange={(newValue) => setYear(newValue)} label="Năm sản xuất" />
 
                     <TextField
                         onChange={(event: any) => {
-                            event.target.value < 1
-                                ? (event.target.value = 1)
-                                : event.target.value;
+                            event.target.value < 1 ? (event.target.value = 1) : event.target.value;
                             setMaxEp(event.target.value);
-                        }
-                        }
+                        }}
                         id="outlined-number"
                         label="Tổng số tập"
                         required
                         type="number"
                         value={maxEp}
-
                         InputLabelProps={{
                             shrink: true,
-
                         }}
                         InputProps={{
-                            inputProps: { min: 1 }
+                            inputProps: { min: 1 },
                         }}
                     />
-                    <MobileTimePicker value={duration} onChange={(newValue) => setDuration(newValue)}
-                        label="Thời lượng" views={['minutes', 'seconds']} format="mm:ss" />
+                    <MobileTimePicker
+                        value={duration}
+                        onChange={(newValue) => setDuration(newValue)}
+                        label="Thời lượng"
+                        views={['minutes', 'seconds']}
+                        format="mm:ss"
+                    />
 
                     <TextField
                         id="movie-status"
@@ -348,8 +310,8 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         value={valueStatus}
                         onChange={(event: any) => {
                             setValueStatus(event.target.value);
-                        }} label="Trạng thái"
-
+                        }}
+                        label="Trạng thái"
                     >
                         {statusMovies.map((option) => (
                             <MenuItem key={option.value} value={option.value}>
@@ -357,9 +319,8 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                             </MenuItem>
                         ))}
                     </TextField>
-
                 </Box>
             </Box>
-
-        </Box>)
+        </Box>
+    );
 }

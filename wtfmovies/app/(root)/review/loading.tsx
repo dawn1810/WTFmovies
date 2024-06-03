@@ -1,6 +1,6 @@
 // import DefaultLayout from '~/layouts/DefaultLayout';
 import classNames from 'classnames/bind';
-import { Skeleton } from '@mui/material';
+import Skeleton from '@mui/material/Skeleton';
 
 import styles from '~/app/(root)/loading.module.scss';
 

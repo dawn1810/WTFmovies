@@ -119,7 +119,6 @@ export const getNewReport = async (): Promise<AdminReportInfterface[]> => {
     }
 };
 
-
 // user manage
 export const getAllUser = async (): Promise<UserAdminInfoInfterface[]> => {
     try {
@@ -188,6 +187,28 @@ export const getAllComment = async (): Promise<any[]> => {
         return comments;
     } catch (err) {
         console.log('😨😨😨 error at admin/getAllReport function : ', err);
+        return [];
+    }
+};
+
+export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
+    try {
+        const userInfo: TopSixUserInfoInfterface[] = await mongodb()
+            .db('user')
+            .collection('information')
+            .find({
+                projection: {
+                    _id: 0,
+                    email: 1,
+                    name: 1,
+                },
+                sort: { name: 1 },
+                limit: 6,
+            });
+
+        return userInfo;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopSixUser function : ', err);
         return [];
     }
 };

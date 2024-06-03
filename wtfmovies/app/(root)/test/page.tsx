@@ -2,7 +2,10 @@
 import classNames from 'classnames/bind';
 
 import style from './test.module.scss';
-import { AlertColor, Button, TextField } from '@mui/material';
+import { AlertColor } from '@mui/material';
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
+
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';

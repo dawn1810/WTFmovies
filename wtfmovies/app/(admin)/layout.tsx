@@ -12,7 +12,11 @@ import { montserrat } from '../font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
-import { BorderColorOutlined, FlagOutlined, ForumOutlined, HomeOutlined, MovieOutlined } from '@mui/icons-material';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
+import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../(root)/not-found';
 import { getCurrentUser } from '~/libs/getData/home';
@@ -44,27 +48,27 @@ export const metadata: Metadata = {
 const menuItems = [
     {
         title: 'Tổng quan',
-        icon: <HomeOutlined />,
+        icon: <HomeOutlinedIcon />,
         scene: 'overview',
     },
     {
         title: 'Quản lý người dùng',
-        icon: <BorderColorOutlined />,
+        icon: <BorderColorOutlinedIcon />,
         scene: 'users',
     },
     {
         title: 'Quản lý báo cáo',
-        icon: <FlagOutlined />,
+        icon: <FlagOutlinedIcon />,
         scene: 'report',
     },
     {
         title: 'Quản lý bình luận',
-        icon: <ForumOutlined />,
+        icon: <ForumOutlinedIcon />,
         scene: 'comment',
     },
     {
         title: 'Quản lý phim',
-        icon: <MovieOutlined />,
+        icon: <MovieOutlinedIcon />,
         scene: 'films',
     },
 ];

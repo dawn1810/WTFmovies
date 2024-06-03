@@ -1,15 +1,24 @@
 'use client';
 import classNames from 'classnames/bind';
+import { AlertColor } from '@mui/material';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CardActions from '@mui/material/CardActions';
+import CardContent from '@mui/material/CardContent';
+import TextField from '@mui/material/TextField';
+import Typography from '@mui/material/Typography';
+import LoadingButton from '@mui/lab/LoadingButton';
+import LockResetIcon from '@mui/icons-material/LockReset';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import style from './forgetpass.module.scss';
 import OTP from '~/components/OtpForm/OtpForm';
-import { AlertColor, Avatar, Button, Card, CardActions, CardContent, TextField, Typography } from '@mui/material';
 import { validatePassword } from '~/libs/clientFunc';
 import PassInput from '~/components/PassInput';
-import { LoadingButton } from '@mui/lab';
-import { LockReset, SaveOutlined } from '@mui/icons-material';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
@@ -271,7 +280,7 @@ function ForgetPass() {
                             <LoadingButton
                                 loading={sendLoading}
                                 loadingPosition="start"
-                                startIcon={<LockReset />}
+                                startIcon={<LockResetIcon />}
                                 className={cx('btn')}
                                 variant="text"
                                 onClick={handleSendAgainOTP}
@@ -324,7 +333,7 @@ function ForgetPass() {
                                 loading={loading}
                                 loadingPosition="start"
                                 variant="contained"
-                                startIcon={<SaveOutlined />}
+                                startIcon={<SaveOutlinedIcon />}
                                 className={cx('bottom-button')}
                                 onClick={handleSubmit}
                             >

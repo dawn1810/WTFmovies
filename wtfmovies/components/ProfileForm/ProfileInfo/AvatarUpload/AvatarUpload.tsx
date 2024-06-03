@@ -1,7 +1,8 @@
 import classNames from 'classnames/bind';
-import { Button, styled } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { CloudUpload } from '@mui/icons-material';
+import { styled } from '@mui/material';
+import Button from '@mui/material/Button';
+import { useEffect } from 'react';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 import style from './Avatar.module.scss';
 import ImageCustom from '~/components/ImageCustom';
@@ -22,7 +23,7 @@ const VisuallyHiddenInput = styled('input')({
 
 function InputFileUpload({ onChange = () => {} }: { onChange: (event: any) => void }) {
     return (
-        <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUpload />}>
+        <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
             Tải ảnh lên
             <VisuallyHiddenInput type="file" onChange={onChange} />
         </Button>

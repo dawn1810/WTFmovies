@@ -1,10 +1,15 @@
 import classNames from 'classnames/bind';
-import { AlertColor, IconButton } from '@mui/material';
+import { AlertColor } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import ShareOutlinedIcon from '@mui/icons-material/ShareOutlined';
 import { useEffect, useRef, useState } from 'react';
 import { useDebounce } from '~/hooks';
 
 import style from './FilmButtonGroup.module.scss';
-import { Favorite, FavoriteBorder, PlayArrow, ShareOutlined } from '@mui/icons-material';
+
 import Button from '../Button';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 import { useDispatch } from 'react-redux';
@@ -75,7 +80,7 @@ function FilmButtonGroup({
 
     return (
         <div className={cx('btn-group')}>
-            <Button to={dir} primary leftIcon={<PlayArrow />}>
+            <Button to={dir} primary leftIcon={<PlayArrowIcon />}>
                 Xem phim
             </Button>
             <IconButton
@@ -84,10 +89,10 @@ function FilmButtonGroup({
                 style={{ color: love ? 'var(--highlight-color)' : 'var(--text-color)' }}
                 onClick={handleLike}
             >
-                {love ? <Favorite fontSize="inherit" /> : <FavoriteBorder fontSize="inherit" />}
+                {love ? <FavoriteIcon fontSize="inherit" /> : <FavoriteBorderIcon fontSize="inherit" />}
             </IconButton>
             <IconButton size="large" onClick={handleShare}>
-                <ShareOutlined fontSize="inherit" />
+                <ShareOutlinedIcon fontSize="inherit" />
             </IconButton>
         </div>
     );

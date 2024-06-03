@@ -1,15 +1,15 @@
 'use client';
-import React, { useState } from 'react';
 import classNames from 'classnames/bind';
-
+import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
+import { useDispatch } from 'react-redux';
 import { useViewport } from '~/hooks';
 import ImageCustom from '~/components/ImageCustom';
+
 import style from './Comment.module.scss';
 import { CommentInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
-import { IconButton } from '@mui/material';
-import { FlagOutlined } from '@mui/icons-material';
-import { useDispatch } from 'react-redux';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/redux/actions';
 
 const cx = classNames.bind(style);
@@ -68,7 +68,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                             <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                         </div>
                         <IconButton onClick={handleOpenReport}>
-                            <FlagOutlined />
+                            <FlagOutlinedIcon />
                         </IconButton>
                     </div>
                 )}
@@ -81,7 +81,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                             <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                         </div>
                         <IconButton onClick={handleOpenReport}>
-                            <FlagOutlined />
+                            <FlagOutlinedIcon />
                         </IconButton>
                     </div>
                 )}

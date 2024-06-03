@@ -1,6 +1,9 @@
 'use client';
 import { useState } from 'react';
-import { BottomNavigation, BottomNavigationAction, Paper } from '@mui/material';
+import BottomNavigation from '@mui/material/BottomNavigation';
+import BottomNavigationAction from '@mui/material/BottomNavigationAction';
+import Paper from '@mui/material/Paper';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faGear, faHeart, faHome, faUser } from '@fortawesome/free-solid-svg-icons';
 

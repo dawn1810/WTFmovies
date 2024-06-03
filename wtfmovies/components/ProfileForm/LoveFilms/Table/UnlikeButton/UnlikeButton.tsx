@@ -1,8 +1,9 @@
-import { HeartBrokenOutlined } from '@mui/icons-material';
-import { AlertColor, IconButton } from '@mui/material';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import HeartBrokenOutlinedIcon from '@mui/icons-material/HeartBrokenOutlined';
+import { AlertColor } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
 
 export default function UnklikeButton({ searchName, unLikeFilm }: { searchName: string; unLikeFilm: any }) {
     //alert
@@ -40,7 +41,7 @@ export default function UnklikeButton({ searchName, unLikeFilm }: { searchName: 
 
     return (
         <IconButton disabled={loading} onClick={handleUnlike}>
-            <HeartBrokenOutlined />
+            <HeartBrokenOutlinedIcon />
         </IconButton>
     );
 }

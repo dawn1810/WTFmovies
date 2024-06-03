@@ -12,7 +12,7 @@ import {
     getTopHotGenre,
     getTopSixUser,
 } from '~/libs/getData/admin';
-import { Link } from '@mui/material';
+import Link from '@mui/material/Link';
 import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface } from '~/libs/interfaces';

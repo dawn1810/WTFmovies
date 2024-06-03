@@ -1,8 +1,15 @@
 'use client';
 import { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
-import { AlertColor, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import { viVN } from '@mui/x-data-grid/locales';
+import { AlertColor } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import BlockIcon from '@mui/icons-material/Block';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 import {
     DataGrid,
     GridToolbarQuickFilter,
@@ -14,9 +21,9 @@ import {
     GridToolbarDensitySelector,
     useGridApiContext,
     GridRowModel,
-    GridColDef,
 } from '@mui/x-data-grid';
-import { Block, LockOpen } from '@mui/icons-material';
+
+import { viVN } from '@mui/x-data-grid/locales';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
@@ -283,7 +290,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
                     <Button
                         variant="outlined"
-                        startIcon={<Block />}
+                        startIcon={<BlockIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={() => handleOpen(true)}
@@ -292,7 +299,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                     </Button>
                     <Button
                         variant="outlined"
-                        startIcon={<LockOpen />}
+                        startIcon={<LockOpenIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={() => handleOpen(false)}

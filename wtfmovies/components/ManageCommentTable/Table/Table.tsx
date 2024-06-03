@@ -1,7 +1,14 @@
 'use client';
 import { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
-import { AlertColor, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { AlertColor } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import { viVN } from '@mui/x-data-grid/locales';
 import {
     DataGrid,
@@ -16,7 +23,9 @@ import {
     GridRowModel,
     GridActionsCellItem,
 } from '@mui/x-data-grid';
-import { Block, LibraryBooks, LockOpen } from '@mui/icons-material';
+import BlockIcon from '@mui/icons-material/Block';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
@@ -205,7 +214,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
 
                     <Button
                         variant="outlined"
-                        startIcon={<Block />}
+                        startIcon={<BlockIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={() => handleOpen(true)}
@@ -214,7 +223,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                     </Button>
                     <Button
                         variant="outlined"
-                        startIcon={<LockOpen />}
+                        startIcon={<LockOpenIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={() => handleOpen(false)}
@@ -249,7 +258,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             getActions: ({ id }: { id: string }) => {
                 return [
                     <GridActionsCellItem
-                        icon={<LibraryBooks />}
+                        icon={<LibraryBooksIcon />}
                         label="detail"
                         // onClick={() => handleOpen(id)}
                         color="inherit"

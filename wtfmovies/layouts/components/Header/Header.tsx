@@ -1,33 +1,31 @@
 'use client';
+import classNames from 'classnames/bind';
 import { useRouter } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
-import classNames from 'classnames/bind';
 import Link from 'next/link';
 import Tippy from '@tippyjs/react';
 import 'tippy.js/dist/tippy.css';
-import {
-    Close,
-    HelpOutline,
-    Login,
-    Logout,
-    ManageAccountsOutlined,
-    MoreVert,
-    NotificationsNone,
-    PersonOutline,
-    SettingsOutlined,
-    Search as SearchIcon,
-    FeedbackOutlined,
-} from '@mui/icons-material';
 
+import CloseIcon from '@mui/icons-material/Close';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
+import LoginIcon from '@mui/icons-material/Login';
+import LogoutIcon from '@mui/icons-material/Logout';
+import ManageAccountsOutlinedIcon from '@mui/icons-material/ManageAccountsOutlined';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
+import SearchIcon from '@mui/icons-material/Search';
+import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
+
+import styles from './Header.module.scss';
 import { headerSelector } from '~/redux/selectors';
 import { changeFbDialog, changeFbDialogType, changeModalShow } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
 import Button from '~/components/Button';
-import styles from './Header.module.scss';
 import images from '~/assets/image';
 import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
@@ -77,12 +75,12 @@ const MENU_ITEMS = [
     //     to: '/settings',
     // },
     {
-        icon: <HelpOutline />,
+        icon: <HelpOutlineIcon />,
         title: 'Trợ giúp',
         type: 'feedbacks',
     },
     {
-        icon: <FeedbackOutlined />,
+        icon: <FeedbackOutlinedIcon />,
         title: 'Gởi ý kiến phản hồi',
         type: 'feedbacks',
     },
@@ -90,14 +88,14 @@ const MENU_ITEMS = [
 
 const userMenu = [
     {
-        icon: <PersonOutline />,
+        icon: <PersonOutlineIcon />,
         title: 'Thông tin tài khoản',
         type: 'profile',
     },
 
     ...MENU_ITEMS,
     {
-        icon: <Logout />,
+        icon: <LogoutIcon />,
         title: 'Đăng xuất',
         type: 'logout',
         separate: true,
@@ -106,7 +104,7 @@ const userMenu = [
 
 const adminMenu = [
     {
-        icon: <ManageAccountsOutlined />,
+        icon: <ManageAccountsOutlinedIcon />,
         title: 'Admin',
         type: 'admin',
     },
@@ -115,7 +113,7 @@ const adminMenu = [
 
 const editorMenu = [
     {
-        icon: <ManageAccountsOutlined />,
+        icon: <ManageAccountsOutlinedIcon />,
         title: 'Editor',
         type: 'editor',
     },
@@ -245,7 +243,7 @@ function Header({
                         (isMobile ? (
                             <div className={cx('search-box', { 'search-box-show': searchShow })}>
                                 <button className={cx('back-btn')} onClick={handleSearchClose}>
-                                    <Close />
+                                    <CloseIcon />
                                 </button>
                                 <Search />
                             </div>
@@ -266,7 +264,7 @@ function Header({
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
                                     <IconButton onClick={handleNotification}>
                                         <Badge badgeContent={notifyLength} max={999} color="error">
-                                            <NotificationsNone />
+                                            <NotificationsNoneIcon />
                                         </Badge>
                                     </IconButton>
                                 </Tippy>
@@ -277,8 +275,8 @@ function Header({
                                         extendedUser?.role === 'admin' || currentUser?.role === 'admin'
                                             ? adminMenu
                                             : extendedUser?.role === 'editor' || currentUser?.role === 'editor'
-                                                ? editorMenu
-                                                : userMenu
+                                            ? editorMenu
+                                            : userMenu
                                     }
                                     placement="bottom-end"
                                     delay={[0, 500]}
@@ -295,12 +293,12 @@ function Header({
                                         className={cx('mb-login-btn')}
                                         onClick={() => dispatch(changeModalShow(true))}
                                     >
-                                        <Login />
+                                        <LoginIcon />
                                     </Button>
                                 ) : (
                                     <Button
                                         primary
-                                        leftIcon={<Login />}
+                                        leftIcon={<LoginIcon />}
                                         onClick={() => dispatch(changeModalShow(true))}
                                     >
                                         Đăng Nhập
@@ -315,7 +313,7 @@ function Header({
                                     onChange={handleMenuChange}
                                 >
                                     <button className={cx('more-btn')}>
-                                        <MoreVert />
+                                        <MoreVertIcon />
                                     </button>
                                 </Menu>
                             </>
