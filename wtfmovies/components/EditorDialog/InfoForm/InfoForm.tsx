@@ -2,8 +2,11 @@ import ImageDropzone from '../ImageDropzone';
 import dayjs, { Dayjs } from 'dayjs';
 import Chip from '@mui/material/Chip';
 import { DatePicker, MobileTimePicker } from '@mui/x-date-pickers';
-import { Box, Autocomplete, MenuItem, TextField } from "@mui/material";
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+import TextField from '@mui/material/TextField';
 import { useState } from 'react';
+import AutocompleteBox from './AutoComleteBox/AutoComleteBox';
 interface MovieForm {
     defaultValue: any,
     countrys: any[],
@@ -59,6 +62,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
             display: 'flex',
             flexDirection: 'column'
         }}>
+
             <ImageDropzone
                 cropResult={cropResult}
                 setCropResultBanner={setCropResultBanner}
@@ -67,7 +71,8 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                 setImageF={setImgMovie}
                 setImageBannerF={setImgBannerMovie}
                 imageBannerDefault={imgBannerMovie}
-                imageDefault={imgMovie}></ImageDropzone>
+                imageDefault={imgMovie}>
+            </ImageDropzone>
             <Box
                 component="form"
                 sx={{
@@ -130,8 +135,8 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                     gap: 1,
 
                 }}>
-
-                    <Autocomplete
+                    <AutocompleteBox setValueData={setValueAuthors} listData={authors} valueData={valueAuthors} />
+                    {/* <Autocomplete
                         limitTags={1}
                         multiple
                         id="movie-tacgia"
@@ -232,7 +237,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                                 placeholder="Chọn đạo diễn"
                             />
                         )}
-                    />
+                    /> */}
                     <TextField
                         id="movie-tag"
                         select
@@ -248,7 +253,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                             </MenuItem>
                         ))}
                     </TextField>
-                    <Autocomplete
+                    {/* <Autocomplete
                         multiple
                         limitTags={1}
                         autoSelect
@@ -282,7 +287,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                                 placeholder="Chọn diễn viên"
                             />
                         )}
-                    />
+                    /> */}
                 </Box>
                 <Box sx={{
                     display: 'flex',

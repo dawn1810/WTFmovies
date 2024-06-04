@@ -1,7 +1,7 @@
 'use client';
 import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import {
     DataGrid,
@@ -20,13 +20,15 @@ import {
     GridExportMenuItemProps,
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
-import { AlertColor, Box, MenuItem } from '@mui/material';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import type { AlertColor } from '@mui/material';
 import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { viVN } from '@mui/x-data-grid/locales';
-import AlertDialog from '~/components/Dialog';
+import AlertDialog from '~/components/EditorDialog';
 
-import { MovieForm } from '~/components/Dialog';
+import { MovieForm } from '~/components/EditorDialog';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
@@ -234,7 +236,10 @@ export default function DataGridCom({
                 </ul>
                 không?
             </AlertDialog>
-            <MovieForm key={valueFilm.film_id} defaultValue={valueFilm} countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
+
+            {useMemo(() => (
+                <MovieForm key={valueFilm.film_id} defaultValue={valueFilm} countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
+            ), [valueFilm, sideFormInfo.countrys, sideFormInfo.author, sideFormInfo.genres, sideFormInfo.directors, sideFormInfo.actors, sideFormInfo.tags, openForm])}
 
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
