@@ -3,6 +3,9 @@ import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
 import { useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
+import MenuItem from '@mui/material/MenuItem';
+
 import {
     DataGrid,
     GridToolbarQuickFilter,
@@ -20,8 +23,6 @@ import {
     GridExportMenuItemProps,
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
-import Box from '@mui/material/Box';
-import MenuItem from '@mui/material/MenuItem';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import type { AlertColor } from '@mui/material';
 import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -60,16 +61,13 @@ export default function DataGridCom({
     };
     async function handleEdit(event: any) {
         const selectedIDs = new Set(rowSelectionModel);
-        const rowData = dataGrid.filter((row: any) =>
-            selectedIDs.has(row.id),
-        );
+        const rowData = dataGrid.filter((row: any) => selectedIDs.has(row.id));
 
         const authorsList = new Set(rowData[0].author);
         const genresList = new Set(rowData[0].genre);
         const directorList = new Set(rowData[0].director);
         const actorsList = new Set(rowData[0].actor);
         const countrysList = new Set(rowData[0].country);
-
 
         const data = {
             ...rowData[0],
@@ -80,14 +78,13 @@ export default function DataGridCom({
             country: [...sideFormInfo.countrys.filter((item: any) => countrysList.has(item.label))],
         };
 
-        setValueFilm(data)
+        setValueFilm(data);
         setOpenForm(true);
     }
 
     function handleDelete() {
         setOpen(true);
     }
-
 
     function handleAdd() {
         setOpenForm(true);
@@ -154,27 +151,21 @@ export default function DataGridCom({
         }
         if (status.status) {
             const res = await fetch('/api/v1/editor/deleteMovies', {
-                method: "POST",
-                body: JSON.stringify({ ids: status.content })
-            })
-            const decodeData: { statusCode: number, content: string } = await res.json();
+                method: 'POST',
+                body: JSON.stringify({ ids: status.content }),
+            });
+            const decodeData: { statusCode: number; content: string } = await res.json();
             if (decodeData.statusCode === 200) {
                 setDataGrid(removeItemsById(dataGrid, status.content));
-                showAlert("Xoá thành công!", "success");
-            }
-
-            else showAlert("Có lỗi xảy ra, vui lòng tải lại trang và thử lại!", "error");
+                showAlert('Xoá thành công!', 'success');
+            } else showAlert('Có lỗi xảy ra, vui lòng tải lại trang và thử lại!', 'error');
         }
 
         setOpen(false);
         setLoadingDelete(false);
-
-
     }
     function CustomToolbar() {
         return (
-
-
             <GridToolbarContainer>
                 <GridToolbarColumnsButton />
                 <GridToolbarFilterButton />
@@ -215,7 +206,6 @@ export default function DataGridCom({
                 </Button>
                 <GridToolbarQuickFilter />
             </GridToolbarContainer>
-
         );
     }
 

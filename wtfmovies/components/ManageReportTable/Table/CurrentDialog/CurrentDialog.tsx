@@ -1,22 +1,21 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import {
-    AlertColor,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    TextField,
-} from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import { Close, Send } from '@mui/icons-material';
+import { useDebounce } from '~/hooks';
+import { useDispatch } from 'react-redux';
+import { AlertColor } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
+import TextField from '@mui/material/TextField';
+import LoadingButton from '@mui/lab/LoadingButton';
+import CloseIcon from '@mui/icons-material/Close';
+import SendIcon from '@mui/icons-material/Send';
 
 import style from '../Table.module.scss';
 import EmailTemplate from '~/components/ManageReportTable/EmailTemplate';
-import { useDebounce } from '~/hooks';
-import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
@@ -91,7 +90,7 @@ function CurrentDialog({
             <DialogTitle className={cx('dialog-title')}>
                 <span>{dialogType ? 'Chi tiết báo cáo: ' : 'Mẫu phản hồi báo cáo: '}</span>
                 <IconButton aria-label="delete" onClick={handleClose}>
-                    <Close />
+                    <CloseIcon />
                 </IconButton>
             </DialogTitle>
             <DialogContent>
@@ -145,7 +144,7 @@ function CurrentDialog({
                         <LoadingButton
                             loading={loading}
                             loadingPosition="start"
-                            startIcon={<Send />}
+                            startIcon={<SendIcon />}
                             onClick={handleSendReply}
                         >
                             GỬI

@@ -1,20 +1,20 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 import style from './ImageDropzone.module.scss';
 import classNames from 'classnames/bind';
-import ImageCropPopup from "./ImageCropPopUp";
-import { Box } from "@mui/material";
-import ReviewImage from "./ImageReview";
+import ImageCropPopup from './ImageCropPopUp';
+import Box from '@mui/material/Box';
+import ReviewImage from './ImageReview';
 const cx = classNames.bind(style);
 
 interface imageDrop {
-    setImageF: any,
-    setImageBannerF: any,
+    setImageF: any;
+    setImageBannerF: any;
     imageDefault: string;
-    imageBannerDefault: string
-    cropResultBanner: any,
-    cropResult: any,
-    setCropResultBanner: any,
-    setCropResult: any
+    imageBannerDefault: string;
+    cropResultBanner: any;
+    cropResult: any;
+    setCropResultBanner: any;
+    setCropResult: any;
 }
 export default function ImageDropzone({
     cropResultBanner,
@@ -24,10 +24,10 @@ export default function ImageDropzone({
     setImageF,
     setImageBannerF,
     imageDefault,
-    imageBannerDefault }: imageDrop) {
+    imageBannerDefault,
+}: imageDrop) {
     const [openCropPopup, setOpenCropPopup] = useState(false);
     const [selectedImageCrop, setSelectedImageCrop] = useState<any>(null);
-
 
     const fileInputRef1 = useRef<any>(null);
     const fileInputRef2 = useRef<any>(null);
@@ -41,8 +41,11 @@ export default function ImageDropzone({
             setOpenCropPopup(true);
             setSelectedImageCrop(URL.createObjectURL(file));
 
-            if (type === 'image') { setAspectRatio(3 / 4) }
-            else { setAspectRatio(16 / 9) }
+            if (type === 'image') {
+                setAspectRatio(3 / 4);
+            } else {
+                setAspectRatio(16 / 9);
+            }
         }
     };
     const handleClick = (event: any, type: string) => {
@@ -51,8 +54,11 @@ export default function ImageDropzone({
         if (file) {
             setOpenCropPopup(true);
             setSelectedImageCrop(URL.createObjectURL(file));
-            if (type === 'image') { setAspectRatio(3 / 4) }
-            else { setAspectRatio(16 / 9) }
+            if (type === 'image') {
+                setAspectRatio(3 / 4);
+            } else {
+                setAspectRatio(16 / 9);
+            }
         }
     };
     const handleDragOver = (event: any) => {
@@ -63,27 +69,37 @@ export default function ImageDropzone({
         if (aspectRatio === 16 / 9) {
             setImageBannerF(selectedImageCrop);
             setCropResultBanner(croppedArea.croppedAreaPixels);
-        }
-        else {
+        } else {
             setImageF(selectedImageCrop);
             setCropResult(croppedArea.croppedAreaPixels);
         }
-
     };
     return (
-        <Box className={cx("imgSellectContainer")}>
-
-            <div className={cx("imgInput")} onDragOver={handleDragOver}
-                onDrop={() => handleDrop(event, 'banner')}>
+        <Box className={cx('imgSellectContainer')}>
+            <div className={cx('imgInput')} onDragOver={handleDragOver} onDrop={() => handleDrop(event, 'banner')}>
                 <ReviewImage classname="reviewImage" imageSrc={imageBannerDefault} croppedArea={cropResultBanner} />
-                <input type="file" accept="image/png, image/jpeg"
-                    onChange={() => handleClick(event, 'banner')} ref={fileInputRef1} onClick={() => fileInputRef1.current.value = null} />
+                <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={() => handleClick(event, 'banner')}
+                    ref={fileInputRef1}
+                    onClick={() => (fileInputRef1.current.value = null)}
+                />
             </div>
-            <div id={cx("banner")} className={cx("imgInputbanner")} onDragOver={handleDragOver}
-                onDrop={() => handleDrop(event, 'image')}>
+            <div
+                id={cx('banner')}
+                className={cx('imgInputbanner')}
+                onDragOver={handleDragOver}
+                onDrop={() => handleDrop(event, 'image')}
+            >
                 <ReviewImage classname="reviewImageBaner" imageSrc={imageDefault} croppedArea={cropResult} />
-                <input type="file" accept="image/png, image/jpeg"
-                    onChange={() => handleClick(event, 'image')} ref={fileInputRef2} onClick={() => fileInputRef2.current.value = null} />
+                <input
+                    type="file"
+                    accept="image/png, image/jpeg"
+                    onChange={() => handleClick(event, 'image')}
+                    ref={fileInputRef2}
+                    onClick={() => (fileInputRef2.current.value = null)}
+                />
             </div>
             <ImageCropPopup
                 open={openCropPopup}
@@ -92,7 +108,6 @@ export default function ImageDropzone({
                 onCropComplete={handleCropComplete}
                 selectedImage={selectedImageCrop}
             />
-
         </Box>
     );
 }

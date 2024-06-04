@@ -1,14 +1,14 @@
 import classNames from 'classnames/bind';
 
 import style from '../UserInfo.module.scss';
-import { Button, Divider } from '@mui/material';
-import {
-    DriveFileRenameOutlineOutlined,
-    Face2Outlined,
-    Face6Outlined,
-    MoodOutlined,
-    TranslateOutlined,
-} from '@mui/icons-material';
+import Button from '@mui/material/Button';
+import Divider from '@mui/material/Divider';
+import DriveFileRenameOutlineOutlinedIcon from '@mui/icons-material/DriveFileRenameOutlineOutlined';
+import Face2OutlinedIcon from '@mui/icons-material/Face2Outlined';
+import Face6OutlinedIcon from '@mui/icons-material/Face6Outlined';
+import MoodOutlinedIcon from '@mui/icons-material/MoodOutlined';
+import TranslateOutlinedIcon from '@mui/icons-material/TranslateOutlined';
+
 import { OptionInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
@@ -20,22 +20,22 @@ function UserHobby({
 }) {
     const userInfo = [
         {
-            icon: <Face2Outlined />,
+            icon: <Face2OutlinedIcon />,
             tag: 'Diễn viên',
             content: userHobby.actor || 'Không có',
         },
         {
-            icon: <Face6Outlined />,
+            icon: <Face6OutlinedIcon />,
             tag: 'Đạo diễn',
             content: userHobby.director || 'Không có',
         },
         {
-            icon: <MoodOutlined />,
+            icon: <MoodOutlinedIcon />,
             tag: 'Thể loại',
             content: userHobby?.genres?.join(', ') || 'Không có',
         },
         {
-            icon: <TranslateOutlined />,
+            icon: <TranslateOutlinedIcon />,
             tag: 'Ngôn ngữ',
             content: userHobby?.laguages?.join(', ') || 'Không có',
         },
@@ -58,7 +58,7 @@ function UserHobby({
             <Button
                 href="/survey"
                 variant="contained"
-                startIcon={<DriveFileRenameOutlineOutlined />}
+                startIcon={<DriveFileRenameOutlineOutlinedIcon />}
                 className={cx('bottom-button')}
             >
                 DO SURVEY

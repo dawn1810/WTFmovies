@@ -1,5 +1,12 @@
 import classNames from 'classnames/bind';
-import { Card, CardActionArea, Table, TableHead, TableRow, TableCell, TableBody, Button } from '@mui/material';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import TableBody from '@mui/material/TableBody';
+
 import { useRouter } from 'next/navigation';
 
 import style from './TableCard.module.scss';
@@ -34,10 +41,7 @@ export default function TableCard({
 
     return (
         <Card style={{ gridArea: area }}>
-            <CardActionArea
-                className={cx('card-area')}
-
-            >
+            <CardActionArea className={cx('card-area')}>
                 <h4 className={cx('card-title')}>{title}</h4>
                 <Table aria-label="customized table">
                     <TableHead>

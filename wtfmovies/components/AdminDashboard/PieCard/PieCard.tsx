@@ -1,24 +1,23 @@
 import classNames from 'classnames/bind';
+import { useState } from 'react';
 import { PieChart } from '@mui/x-charts/PieChart';
-import {
-    Button,
-    Card,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    FormControlLabel,
-    IconButton,
-    MenuItem,
-    Radio,
-    RadioGroup,
-    Select,
-} from '@mui/material';
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import MenuItem from '@mui/material/MenuItem';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import Select from '@mui/material/Select';
+import CloseIcon from '@mui/icons-material/Close';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 import style from './PieCard.module.scss';
-import { useState } from 'react';
-import { Close, FilterList } from '@mui/icons-material';
 
 const cx = classNames.bind(style);
 
@@ -54,7 +53,7 @@ export default function PieCard({ area }: { area: string }) {
                 <div className={cx('card-header')}>
                     <h4 className={cx('card-title')}>Tìm kiếm thịnh hành</h4>
                     <IconButton aria-label="delete" onClick={handleOpen}>
-                        <FilterList />
+                        <FilterListIcon />
                     </IconButton>
                 </div>
                 <PieChart
@@ -85,7 +84,7 @@ export default function PieCard({ area }: { area: string }) {
                 <DialogTitle className={cx('dialog-title')}>
                     <span className={cx('title')}>Tìm kiếm thịnh hành</span>
                     <IconButton aria-label="delete" onClick={handleClose}>
-                        <Close />
+                        <CloseIcon />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>

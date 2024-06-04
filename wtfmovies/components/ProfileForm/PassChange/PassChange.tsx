@@ -1,8 +1,9 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { LoadingButton } from '@mui/lab';
-import { AlertColor, Divider } from '@mui/material';
-import { SaveOutlined } from '@mui/icons-material';
+import { AlertColor } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import Divider from '@mui/material/Divider';
+import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 
 import style from '~/components/ProfileForm/ProfileInfo/UserInfo.module.scss';
 import { validatePassword } from '~/libs/clientFunc';
@@ -179,7 +180,7 @@ function PassChange() {
             <LoadingButton
                 loading={loading}
                 variant="contained"
-                startIcon={<SaveOutlined />}
+                startIcon={<SaveOutlinedIcon />}
                 className={cx('bottom-button')}
                 onClick={handleSubmit}
             >

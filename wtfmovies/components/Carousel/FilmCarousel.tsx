@@ -1,15 +1,16 @@
 'use client';
+import classNames from 'classnames/bind';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { Carousel } from 'react-bootstrap';
-import classNames from 'classnames/bind';
-
 import { useViewport } from '~/hooks';
-import ImageCustom from '../ImageCustom';
+
 import style from './FilmCarousel.module.scss';
+import ImageCustom from '../ImageCustom';
 import Captions from './Captions';
 import { CaptionsItemInterface, FilmInfoInterface } from '~/libs/interfaces';
 import { formatNumber } from '~/libs/clientFunc';
+
 const cx = classNames.bind(style);
 
 const NextButton = () => {

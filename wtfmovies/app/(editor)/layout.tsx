@@ -12,7 +12,8 @@ import { montserrat } from '../font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
-import { HomeOutlined, MovieOutlined } from '@mui/icons-material';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import NotFound from '../(root)/not-found';
 import { getNotificationList } from '~/libs/getData/notification';
 import { getCurrentUser } from '~/libs/getData/home';
@@ -44,12 +45,12 @@ export const metadata: Metadata = {
 const menuItems = [
     {
         title: 'Tổng quan',
-        icon: <HomeOutlined />,
+        icon: <HomeOutlinedIcon />,
         scene: 'overview',
     },
     {
         title: 'Quản lý phim',
-        icon: <MovieOutlined />,
+        icon: <MovieOutlinedIcon />,
         scene: 'film',
     },
 ];

@@ -1,26 +1,21 @@
 'use client';
-import { useCallback, useRef, useState } from 'react';
+import { useState } from 'react';
 import classNames from 'classnames/bind';
-import { AlertColor, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import { AlertColor } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+
 import { viVN } from '@mui/x-data-grid/locales';
-import {
-    DataGrid,
-    GridToolbarQuickFilter,
-    GridToolbarExport,
-    GridToolbarFilterButton,
-    GridRowSelectionModel,
-    GridToolbarColumnsButton,
-    GridToolbarContainer,
-    GridToolbarDensitySelector,
-    useGridApiContext,
-    GridRowModel,
-} from '@mui/x-data-grid';
-import { HeartBrokenOutlined, NotificationsNone, NotificationsOffOutlined } from '@mui/icons-material';
+import { DataGrid, GridToolbarQuickFilter, GridRowSelectionModel, GridToolbarContainer } from '@mui/x-data-grid';
+import HeartBrokenOutlinedIcon from '@mui/icons-material/HeartBrokenOutlined';
 
 import style from './Table.module.scss';
 import ImageCustom from '~/components/ImageCustom';
 import { formatNumber, timePassed } from '~/libs/clientFunc';
-import NotifyButton from './NotifyButton';
 import UnlikeButton from './UnlikeButton';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
@@ -172,7 +167,7 @@ export default function DataGridCom({ dataset }: { dataset: any[] }) {
                 <GridToolbarContainer>
                     <Button
                         variant="outlined"
-                        startIcon={<HeartBrokenOutlined />}
+                        startIcon={<HeartBrokenOutlinedIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={() => handleOpen(true)}

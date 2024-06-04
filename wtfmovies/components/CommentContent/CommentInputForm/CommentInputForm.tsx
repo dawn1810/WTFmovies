@@ -2,8 +2,9 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
-import { AlertColor } from '@mui/material';
 import classNames from 'classnames/bind';
+import { AlertColor } from '@mui/material';
+import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 import { Form } from 'react-bootstrap';
 import style from './CommentInputForm.module.scss';
@@ -12,7 +13,6 @@ import Button from '../../Button';
 import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
-import { SendOutlined } from '@mui/icons-material';
 
 const cx = classNames.bind(style);
 function CommentInputForm({
@@ -124,7 +124,7 @@ function CommentInputForm({
                         name="name"
                         onChange={(e) => handleInput(e)}
                     />
-                    <Button primary leftIcon={<SendOutlined />} onClick={handleSubmit}>
+                    <Button primary leftIcon={<SendOutlinedIcon />} onClick={handleSubmit}>
                         Gửi
                     </Button>
                 </Form.Group>

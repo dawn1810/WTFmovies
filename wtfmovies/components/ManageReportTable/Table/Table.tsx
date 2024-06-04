@@ -1,37 +1,32 @@
 'use client';
-import { useEffect, useState } from 'react';
-import classNames from 'classnames/bind';
-import {
-    AlertColor,
-    Box,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogTitle,
-    IconButton,
-    TextField,
-} from '@mui/material';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { viVN } from '@mui/x-data-grid/locales';
+import classNames from 'classnames/bind';
+import { AlertColor } from '@mui/material';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import GradingIcon from '@mui/icons-material/Grading';
+import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import ReplyIcon from '@mui/icons-material/Reply';
 import {
     DataGrid,
     GridToolbarQuickFilter,
-    GridToolbarExport,
     GridToolbarFilterButton,
     GridRowSelectionModel,
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
     GridActionsCellItem,
-    useGridApiRef,
+    GridToolbarExport,
 } from '@mui/x-data-grid';
-import { Close, Grading, LibraryBooks, Reply } from '@mui/icons-material';
 
 import style from './Table.module.scss';
-import { useDebounce } from '~/hooks';
-import EmailTemplate from '../EmailTemplate';
 import CurrentDialog from './CurrentDialog/CurrentDialog';
-import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
@@ -68,7 +63,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
             getActions: ({ id }: { id: string }) => {
                 return [
                     <GridActionsCellItem
-                        icon={<LibraryBooks />}
+                        icon={<LibraryBooksIcon />}
                         label="detail"
                         onClick={() => handleOpen(id)}
                         color="inherit"
@@ -168,7 +163,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
 
                     <Button
                         variant="outlined"
-                        startIcon={<Grading />}
+                        startIcon={<GradingIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={handleOpen}
@@ -177,7 +172,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     </Button>
                     <Button
                         variant="outlined"
-                        startIcon={<Reply />}
+                        startIcon={<ReplyIcon />}
                         disabled={rowSelectionModel.length === 0}
                         className={cx('btncustom')}
                         onClick={handleOpen}

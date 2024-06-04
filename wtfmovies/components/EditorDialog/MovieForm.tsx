@@ -3,7 +3,7 @@ import DialogActions from '@mui/material/DialogActions';
 import CloseIcon from '@mui/icons-material/Close';
 import InfoIcon from '@mui/icons-material/Info';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
@@ -20,30 +20,23 @@ import { useDispatch } from 'react-redux';
 import InfoForm from './InfoForm';
 import EpForm from './EpForm';
 
-
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
 
     return (
-
-        <div
-            role="tabpanel"
-            hidden={value !== index}
-            id={`simple-tabpanel-${index}`}
-            {...other}
-        >
+        <div role="tabpanel" hidden={value !== index} id={`simple-tabpanel-${index}`} {...other}>
             {value === index && (
-                <Box sx={{
-                    p: 3
-                    , alignItems: "center",
-                    justifyContent: "center",
-                }}>
+                <Box
+                    sx={{
+                        p: 3,
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                    }}
+                >
                     <div>{children}</div>
                 </Box>
-            )
-            }
-        </div >
-
+            )}
+        </div>
     );
 }
 export function MovieForm({
@@ -55,19 +48,18 @@ export function MovieForm({
     actors,
     tags,
     isOpen,
-    handleClose }:
-
-    {
-        defaultValue?: any,
-        countrys: any[],
-        authors: any[],
-        genres: any[],
-        directors: any[],
-        actors: any[],
-        tags: any[],
-        isOpen: boolean,
-        handleClose: () => any
-    }) {
+    handleClose,
+}: {
+    defaultValue?: any;
+    countrys: any[];
+    authors: any[];
+    genres: any[];
+    directors: any[];
+    actors: any[];
+    tags: any[];
+    isOpen: boolean;
+    handleClose: () => any;
+}) {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: AlertColor) => {
@@ -76,10 +68,7 @@ export function MovieForm({
         dispatch(changeNotifyOpen(true));
     };
 
-
     const [value, setValue] = useState(0);
-
-
 
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
@@ -88,29 +77,18 @@ export function MovieForm({
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Dialog maxWidth={'xl'} open={isOpen} onClose={() => (handleClose(), setValue(0))}>
-                <AppBar position="static" >
-                    <Toolbar >
-                        <IconButton
-                            edge="start"
-                            color="inherit"
-                            onClick={handleClose}
-                            aria-label="close"
-                        >
+                <AppBar position="static">
+                    <Toolbar>
+                        <IconButton edge="start" color="inherit" onClick={handleClose} aria-label="close">
                             <CloseIcon />
                         </IconButton>
-                        <Tabs
-                            value={value}
-                            onChange={handleChange}
-                            centered
-                        >
+                        <Tabs value={value} onChange={handleChange} centered>
                             <Tab icon={<InfoIcon />} iconPosition="start" label="Thông tin cơ bản" wrapped />
                             <Tab icon={<ListAltIcon />} iconPosition="start" label="Thông tin tập phim" wrapped />
                         </Tabs>
-
                     </Toolbar>
-
                 </AppBar>
-                <TabPanel value={value} index={0} >
+                <TabPanel value={value} index={0}>
                     <InfoForm
                         defaultValue={defaultValue}
                         countrys={countrys}
@@ -120,14 +98,9 @@ export function MovieForm({
                         actors={actors}
                         tags={tags}
                     ></InfoForm>
-
-
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <EpForm
-                        defaultValue={defaultValue.listEp}
-
-                    ></EpForm>
+                    <EpForm defaultValue={defaultValue.listEp}></EpForm>
                 </TabPanel>
                 <DialogActions>
                     <Button autoFocus variant="contained" onClick={handleClose}>
@@ -141,5 +114,3 @@ export function MovieForm({
         </LocalizationProvider>
     );
 }
-
-

@@ -1,17 +1,18 @@
 import classNames from 'classnames/bind';
-import { Close, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
-import {
-    Card,
-    CardActionArea,
-    Dialog,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    FormControlLabel,
-    IconButton,
-    Radio,
-    RadioGroup,
-} from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Card from '@mui/material/Card';
+import CardActionArea from '@mui/material/CardActionArea';
+import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+
 import { LineChart } from '@mui/x-charts/LineChart';
 
 import style from './NumCard.module.scss';
@@ -81,7 +82,7 @@ export default function NumCard({
                             className={cx('change')}
                             style={{ color: up ? 'var(--green-highlight-color)' : 'var(--highlight-color)' }}
                         >
-                            {up ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+                            {up ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                             {change}%
                         </div>
                     </div>
@@ -97,7 +98,7 @@ export default function NumCard({
                 <DialogTitle className={cx('dialog-title')}>
                     <span className={cx('title')}>{title}</span>
                     <IconButton aria-label="delete" onClick={handleClose}>
-                        <Close />
+                        <CloseIcon />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>

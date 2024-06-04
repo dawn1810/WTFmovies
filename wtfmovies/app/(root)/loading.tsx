@@ -1,10 +1,8 @@
 // import DefaultLayout from '~/layouts/DefaultLayout';
 import classNames from 'classnames/bind';
-import { Skeleton } from '@mui/material';
-import images from '~/assets/image';
+import Skeleton from '@mui/material/Skeleton';
 
 import styles from './loading.module.scss';
-import Title from '~/components/FilmClassify/Title';
 
 const cx = classNames.bind(styles);
 

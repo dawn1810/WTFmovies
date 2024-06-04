@@ -1,18 +1,17 @@
-import { Send } from '@mui/icons-material';
-import {
-    AlertColor,
-    Button,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    FormControlLabel,
-    Link,
-    Radio,
-    RadioGroup,
-    TextField,
-} from '@mui/material';
+import SendIcon from '@mui/icons-material/Send';
+import { AlertColor } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Link from '@mui/material/Link';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import TextField from '@mui/material/TextField';
+
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { changeFbDialog, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
@@ -163,7 +162,7 @@ export default function FormDialog() {
                 <Button onClick={handleClose}>Huỷ</Button>
                 <Button
                     variant="contained"
-                    endIcon={<Send />}
+                    endIcon={<SendIcon />}
                     onClick={state.fbDialogType === 'feedback' ? handleSendFeedback : handleSendReport}
                 >
                     Send

@@ -1,23 +1,24 @@
 import classNames from 'classnames/bind';
+
+import Button from '@mui/material/Button';
+import Card from '@mui/material/Card';
+import CircularProgress from '@mui/material/CircularProgress';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import IconButton from '@mui/material/IconButton';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
 import { BarChart } from '@mui/x-charts/BarChart';
+import CloseIcon from '@mui/icons-material/Close';
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 import style from './BarCard.module.scss';
-import {
-    Button,
-    Card,
-    CircularProgress,
-    Dialog,
-    DialogActions,
-    DialogContent,
-    DialogContentText,
-    DialogTitle,
-    FormControlLabel,
-    IconButton,
-    Radio,
-    RadioGroup,
-} from '@mui/material';
+
 import { useState } from 'react';
-import { Close, FilterList } from '@mui/icons-material';
 import { FilmHotInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
@@ -111,7 +112,7 @@ export default function BarCard({
                         <div className={cx('card-header')}>
                             <h4 className={cx('card-title')}>{title}</h4>
                             <IconButton aria-label="delete" onClick={handleOpen}>
-                                <FilterList />
+                                <FilterListIcon />
                             </IconButton>
                         </div>
                         {!!dataState && !!dataState.length ? (
@@ -138,7 +139,7 @@ export default function BarCard({
                 <DialogTitle className={cx('dialog-title')}>
                     <span className={cx('title')}>Bộ lọc</span>
                     <IconButton aria-label="delete" onClick={handleClose}>
-                        <Close />
+                        <CloseIcon />
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>

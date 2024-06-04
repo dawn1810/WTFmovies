@@ -1,9 +1,12 @@
 import classNames from 'classnames/bind';
+import { useState } from 'react';
+import IconButton from '@mui/material/IconButton';
+import InputAdornment from '@mui/material/InputAdornment';
+import TextField from '@mui/material/TextField';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 
 import style from './PassInput.module.scss';
-import { IconButton, InputAdornment, TextField } from '@mui/material';
-import { VisibilityOffOutlined, VisibilityOutlined } from '@mui/icons-material';
-import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
@@ -52,7 +55,7 @@ const PassInput = ({
                                 onMouseDown={handleMouseDownPassword}
                                 edge="end"
                             >
-                                {showPassword ? <VisibilityOffOutlined /> : <VisibilityOutlined />}
+                                {showPassword ? <VisibilityOffOutlinedIcon /> : <VisibilityOutlinedIcon />}
                             </IconButton>
                         </InputAdornment>
                     ),

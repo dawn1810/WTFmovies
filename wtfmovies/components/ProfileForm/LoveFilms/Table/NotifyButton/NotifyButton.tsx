@@ -1,5 +1,6 @@
-import { NotificationsNone, NotificationsOffOutlined } from '@mui/icons-material';
-import { IconButton } from '@mui/material';
+import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
+import NotificationsOffOutlinedIcon from '@mui/icons-material/NotificationsOffOutlined';
+import IconButton from '@mui/material/IconButton';
 import { useState } from 'react';
 
 export default function NotifyButton({ notify }: { notify: boolean }) {
@@ -11,7 +12,7 @@ export default function NotifyButton({ notify }: { notify: boolean }) {
 
     return (
         <IconButton onClick={handleNotify}>
-            {notifyAvalable ? <NotificationsNone /> : <NotificationsOffOutlined />}
+            {notifyAvalable ? <NotificationsNoneIcon /> : <NotificationsOffOutlinedIcon />}
         </IconButton>
     );
 }
