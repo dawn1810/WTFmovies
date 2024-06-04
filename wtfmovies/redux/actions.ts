@@ -1,4 +1,4 @@
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 
 // signup
 export const changeSignUpEmailAlert = (emailAlert: boolean) => {
@@ -231,7 +231,7 @@ export const changeNotifyContent = (content: string) => {
     };
 };
 
-export const changeNotifyType = (type?: AlertColor) => {
+export const changeNotifyType = (type?: any) => {
     return {
         type: 'notify/changeType',
         payload: type,

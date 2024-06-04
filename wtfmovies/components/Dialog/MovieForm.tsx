@@ -5,7 +5,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import { AlertColor } from '@mui/material';
+// //import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
@@ -61,7 +61,7 @@ export function MovieForm({
 }) {
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

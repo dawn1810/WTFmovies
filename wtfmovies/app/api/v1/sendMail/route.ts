@@ -57,7 +57,12 @@ export async function POST(request: NextRequest) {
                     },
                 ],
                 subject: '[WTFmovies] Cảm ơn vì thông tin của bạn',
-                description: mail({ userName: userName[0].name, adminName: adminName[0].name, content }),
+                description: {
+                    receiverName: userName[0].name,
+                    senderName: adminName[0].name,
+                    content: content,
+                },
+                template: 'mail',
                 mail_type: 'text/html',
             };
 

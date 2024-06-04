@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { mongodb, reply } from '~/libs/func';
-import { ExtendedUser } from '~/libs/interfaces';
+// import { ExtendedUser } from '~/libs/interfaces';
 import { auth } from '../../auth/[...nextauth]/auth';
 
 export async function POST(request: NextRequest) {
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
 
     if (!session) return new Response(null, { status: 403 });
 
-    const extendedUser: ExtendedUser | undefined = session?.user;
+    const extendedUser: any | undefined = session?.user;
 
     const { info }: { info: any } = await request.json();
 

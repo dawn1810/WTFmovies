@@ -19,7 +19,10 @@ export async function POST(request: NextRequest) {
                 },
             ],
             subject: `Mã đăng nhập: ${OTP}`,
-            description: mail(OTP),
+            description: {
+                otp: OTP,
+            },
+            template: 'otp',
             mail_type: 'text/html',
         };
 

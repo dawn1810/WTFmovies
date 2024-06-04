@@ -2,7 +2,7 @@ import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useDebounce } from '~/hooks';
 import { useDispatch } from 'react-redux';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -38,7 +38,7 @@ function CurrentDialog({
     //alert
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

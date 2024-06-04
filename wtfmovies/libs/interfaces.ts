@@ -1,4 +1,4 @@
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import { File } from 'buffer';
 import { User } from 'next-auth';
 import { ReactNode } from 'react';
@@ -65,7 +65,7 @@ export interface reduxStateInterface {
     notify: {
         open: boolean;
         content: string;
-        type?: AlertColor;
+        type?: any;
     };
 }
 
@@ -124,11 +124,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-    | {
-        title?: string;
-        episode?: number[];
-    }[]
-    | any;
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;

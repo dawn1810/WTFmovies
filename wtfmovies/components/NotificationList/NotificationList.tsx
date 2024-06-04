@@ -2,7 +2,7 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -25,7 +25,7 @@ function Notification({ notify }: { notify: any[] }) {
     const router = useRouter();
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

@@ -1,7 +1,7 @@
 'use client';
 import { useCallback, useState } from 'react';
 import classNames from 'classnames/bind';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
@@ -41,7 +41,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     //alert
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

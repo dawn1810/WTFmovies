@@ -1,5 +1,5 @@
 import SendIcon from '@mui/icons-material/Send';
-import { AlertColor } from '@mui/material';
+// //import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -24,7 +24,7 @@ export default function FormDialog() {
     const [content, setContent] = useState('');
     const [violate, setViolate] = useState();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

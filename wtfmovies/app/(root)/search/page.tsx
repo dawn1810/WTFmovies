@@ -1,11 +1,10 @@
 // import { Breadcrumbs, Link, Typography } from '@mui/material';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faFire, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faFilter, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import classNames from 'classnames/bind';
 
-// import { DefaultLayout } from '~/layouts';
-import Title from '~/components/FilmClassify/Title';
 import style from './search.module.scss';
+import Title from '~/components/FilmClassify/Title';
 import FilmCard from '~/components/FilmCard';
 import { getSearch } from '~/libs/getData/search';
 import Button from '~/components/Button';

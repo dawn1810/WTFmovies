@@ -2,7 +2,7 @@
 import classNames from 'classnames/bind';
 
 import style from './test.module.scss';
-import { AlertColor } from '@mui/material';
+// //import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
@@ -15,7 +15,7 @@ const cx = classNames.bind(style);
 function Test() {
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

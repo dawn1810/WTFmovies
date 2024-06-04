@@ -1,6 +1,6 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import Divider from '@mui/material/Divider';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
@@ -73,7 +73,7 @@ function PassChange() {
     //alert
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

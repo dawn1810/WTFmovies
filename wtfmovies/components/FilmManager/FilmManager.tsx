@@ -2,7 +2,7 @@
 import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -54,7 +54,7 @@ export default function DataGridCom({
 
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

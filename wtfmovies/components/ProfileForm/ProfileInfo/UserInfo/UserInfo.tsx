@@ -1,7 +1,7 @@
 import classNames from 'classnames/bind';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import Divider from '@mui/material/Divider';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -51,7 +51,7 @@ function UserInfo({
     //alert
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));
