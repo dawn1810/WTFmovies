@@ -1,8 +1,8 @@
 'use client';
 import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
-import { AlertColor } from '@mui/material';
+import { useMemo, useState } from 'react';
+// import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -25,7 +25,7 @@ import {
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { AlertColor } from '@mui/material';
+// import type { AlertColor } from '@mui/material';
 import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { viVN } from '@mui/x-data-grid/locales';
 import AlertDialog from '~/components/EditorDialog';
