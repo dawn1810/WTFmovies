@@ -4,7 +4,7 @@ import { faFacebook, faGithub, faYoutube } from '@fortawesome/free-brands-svg-ic
 import Link from 'next/link';
 import classNames from 'classnames/bind';
 
-import config from '~/config';
+// import config from '~/config';
 import style from './Footer.module.scss';
 import images from '~/assets/image';
 

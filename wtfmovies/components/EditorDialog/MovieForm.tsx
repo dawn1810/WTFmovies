@@ -73,7 +73,10 @@ export function MovieForm({
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
     };
-
+    const [imgMovie, setImgMovie] = useState(defaultValue.img || undefined);
+    const [imgBannerMovie, setImgBannerMovie] = useState(defaultValue.poster || undefined);
+    const [cropResultBanner, setCropResultBanner] = useState<any>(null);
+    const [cropResult, setCropResult] = useState<any>(null);
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
             <Dialog maxWidth={'xl'} open={isOpen} onClose={() => (handleClose(), setValue(0))}>
@@ -97,6 +100,14 @@ export function MovieForm({
                         directors={directors}
                         actors={actors}
                         tags={tags}
+                        cropResult={cropResult}
+                        setCropResultBanner={setCropResultBanner}
+                        cropResultBanner={cropResultBanner}
+                        setCropResult={setCropResult}
+                        setImgMovie={setImgMovie}
+                        setImgBannerMovie={setImgBannerMovie}
+                        imgBannerMovie={imgBannerMovie}
+                        imgMovie={imgMovie}
                     ></InfoForm>
                 </TabPanel>
                 <TabPanel value={value} index={1}>

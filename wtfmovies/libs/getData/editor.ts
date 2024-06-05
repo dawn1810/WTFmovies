@@ -158,9 +158,6 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
     }
 };
 
-
-
-
 const getAutoMutiData = async (collection: string): Promise<any[]> => {
     try {
         const data: any[] = await mongodb()

@@ -18,11 +18,14 @@ const ReviewImage: React.FC<ReviewImageProps> = ({ classname, imageSrc, croppedA
 
     useEffect(() => {
         const drawImage = async () => {
-
             const image = new Image();
             image.src = imageSrc;
 
-            await image.decode();
+            try {
+                await image.decode();
+            } catch (error) {
+                return;
+            }
 
             const canvas = canvasRef.current!;
             const context = canvas.getContext('2d')!;

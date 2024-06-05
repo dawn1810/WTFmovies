@@ -4,7 +4,7 @@ import { DatePicker, MobileTimePicker } from '@mui/x-date-pickers';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import AutocompleteBox from './AutoComleteBox/AutoComleteBox';
 interface MovieForm {
     defaultValue: any;
@@ -14,8 +14,27 @@ interface MovieForm {
     directors: any[];
     actors: any[];
     tags: any[];
+    cropResult: any[];
+    setCropResultBanner: any;
+    cropResultBanner: any[];
+    setCropResult: any;
+    setImgMovie: any;
+    setImgBannerMovie: any;
+    imgBannerMovie: string;
+    imgMovie: string;
 }
-export default function InfoForm({ defaultValue, countrys, authors, genres, directors, actors, tags }: MovieForm) {
+export default function InfoForm({ defaultValue,
+    countrys, authors, genres,
+    directors, actors, tags,
+    cropResult,
+    setCropResultBanner,
+    cropResultBanner,
+    setCropResult,
+    setImgMovie,
+    setImgBannerMovie,
+    imgBannerMovie,
+    imgMovie,
+}: MovieForm) {
     const statusMovies = [
         {
             value: 'going',
@@ -45,8 +64,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
     const [titleMovie, setTitleMovie] = useState(defaultValue.name || '');
     const [year, setYear] = useState<Dayjs | null>(defaultValue.releaseYear ? dayjs(defaultValue.releaseYear) : null);
     const [maxEp, setMaxEp] = useState(defaultValue.maxEp || undefined);
-    const [imgMovie, setImgMovie] = useState(defaultValue.img || undefined);
-    const [imgBannerMovie, setImgBannerMovie] = useState(defaultValue.poster || undefined);
+
 
     const [duration, setDuration] = useState<Dayjs | null>(
         defaultValue.duration ? dayjs().startOf('year').add(defaultValue.duration, 'seconds') : null,
@@ -54,8 +72,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
     const [valueStatus, setValueStatus] = useState(
         statusMovies.find((item) => item.label === defaultValue.status)?.value || '',
     );
-    const [cropResultBanner, setCropResultBanner] = useState<any>(null);
-    const [cropResult, setCropResult] = useState<any>(null);
+
     return (
         <Box sx={{
             margin: '0 auto',
@@ -63,8 +80,7 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
             display: 'flex',
             flexDirection: 'column'
         }}>
-
-            <ImageDropzone
+            {useMemo(() => (<ImageDropzone
                 cropResult={cropResult}
                 setCropResultBanner={setCropResultBanner}
                 cropResultBanner={cropResultBanner}
@@ -73,7 +89,8 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                 setImageBannerF={setImgBannerMovie}
                 imageBannerDefault={imgBannerMovie}
                 imageDefault={imgMovie}>
-            </ImageDropzone>
+            </ImageDropzone>), [cropResult, cropResultBanner, imgBannerMovie, imgMovie])}
+
             <Box
                 component="form"
                 sx={{
@@ -135,79 +152,29 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                         gap: 1,
 
                     }}>
-                    <AutocompleteBox setValueData={setValueAuthors} listData={authors} valueData={valueAuthors} />
-                    {/* <Autocomplete
-                        limitTags={1}
-                        multiple
-                        id="movie-tacgia"
-                        onChange={(event: any, newValue: any) => {
-                            setValueAuthors(newValue);
-                        }}
-                        options={authors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                        getOptionLabel={(option) => option.title}
-                        groupBy={(option) => option.firstLetter}
-                        value={valueAuthors}
-                        isOptionEqualToValue={(option, value) => {
-                            return option.title === value.title && option.id === value.id;
-                        }}
-                        renderTags={(tagValue, getTagProps) =>
-                            tagValue.map((option, index) => (
-                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
-                            ))
-                        }
-                        filterSelectedOptions
-                        renderInput={(params) => (
-                            <TextField required {...params} label="Tác giả" placeholder="Chọn tác giả" />
-                        )}
-                    />
-                    <Autocomplete
-                        limitTags={1}
-                        multiple
-                        id="movie-theloai"
-                        onChange={(event: any, newValue: any) => {
-                            setValueGenres(newValue);
-                        }}
-                        options={genres.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                        getOptionLabel={(option) => option.title}
-                        groupBy={(option) => option.firstLetter}
-                        value={valueGenres}
-                        isOptionEqualToValue={(option, value) => {
-                            return option.title === value.title && option.id === value.id;
-                        }}
-                        renderTags={(tagValue, getTagProps) =>
-                            tagValue.map((option, index) => (
-                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
-                            ))
-                        }
-                        filterSelectedOptions
-                        renderInput={(params) => (
-                            <TextField required {...params} label="Thể loại" placeholder="Chọn thể loại" />
-                        )}
-                    />
-                    <Autocomplete
-                        limitTags={1}
-                        multiple
-                        id="movie-daodien"
-                        onChange={(event: any, newValue: any) => {
-                            setValueDirectors(newValue);
-                        }}
-                        options={directors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                        value={valueDirectors}
-                        isOptionEqualToValue={(option, value) => {
-                            return option.title === value.title && option.id === value.id;
-                        }}
-                        renderTags={(tagValue, getTagProps) =>
-                            tagValue.map((option, index) => (
-                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
-                            ))
-                        }
-                        groupBy={(option) => option.firstLetter}
-                        getOptionLabel={(option) => option.title}
-                        filterSelectedOptions
-                        renderInput={(params) => (
-                            <TextField required {...params} label="Đạo diễn" placeholder="Chọn đạo diễn" />
-                        )}
-                    /> */}
+                    <AutocompleteBox
+                        setValueData={setValueAuthors}
+                        listData={authors}
+                        valueData={valueAuthors}
+                        id={'movie-tacgia'}
+                        label={'Tác giả'}
+                        placeholder={'Chọn tác giả'} />
+                    {/* <AutocompleteBox setValueData={setValueAuthors} listData={authors} valueData={valueAuthors} /> */}
+                    <AutocompleteBox
+                        setValueData={setValueGenres}
+                        listData={genres}
+                        valueData={valueGenres}
+                        id={'movie-theloai'}
+                        label={'Thể loại'}
+                        placeholder={'Chọn thể loại'} />
+                    <AutocompleteBox
+                        setValueData={setValueGenres}
+                        listData={directors}
+                        valueData={valueDirectors}
+                        id={'movie-daodien'}
+                        label={'Đạo diễn'}
+                        placeholder={'Chọn đạo diễn'} />
+
                     <TextField
                         id="movie-tag"
                         select
@@ -223,31 +190,14 @@ export default function InfoForm({ defaultValue, countrys, authors, genres, dire
                             </MenuItem>
                         ))}
                     </TextField>
-                    {/* <Autocomplete
-                        multiple
-                        limitTags={1}
-                        autoSelect
-                        id="movie-actor"
-                        onChange={(event: any, newValue: any) => {
-                            setValueActors(newValue);
-                        }}
-                        value={valueActors}
-                        options={actors.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                        groupBy={(option) => option.firstLetter}
-                        getOptionLabel={(option) => option.title}
-                        filterSelectedOptions
-                        isOptionEqualToValue={(option, value) => {
-                            return option.title === value.title && option.id === value.id;
-                        }}
-                        renderTags={(tagValue, getTagProps) =>
-                            tagValue.map((option, index) => (
-                                <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
-                            ))
-                        }
-                        renderInput={(params) => (
-                            <TextField required {...params} label="Diễn viên" placeholder="Chọn diễn viên" />
-                        )}
-                    /> */}
+                    <AutocompleteBox
+                        setValueData={setValueActors}
+                        listData={actors}
+                        valueData={valueActors}
+                        id={'movie-actor'}
+                        label={'Diễn viên'}
+                        placeholder={'Chọn diễn viên'} />
+
                 </Box>
                 <Box
                     sx={{
