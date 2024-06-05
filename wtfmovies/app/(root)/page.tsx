@@ -9,6 +9,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import { auth } from '../api/auth/[...nextauth]/auth';
 
 const cx = classNames.bind(style);
 
@@ -26,7 +27,6 @@ async function Home() {
     );
 
     return (
-        // <DefaultLayout>
         <div className={cx('wrapper')}>
             <div className={cx('home-top')}>
                 <FilmCarousel items={carouselItems} />
@@ -57,7 +57,6 @@ async function Home() {
                 }}
             />
         </div>
-        // </DefaultLayout>
     );
 }
 

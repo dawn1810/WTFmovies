@@ -11,6 +11,15 @@ import {
     faPlay,
     faUnlock,
 } from '@fortawesome/free-solid-svg-icons';
+import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CategoryIcon from '@mui/icons-material/Category';
+import PublishIcon from '@mui/icons-material/Publish';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import HistoryEduOutlinedIcon from '@mui/icons-material/HistoryEduOutlined';
+import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
+
 import classNames from 'classnames/bind';
 
 import images from '~/assets/image';

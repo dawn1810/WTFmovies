@@ -1,6 +1,6 @@
 // import { Breadcrumbs, Link, Typography } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFilter, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import SearchIcon from '@mui/icons-material/Search';
 import classNames from 'classnames/bind';
 
 import style from './search.module.scss';
@@ -27,11 +27,8 @@ async function search({ searchParams }: { searchParams: { query: string; type: s
                 </Breadcrumbs> */}
             <div className={cx('search-films')}>
                 <div className={cx('top-bar')}>
-                    <Title
-                        title="Phim tìm kiếm"
-                        icon={<FontAwesomeIcon icon={faMagnifyingGlass} className={cx('search-films-title')} />}
-                    />
-                    <Button primary rightIcon={<FontAwesomeIcon icon={faFilter} />}>
+                    <Title title="Phim tìm kiếm" icon={<SearchIcon className={cx('search-films-title')} />} />
+                    <Button primary rightIcon={<FilterListIcon />}>
                         Bộ lọc
                     </Button>
                 </div>

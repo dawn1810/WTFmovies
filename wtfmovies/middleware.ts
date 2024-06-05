@@ -4,26 +4,23 @@ import { auth } from './app/api/auth/[...nextauth]/auth';
 // import { ExtendedUser } from './libs/interfaces';
 const editer_path = ['film', 'overview'];
 const admin_path = ['overview', 'users', 'report', 'evaluate', 'userevaluate', 'films', 'comment'];
+const login_path = ['/profile', '/editor'];
 
 export async function middleware(request: NextRequest) {
-    const userSession = await auth();
-    const extendedUser: any | undefined = userSession?.user;
+    // const userSession = await auth();
+    // const extendedUser: any | undefined = userSession?.user;
 
-    if (!!userSession && request.nextUrl.pathname.startsWith('/register')) {
-        return NextResponse.redirect(new URL('/', request.url));
-    }
+    // if (!!userSession && request.nextUrl.pathname.startsWith('/register')) {
+    //     return NextResponse.redirect(new URL('/', request.url));
+    // }
 
-    if (!userSession && request.nextUrl.pathname.startsWith('/profile')) {
-        return NextResponse.redirect(new URL('/', request.url));
-    }
+    // if (!userSession && !login_path.some((path) => request.nextUrl.pathname.startsWith(path))) {
+    //     return NextResponse.redirect(new URL('/', request.url));
+    // }
 
-    if (!userSession && request.nextUrl.pathname.startsWith('/evaluate')) {
-        return NextResponse.redirect(new URL('/', request.url));
-    }
-
-    if (!userSession && request.nextUrl.pathname.startsWith('/editor')) {
-        return NextResponse.redirect(new URL('/', request.url));
-    }
+    // if (request.nextUrl.pathname.startsWith('/admin') && (!userSession || extendedUser?.role !== 'admin')) {
+    //     return NextResponse.redirect(new URL('/', request.url));
+    // }
 
     if (
         request.nextUrl.pathname.startsWith('/editor') &&
@@ -37,10 +34,6 @@ export async function middleware(request: NextRequest) {
         !admin_path.some((path) => request.nextUrl.pathname.endsWith(path))
     ) {
         return NextResponse.redirect(new URL('/admin/overview', request.url));
-    }
-
-    if (request.nextUrl.pathname.startsWith('/admin') && (!userSession || extendedUser?.role !== 'admin')) {
-        return NextResponse.redirect(new URL('/', request.url));
     }
 
     if (request.nextUrl.pathname.startsWith('/watch') && !/tap.*/.test(request.nextUrl.pathname)) {

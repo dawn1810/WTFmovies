@@ -1,7 +1,11 @@
 'use client';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowUp91, faCat, faEye, faFeather, faStar } from '@fortawesome/free-solid-svg-icons';
+import Filter9PlusIcon from '@mui/icons-material/Filter9Plus';
+import CategoryIcon from '@mui/icons-material/Category';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+
 import { Fragment } from 'react';
 import classNames from 'classnames/bind';
 
@@ -12,11 +16,11 @@ import FilmButtonGroup from '~/components/FilmButtonGroup/FilmButtonGroup';
 const cx = classNames.bind(style);
 
 const icons = [
-    <FontAwesomeIcon icon={faFeather} />,
-    <FontAwesomeIcon icon={faCat} />,
-    <FontAwesomeIcon icon={faArrowUp91} />,
-    <FontAwesomeIcon icon={faEye} />,
-    <FontAwesomeIcon icon={faStar} />,
+    <HistoryEduIcon />,
+    <CategoryIcon />,
+    <Filter9PlusIcon />,
+    <VisibilityOutlinedIcon />,
+    <StarBorderIcon />,
 ];
 
 function Captions({ item, loveState }: { item: CaptionsItemInterface; loveState: boolean }) {
