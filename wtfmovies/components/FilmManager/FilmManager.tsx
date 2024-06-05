@@ -2,6 +2,7 @@
 import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
 import { useMemo, useState } from 'react';
+// import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,7 +25,7 @@ import {
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { AlertColor } from '@mui/material';
+// import type { AlertColor } from '@mui/material';
 import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { viVN } from '@mui/x-data-grid/locales';
 import AlertDialog from '~/components/EditorDialog';
@@ -54,7 +55,7 @@ export default function DataGridCom({
 
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));
@@ -227,9 +228,32 @@ export default function DataGridCom({
                 không?
             </AlertDialog>
 
-            {useMemo(() => (
-                <MovieForm key={valueFilm.film_id} defaultValue={valueFilm} countrys={sideFormInfo.countrys} authors={sideFormInfo.author} genres={sideFormInfo.genres} directors={sideFormInfo.directors} actors={sideFormInfo.actors} tags={sideFormInfo.tags} isOpen={openForm} handleClose={handleCloseForm}></MovieForm>
-            ), [valueFilm, sideFormInfo.countrys, sideFormInfo.author, sideFormInfo.genres, sideFormInfo.directors, sideFormInfo.actors, sideFormInfo.tags, openForm])}
+            {useMemo(
+                () => (
+                    <MovieForm
+                        key={valueFilm.film_id}
+                        defaultValue={valueFilm}
+                        countrys={sideFormInfo.countrys}
+                        authors={sideFormInfo.author}
+                        genres={sideFormInfo.genres}
+                        directors={sideFormInfo.directors}
+                        actors={sideFormInfo.actors}
+                        tags={sideFormInfo.tags}
+                        isOpen={openForm}
+                        handleClose={handleCloseForm}
+                    ></MovieForm>
+                ),
+                [
+                    valueFilm,
+                    sideFormInfo.countrys,
+                    sideFormInfo.author,
+                    sideFormInfo.genres,
+                    sideFormInfo.directors,
+                    sideFormInfo.actors,
+                    sideFormInfo.tags,
+                    openForm,
+                ],
+            )}
 
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid

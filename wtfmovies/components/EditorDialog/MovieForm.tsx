@@ -5,6 +5,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import ListAltIcon from '@mui/icons-material/ListAlt';
+import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import AppBar from '@mui/material/AppBar';
 import Tabs from '@mui/material/Tabs';
@@ -13,8 +14,6 @@ import Tab from '@mui/material/Tab';
 import Dialog from '@mui/material/Dialog';
 import IconButton from '@mui/material/IconButton';
 import Toolbar from '@mui/material/Toolbar';
-import { AlertColor } from '@mui/material';
-
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 import { useDispatch } from 'react-redux';
 import InfoForm from './InfoForm';

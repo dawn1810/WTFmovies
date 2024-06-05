@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
-import { AlertColor } from '@mui/material';
+// //import { AlertColor } from '@mui/material';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 import { Form } from 'react-bootstrap';
@@ -26,7 +26,7 @@ function CommentInputForm({
 }) {
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

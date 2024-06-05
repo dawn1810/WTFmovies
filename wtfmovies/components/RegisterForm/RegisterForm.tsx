@@ -21,7 +21,7 @@ import { signupSelector } from '~/redux/selectors';
 import Button from '~/components/Button';
 import style from './RegisterForm.module.scss';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
-import { AlertColor } from '@mui/material';
+//import { AlertColor } from '@mui/material';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
@@ -35,7 +35,7 @@ function RegisterForm() {
     const state = useSelector(signupSelector);
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

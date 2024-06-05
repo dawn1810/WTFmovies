@@ -1,5 +1,5 @@
 import classNames from 'classnames/bind';
-import { AlertColor } from '@mui/material';
+// //import { AlertColor } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -30,7 +30,7 @@ function FilmButtonGroup({
     //alert
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

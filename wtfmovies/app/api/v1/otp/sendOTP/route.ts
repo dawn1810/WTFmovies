@@ -1,5 +1,4 @@
 export const runtime = 'edge';
-import mail from '~/mailTemplate/otpmailTemplate';
 import type { NextRequest } from 'next/server';
 import { MongoDate, generateOTP, mongodb, toError, toJSON } from '~/libs/func';
 
@@ -19,7 +18,10 @@ export async function POST(request: NextRequest) {
                 },
             ],
             subject: `Mã đăng nhập: ${OTP}`,
-            description: mail(OTP),
+            description: {
+                otp: OTP,
+            },
+            template: 'otp',
             mail_type: 'text/html',
         };
 

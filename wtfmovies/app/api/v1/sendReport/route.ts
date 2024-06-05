@@ -3,7 +3,6 @@ import type { NextRequest } from 'next/server';
 import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { auth } from '../../auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
-import { time } from 'console';
 
 type dataType = { type: 'report' | 'feedback'; content: string };
 

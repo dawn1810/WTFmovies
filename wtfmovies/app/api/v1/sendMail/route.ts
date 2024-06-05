@@ -1,5 +1,4 @@
 export const runtime = 'edge';
-import mail from '~/mailTemplate/remailTemplate';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { mongodb, toError, toJSON } from '~/libs/func';
@@ -57,7 +56,12 @@ export async function POST(request: NextRequest) {
                     },
                 ],
                 subject: '[WTFmovies] Cảm ơn vì thông tin của bạn',
-                description: mail({ userName: userName[0].name, adminName: adminName[0].name, content }),
+                description: {
+                    receiverName: userName[0].name,
+                    senderName: adminName[0].name,
+                    content: content,
+                },
+                template: 'mail',
                 mail_type: 'text/html',
             };
 

@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
-import { AlertColor } from '@mui/material';
+// //import { AlertColor } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import Card from '@mui/material/Card';
@@ -28,7 +28,7 @@ function ForgetPass() {
     //alert
     const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: AlertColor) => {
+    const showAlert = (content: string, type: any) => {
         dispatch(changeNotifyContent(content));
         dispatch(changeNotifyType(type));
         dispatch(changeNotifyOpen(true));

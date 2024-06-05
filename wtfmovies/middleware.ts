@@ -1,14 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { auth } from './app/api/auth/[...nextauth]/auth';
-import { ExtendedUser } from './libs/interfaces';
+// import { ExtendedUser } from './libs/interfaces';
 const editer_path = ['film', 'overview'];
 const admin_path = ['overview', 'users', 'report', 'evaluate', 'userevaluate', 'films', 'comment'];
 
 export async function middleware(request: NextRequest) {
     const userSession = await auth();
-    const extendedUser: ExtendedUser | undefined = userSession?.user;
-
+    const extendedUser: any | undefined = userSession?.user;
 
     if (!!userSession && request.nextUrl.pathname.startsWith('/register')) {
         return NextResponse.redirect(new URL('/', request.url));
