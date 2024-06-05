@@ -26,7 +26,7 @@ import {
 } from '@mui/x-data-grid';
 
 import style from './Table.module.scss';
-import CurrentDialog from './CurrentDialog/CurrentDialog';
+import CurrentDialog from './CurrentDialog';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);

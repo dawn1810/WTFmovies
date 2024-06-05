@@ -1,5 +1,4 @@
 export const runtime = 'edge';
-import mail from '~/mailTemplate/remailTemplate';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { mongodb, toError, toJSON } from '~/libs/func';

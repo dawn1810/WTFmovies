@@ -1,5 +1,4 @@
 export const runtime = 'edge';
-import mail from '~/mailTemplate/otpmailTemplate';
 import type { NextRequest } from 'next/server';
 import { MongoDate, generateOTP, mongodb, toError, toJSON } from '~/libs/func';
 
