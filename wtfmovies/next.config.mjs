@@ -23,7 +23,9 @@ const nextConfig = {
 
   staticPageGenerationTimeout: 60,
   swcMinify: true,
-
+  // experimental: {
+  //   esmExternals: false,
+  // },
   webpack(config, options) {
     config.resolve.alias['~'] = './'; // này sẽ thêm alias '~' để đề cập đến thư mục root của dự án
     return config;

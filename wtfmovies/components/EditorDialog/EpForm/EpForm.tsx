@@ -76,7 +76,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
         setEpisode('https://rurimeiko.pages.dev/dadada.m3u8');
     }
 
-    function handleItemChange(e: any, index: number) {}
+    function handleItemChange(e: any, index: number) { }
     function handleDeleteItem(index: number) {
         setDeleteIndex(index);
         setOpenDeleteDialog(true);
@@ -178,6 +178,8 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                     width: '30vw',
                     alignItems: 'center',
                     gap: 1,
+                    borderRadius: '5px',
+                    backgroundColor: '#000',
                 }}
             >
                 <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'}></Player>

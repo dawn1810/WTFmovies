@@ -158,7 +158,7 @@ export default function AdminDashboard({
                 allDataset={allTimeDataset.user}
                 up={false}
             />
-            <TableCard
+            {/* <TableCard
                 area="table1"
                 title="Danh sách bình luận"
                 rows={topSixUser}
@@ -169,7 +169,7 @@ export default function AdminDashboard({
                 title="Top những người yêu thích phim"
                 rows={topSixUser}
                 cols={['Email', 'Tên hiển thị']}
-            />
+            /> */}
 
 
 

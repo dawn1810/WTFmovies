@@ -11,7 +11,8 @@ import Chip from '@mui/material/Chip';
 
 const filter = createFilterOptions<DataType>();
 
-export default function CreateOptionDialog({ setValueData, listData, valueData }: { setValueData: any, listData: DataType[], valueData: any }) {
+export default function CreateOptionDialog({ id, label, placeholder, setValueData, listData, valueData }:
+    { id: string, label: string, placeholder: string, setValueData: any, listData: DataType[], valueData: any }) {
     const [open, toggleOpen] = useState(false);
 
     const handleClose = () => {
@@ -19,38 +20,43 @@ export default function CreateOptionDialog({ setValueData, listData, valueData }
         toggleOpen(false);
     };
 
+    const [dialogValue, setDialogValue] = useState({
+        inputValue: "",
+        title: "",
+        id: "",
+        firstLetter: ""
+    });
 
     const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        console.log(event);
+        setValueData([...valueData, dialogValue]);
 
         handleClose();
     };
+
 
     return (
         <Fragment>
             <Autocomplete
                 limitTags={1}
                 multiple
-                id="movie-tacgia"
+                id={id}
                 onChange={(event: any, newValue: any) => {
-                    console.log(newValue);
+                    if (newValue.length && newValue.length > valueData.length)
+                        if (newValue[newValue.length - 1].inputValue) {
+                            // timeout to avoid instant validation of the dialog's form.
+                            setTimeout(() => {
+                                const ndata = { ...newValue[newValue.length - 1], title: newValue[newValue.length - 1].inputValue, firstLetter: newValue[newValue.length - 1].inputValue[0].toUpperCase() };
+                                setDialogValue(ndata);
 
-                    if (typeof newValue.inputValue === 'string') {
-                        // timeout to avoid instant validation of the dialog's form.
-                        setTimeout(() => {
-                            console.log('eyy');
+                                toggleOpen(true);
 
-                            toggleOpen(true);
-
-                        });
-                    } else if (newValue && newValue.inputValue) {
-                        console.log('eyy');
-
-                        toggleOpen(true);
-
-                    } else {
-                        setValueData(newValue);
-                    }
+                            });
+                        } else {
+                            setValueData(newValue);
+                        }
+                    else setValueData(newValue);
                 }
                 }
                 options={listData.sort((a: any, b: any) => -b?.firstLetter.localeCompare(a?.firstLetter))}
@@ -86,8 +92,8 @@ export default function CreateOptionDialog({ setValueData, listData, valueData }
                     <TextField
                         required
                         {...params}
-                        label="Tác giả"
-                        placeholder="Chọn tác giả"
+                        label={label}
+                        placeholder={placeholder}
                     />
                 )}
                 selectOnFocus
@@ -151,12 +157,27 @@ export default function CreateOptionDialog({ setValueData, listData, valueData }
             /> */}
             <Dialog open={open} onClose={handleClose}>
                 <form onSubmit={handleSubmit}>
-                    <DialogTitle>Add a new film</DialogTitle>
+                    <DialogTitle>Thêm dữ liệu còn thiếu</DialogTitle>
                     <DialogContent>
                         <DialogContentText>
-                            Bạn vừa thêm một tuỳ chọn? Hãy xác nhận.
+                            Bạn vừa thêm một dữ liệu? Hãy điền thông tin chi tiết.
                         </DialogContentText>
-
+                        <TextField
+                            sx={{ width: '100%' }}
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            value={dialogValue.title}
+                            onChange={(event) =>
+                                setDialogValue({
+                                    ...dialogValue,
+                                    title: event.target.value,
+                                })
+                            }
+                            label="Tên"
+                            type="text"
+                            variant="standard"
+                        />
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
