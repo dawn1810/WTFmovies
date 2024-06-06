@@ -285,3 +285,48 @@ export const checkScoreData = (table: RowInterface[], score: any) => {
 
     return true;
 };
+
+// season
+export const getCurrentSeason = () => {
+    const today = new Date();
+    const year = today.getFullYear();
+
+    if (today >= new Date(`${year}-03-01`) && today < new Date(`${year}-06-01`)) {
+        return 'spring';
+    } else if (today >= new Date(`${year}-06-01`) && today < new Date(`${year}-09-01`)) {
+        return 'summer';
+    } else if (today >= new Date(`${year}-09-01`) && today < new Date(`${year}-12-01`)) {
+        return 'autumn';
+    } else if (today >= new Date(`${year}-12-01`) || today < new Date(`${year}-03-01`)) {
+        return 'winter';
+    }
+};
+
+export const getSessionTime = (season: string, year: number) => {
+    let start, end;
+
+    switch (season) {
+        case 'winter':
+            start = new Date(`${year}-12-01`);
+            end = new Date(`${year + 1}-03-01`);
+            break;
+        case 'spring':
+            start = new Date(`${year}-03-01`);
+            end = new Date(`${year}-06-01`);
+            break;
+        case 'summer':
+            start = new Date(`${year}-06-01`);
+            end = new Date(`${year}-09-01`);
+            break;
+        case 'autumn':
+            start = new Date(`${year}-09-01`);
+            end = new Date(`${year}-12-01`);
+            break;
+        default:
+            start = new Date(`${year}-03-01`);
+            end = new Date(`${year}-06-01`);
+            break;
+    }
+
+    return { start, end };
+};

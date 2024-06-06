@@ -24,8 +24,8 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
             content: tabs[0],
         },
         {
-            title: '#MÙA ĐÔNG - 2024',
-            eventKey: 'winterTo2024',
+            title: '#QUÝ NÀY',
+            eventKey: 'summerTo2024',
             content: tabs[1],
         },
         {

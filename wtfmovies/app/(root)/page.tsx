@@ -9,21 +9,25 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import LocalFireDepartmentOutlinedIcon from '@mui/icons-material/LocalFireDepartmentOutlined';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { auth } from '../api/auth/[...nextauth]/auth';
+import { getCurrentSeason } from '~/libs/func';
 
 const cx = classNames.bind(style);
 
 async function Home() {
+    const today = new Date();
+    const currYear = today.getFullYear();
+    const currSeason = getCurrentSeason() || 'spring';
+
     // get data
     const carouselItems = await getCaroselFilms();
     const proposeListFilms = await getProposeListFilms();
     const { allNewFilms, currNewFilms, seriesNewFilms, movieNewFilms, mostWatchFilms } = await getNewClassifyFilms(
-        'spring',
-        2024,
+        currSeason,
+        currYear,
     );
     const { allHotFilms, currHotFilms, seriesHotFilms, movieHotFilms, mostLikeFilms } = await getHotClassifyFilms(
-        'spring',
-        2024,
+        currSeason,
+        currYear,
     );
 
     return (

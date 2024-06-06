@@ -1,4 +1,4 @@
-import { mongodb } from '~/libs/func';
+import { MongoDate, getSessionTime, mongodb } from '~/libs/func';
 import { ExtendedUser, FilmInfoInterface, UserInfoInterface } from '../interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
@@ -193,32 +193,13 @@ export const getNewClassifyFilms = async (
     mostWatchFilms: FilmInfoInterface[];
 }> => {
     try {
-        let start, end;
-
-        switch (season) {
-            case 'winter':
-                start = new Date(`${year}-12-01`);
-                end = new Date(`${year + 1}-03-01`);
-                break;
-            case 'spring':
-                start = new Date(`${year}-03-01`);
-                end = new Date(`${year}-06-01`);
-                break;
-            case 'summer':
-                start = new Date(`${year}-06-01`);
-                end = new Date(`${year}-09-01`);
-                break;
-            case 'autumn':
-                start = new Date(`${year}-09-01`);
-                end = new Date(`${year}-12-01`);
-                break;
-        }
+        let { start, end } = getSessionTime(season, year);
 
         const allNewFilms = await getFilms(16, { updateTime: -1, likes: -1, views: -1, rating: -1 });
         const currNewFilms = await getFilms(
             16,
             { updateTime: -1, likes: -1, views: -1, rating: -1 },
-            { updateTime: { $gte: start, $lt: end } },
+            { updateTime: { $gte: MongoDate(start), $lt: MongoDate(end) } },
         );
         const seriesNewFilms = await getFilms(
             16,
@@ -257,32 +238,13 @@ export const getHotClassifyFilms = async (
     mostLikeFilms: FilmInfoInterface[];
 }> => {
     try {
-        let start, end;
-
-        switch (season) {
-            case 'winter':
-                start = new Date(`${year}-12-01`);
-                end = new Date(`${year + 1}-03-01`);
-                break;
-            case 'spring':
-                start = new Date(`${year}-03-01`);
-                end = new Date(`${year}-06-01`);
-                break;
-            case 'summer':
-                start = new Date(`${year}-06-01`);
-                end = new Date(`${year}-09-01`);
-                break;
-            case 'autumn':
-                start = new Date(`${year}-09-01`);
-                end = new Date(`${year}-12-01`);
-                break;
-        }
+        let { start, end } = getSessionTime(season, year);
 
         const allHotFilms = await getFilms(16, { views: -1, updateTime: -1, likes: -1, rating: -1 });
         const currHotFilms = await getFilms(
             16,
             { views: -1, updateTime: -1, likes: -1, rating: -1 },
-            { updateTime: { $gte: start, $lt: end } },
+            { updateTime: { $gte: MongoDate(start), $lt: MongoDate(end) } },
         );
         const seriesHotFilms = await getFilms(
             16,
