@@ -1,13 +1,21 @@
+import { redirect } from 'next/navigation';
+import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import ProfileForm from '~/components/ProfileForm';
 import { getUserInfo, getUserLoveFilmsInfo } from '~/libs/getData/profile';
 
 async function Profile() {
-    //get all user info
-    const userInfo = await getUserInfo();
+    const session = await auth();
 
-    const loveFilmsInfo = await getUserLoveFilmsInfo();
+    if (!session) {
+        redirect('/');
+    } else {
+        //get all user info
+        const userInfo = await getUserInfo();
 
-    return <ProfileForm userInfo={userInfo} loveFilmsInfo={loveFilmsInfo} />;
+        const loveFilmsInfo = await getUserLoveFilmsInfo();
+
+        return <ProfileForm userInfo={userInfo} loveFilmsInfo={loveFilmsInfo} />;
+    }
 }
 
 export default Profile;
