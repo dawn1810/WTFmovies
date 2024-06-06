@@ -168,13 +168,19 @@ export default function InfoForm({ defaultValue,
                         label={'Thể loại'}
                         placeholder={'Chọn thể loại'} />
                     <AutocompleteBox
-                        setValueData={setValueGenres}
+                        setValueData={setValueDirectors}
                         listData={directors}
                         valueData={valueDirectors}
                         id={'movie-daodien'}
                         label={'Đạo diễn'}
                         placeholder={'Chọn đạo diễn'} />
-
+                    <AutocompleteBox
+                        setValueData={setValueActors}
+                        listData={actors}
+                        valueData={valueActors}
+                        id={'movie-actor'}
+                        label={'Diễn viên'}
+                        placeholder={'Chọn diễn viên'} />
                     <TextField
                         id="movie-tag"
                         select
@@ -190,13 +196,7 @@ export default function InfoForm({ defaultValue,
                             </MenuItem>
                         ))}
                     </TextField>
-                    <AutocompleteBox
-                        setValueData={setValueActors}
-                        listData={actors}
-                        valueData={valueActors}
-                        id={'movie-actor'}
-                        label={'Diễn viên'}
-                        placeholder={'Chọn diễn viên'} />
+
 
                 </Box>
                 <Box
