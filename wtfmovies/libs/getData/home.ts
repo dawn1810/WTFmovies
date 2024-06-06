@@ -147,7 +147,6 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
-
                     queryMatch,
                     {
                         $lookup: {
@@ -169,7 +168,6 @@ const getFilms = async (limit: number, sort: object, query?: object): Promise<Fi
                             poster: 1,
                         },
                     },
-
                     { $limit: limit },
                     { $sort: sort },
                 ],
@@ -199,7 +197,7 @@ export const getNewClassifyFilms = async (
         const currNewFilms = await getFilms(
             16,
             { updateTime: -1, likes: -1, views: -1, rating: -1 },
-            { updateTime: { $gte: MongoDate(start), $lt: MongoDate(end) } },
+            { releaseYear: { $gte: MongoDate(start), $lt: MongoDate(end) } },
         );
         const seriesNewFilms = await getFilms(
             16,
