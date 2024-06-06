@@ -6,7 +6,9 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import classNames from 'classnames/bind';
-
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { AlertColor } from '@mui/material';
+import { useDispatch } from 'react-redux';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Player from '~/components/Player';
 import style from './YoutubeUpload.module.scss';
@@ -44,8 +46,13 @@ export default function InfoForm({ defaultValue }: MovieForm) {
 
         setEpisode(event.target.value);
     };
+    const dispatch = useDispatch();
 
-
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
 
     const handleClickFetch = async (event: any): Promise<void> => {
         setLoading(false);
@@ -54,8 +61,10 @@ export default function InfoForm({ defaultValue }: MovieForm) {
             const lEpDe: FectData = await lEp.json();
             setListEpisode(lEpDe.result.map((item) => ({ link: item.link.Youtube, index: item.index })));
             setEpisode(lEpDe.result[0].link.Youtube)
+            showAlert('Tải dữ liệu tập phim thành công', 'success')
 
         } else {
+            showAlert('Có lỗi xảy ra khi tải dữ liệu tập phim', 'error')
             setListEpisode([]);
             setEpisode('');
         }

@@ -134,7 +134,7 @@ const Player = ({ url, className, isEdior }: {
                 volume={state.volume}
                 muted={state.muted}
                 onReady={handleReady}
-                onStart={() => console.log('start')}
+                onStart={() => dispatch(changePlayPause(true))}
                 onPlay={handlePlay}
                 // onProgress
                 onBuffer={handleOnBuffer}

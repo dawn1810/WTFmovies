@@ -43,7 +43,7 @@ const VisuallyHiddenInput = styled('input')({
 export default function InfoForm({ defaultValue }: MovieForm) {
     // console.log(defaultValue);
 
-    const [listEpisode, setListEpisode] = useState<{ link: string; index: number }[]>(defaultValue ? defaultValue : []);
+    const [listEpisode, setListEpisode] = useState<{ link: string; index: number }[]>(defaultValue ? defaultValue.map((item: { link: { Tiktok: any; }; }) => ({ ...item, link: item.link.Tiktok })) : []);
     const [deleteIndex, setDeleteIndex] = useState<number>(0);
 
     const [episode, setEpisode] = useState(listEpisode.length > 0 ? listEpisode[0].link : '');

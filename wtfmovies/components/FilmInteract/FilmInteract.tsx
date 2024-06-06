@@ -11,7 +11,6 @@ const cx = classNames.bind(style);
 function FilmInteract({ data, setServerVideo, serverVideo }: { setServerVideo: any, serverVideo: string, data: { [key: string]: string } }) {
     const onChangeServer = (e: any) => { setServerVideo(e.target.value) };
     const listServer = Object.keys(data).filter(key => data[key] !== "");
-    console.log(listServer);
 
     return (
         <div className={cx('wrapper')}>
