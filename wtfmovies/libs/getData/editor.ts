@@ -183,7 +183,7 @@ const getCountrys = async (): Promise<any[]> => {
         const countrys: any[] = await mongodb()
             .db('film')
             .collection('country')
-            .find({ projection: { _id: 0 } });
+            .find();
 
         return countrys;
     } catch (err) {
@@ -197,7 +197,7 @@ const getTags = async (): Promise<any[]> => {
         const tags: any[] = await mongodb()
             .db('film')
             .collection('tag')
-            .find({ projection: { _id: 0 } });
+            .find();
 
         return tags;
     } catch (err) {

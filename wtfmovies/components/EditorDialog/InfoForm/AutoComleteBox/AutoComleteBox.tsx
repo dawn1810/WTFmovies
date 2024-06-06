@@ -6,33 +6,90 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
-import React, { useState, FormEvent, Fragment } from 'react';
+import React, { useState, FormEvent, Fragment, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { AlertColor } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const filter = createFilterOptions<DataType>();
 
-export default function CreateOptionDialog({ id, label, placeholder, setValueData, listData, valueData }:
-    { id: string, label: string, placeholder: string, setValueData: any, listData: DataType[], valueData: any }) {
+export default function CreateOptionDialog({ id, label, placeholder, setValueData, valueData }:
+    { id: string, label: string, placeholder: string, setValueData: any, valueData: any }) {
     const [open, toggleOpen] = useState(false);
+    const [loadingDelete, setLoadingDelete] = useState(false);
+    const dispatch = useDispatch();
+    const [listData, setListData] = React.useState<DataType[]>([]);
+    const [openAutoBox, setOpenAutoBox] = React.useState(false);
 
+    const loading = openAutoBox && listData.length === 0;
+    useEffect(() => {
+        let active = true;
+
+        if (!loading) {
+            return undefined;
+        }
+
+        (async () => {
+            const data = await fetch('/api/v1/editor/fetchData', {
+                method: 'POST',
+                body: JSON.stringify({ collection: id })
+            });
+            const decodeData: DataType[] = await data.json();
+            if (decodeData.length > 0 && active) {
+                setListData(decodeData);
+            }
+        })();
+
+        return () => {
+            active = false;
+        };
+    }, [loading]);
     const handleClose = () => {
+        setLoadingDelete(false);
 
         toggleOpen(false);
     };
 
-    const [dialogValue, setDialogValue] = useState({
+    const [dialogValue, setDialogValue] = useState<DataType>({
         inputValue: "",
         title: "",
         id: "",
         firstLetter: ""
     });
-
-    const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
-        console.log(event);
-        setValueData([...valueData, dialogValue]);
+        setLoadingDelete(true);
 
-        handleClose();
+        const data = await fetch('/api/v1/editor/addNewInfo',
+            {
+                method: 'POST',
+                body: JSON.stringify({ name: dialogValue.title, typeInfo: id })
+            });
+        const iId: { statusCode: number, content: string } = await data.json();
+
+        if (iId.statusCode === 200) {
+            const temp = { ...dialogValue };
+            delete temp.inputValue;
+            listData.push({ ...temp, id: iId.content })
+            setValueData([...valueData, { ...temp, id: iId.content }]);
+            showAlert('Thêm dữ liệu thành công', 'success')
+            setDialogValue({
+                inputValue: "",
+                title: "",
+                id: "",
+                firstLetter: ""
+            })
+            return handleClose();
+        }
+        return showAlert('Có lỗi xảy ra khi thêm dữ liệu', 'error')
     };
 
 
@@ -42,6 +99,12 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                 limitTags={1}
                 multiple
                 id={id}
+                onOpen={() => {
+                    setOpenAutoBox(true);
+                }}
+                onClose={() => {
+                    setOpenAutoBox(false);
+                }}
                 onChange={(event: any, newValue: any) => {
                     if (newValue.length && newValue.length > valueData.length)
                         if (newValue[newValue.length - 1].inputValue) {
@@ -94,6 +157,15 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                         {...params}
                         label={label}
                         placeholder={placeholder}
+                        InputProps={{
+                            ...params.InputProps,
+                            endAdornment: (
+                                <Fragment>
+                                    {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                                    {params.InputProps.endAdornment}
+                                </Fragment>
+                            ),
+                        }}
                     />
                 )}
                 selectOnFocus
@@ -101,60 +173,7 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                 freeSolo
                 handleHomeEndKeys
             />
-            {/* <Autocomplete
-                value={value}
-                onChange={(event, newValue) => {
-                    if (typeof newValue === 'string') {
-                        // timeout to avoid instant validation of the dialog's form.
-                        setTimeout(() => {
-                            toggleOpen(true);
-                            setDialogValue({
-                                title: newValue,
-                                year: '',
-                            });
-                        });
-                    } else if (newValue && newValue.inputValue) {
-                        toggleOpen(true);
-                        setDialogValue({
-                            title: newValue.inputValue,
-                            year: '',
-                        });
-                    } else {
-                        setValue(newValue);
-                    }
-                }}
-                filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
 
-                    if (params.inputValue !== '') {
-                        filtered.push({
-                            inputValue: params.inputValue,
-                            title: `Add "${params.inputValue}"`,
-                        });
-                    }
-
-                    return filtered;
-                }}
-                id="free-solo-dialog-demo"
-                options={top100Films}
-                getOptionLabel={(option) => {
-                    // for example value selected with enter, right from the input
-                    if (typeof option === 'string') {
-                        return option;
-                    }
-                    if (option.inputValue) {
-                        return option.inputValue;
-                    }
-                    return option.title;
-                }}
-                selectOnFocus
-                clearOnBlur
-                handleHomeEndKeys
-                renderOption={(props, option) => <li {...props}>{option.title}</li>}
-                sx={{ width: 300 }}
-                freeSolo
-                renderInput={(params) => <TextField {...params} label="Free solo dialog" />}
-            /> */}
             <Dialog open={open} onClose={handleClose}>
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>Thêm dữ liệu còn thiếu</DialogTitle>
@@ -172,6 +191,7 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                                 setDialogValue({
                                     ...dialogValue,
                                     title: event.target.value,
+                                    firstLetter: event.target.value[0].toUpperCase(),
                                 })
                             }
                             label="Tên"
@@ -181,7 +201,8 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
-                        <Button type="submit">Thêm</Button>
+                        <LoadingButton loading={loadingDelete}
+                            type="submit">Thêm</LoadingButton>
                     </DialogActions>
                 </form>
             </Dialog>

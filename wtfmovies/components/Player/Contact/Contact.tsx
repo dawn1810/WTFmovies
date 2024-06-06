@@ -369,25 +369,27 @@ const Contact = forwardRef(
                                 x {contactState.currSpeed}
                             </button>
                         </Menu>
-                        <Menu
-                            key={contactState.currResol}
-                            playerMenu
-                            items={contactState.resolution.map((menuItem) => {
-                                if (menuItem.icon === true) {
-                                    return { ...menuItem, icon: <CheckIcon /> };
-                                } else {
-                                    return menuItem;
-                                }
-                            })}
-                            title="Chất lượng"
-                            placement="top"
-                            delay={0}
-                            onChange={handleResolSettingChange}
-                        >
-                            <button onClick={(e) => e.preventDefault()} className={cx('action-btn', 'action2-btn')}>
-                                {contactState.currResol}
-                            </button>
-                        </Menu>
+                        {isEdior || (
+                            <Menu
+                                key={contactState.currResol}
+                                playerMenu
+                                items={contactState.resolution.map((menuItem) => {
+                                    if (menuItem.icon === true) {
+                                        return { ...menuItem, icon: <CheckIcon /> };
+                                    } else {
+                                        return menuItem;
+                                    }
+                                })}
+                                title="Chất lượng"
+                                placement="top"
+                                delay={0}
+                                onChange={handleResolSettingChange}
+                            >
+                                <button onClick={(e) => e.preventDefault()} className={cx('action-btn', 'action2-btn')}>
+                                    {contactState.currResol}
+                                </button>
+                            </Menu>)}
+
                         {ReactPlayer.canEnablePIP(contactState.url) && (
                             <Tooltip title="Trình phát thu nhỏ (i)" placement="top">
                                 <IconButton aria-label="delete" size="large" onClick={handleTogglePIP}>

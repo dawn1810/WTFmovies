@@ -77,7 +77,11 @@ export default function ImageDropzone({
     return (
         <Box className={cx('imgSellectContainer')}>
             <div className={cx('imgInput')} onDragOver={handleDragOver} onDrop={() => handleDrop(event, 'banner')}>
-                <ReviewImage classname="reviewImage" imageSrc={imageBannerDefault} croppedArea={cropResultBanner} />
+
+                <div className={cx("addnew")}>
+                    <img src="/images/svg/plus-add-new.svg" alt="" />
+                </div>
+                <ReviewImage classname={cx("reviewImage")} imageSrc={imageBannerDefault} croppedArea={cropResultBanner} />
                 <input
                     type="file"
                     accept="image/png, image/jpeg"
@@ -92,7 +96,11 @@ export default function ImageDropzone({
                 onDragOver={handleDragOver}
                 onDrop={() => handleDrop(event, 'image')}
             >
-                <ReviewImage classname="reviewImageBaner" imageSrc={imageDefault} croppedArea={cropResult} />
+                <div className={cx("addnew")}>
+                    <img src="/images/svg/plus-add-new.svg" alt="" />
+                </div>
+                <ReviewImage classname={cx("reviewImageBaner")} imageSrc={imageDefault} croppedArea={cropResult} />
+
                 <input
                     type="file"
                     accept="image/png, image/jpeg"

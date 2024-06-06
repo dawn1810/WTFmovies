@@ -3,20 +3,9 @@ import TextField from '@mui/material/TextField';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
 import FormControl from '@mui/material/FormControl';
-import IconButton from '@mui/material/IconButton';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-
-
 import classNames from 'classnames/bind';
-import Radio from '@mui/material/Radio';
-import DeleteIcon from '@mui/icons-material/Delete';
 
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Player from '~/components/Player';
@@ -28,18 +17,19 @@ interface MovieForm {
     defaultValue?: any;
 }
 import { CloudUpload } from '@mui/icons-material';
+import InputLabel from '@mui/material/InputLabel';
 
 
 export default function InfoForm({ defaultValue }: MovieForm) {
     // console.log(defaultValue);
 
     const [listEpisode, setListEpisode] = useState<{ link: string; index: number }[]>(defaultValue ? defaultValue : []);
-    const [deleteIndex, setDeleteIndex] = useState<number>(0);
 
     const [episode, setEpisode] = useState(listEpisode.length > 0 ? listEpisode[0].link : '');
-    const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
     const handleChange = (event: SelectChangeEvent) => {
+        console.log(event.target.value);
+
         setEpisode(event.target.value);
     };
 
@@ -48,7 +38,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
     return (
         <Box>
             <Box sx={{ width: '100%' }}>
-                <LinearProgress variant="determinate" value={20} />
+                <LinearProgress variant="indeterminate" value={0} />
             </Box>
             <Box
                 component="form"
@@ -79,15 +69,38 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                         position: 'relative'
                     }}
                 >
-                    <FormControl
-                        sx={{
-                            m: 1,
-                            flexGrow: 1,
-                            justifyContent: 'space-between',
-                            minWidth: 450,
-                        }}
-                    >
+                    <Box sx={{ minWidth: 450, p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
                         <TextField id="outlined-basic" label="Liên kết danh sách phát" variant="outlined" />
+
+                        <FormControl fullWidth
+
+                        >
+
+                            <InputLabel id="demo-simple-select-label">Chọn tập</InputLabel>
+
+                            <Select
+                                key={episode}
+                                labelId="demo-simple-select-label"
+                                value={episode}
+                                label="Chọn tập"
+                                onChange={handleChange}
+                            >
+
+
+                                {listEpisode &&
+                                    listEpisode.map((item: { link: string; index: number }) => (
+                                        <MenuItem
+                                            value={item.link}
+                                            key={item.index}
+                                        >
+                                            {item.index}
+
+                                        </MenuItem>
+                                    ))}
+
+                            </Select>
+
+                        </FormControl>
                         <Button
                             component="label"
                             variant="contained"
@@ -96,32 +109,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                         >
                             Load danh sách phát
                         </Button>
-                        <Select
-                            key={episode}
-
-                            value={episode}
-                            sx={{ display: 'flex', justifyContent: 'space-between' }}
-                            label="Chọn tập"
-                            onChange={handleChange}
-                        >
-
-
-                            {/* Item list */}
-                            {listEpisode &&
-                                listEpisode.map((item: { link: string; index: number }) => (
-                                    <MenuItem
-                                        value={episode}
-                                        key={item.index}
-                                    >
-                                        {item.index}
-
-                                    </MenuItem>
-                                ))}
-                            {/* {defaultValue && defaultValue.map((item: { link: string, index: 1 }) => <MenuItem key={item.index} value={item.link}>{item.index}</MenuItem>)}
-                            <MenuItem value={null}>Thêm tập</MenuItem> */}
-                        </Select>
-
-                    </FormControl>
+                    </Box>
 
 
 
@@ -137,7 +125,6 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                         alignItems: 'center',
                         gap: 1,
                         borderRadius: '5px',
-                        backgroundColor: '#000',
                     }}
                 >
                     <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode}></Player>

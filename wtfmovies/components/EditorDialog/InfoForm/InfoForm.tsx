@@ -1,19 +1,12 @@
 import ImageDropzone from '../ImageDropzone';
-import dayjs, { Dayjs } from 'dayjs';
 import { DatePicker, MobileTimePicker } from '@mui/x-date-pickers';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
 import TextField from '@mui/material/TextField';
-import { useState, useMemo } from 'react';
+import { useMemo } from 'react';
 import AutocompleteBox from './AutoComleteBox/AutoComleteBox';
+
 interface MovieForm {
-    defaultValue: any;
-    countrys: any[];
-    authors: any[];
-    genres: any[];
-    directors: any[];
-    actors: any[];
-    tags: any[];
     cropResult: any[];
     setCropResultBanner: any;
     cropResultBanner: any[];
@@ -22,10 +15,22 @@ interface MovieForm {
     setImgBannerMovie: any;
     imgBannerMovie: string;
     imgMovie: string;
+    tags: any[],
+    countrys: any[],
+    statusMovies: any[], setValueStatus: any, valueStatus: any,
+    titleMovie: any, setTitleMovie: any,
+    valueAuthors: any, setValueAuthors: any,
+    valueGenres: any, setValueGenres: any,
+    duration: any, setDuration: any,
+    maxEp: any, setMaxEp: any,
+    year: any, setYear: any,
+    valueCountry: any, setValueCountry: any,
+    valueTag: any, setvValueTag: any,
+    valueActors: any, setValueActors: any,
+    valueDirectors: any, setValueDirectors: any,
+    sumaryMovie: any, setSumaryMovie: any;
 }
-export default function InfoForm({ defaultValue,
-    countrys, authors, genres,
-    directors, actors, tags,
+export default function InfoForm({
     cropResult,
     setCropResultBanner,
     cropResultBanner,
@@ -34,44 +39,23 @@ export default function InfoForm({ defaultValue,
     setImgBannerMovie,
     imgBannerMovie,
     imgMovie,
+    tags,
+    countrys,
+    statusMovies, setValueStatus, valueStatus,
+    titleMovie, setTitleMovie,
+    valueAuthors, setValueAuthors,
+    valueGenres, setValueGenres,
+    duration, setDuration,
+    maxEp, setMaxEp,
+    year, setYear,
+    valueCountry, setValueCountry,
+    valueTag, setvValueTag,
+    valueActors, setValueActors,
+    valueDirectors, setValueDirectors,
+    sumaryMovie, setSumaryMovie
 }: MovieForm) {
-    const statusMovies = [
-        {
-            value: 'going',
-            label: 'Đang ra',
-        },
-        {
-            value: 'pause',
-            label: 'Tạm dừng',
-        },
-        {
-            value: 'done',
-            label: 'Hoàn thành',
-        },
-        {
-            value: 'will',
-            label: 'Sắp chiếu',
-        },
-    ];
-
-    const [valueAuthors, setValueAuthors] = useState(defaultValue.author || []);
-    const [valueGenres, setValueGenres] = useState(defaultValue.genre || []);
-    const [valueDirectors, setValueDirectors] = useState(defaultValue.director || []);
-    const [valueActors, setValueActors] = useState(defaultValue.actor || []);
-    const [valueTag, setvValueTag] = useState(defaultValue.tag || '');
-    const [valueCountry, setValueCountry] = useState(defaultValue?.country?.[0].value || '');
-    const [sumaryMovie, setSumaryMovie] = useState(defaultValue.describe || '');
-    const [titleMovie, setTitleMovie] = useState(defaultValue.name || '');
-    const [year, setYear] = useState<Dayjs | null>(defaultValue.releaseYear ? dayjs(defaultValue.releaseYear) : null);
-    const [maxEp, setMaxEp] = useState(defaultValue.maxEp || undefined);
 
 
-    const [duration, setDuration] = useState<Dayjs | null>(
-        defaultValue.duration ? dayjs().startOf('year').add(defaultValue.duration, 'seconds') : null,
-    );
-    const [valueStatus, setValueStatus] = useState(
-        statusMovies.find((item) => item.label === defaultValue.status)?.value || '',
-    );
 
     return (
         <Box sx={{
@@ -154,31 +138,26 @@ export default function InfoForm({ defaultValue,
                     }}>
                     <AutocompleteBox
                         setValueData={setValueAuthors}
-                        listData={authors}
                         valueData={valueAuthors}
-                        id={'movie-tacgia'}
+                        id={'author'}
                         label={'Tác giả'}
                         placeholder={'Chọn tác giả'} />
-                    {/* <AutocompleteBox setValueData={setValueAuthors} listData={authors} valueData={valueAuthors} /> */}
                     <AutocompleteBox
                         setValueData={setValueGenres}
-                        listData={genres}
                         valueData={valueGenres}
-                        id={'movie-theloai'}
+                        id={'genre'}
                         label={'Thể loại'}
                         placeholder={'Chọn thể loại'} />
                     <AutocompleteBox
                         setValueData={setValueDirectors}
-                        listData={directors}
                         valueData={valueDirectors}
-                        id={'movie-daodien'}
+                        id={'director'}
                         label={'Đạo diễn'}
                         placeholder={'Chọn đạo diễn'} />
                     <AutocompleteBox
                         setValueData={setValueActors}
-                        listData={actors}
                         valueData={valueActors}
-                        id={'movie-actor'}
+                        id={'actor'}
                         label={'Diễn viên'}
                         placeholder={'Chọn diễn viên'} />
                     <TextField

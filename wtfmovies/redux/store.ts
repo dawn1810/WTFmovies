@@ -13,7 +13,7 @@ const store = configureStore({
         player: playerSlice,
         header: headerSlice,
         register: registerSlice,
-        dataGridCom: filmManagerSlice,
+        editor: filmManagerSlice,
         watch: watchSlice,
         profile: profileSlice,
         notify: notifySlice,

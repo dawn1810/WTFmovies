@@ -1,5 +1,7 @@
 //import { AlertColor } from '@mui/material';
 
+import { DateMongo, ObjectMongo } from "~/libs/interfaces";
+
 // signup
 export const changeSignUpEmailAlert = (emailAlert: boolean) => {
     return {
@@ -59,12 +61,7 @@ export const changeModalShow = (modalShow: boolean) => {
 };
 
 //
-export const changeAlertStatus = (status: { content: any; status: boolean }) => {
-    return {
-        type: 'MovieForm/changeAlertStatus',
-        payload: status,
-    };
-};
+
 
 // player
 export const changeUrl = (url: string) => {
@@ -260,3 +257,13 @@ export const changeRpContent = (content: string) => {
         payload: content,
     };
 };
+
+
+// Editor
+export const changeAlertStatus = (status: { content: any; status: boolean }) => {
+    return {
+        type: 'editor/changeAlertStatus',
+        payload: status,
+    };
+};
+

@@ -1,11 +1,29 @@
 .imgInput,
 .imgInputbanner {
+    &:hover .addnew {
+        display: block;
+    }
+
     width: 150px;
     height: 84.38px;
     border: 1px dashed black;
     background-color: white;
     overflow: hidden;
     position: relative;
+}
+
+.addnew {
+    display: none;
+    transition: display ease-out 0.3s;
+
+    & img {
+        width: 100%;
+        height: 100%;
+    }
+
+    width: 100%;
+    height: 100%;
+    background-color: var(--blur-background-color);
 }
 
 .reviewImage {

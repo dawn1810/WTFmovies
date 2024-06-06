@@ -24,8 +24,8 @@ function TabPanel(props: TabPanelProps) {
             {...other}
         >
             {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
+                <Box sx={{ p: 1 }}>
+                    {children}
                 </Box>
             )}
         </div>
@@ -64,10 +64,10 @@ export default function VerticalTabs({ defaultValue }: MovieForm) {
                 <Tab label="Youtube server" {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
-                <TiktokUpload></TiktokUpload>
+                <TiktokUpload defaultValue={defaultValue}></TiktokUpload>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <YoutubeUpload></YoutubeUpload>
+                <YoutubeUpload defaultValue={defaultValue}></YoutubeUpload>
             </TabPanel>
 
         </Box>

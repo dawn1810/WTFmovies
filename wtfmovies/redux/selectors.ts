@@ -26,8 +26,8 @@ const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.regis
 //header
 const modalShowSelector = (state: reduxStateInterface) => state.header.modalShow;
 
-//AlertPOPUP
-export const alertStatusSelector = (state: reduxStateInterface) => state.dataGridCom.alertStatus;
+//editor
+export const alertStatusSelector = (state: reduxStateInterface) => state.editor.alertStatus;
 
 //player
 export const readySelector = (state: reduxStateInterface) => state.player.ready;

@@ -39,13 +39,13 @@ const cx = classNames.bind(style);
 export default function DataGridCom({
     colum,
     children,
-    title_name,
     sideFormInfo,
+    title_name,
 }: {
     colum: readonly GridColDef<{ any: any }>[];
     children: any;
-    title_name: string;
     sideFormInfo: any;
+    title_name: string;
 }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [open, setOpen] = useState(false);
@@ -91,7 +91,10 @@ export default function DataGridCom({
     function handleAdd() {
         setOpenForm(true);
     }
+
     function handleCloseForm() {
+
+
         setOpenForm(false);
         setValueFilm({});
     }
@@ -234,24 +237,14 @@ export default function DataGridCom({
                     <MovieForm
                         key={valueFilm.film_id}
                         defaultValue={valueFilm}
-                        countrys={sideFormInfo.countrys}
-                        authors={sideFormInfo.author}
-                        genres={sideFormInfo.genres}
-                        directors={sideFormInfo.directors}
-                        actors={sideFormInfo.actors}
-                        tags={sideFormInfo.tags}
+
                         isOpen={openForm}
-                        handleClose={handleCloseForm}
-                    ></MovieForm>
+                        handleClose={handleCloseForm} tags={sideFormInfo.tags} countrys={sideFormInfo.countrys}                    ></MovieForm>
                 ),
                 [
                     valueFilm,
-                    sideFormInfo.countrys,
-                    sideFormInfo.author,
-                    sideFormInfo.genres,
-                    sideFormInfo.directors,
-                    sideFormInfo.actors,
                     sideFormInfo.tags,
+                    sideFormInfo.countrys,
                     openForm,
                 ],
             )}

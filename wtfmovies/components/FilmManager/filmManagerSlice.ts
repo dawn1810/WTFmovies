@@ -2,14 +2,17 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const filmManagerSlice = createSlice({
-    name: 'dataGridCom',
+    name: 'editor',
     initialState: {
-        alertStatus: { content: null, status: null }
+        alertStatus: { content: null, status: null },
+
+
     },
     reducers: {
         changeAlertStatus: (state, action) => {
             state.alertStatus = action.payload;
         },
+
     },
 });
 

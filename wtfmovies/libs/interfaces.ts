@@ -50,8 +50,28 @@ export interface reduxStateInterface {
         signupNameAlert: boolean;
         signupBirthDateAlert: boolean;
     };
-    dataGridCom: {
+    editor: {
         alertStatus: { content: any; status: boolean };
+        dataFilm: {
+            name: string,
+            describe: string,
+            author: ObjectMongo[],
+            genre: ObjectMongo[],
+            director: ObjectMongo[],
+            actor: ObjectMongo[],
+            tag: ObjectMongo[],
+            country: ObjectMongo,
+            releaseYear: string,
+            maxEp: number,
+            duration: number,
+            status: string,
+            videoType: [],
+            img: string,
+            poster: string,
+            notification: [],
+            searchName: string,
+
+        }
     };
     watch: {
         episode: { _id: string; index: number; rating: number; link: string };
@@ -124,11 +144,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-        | {
-              title?: string;
-              episode?: number[];
-          }[]
-        | any;
+    | {
+        title?: string;
+        episode?: number[];
+    }[]
+    | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;

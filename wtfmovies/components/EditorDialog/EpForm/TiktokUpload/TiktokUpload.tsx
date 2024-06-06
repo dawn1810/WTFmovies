@@ -85,9 +85,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
 
     return (
         <Box>
-            <Box sx={{ width: '100%' }}>
-                <LinearProgress variant="determinate" value={20} />
-            </Box>
+
             <Box
                 component="form"
                 sx={{
@@ -112,13 +110,13 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
+                        flexGrow: 1,
                         justifyContent: 'space-between',
                         gap: 1,
                     }}
                 >
                     <FormControl
                         sx={{
-                            m: 1,
                             minWidth: 450,
                         }}
                     >
@@ -142,7 +140,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                             {listEpisode &&
                                 listEpisode.map((item: { link: string; index: number }) => (
                                     <MenuItem
-                                        value={episode}
+                                        value={item.link}
                                         key={item.index}
                                         sx={{ display: 'flex', justifyContent: 'space-between' }}
                                     >
@@ -158,17 +156,22 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                     </FormControl>
 
 
+                    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                        <Button
+                            component="label"
+                            role={undefined}
+                            variant="contained"
+                            tabIndex={-1}
+                            startIcon={<CloudUpload />}
+                        >
+                            Upload file
+                            <VisuallyHiddenInput type="file" />
+                        </Button>
+                        <Box sx={{ width: '100%' }}>
+                            <LinearProgress variant="determinate" value={20} />
+                        </Box>
+                    </Box>
 
-                    <Button
-                        component="label"
-                        role={undefined}
-                        variant="contained"
-                        tabIndex={-1}
-                        startIcon={<CloudUpload />}
-                    >
-                        Upload file
-                        <VisuallyHiddenInput type="file" />
-                    </Button>
                 </Box>
 
                 <Box
@@ -180,7 +183,6 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                         alignItems: 'center',
                         gap: 1,
                         borderRadius: '5px',
-                        backgroundColor: '#000',
                     }}
                 >
                     <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'}></Player>
