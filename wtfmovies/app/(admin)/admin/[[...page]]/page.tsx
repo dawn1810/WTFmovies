@@ -40,35 +40,42 @@ async function getPage(params?: any) {
                 const topSixUser = await getTopSixUser();
                 const newReports = await getNewReport();
 
-                return (
-                    <AdminDashboard
-                        numStatistical={numStatistical}
-                        hotFilmList={hotFilmList}
-                        topSixUser={topSixUser}
-                        hotGenreList={hotGenreList}
-                        newReports={newReports}
-                    />
-                );
+                if (!hotFilmList || !hotGenreList || !numStatistical || !topSixUser || !newReports) break;
+                else
+                    return (
+                        <AdminDashboard
+                            numStatistical={numStatistical}
+                            hotFilmList={hotFilmList}
+                            topSixUser={topSixUser}
+                            hotGenreList={hotGenreList}
+                            newReports={newReports}
+                        />
+                    );
             case 'users':
                 const dataset = await getAllUser();
 
-                return <ManageEditorTable dataset={dataset} />;
+                if (!dataset) break;
+                else return <ManageEditorTable dataset={dataset} />;
             case 'report':
                 const reports: AdminReportInfterface[] = await getAllReport();
 
-                return <ManageReportTable dataset={reports} />;
+                if (!reports) break;
+                else return <ManageReportTable dataset={reports} />;
             case 'comment':
                 const comments: any[] = await getAllComment();
 
-                return <ManageCommentTable dataset={comments} />;
+                if (!comments) break;
+                else return <ManageCommentTable dataset={comments} />;
             case 'films':
                 return <p>Quản lý films</p>;
             default:
-                return NotFound();
+                break;
         }
+        return NotFound();
     }
 }
 
-export default function Admin({ params }: { params?: { page: string[] } }) {
-    return <div className={cx('wrapper')}>{getPage(params)}</div>;
+export default async function Admin({ params }: { params?: { page: string[] } }) {
+    const page = await getPage(params);
+    return <div className={cx('wrapper')}>{page}</div>;
 }

@@ -1,6 +1,6 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import ArrowDropUpIcon from '@mui/icons-material/ArrowDropUp';
 import classNames from 'classnames/bind';
 
 import FilmCard from '~/components/FilmCard';
@@ -71,7 +71,13 @@ function SideBox({ to, title, icon, films }: { to: string; title: string; icon: 
             {isMobile && (
                 <Button
                     primary
-                    rightIcon={<FontAwesomeIcon icon={filmHide ? faAngleDown : faAngleUp} />}
+                    rightIcon={
+                        filmHide ? (
+                            <ArrowDropDownIcon sx={{ fontSize: 30 }} />
+                        ) : (
+                            <ArrowDropUpIcon sx={{ fontSize: 30 }} />
+                        )
+                    }
                     className={cx('more-btn')}
                     onClick={handleMoreFilmClick}
                 >

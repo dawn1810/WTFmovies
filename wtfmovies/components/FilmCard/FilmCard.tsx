@@ -1,23 +1,12 @@
 'use client';
 import { useRef } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBookOpen,
-    faCalendar,
-    faCat,
-    faCloudArrowUp,
-    faEye,
-    faFeather,
-    faPlay,
-    faUnlock,
-} from '@fortawesome/free-solid-svg-icons';
-import ImportContactsIcon from '@mui/icons-material/ImportContacts';
+import FeedIcon from '@mui/icons-material/Feed';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import CategoryIcon from '@mui/icons-material/Category';
 import PublishIcon from '@mui/icons-material/Publish';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import HistoryEduOutlinedIcon from '@mui/icons-material/HistoryEduOutlined';
-import PlayArrowOutlinedIcon from '@mui/icons-material/PlayArrowOutlined';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import LockOpenOutlinedIcon from '@mui/icons-material/LockOpenOutlined';
 
 import classNames from 'classnames/bind';
@@ -80,26 +69,26 @@ function FilmCard({
                 {noOverlay || largeNoOverlay ? (
                     <div className={cx('nooverlay-subinfo-list', { 'large-nooverlay-subinfo-list': largeNoOverlay })}>
                         <h5>
-                            <FontAwesomeIcon icon={faEye} /> {formatViews.current}
+                            <VisibilityOutlinedIcon /> {formatViews.current}
                         </h5>
                         <h5>
-                            <FontAwesomeIcon icon={faCloudArrowUp} /> {`${episodes} / ${maxEp || '?'}`}
+                            <PublishIcon /> {`${episodes} / ${maxEp || '?'}`}
                         </h5>
                         <h5>
-                            <FontAwesomeIcon icon={faCalendar} /> {releaseYear?.getFullYear()}
+                            <CalendarMonthIcon /> {releaseYear?.getFullYear()}
                         </h5>
                         {largeNoOverlay && (
                             <>
                                 <h5>
-                                    <FontAwesomeIcon icon={faFeather} />{' '}
+                                    <HistoryEduOutlinedIcon />{' '}
                                     {author?.length && author.length > 0 ? author?.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                                 <h5>
-                                    <FontAwesomeIcon icon={faCat} />{' '}
+                                    <CategoryIcon />{' '}
                                     {genre?.length && genre?.length > 0 ? genre?.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                                 <h5>
-                                    <FontAwesomeIcon icon={faUnlock} />{' '}
+                                    <LockOpenOutlinedIcon />{' '}
                                     {tag?.length && tag.length > 0 ? tag.join(', ') : 'Chưa cập nhật'}
                                 </h5>
                             </>
@@ -132,19 +121,19 @@ function FilmCard({
             {noOverlay || largeNoOverlay ? (
                 <div className={cx('noOverlay-btn-list', { 'large-noOverlay-btn-list': largeNoOverlay })}>
                     <Link href={`/watch/${searchName}`} className={cx('hover-btn')}>
-                        <FontAwesomeIcon icon={faPlay} />
+                        <PlayArrowRoundedIcon sx={{ fontSize: 40 }} />
                     </Link>
                     <Link href={`/review/${searchName}`} className={cx('hover-btn')}>
-                        <FontAwesomeIcon icon={faBookOpen} />
+                        <FeedIcon sx={{ fontSize: 30 }} />
                     </Link>
                 </div>
             ) : (
                 <div className={cx('hover-btn-list')}>
                     <Link href={`/watch/${searchName}`} className={cx('hover-btn', 'watch-btn')}>
-                        <FontAwesomeIcon icon={faPlay} />
+                        <PlayArrowRoundedIcon sx={{ fontSize: 40 }} />
                     </Link>
                     <Link href={`/review/${searchName}`} className={cx('hover-btn', 'review-btn')}>
-                        <FontAwesomeIcon icon={faBookOpen} />
+                        <FeedIcon sx={{ fontSize: 30 }} />
                     </Link>
                 </div>
             )}

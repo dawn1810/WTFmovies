@@ -1,6 +1,6 @@
 'use-client';
 
-import { FilmInfoInterface, FilmsInterFace } from './interfaces';
+import { AdminDatasetInterface, FilmInfoInterface, FilmsInterFace, NumStatisticalInterface } from './interfaces';
 
 const bufferFromPEM = (pem: string) => {
     // Remove the PEM headers and base64 decode the binary data
@@ -164,4 +164,111 @@ export const calcTotal = (store: any[]) => {
         0,
     );
     return result;
+};
+
+// admin dashboard function
+export const convertNumberToMonth = (number: number) => {
+    const months = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+    ];
+
+    if (number < 0 || number > 11) {
+        return 'Invalid month number';
+    }
+
+    return months[number];
+};
+
+export const getDataCurrentYear = (data: NumStatisticalInterface[]): AdminDatasetInterface => {
+    // views statistic map
+    const current_year = new Date().getFullYear();
+
+    const yearDataset = data
+        .filter((data) => {
+            const dataTime = new Date(data.time);
+            return dataTime.getFullYear() === current_year;
+        })
+        .map((data) => {
+            const dataTime = new Date(data.time);
+            return {
+                month: convertNumberToMonth(dataTime.getMonth()),
+                view: data.views,
+                user: data.users,
+                film: data.films,
+            };
+        });
+
+    return {
+        view: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.view,
+        })),
+        user: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.user,
+        })),
+        film: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.film,
+        })),
+    };
+};
+
+export const getDataByYear = (data: NumStatisticalInterface[]): AdminDatasetInterface => {
+    const viewsByYear: any = {};
+    const usersByYear: any = {};
+    const filmsByYear: any = {};
+
+    data.forEach((item) => {
+        const year = new Date(item.time).getFullYear().toString();
+
+        if (!viewsByYear[year] || !usersByYear[year] || !filmsByYear[year]) {
+            viewsByYear[year] = { time: year, data: 0 };
+            usersByYear[year] = { time: year, data: 0 };
+            filmsByYear[year] = { time: year, data: 0 };
+        }
+
+        viewsByYear[year].data += item.views;
+        usersByYear[year].data += item.users;
+        filmsByYear[year].data += item.films;
+    });
+
+    return { view: Object.values(viewsByYear), user: Object.values(usersByYear), film: Object.values(filmsByYear) };
+};
+
+export const calcViewChange = (dataset: AdminDatasetInterface, typeData: 'view' | 'user' | 'film') => {
+    const currentMonth = dataset[typeData][dataset[typeData].length - 1].data;
+    const previousMonth = dataset[typeData][dataset[typeData].length - 2].data;
+    const prevMonthChange = previousMonth / (currentMonth / 100);
+    const changePersent = Math.round((100 - prevMonthChange) * 10) / 10;
+
+    return {
+        number: currentMonth,
+        change: changePersent < 0 ? -changePersent : changePersent,
+        up: changePersent >= 0,
+    };
+};
+
+export const convertGender = (gender?: number) => {
+    switch (gender) {
+        case 0:
+            return 'nam';
+        case 1:
+            return 'nữ';
+        case 2:
+            return 'khác';
+        default:
+            return 'chưa biết';
+    }
 };

@@ -1,22 +1,19 @@
 'use client';
 import { Fragment } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faCalendarDays,
-    faCat,
-    faClapperboard,
-    faClock,
-    faCloudArrowUp,
-    faEarthAsia,
-    faFeather,
-    faLanguage,
-    faPersonChalkboard,
-    faPersonThroughWindow,
-    faPlay,
-    faStar,
-    faUnlock,
-} from '@fortawesome/free-solid-svg-icons';
-import { faHeart, faShareFromSquare } from '@fortawesome/free-regular-svg-icons';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import FavoriteBorderOutlinedIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import HistoryEduIcon from '@mui/icons-material/HistoryEdu';
+import CategoryIcon from '@mui/icons-material/Category';
+import VideocamIcon from '@mui/icons-material/Videocam';
+import HourglassEmptyIcon from '@mui/icons-material/HourglassEmpty';
+import Filter9PlusIcon from '@mui/icons-material/Filter9Plus';
+import LocalOfferIcon from '@mui/icons-material/LocalOffer';
+// import PublicIcon from '@mui/icons-material/Public';
+import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import FmdGoodOutlinedIcon from '@mui/icons-material/FmdGoodOutlined';
+import DirectionsRunIcon from '@mui/icons-material/DirectionsRun';
+import LooksOneOutlinedIcon from '@mui/icons-material/LooksOneOutlined';
 import classNames from 'classnames/bind';
 
 import ImageCustom from '../ImageCustom';
@@ -32,18 +29,19 @@ import { formatNumber } from '~/libs/clientFunc';
 const cx = classNames.bind(style);
 
 const icons = [
-    <FontAwesomeIcon icon={faClapperboard} />,
-    <FontAwesomeIcon icon={faFeather} />,
-    <FontAwesomeIcon icon={faCat} />,
-    <FontAwesomeIcon icon={faPersonChalkboard} />,
-    <FontAwesomeIcon icon={faClock} />,
-    <FontAwesomeIcon icon={faCloudArrowUp} />,
-    <FontAwesomeIcon icon={faLanguage} />,
-    <FontAwesomeIcon icon={faUnlock} />,
-    <FontAwesomeIcon icon={faCalendarDays} />,
-    <FontAwesomeIcon icon={faEarthAsia} />,
-    <FontAwesomeIcon icon={faPersonThroughWindow} />,
-    <FontAwesomeIcon icon={faStar} />,
+    <VisibilityOutlinedIcon />,
+    <FavoriteBorderOutlinedIcon />,
+    <PendingActionsIcon />,
+    <HistoryEduIcon />,
+    <CategoryIcon />,
+    <VideocamIcon />,
+    <HourglassEmptyIcon />,
+    <Filter9PlusIcon />,
+    <LocalOfferIcon />,
+    <CalendarMonthIcon />,
+    <FmdGoodOutlinedIcon />,
+    <DirectionsRunIcon />,
+    <LooksOneOutlinedIcon />,
 ];
 
 function FilmInfo({
@@ -57,7 +55,7 @@ function FilmInfo({
 }) {
     const releaseYear = filmInfo.releaseYear ? new Date(filmInfo.releaseYear) : null;
     const subsType = filmInfo.videoType.find((type) => type.title === 'Subs') as any;
-    let totalEpisodes = '?'
+    let totalEpisodes = '?';
     let lastThreeEpisodes = [];
     if (subsType) {
         totalEpisodes = subsType.episode[subsType.episode.length - 1];
@@ -73,7 +71,11 @@ function FilmInfo({
         info: [
             { title: 'Lượt xem', info: formatNumber(filmInfo.views), type: 'highLight' },
             { title: 'Lượt yêu thích', info: formatNumber(filmInfo.likes), type: 'highLight' },
-            { title: 'Trạng thái', info: (subsType && subsType.episode.length > 0) ? filmInfo.status : "Sắp phát hành", type: 'highLight' },
+            {
+                title: 'Trạng thái',
+                info: subsType && subsType.episode.length > 0 ? filmInfo.status : 'Sắp phát hành',
+                type: 'highLight',
+            },
             { title: 'Tác giả', info: filmInfo.author, type: 'searchAble', category: 'author' },
             { title: 'Thể loại', info: filmInfo.genre, type: 'searchAble', category: 'genre' },
             {
@@ -83,7 +85,10 @@ function FilmInfo({
                 category: 'director',
             },
             { title: 'Thời lượng', info: filmInfo.duration ? filmInfo.duration / 60 + ' phút' : 'Unknown' },
-            { title: 'Số tập', info: `${lastThreeEpisodes[lastThreeEpisodes.length - 1] || 0} / ${filmInfo.maxEp || '?'}` },
+            {
+                title: 'Số tập',
+                info: `${lastThreeEpisodes[lastThreeEpisodes.length - 1] || 0} / ${filmInfo.maxEp || '?'}`,
+            },
 
             { title: 'Nhãn', info: filmInfo.tag, type: 'highLight' },
             { title: 'Năm sản xuất', info: releaseYear?.getFullYear() },
@@ -160,7 +165,10 @@ function FilmInfo({
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span> <span className={cx('high-light')}>{info.info}</span>
                                     </span>
-                                ) : (info.type === 'watchAble' && typeof info.info === 'object' && subsType && subsType.episode.length > 0) ? (
+                                ) : info.type === 'watchAble' &&
+                                  typeof info.info === 'object' &&
+                                  subsType &&
+                                  subsType.episode.length > 0 ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>
                                         {info.info.map((info, index) => (
@@ -182,13 +190,14 @@ function FilmInfo({
                             </li>
                         ))}
                     </ul>
-                    {(subsType && subsType.episode.length > 0) &&
-                        (<FilmButtonGroup
+                    {subsType && subsType.episode.length > 0 && (
+                        <FilmButtonGroup
                             dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
                             loveState={loveState}
                             filmId={filmInfo.searchName}
                             searchName={filmInfo.searchName}
-                        />)}
+                        />
+                    )}
                 </div>
             </div>
         </div>

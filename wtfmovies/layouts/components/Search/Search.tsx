@@ -1,6 +1,5 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import SearchIcon from '@mui/icons-material/Search';
 import React, { useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 // Đảm bảo rằng hành động này được xác định trong các hành động Redux của bạn
@@ -66,7 +65,7 @@ function Search() {
     };
 
     const handleSearch = (event: any) => {
-        router.push(`/search?query=${searchValue}&type=name`)
+        router.push(`/search?query=${searchValue}&type=name`);
     };
 
     return (
@@ -77,11 +76,10 @@ function Search() {
                 placeholder="Tìm kiếm"
                 onChange={handleSearchQueryChange}
                 onKeyDown={handleKeyDown}
-
             />
-            <div className={cx('search-btn-w-bg')} ref={btnContainerRef} >
+            <div className={cx('search-btn-w-bg')} ref={btnContainerRef}>
                 <button className={cx('search-btn')} onClick={handleSearch}>
-                    <FontAwesomeIcon icon={faSearch} />
+                    <SearchIcon />
                 </button>
                 <div className={cx('gradient-bg')}>
                     <svg xmlns="http://www.w3.org/2000/svg">

@@ -352,6 +352,12 @@ export interface AdminReportInfterface {
     content?: string;
 }
 
+export interface AdminDatasetInterface {
+    view: LineChartDataInterface[];
+    user: LineChartDataInterface[];
+    film: LineChartDataInterface[];
+}
+
 // Evaluate Table
 export interface CriteriaInterface {
     name: string;

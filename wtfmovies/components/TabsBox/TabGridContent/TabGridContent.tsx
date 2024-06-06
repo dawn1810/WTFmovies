@@ -1,6 +1,5 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import classNames from 'classnames/bind';
 
 import FilmCard from '~/components/FilmCard';
@@ -37,7 +36,7 @@ function TabGridContent({ films }: { films: FilmInfoInterface[] }) {
                     <div>Không có phim cho tabs này</div>
                 )}
             </div>
-            <Button to="/search" primary rightIcon={<FontAwesomeIcon icon={faAngleRight} />} className={cx('more-btn')}>
+            <Button to="/search" primary rightIcon={<ExpandMoreIcon />} className={cx('more-btn')}>
                 Xem thêm
             </Button>
         </div>

@@ -4,9 +4,12 @@ import { getSession, signIn } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import Link from 'next/link';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faGithub, faGoogle } from '@fortawesome/free-brands-svg-icons';
-import { faEye, faEyeSlash } from '@fortawesome/free-regular-svg-icons';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import GoogleIcon from '@mui/icons-material/Google';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -112,25 +115,15 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
             </Modal.Header>
             <Modal.Body className={cx('modal-body')}>
                 <Form.Group className={cx('btn-group')} controlId="formHorizontalAPI">
-                    <Button
-                        primary
-                        leftIcon={<FontAwesomeIcon icon={faGoogle} />}
-                        className={cx('gg-btn')}
-                        onClick={handleSignInGoogle}
-                    >
+                    <Button primary leftIcon={<GoogleIcon />} className={cx('gg-btn')} onClick={handleSignInGoogle}>
                         Google
                     </Button>
 
-                    <Button primary leftIcon={<FontAwesomeIcon icon={faFacebook} />} className={cx('fb-btn')}>
+                    <Button primary leftIcon={<FacebookIcon />} className={cx('fb-btn')}>
                         Facebook
                     </Button>
 
-                    <Button
-                        primary
-                        leftIcon={<FontAwesomeIcon icon={faGithub} />}
-                        className={cx('git-btn')}
-                        onClick={handleSignInGithub}
-                    >
+                    <Button primary leftIcon={<GitHubIcon />} className={cx('git-btn')} onClick={handleSignInGithub}>
                         Github
                     </Button>
                 </Form.Group>
@@ -172,7 +165,7 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                             onChange={(e) => handleInput(e)}
                         />
                         <button className={cx('passEye')} onClick={handlePassEye} type="button">
-                            {passEye ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+                            {passEye ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
                         </button>
                     </Form.Group>
 

@@ -45,7 +45,7 @@ type MenuItem = {
 
 const MENU_ITEMS = [
     // {
-    //     icon: <FontAwesomeIcon icon={faEarthAsia} />,
+    //     icon: ,
     //     title: 'Tiếng Việt',
     //     children: {
     //         title: 'Ngôn ngữ',
@@ -65,7 +65,7 @@ const MENU_ITEMS = [
     // },
 
     // {
-    //     icon: <FontAwesomeIcon icon={faCrown} />,
+    //     icon: ,
     //     title: 'Nâng cấp VIP',
     //     to: '/vip',
     // },

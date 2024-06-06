@@ -7,8 +7,7 @@ import SideBox from './SideBox';
 import TabsBox from '~/components/TabsBox';
 import style from './FilmClassify.module.scss';
 import Button from '../Button';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { FilmClassifyInterface, TabInterface } from '~/libs/interfaces';
 import { mapFilms } from '~/libs/clientFunc';
 
@@ -53,12 +52,7 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
                         defaultActiveKey="all"
                         className={cx('tab-box')}
                     />
-                    <Button
-                        to={tags.mainDir}
-                        primary
-                        rightIcon={<FontAwesomeIcon icon={faAngleRight} />}
-                        className={cx('more-btn')}
-                    >
+                    <Button to={tags.mainDir} primary rightIcon={<ArrowForwardIosIcon />} className={cx('more-btn')}>
                         Xem thêm
                     </Button>
                     <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={mapFilms(films)} />

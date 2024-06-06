@@ -24,9 +24,10 @@ import {
     GridExportMenuItemProps,
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import type { AlertColor } from '@mui/material';
-import { faAdd, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
+import AddIcon from '@mui/icons-material/Add';
+import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+
 import { viVN } from '@mui/x-data-grid/locales';
 import AlertDialog from '~/components/EditorDialog';
 
@@ -184,7 +185,7 @@ export default function DataGridCom({
                 </GridToolbarExportContainer>
 
                 <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
-                    <FontAwesomeIcon className={cx('iconBtn')} icon={faAdd} />
+                    <AddIcon />
                     Thêm
                 </Button>
                 <Button
@@ -193,7 +194,7 @@ export default function DataGridCom({
                     disabled={rowSelectionModel.length === 0}
                     variant="outlined"
                 >
-                    <FontAwesomeIcon className={cx('iconBtn')} icon={faTrash} />
+                    <DeleteOutlineIcon />
                     Xoá
                 </Button>
                 <Button
@@ -202,7 +203,7 @@ export default function DataGridCom({
                     disabled={rowSelectionModel.length !== 1}
                     variant="outlined"
                 >
-                    <FontAwesomeIcon className={cx('iconBtn')} icon={faPenToSquare} />
+                    <BorderColorOutlinedIcon />
                     Chỉnh sửa
                 </Button>
                 <GridToolbarQuickFilter />

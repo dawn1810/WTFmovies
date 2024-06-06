@@ -1,19 +1,7 @@
 'use client';
+import { convertGender } from '~/libs/clientFunc';
 import Table from './Table';
 import { UserAdminInfoInfterface } from '~/libs/interfaces';
-
-const convertGender = (gender?: number) => {
-    switch (gender) {
-        case 0:
-            return 'nam';
-        case 1:
-            return 'nữ';
-        case 2:
-            return 'khác';
-        default:
-            return 'chưa biết';
-    }
-};
 
 export default function FilmPage({ dataset }: { dataset: UserAdminInfoInfterface[] }) {
     const mappedDataset = dataset.map((data: UserAdminInfoInfterface, index: number) => ({

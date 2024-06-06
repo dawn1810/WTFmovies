@@ -1,5 +1,4 @@
 import classNames from 'classnames/bind';
-// import { Close, KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material';
 import CloseIcon from '@mui/icons-material/Close';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -21,22 +20,6 @@ import { LineChartDataInterface } from '~/libs/interfaces';
 import { formatNumber } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
-
-// function formatLargeNumber(num: number) {
-//     if (typeof num !== 'number' || isNaN(num)) {
-//         return num;
-//     }
-
-//     if (num >= 1000000000) {
-//         return `${(num / 1000000000).toFixed(1)}B`;
-//     } else if (num >= 1000000) {
-//         return `${(num / 1000000).toFixed(1)}M`;
-//     } else if (num >= 1000) {
-//         return `${(num / 1000).toFixed(1)}k`;
-//     } else {
-//         return num;
-//     }
-// }
 
 export default function NumCard({
     title,

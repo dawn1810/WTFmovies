@@ -1,8 +1,8 @@
 'use client';
 import PropTypes from 'prop-types';
 import React, { useRef, useState, useEffect } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import classNames from 'classnames/bind';
 
 import style from './Genres.module.scss';
@@ -41,7 +41,7 @@ function Genres({ children }: { children: Item[] }) {
     return (
         <nav className={cx('wrapper')}>
             <button style={{ opacity: isAtStart ? 0 : 1 }} className={cx('left-btn')} onClick={() => scroll(-500)}>
-                <FontAwesomeIcon icon={faChevronLeft} />
+                <KeyboardArrowLeftIcon />
             </button>
 
             <div ref={genresRef} className={cx('genres')}>
@@ -49,7 +49,7 @@ function Genres({ children }: { children: Item[] }) {
             </div>
 
             <button style={{ opacity: isAtEnd ? 0 : 1 }} className={cx('right-btn')} onClick={() => scroll(500)}>
-                <FontAwesomeIcon icon={faChevronRight} />
+                <KeyboardArrowRightIcon />
             </button>
         </nav>
     );

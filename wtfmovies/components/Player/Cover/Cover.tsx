@@ -1,10 +1,9 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClockRotateLeft, faPause, faPlay } from '@fortawesome/free-solid-svg-icons';
+import Replay5RoundedIcon from '@mui/icons-material/Replay5Rounded';
+import PauseRoundedIcon from '@mui/icons-material/PauseRounded';
+import PlayArrowRoundedIcon from '@mui/icons-material/PlayArrowRounded';
 import { useDispatch, useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
 import classNames from 'classnames/bind';
-import Image from 'next/image'
 
 import { showCenterBtn } from '../playerSlice';
 import { coverPlayerSelector } from '~/redux/selectors';
@@ -13,9 +12,9 @@ import images from '~/assets/image';
 
 const cx = classNames.bind(style);
 interface coverI {
-    handleMouseMove: () => void,
-    handlePlayPause: (e: any) => void,
-    handleClickFullscreen: (e: any) => void
+    handleMouseMove: () => void;
+    handlePlayPause: (e: any) => void;
+    handleClickFullscreen: (e: any) => void;
 }
 function Cover({ handleMouseMove, handlePlayPause, handleClickFullscreen }: coverI) {
     let y: NodeJS.Timeout;
@@ -39,46 +38,43 @@ function Cover({ handleMouseMove, handlePlayPause, handleClickFullscreen }: cove
             onClick={(e) => {
                 handlePlayPause(e);
                 handleAnimBtnClick();
-            }
-            }
+            }}
             onDoubleClick={handleClickFullscreen}
         >
             <div
-                className={
-                    cx('center-btn', {
-                        'loading-btn': coverState.loading,
-                    })
-                }
+                className={cx('center-btn', {
+                    'loading-btn': coverState.loading,
+                })}
             >
                 <img className={cx('loading-img')} src={images.logo} alt="" />
             </div>
-            < div
-                className={
-                    cx('center-btn', {
-                        'animation-btn': coverState.centerBtn,
-                    })}
+            <div
+                className={cx('center-btn', {
+                    'animation-btn': coverState.centerBtn,
+                })}
             >
-                {!coverState.playing ? <FontAwesomeIcon icon={faPause} /> : <FontAwesomeIcon icon={faPlay} />}
+                {!coverState.playing ? (
+                    <PauseRoundedIcon fontSize="large" />
+                ) : (
+                    <PlayArrowRoundedIcon fontSize="large" />
+                )}
             </div>
             <div
-                className={
-                    cx('center-btn', 'left-btn', {
-                        'animation-btn': coverState.leftBtn,
-                    })}
+                className={cx('center-btn', 'left-btn', {
+                    'animation-btn': coverState.leftBtn,
+                })}
             >
-                <FontAwesomeIcon icon={faClockRotateLeft} />
+                <Replay5RoundedIcon fontSize="large" />
             </div>
             <div
-                className={
-                    cx('center-btn', 'right-btn', {
-                        'animation-btn': coverState.rightBtn,
-                    })}
+                className={cx('center-btn', 'right-btn', {
+                    'animation-btn': coverState.rightBtn,
+                })}
             >
-                <FontAwesomeIcon icon={faClockRotateLeft} flip="horizontal" />
+                <Replay5RoundedIcon fontSize="large" style={{ transform: 'scaleX(-1)' }} />
             </div>
         </div>
     );
 }
-
 
 export default Cover;

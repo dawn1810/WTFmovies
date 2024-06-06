@@ -1,20 +1,18 @@
 'use client';
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
-import { forwardRef, useCallback, useEffect, useState, createRef, MutableRefObject } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faBackwardStep,
-    faCheck,
-    faExpand,
-    faForwardStep,
-    faPause,
-    faPlay,
-    faVolumeHigh,
-    faVolumeMute,
-} from '@fortawesome/free-solid-svg-icons';
-import { faWindowRestore } from '@fortawesome/free-regular-svg-icons';
+import { forwardRef, useCallback, useEffect, useState } from 'react';
+import SkipPreviousOutlinedIcon from '@mui/icons-material/SkipPreviousOutlined';
+import CheckIcon from '@mui/icons-material/Check';
+import PictureInPictureAltOutlinedIcon from '@mui/icons-material/PictureInPictureAltOutlined';
+import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
+import SkipNextOutlinedIcon from '@mui/icons-material/SkipNextOutlined';
+import PauseIcon from '@mui/icons-material/PauseRounded';
+import PlayArrowIcon from '@mui/icons-material/PlayArrowRounded';
+import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import Tooltip from '@mui/material/Tooltip';
+import IconButton from '@mui/material/IconButton';
 import classNames from 'classnames/bind';
 
 import style from './Contact.module.scss';
@@ -54,7 +52,7 @@ const VIDEO_SPEED: HeaderMenuItemsInterface[] = [
         title: '0.75',
     },
     {
-        icon: <FontAwesomeIcon icon={faCheck} />,
+        icon: <CheckIcon />,
         title: '1',
     },
     {
@@ -241,7 +239,7 @@ const Contact = forwardRef(
         const handleSpeedSettingChange = (selectedSpeed: { title: string }) => {
             handleOnPlaybackRateChange(selectedSpeed.title);
             VIDEO_SPEED.forEach((menuItem) => {
-                if (menuItem.title === selectedSpeed.title) menuItem.icon = <FontAwesomeIcon icon={faCheck} />;
+                if (menuItem.title === selectedSpeed.title) menuItem.icon = <CheckIcon />;
                 else menuItem.icon = null;
             });
             dispatch(changeCurrentSpeed(selectedSpeed.title));
@@ -315,32 +313,28 @@ const Contact = forwardRef(
                 <div className={cx('btn-list')}>
                     <div className={cx('left-btn-list')}>
                         <Tooltip title="Tập trước" placement="top">
-                            <button onClick={(e) => e.preventDefault()} className={cx('action-btn')}>
-                                <FontAwesomeIcon icon={faBackwardStep} />
-                            </button>
+                            <IconButton aria-label="delete" size="large" onClick={(e) => e.preventDefault()}>
+                                <SkipPreviousOutlinedIcon fontSize="inherit" />
+                            </IconButton>
                         </Tooltip>
 
                         <Tooltip title="Phát (k)" placement="top">
-                            <button className={cx('action-btn')} onClick={handlePlayPause}>
+                            <IconButton aria-label="delete" size="large" onClick={handlePlayPause}>
                                 {contactState.playing ? (
-                                    <FontAwesomeIcon icon={faPause} />
+                                    <PauseIcon fontSize="inherit" />
                                 ) : (
-                                    <FontAwesomeIcon icon={faPlay} />
+                                    <PlayArrowIcon fontSize="inherit" />
                                 )}
-                            </button>
+                            </IconButton>
                         </Tooltip>
                         <Tooltip title="Tập tiếp theo" placement="top">
-                            <button onClick={(e) => e.preventDefault()} className={cx('action-btn')}>
-                                <FontAwesomeIcon icon={faForwardStep} />
-                            </button>
+                            <IconButton aria-label="delete" size="large" onClick={(e) => e.preventDefault()}>
+                                <SkipNextOutlinedIcon fontSize="inherit" />
+                            </IconButton>
                         </Tooltip>
                         <Tooltip title={contactState.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'} placement="top">
                             <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>
-                                {contactState.muted ? (
-                                    <FontAwesomeIcon icon={faVolumeMute} />
-                                ) : (
-                                    <FontAwesomeIcon icon={faVolumeHigh} />
-                                )}
+                                {contactState.muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
                             </button>
                         </Tooltip>
                         <Tooltip title="Âm lượng" placement="top">
@@ -380,7 +374,7 @@ const Contact = forwardRef(
                             playerMenu
                             items={contactState.resolution.map((menuItem) => {
                                 if (menuItem.icon === true) {
-                                    return { ...menuItem, icon: <FontAwesomeIcon icon={faCheck} /> };
+                                    return { ...menuItem, icon: <CheckIcon /> };
                                 } else {
                                     return menuItem;
                                 }
@@ -396,15 +390,15 @@ const Contact = forwardRef(
                         </Menu>
                         {ReactPlayer.canEnablePIP(contactState.url) && (
                             <Tooltip title="Trình phát thu nhỏ (i)" placement="top">
-                                <button className={cx('action-btn')} onClick={handleTogglePIP}>
-                                    <FontAwesomeIcon icon={faWindowRestore} />
-                                </button>
+                                <IconButton aria-label="delete" size="large" onClick={handleTogglePIP}>
+                                    <PictureInPictureAltOutlinedIcon fontSize="inherit" />
+                                </IconButton>
                             </Tooltip>
                         )}
                         <Tooltip title="Toàn màn hình (f)" placement="top">
-                            <button className={cx('action-btn')} onClick={handleClickFullscreen}>
-                                <FontAwesomeIcon icon={faExpand} />
-                            </button>
+                            <IconButton aria-label="delete" size="large" onClick={handleClickFullscreen}>
+                                <ZoomOutMapIcon fontSize="inherit" />
+                            </IconButton>
                         </Tooltip>
                     </div>
                 </div>

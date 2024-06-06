@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheckCircle } from '@fortawesome/free-regular-svg-icons';
+import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { Form } from 'react-bootstrap';
 import Select, { GroupBase } from 'react-select';
 import classNames from 'classnames/bind';
@@ -193,7 +192,10 @@ function Survey({
                     <Form className={cx('login-form')}>
                         <h1 className={cx('title')}>
                             Hoàn thành khảo sát{' '}
-                            <FontAwesomeIcon icon={faCheckCircle} style={{ color: 'var(--green-highlight-color)' }} />
+                            <CheckCircleOutlineIcon
+                                fontSize="large"
+                                style={{ color: 'var(--green-highlight-color)' }}
+                            />
                         </h1>
                         <Form.Group className="mb-5">
                             <Form.Text className={cx('notify-text')}>

@@ -3,9 +3,10 @@ import { useState } from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import Paper from '@mui/material/Paper';
-
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faGear, faHeart, faHome, faUser } from '@fortawesome/free-solid-svg-icons';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorderOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 
 import { useViewport } from '~/hooks';
 import { useRouter } from 'next/navigation';
@@ -40,18 +41,14 @@ function BottomBar() {
                         },
                     }}
                 >
-                    <BottomNavigationAction value="/" label="Home" icon={<FontAwesomeIcon icon={faHome} />} />
+                    <BottomNavigationAction value="/" label="Home" icon={<HomeOutlinedIcon />} />
                     <BottomNavigationAction
                         value="/review/inuyashiki"
                         label="Favorites"
-                        icon={<FontAwesomeIcon icon={faHeart} />}
+                        icon={<FavoriteBorderIcon />}
                     />
-                    <BottomNavigationAction
-                        value="/settings"
-                        label="Settings"
-                        icon={<FontAwesomeIcon icon={faGear} />}
-                    />
-                    <BottomNavigationAction value="/profile" label="Profile" icon={<FontAwesomeIcon icon={faUser} />} />
+                    <BottomNavigationAction value="/settings" label="Settings" icon={<SettingsOutlinedIcon />} />
+                    <BottomNavigationAction value="/profile" label="Profile" icon={<AccountCircleOutlinedIcon />} />
                 </BottomNavigation>
             </Paper>
         );

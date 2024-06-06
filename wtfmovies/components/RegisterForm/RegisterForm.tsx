@@ -1,9 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEyeSlash } from '@fortawesome/free-regular-svg-icons';
-import { faEye } from '@fortawesome/free-regular-svg-icons';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 import { Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 
@@ -155,7 +154,7 @@ function RegisterForm() {
                         {state.signupPassAlertContent}
                     </Form.Text>
                     <button className={cx('passEye')} onClick={handlePassEye} type="button">
-                        {passEye ? <FontAwesomeIcon icon={faEye} /> : <FontAwesomeIcon icon={faEyeSlash} />}
+                        {passEye ? <VisibilityOutlinedIcon /> : <VisibilityOffOutlinedIcon />}
                     </button>
                 </Form.Group>
 

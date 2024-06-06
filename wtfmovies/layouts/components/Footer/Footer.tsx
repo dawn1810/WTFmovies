@@ -1,6 +1,9 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faGithub, faYoutube } from '@fortawesome/free-brands-svg-icons';
+import IconButton from '@mui/material/IconButton';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GitHubIcon from '@mui/icons-material/GitHub';
+import YouTubeIcon from '@mui/icons-material/YouTube';
+
 import Link from 'next/link';
 import classNames from 'classnames/bind';
 
@@ -62,15 +65,15 @@ function Footer() {
             <div className={cx('bottom')}>
                 <div>© 2022 - 2024 WTFdev. Nền tảng giải trí trực tuyến số một thế giới</div>
                 <div className={cx('btn-list')}>
-                    <button className={cx('action-btn')}>
-                        <FontAwesomeIcon icon={faFacebook} />
-                    </button>
-                    <button className={cx('action-btn')}>
-                        <FontAwesomeIcon icon={faGithub} />
-                    </button>
-                    <button className={cx('action-btn')}>
-                        <FontAwesomeIcon icon={faYoutube} />
-                    </button>
+                    <IconButton size="large">
+                        <FacebookIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton size="large">
+                        <GitHubIcon fontSize="inherit" />
+                    </IconButton>
+                    <IconButton size="large">
+                        <YouTubeIcon fontSize="inherit" />
+                    </IconButton>
                 </div>
             </div>
         </footer>

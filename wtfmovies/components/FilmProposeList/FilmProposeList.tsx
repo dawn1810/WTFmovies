@@ -1,6 +1,6 @@
 'use client';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import Slider from 'react-slick';
 import classNames from 'classnames/bind';
 
@@ -15,7 +15,7 @@ function NextArrow(props: { onClick?: any }) {
     const { onClick } = props;
     return (
         <button className={cx('right-btn')} onClick={onClick}>
-            <FontAwesomeIcon icon={faChevronRight} />
+            <ArrowForwardIosIcon />
         </button>
     );
 }
@@ -24,7 +24,7 @@ function PrevArrow(props: { onClick?: any }) {
     const { onClick } = props;
     return (
         <button className={cx('left-btn')} onClick={onClick}>
-            <FontAwesomeIcon icon={faChevronLeft} />
+            <ArrowBackIosNewIcon />
         </button>
     );
 }
