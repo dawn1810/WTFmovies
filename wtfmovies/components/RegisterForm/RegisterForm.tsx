@@ -63,8 +63,6 @@ function RegisterForm() {
 
         const { email, password, againPass, name, birthDate } = info;
 
-        const today = new Date();
-
         if (!validateEmail(email)) {
             // email validate
             dispatch(changeSignUpEmailAlert(true));

@@ -23,8 +23,6 @@ export async function POST(request: NextRequest) {
         if (!!exist) {
             return toError('Email đã tồn tại', 400);
         } else {
-            const today = new Date();
-            const bd = new Date(birthDate);
             if (
                 validateEmail(email) &&
                 validatePassword(password) === 0 &&
