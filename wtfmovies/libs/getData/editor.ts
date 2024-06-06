@@ -146,7 +146,6 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
             });
 
 
-
         return films.map(film => {
             return {
                 ...film, duration: film.duration, durationAsString: convertSecondsToDHMS(film.duration), id: film.film_id, maxEp: film.maxEp, maxEpAsString: [film.uploadedEp, film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', listEp: film.listEp, videoType: film.videoType.map((videoType: any) => videoType.title)

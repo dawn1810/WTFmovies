@@ -19,7 +19,7 @@ const cleanObject = (obj: any) => {
     return obj;
 };
 
-export const getYoutubePlaylistItems = async (playlistId: string, email?: string) => {
+export const getYoutubePlaylistItems = async (playlistId: string, email?: string | null) => {
     const url = new URL('https://www.googleapis.com/youtube/v3/playlistItems');
     const params: any = {
         key: 'AIzaSyB6yUQdrzm1DXO4BVSWc75nubzIq6WbfnY',
@@ -71,7 +71,7 @@ export const getYoutubePlaylistItems = async (playlistId: string, email?: string
                     upload_date: MongoDate(uploadDate),
                     rating: null,
                     views: 0,
-                    link: yUrl.href,
+                    link: { Youtube: yUrl.href },
                 };
             });
 
@@ -95,7 +95,7 @@ export const getYoutubePlaylistItems = async (playlistId: string, email?: string
             upload_date: MongoDate(uploadDate),
             rating: null,
             views: 0,
-            link: yUrl.href,
+            link: { Youtube: yUrl.href },
         };
     });
 

@@ -19,26 +19,54 @@ interface MovieForm {
 import { CloudUpload } from '@mui/icons-material';
 import InputLabel from '@mui/material/InputLabel';
 
-
+interface FectData {
+    result: {
+        film_id: string;
+        index: number;
+        link: { Youtube: string };
+        name: string;
+        rating: null;
+        upload_date: any;
+        uploader_email: string;
+        views: number;
+    }[]
+}
 export default function InfoForm({ defaultValue }: MovieForm) {
     // console.log(defaultValue);
 
-    const [listEpisode, setListEpisode] = useState<{ link: string; index: number }[]>(defaultValue ? defaultValue : []);
+    const [listEpisode, setListEpisode] = useState<{ link: string; index: number }[]>(defaultValue ? defaultValue.map((item: { link: { Youtube: any; }; }) => ({ ...item, link: item.link.Youtube })) : []);
+    const [playlistId, setPlaylistId] = useState<any>('');
+    const [loading, setLoading] = useState<any>(true);
 
     const [episode, setEpisode] = useState(listEpisode.length > 0 ? listEpisode[0].link : '');
 
     const handleChange = (event: SelectChangeEvent) => {
-        console.log(event.target.value);
 
         setEpisode(event.target.value);
     };
 
 
 
+    const handleClickFetch = async (event: any): Promise<void> => {
+        setLoading(false);
+        const lEp = await fetch('/api/v1/editor/youtubeUpload', { method: 'POST', body: JSON.stringify({ type: 'fetchEpisodes', playlistId: playlistId }) })
+        if (lEp.status === 200) {
+            const lEpDe: FectData = await lEp.json();
+            setListEpisode(lEpDe.result.map((item) => ({ link: item.link.Youtube, index: item.index })));
+            setEpisode(lEpDe.result[0].link.Youtube)
+
+        } else {
+            setListEpisode([]);
+            setEpisode('');
+        }
+        setLoading(true);
+
+    }
+
     return (
         <Box>
             <Box sx={{ width: '100%' }}>
-                <LinearProgress variant="indeterminate" value={0} />
+                <LinearProgress variant="query" hidden={loading} value={0} />
             </Box>
             <Box
                 component="form"
@@ -70,7 +98,16 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                     }}
                 >
                     <Box sx={{ minWidth: 450, p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
-                        <TextField id="outlined-basic" label="Liên kết danh sách phát" variant="outlined" />
+                        <TextField id="outlined-basic" label="Liên kết danh sách phát" variant="outlined" onChange={(e) => {
+                            try {
+                                const u: URL = new URL(e.target.value);
+                                const idp = u.searchParams.get('list');
+                                setPlaylistId(idp);
+                            } catch (error) {
+                                setPlaylistId('');
+                            }
+
+                        }} />
 
                         <FormControl fullWidth
 
@@ -105,6 +142,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                             component="label"
                             variant="contained"
                             tabIndex={-1}
+                            onClick={handleClickFetch}
                             startIcon={<CloudUpload />}
                         >
                             Load danh sách phát

@@ -168,7 +168,7 @@ export interface EpisodeInterFace {
     film_id: string;
     index: number;
     name: string;
-    uploader_id: string;
+    uploader_email: string;
     upload_date: Date;
     rating: number;
     views: number;

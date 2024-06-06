@@ -8,12 +8,22 @@ import style from './FilmInteract.module.scss';
 
 const cx = classNames.bind(style);
 
-function FilmInteract() {
+function FilmInteract({ data, setServerVideo, serverVideo }: { setServerVideo: any, serverVideo: string, data: { [key: string]: string } }) {
+    const onChangeServer = (e: any) => { setServerVideo(e.target.value) };
+    const listServer = Object.keys(data).filter(key => data[key] !== "");
+    console.log(listServer);
+
     return (
         <div className={cx('wrapper')}>
             <Rating />
-            <Form.Select aria-label="Default select example" className={cx('server-list')}>
-                <option value="1">#Máy chủ miền Tây</option>
+
+            <Form.Select value={serverVideo} onChange={onChangeServer} aria-label="Default select example" className={cx('server-list')}>
+                {listServer.map((server) => (
+                    <option key={server} value={server}>
+                        {`#Máy chủ ${server}`}
+                    </option>
+                ))}
+
             </Form.Select>
             <Button primary className={cx('report-btn')}>
                 #Méc bọ

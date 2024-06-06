@@ -19,6 +19,7 @@ export const colum = [
 
 export default async function FilmPage() {
     const data = await getFilm();
+
     const sideMovieFormInfo = await getSideMovieFormInfo();
 
     return (
