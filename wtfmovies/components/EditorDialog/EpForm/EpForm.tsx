@@ -1,4 +1,4 @@
-import { styled } from '@mui/material';
+import { LinearProgress, styled } from '@mui/material';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -196,6 +196,7 @@ export default function InfoForm({ defaultValue }: MovieForm) {
                     <Button onClick={handleConfirmDelete}>Delete</Button>
                 </DialogActions>
             </Dialog>
+            <LinearProgress variant="determinate" value={80} />
         </Box>
     );
 }
