@@ -56,7 +56,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
     const handleClickFetch = async (event: any): Promise<void> => {
         setLoading(false);
-        const lEp = await fetch('/api/v1/editor/youtubeUpload', { method: 'POST', body: JSON.stringify({ type: 'fetchEpisodes', playlistId: playlistId }) })
+        const lEp = await fetch('/api/v1/editor/fetchEpYoutube', { method: 'POST', body: JSON.stringify({ type: 'fetchEpisodes', playlistId: playlistId }) })
         if (lEp.status === 200) {
             const lEpDe: FectData = await lEp.json();
             setListEpisode(lEpDe.result.map((item) => ({ link: item.link.Youtube, index: item.index })));

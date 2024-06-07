@@ -23,7 +23,9 @@ export async function POST(request: NextRequest) {
                     $inc: {
                         views: 1
                     }
-                }
+                },
+                upsert: true,
+
             }
 
         );

@@ -186,12 +186,12 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                             autoFocus
                             margin="dense"
                             id="name"
-                            value={dialogValue.title}
+                            value={dialogValue.title.trim()}
                             onChange={(event) =>
                                 setDialogValue({
                                     ...dialogValue,
-                                    title: event.target.value,
-                                    firstLetter: event.target.value[0].toUpperCase(),
+                                    title: event.target.value.trim(),
+                                    firstLetter: event.target.value.trim()[0].toUpperCase(),
                                 })
                             }
                             label="Tên"

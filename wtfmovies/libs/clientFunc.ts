@@ -278,49 +278,72 @@ export function cropImage(imageSrc: string, croppedArea: {
     y: number;
     width: number;
     height: number;
-}): Promise<Blob> {
+}): Promise<Blob | string> {
     return new Promise((resolve, reject) => {
-        const image = new Image();
-        image.src = imageSrc;
-
-        image.onload = () => {
-            const canvas = document.createElement('canvas');
-            const croppedWidth = croppedArea.width;
-            const croppedHeight = croppedArea.height;
-            const croppedX = croppedArea.x;
-            const croppedY = croppedArea.y;
-            canvas.width = croppedWidth;
-            canvas.height = croppedHeight;
-            const context = canvas.getContext('2d');
-            if (!context) {
-                reject(new Error('Unable to get canvas context'));
-                return;
+        try {
+            if (!croppedArea) {
+                return resolve(imageSrc);
             }
+            const image = new Image();
+            image.src = imageSrc;
 
-            context.drawImage(
-                image,
-                croppedX,
-                croppedY,
-                croppedWidth,
-                croppedHeight,
-                0,
-                0,
-                croppedWidth,
-                croppedHeight
-            );
-
-            canvas.toBlob((blob) => {
-                if (!blob) {
-                    reject(new Error('Unable to create blob from canvas'));
+            image.onload = () => {
+                const canvas = document.createElement('canvas');
+                const croppedWidth = croppedArea.width;
+                const croppedHeight = croppedArea.height;
+                const croppedX = croppedArea.x;
+                const croppedY = croppedArea.y;
+                canvas.width = croppedWidth;
+                canvas.height = croppedHeight;
+                const context = canvas.getContext('2d');
+                if (!context) {
+                    reject(new Error('Unable to get canvas context'));
                     return;
                 }
 
-                resolve(blob);
-            }, 'image/png');
-        };
+                context.drawImage(
+                    image,
+                    croppedX,
+                    croppedY,
+                    croppedWidth,
+                    croppedHeight,
+                    0,
+                    0,
+                    croppedWidth,
+                    croppedHeight
+                );
 
-        image.onerror = () => {
-            reject(new Error('Unable to load image'));
-        };
+                canvas.toBlob((blob) => {
+                    if (!blob) {
+                        reject(new Error('Unable to create blob from canvas'));
+                        return;
+                    }
+
+                    resolve(blob);
+                }, 'image/png');
+            };
+
+            image.onerror = () => {
+                reject(new Error('Unable to load image'));
+            };
+        } catch (error) {
+            return resolve(imageSrc);
+        }
+
+
     });
 }
+
+export const generateUUIDv4 = (): string => {
+    // Create a placeholder array for UUID format
+    const template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+
+    return template.replace(/[xy]/g, (c) => {
+        // Generate a random number between 0 and 15
+        const r = (Math.random() * 16) | 0;
+        // Adjust for 'y' values to conform to RFC 4122 which requires it to be 8, 9, A, or B
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        // Convert the number to its hexadecimal representation
+        return v.toString(16);
+    });
+};

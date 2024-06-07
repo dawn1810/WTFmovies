@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { ids }: dataType = await request.json();
 
-        if (extendedUser?.role === 'editor') {
+        if (extendedUser?.role === 'editor' || extendedUser?.role === 'admin') {
             const response = await mongodb()
                 .db('film')
                 .collection('information')

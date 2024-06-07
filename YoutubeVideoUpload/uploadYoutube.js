@@ -26,7 +26,7 @@ export const getYoutubePlaylistItems = async (playlistId) => {
             film_id: playlistId,
             index: i + 1,
             name: item.snippet.title,
-            uploader_email: "binhminh19112003@gmail.com",
+            uploader_email: "support@wtfdev.xyz",
             upload_date: {
                 "$date": item.snippet.publishedAt
             },

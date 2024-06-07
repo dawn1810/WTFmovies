@@ -1,7 +1,7 @@
 'use client';
 import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
-import { useMemo, useState } from 'react';
+import { use, useEffect, useMemo, useState } from 'react';
 // import { AlertColor } from '@mui/material';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
@@ -34,6 +34,7 @@ import AlertDialog from '~/components/EditorDialog';
 import { MovieForm } from '~/components/EditorDialog';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { generateUUIDv4 } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 export default function DataGridCom({
@@ -53,6 +54,11 @@ export default function DataGridCom({
     const [valueFilm, setValueFilm] = useState<any>({});
     const [dataGrid, setDataGrid] = useState<any>(children);
     const [loadingDelete, setLoadingDelete] = useState(false);
+    const [film_id_form, setFilm_id_form] = useState(valueFilm.film_id);
+
+    useEffect(() => {
+        setFilm_id_form(valueFilm.film_id)
+    }, [valueFilm.film_id]);
 
     const dispatch = useDispatch();
 
@@ -89,6 +95,8 @@ export default function DataGridCom({
     }
 
     function handleAdd() {
+        setFilm_id_form(generateUUIDv4())
+
         setOpenForm(true);
     }
 
@@ -235,9 +243,11 @@ export default function DataGridCom({
             {useMemo(
                 () => (
                     <MovieForm
+                        dataGrid={dataGrid}
+                        setDataGrid={setDataGrid}
                         key={valueFilm.film_id}
                         defaultValue={valueFilm}
-
+                        film_id={film_id_form}
                         isOpen={openForm}
                         handleClose={handleCloseForm} tags={sideFormInfo.tags} countrys={sideFormInfo.countrys}                    ></MovieForm>
                 ),
@@ -246,6 +256,7 @@ export default function DataGridCom({
                     sideFormInfo.tags,
                     sideFormInfo.countrys,
                     openForm,
+                    film_id_form,
                 ],
             )}
 

@@ -249,13 +249,16 @@ export const generateOTP = (length: number = 5): string => {
     return otp;
 };
 
+
 // upload film
 export const createSearchName = (name: string): string => {
     return name
         .normalize('NFD')
         .replace(/[\u0300-\u036f]/g, '')
         .toLowerCase()
-        .replace(/\s+/g, '-');
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/--+/g, '-');
 };
 
 // evaluate

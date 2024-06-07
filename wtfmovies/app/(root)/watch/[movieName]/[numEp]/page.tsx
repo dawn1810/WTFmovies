@@ -67,14 +67,17 @@ export default async function Watch({ params }: Props) {
     const regex = /^tap\d+$/;
     const matchNumEp = numEp.match(regex);
 
-    if (!filmData || !filmData.notification)
+
+    //re check info film
+    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType) return NotFound();
+
+
+    if (!filmData.notification)
         filmData.notification = {
             schedule: 'Phim đã hoàn thành',
             notification: 'Không có thông báo',
         };
 
-    //re check info film
-    if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType) return NotFound();
 
     //spit to get "{number}"
     const regexGetEp = /(\d+)/;

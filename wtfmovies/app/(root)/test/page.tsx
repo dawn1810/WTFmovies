@@ -48,7 +48,7 @@ function Test() {
     };
 
     const handleSend = async () => {
-        const response = await fetch('/api/v1/editor/youtubeUpload', {
+        const response = await fetch('/api/v1/editor/fetchEpYoutube', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: value,

@@ -59,6 +59,8 @@ export async function POST(request: NextRequest) {
                     rating: avgRatingEp[0].rating,
                 },
             },
+            upsert: true,
+
         });
 
     if (updateRes.matchedCount === 1 && UpdateRatingEp.matchedCount === 1)

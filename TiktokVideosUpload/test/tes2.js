@@ -2,7 +2,7 @@ const a = {
 	"receiver": [
 		{
 			"name": "lorem",
-			"email": "binhminh19112003@gmail.com"
+			"email": "support@wtfdev.xyz"
 		}
 	],
 	"subject": "Hello",

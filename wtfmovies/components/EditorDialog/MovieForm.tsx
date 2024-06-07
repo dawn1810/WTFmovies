@@ -20,6 +20,7 @@ import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux
 import { AlertColor } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { cropImage } from '~/libs/clientFunc';
+import { FilmInfo } from '~/libs/interfaces';
 
 
 function TabPanel(props: any) {
@@ -42,20 +43,27 @@ function TabPanel(props: any) {
     );
 }
 export function MovieForm({
+    dataGrid,
+    setDataGrid,
     defaultValue,
     tags,
     countrys,
     isOpen,
+    film_id,
     handleClose,
 }: {
+    dataGrid: any,
+    setDataGrid: any;
     defaultValue?: any;
     tags: any;
     countrys: any;
+    film_id: string,
     isOpen: boolean;
     handleClose: () => any;
 
 }) {
     const [value, setValue] = useState(0);
+    console.log(film_id);
 
     ///infoFilm
     const statusMovies = [
@@ -140,6 +148,7 @@ export function MovieForm({
 
         timeEp = min * 60 + sec;
         const data = {
+            film_id: film_id,
             name: titleMovie,
             describe: sumaryMovie,
             genre: valueGenres.map((item: any) => item.id),
@@ -148,27 +157,42 @@ export function MovieForm({
             author: valueAuthors.map((item: any) => item.id),
             tag: tags.find((item: any) => item.name === valueTag)?._id,
             country: countrys.find((item: any) => item.value === valueCountry)?._id,
-            releaseYear: year?.year(),
+            releaseYear: year?.toISOString(),
             maxEp: maxEp,
             duration: timeEp,
             status: statusMovies.find((item) => item.value === valueStatus)?.label,
-            img: dropedImage,
-            poster: dropedImageBanner,
             listEp: {
                 tiktok: listEpisodeTiktok,
                 youtube: listEpisodeYoutube,
             }
         }
 
-        console.log(data);
-        handleAddMovie();
+        const formData = new FormData();
+        if (!!dropedImage) formData.append('image', dropedImage);
+        if (!!dropedImageBanner) formData.append('imageBanner', dropedImageBanner);
+
+        formData.append('info', JSON.stringify(data));
+        const rd = await fetch('/api/v1/editor/addMovies', {
+            method: 'POST',
+            body: formData,
+        });
+        const dre: any = await rd.json();
+        if (rd.status === 200) {
+            showAlert('Thêm phim thành công!', 'success');
+            handleAfterAddMovie(dre);
+        } else if (rd.status === 500 && dre.error.name === 'MongodbError') {
+            showAlert('Cập nhật phim thành công!', 'info');
+            handleAfterAddMovie(dre);
+        }
+
+        else
+            showAlert('Thêm phim không thành công!', 'error');
     }
-    const sendFetchData = async (data: any) => {
-        const rd = await fetch('/api/movie', { method: 'POST', body: JSON.stringify(data) });
-    };
 
 
-    const handleAddMovie = () => {
+    console.log(dataGrid);
+
+    const handleAfterAddMovie = (data: any) => {
         //reset image
         setCropResult(null);
         setCropResultBanner(null);
@@ -192,6 +216,64 @@ export function MovieForm({
         //reset ep
         setListEpisodeTiktok([]);
         setListEpisodeYoutube([]);
+
+        //add to table
+        const convertSecondsToDHMS = (seconds: number) => {
+            const days = Math.floor(seconds / (24 * 60 * 60));
+            const hours = Math.floor((seconds % (24 * 60 * 60)) / (60 * 60));
+            const minutes = Math.floor((seconds % (60 * 60)) / 60);
+            const remainingSeconds = seconds % 60;
+
+            let result = '';
+            if (days > 0) {
+                result += `${days}d `;
+            }
+            if (hours > 0) {
+                result += `${hours}h `;
+            }
+            if (minutes > 0) {
+                result += `${minutes}m `;
+            }
+            if (remainingSeconds > 0) {
+                result += `${remainingSeconds}s`;
+            }
+
+            return result.trim();
+        }
+        const lisEp = {
+            tiktok: listEpisodeTiktok,
+            youtube: listEpisodeYoutube,
+        }
+        const arrays = Object.values(lisEp);
+        const lengths = arrays.map((arr: any) => arr.length);
+        const maxLength = lengths.reduce((max, length) => Math.max(max, length), 0);
+        const proListEp = [];
+        for (let index = 0; index < maxLength; index++) {
+            proListEp.push({
+                index: index + 1,
+                link: {
+                    Youtube: lisEp.youtube[index]?.link || "",
+                    Tiktok: lisEp.tiktok[index]?.link || ""
+                },
+            })
+        }
+        const rdata = {
+            ...data,
+            tags: [valueTag],
+            actor: valueActors.map((item: any) => item.title),
+            author: valueAuthors.map((item: any) => item.title),
+            country: countrys.find((item: any) => item.value === valueCountry)?.label,
+            director: valueDirectors.map((item: any) => item.title),
+            genre: valueGenres.map((item: any) => item.title),
+            listEp: proListEp,
+            durationAsString: convertSecondsToDHMS(data.duration),
+            id: data.film_id,
+            releaseYear: year?.year(),
+            maxEpAsString: [maxLength, data.maxEp !== -1 ? data.maxEp : '?'].join(' / ') + ' tập',
+            videoType: data.videoType.map((videoType: any) => videoType.title)
+        };
+
+        setDataGrid([...dataGrid, rdata]);
 
         handleClose();
     };
