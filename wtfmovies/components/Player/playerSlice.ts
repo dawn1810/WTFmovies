@@ -25,7 +25,7 @@ export const playerSlice = createSlice({
         rightBtnShow: false,
         currSpeed: '1',
         currResol: 'N/A',
-        resolution: []
+        resolution: [],
     },
     reducers: {
         changeUrl: (state, action) => {

@@ -60,7 +60,11 @@ function TabBox({
                         {gridContent ? (
                             <TabGridContent films={tab.content} />
                         ) : flexContent ? (
-                            <TabFlexContent episodes={tab.content} active_episode={active_episode} listIdEp={listIdEp} />
+                            <TabFlexContent
+                                episodes={tab.content}
+                                active_episode={active_episode}
+                                listIdEp={listIdEp}
+                            />
                         ) : listContent ? (
                             <FilmProposeList films={tab.content} className={cx('films-list')} />
                         ) : (

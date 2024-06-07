@@ -90,7 +90,7 @@ function CommentInputForm({
         } else if (response.status === 400) {
             showAlert('Bình luận không hợp lệ', 'error');
         } else if (response.status === 403) {
-            showAlert('Xác thực thất bại', 'error');
+            showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else if (response.status === 500) {
             showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
         }

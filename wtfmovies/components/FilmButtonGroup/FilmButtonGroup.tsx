@@ -43,9 +43,7 @@ function FilmButtonGroup({
     const loveDebounce = useDebounce(love, 1000);
 
     useEffect(() => {
-        if (isFirstRender.current) {
-            return;
-        }
+        if (isFirstRender.current) return;
 
         const fetchApi = async () => {
             setLoading(true);

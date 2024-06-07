@@ -12,18 +12,24 @@ const cx = classNames.bind(style);
 
 export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any; numEp: number }) {
     const dispatch = useDispatch();
-    const [serverVideo, setServerVideo] = useState<string>(filmEpisode[numEp - 1].link.Tiktok ? "Tiktok" : "Youtube");
-    const [linkVideo, setLinkVideo] = useState<string>((serverVideo === "Tiktok") ? filmEpisode[numEp - 1].link.Tiktok + '?.m3u8' : filmEpisode[numEp - 1].link.Youtube);
+    const [serverVideo, setServerVideo] = useState<string>(filmEpisode[numEp - 1].link.Tiktok ? 'Tiktok' : 'Youtube');
+    const [linkVideo, setLinkVideo] = useState<string>(
+        serverVideo === 'Tiktok' ? filmEpisode[numEp - 1].link.Tiktok + '?.m3u8' : filmEpisode[numEp - 1].link.Youtube,
+    );
 
     useEffect(() => {
-        setLinkVideo((serverVideo === "Tiktok") ? filmEpisode[numEp - 1].link.Tiktok + '?.m3u8' : filmEpisode[numEp - 1].link.Youtube);
+        setLinkVideo(
+            serverVideo === 'Tiktok'
+                ? filmEpisode[numEp - 1].link.Tiktok + '?.m3u8'
+                : filmEpisode[numEp - 1].link.Youtube,
+        );
     }, [serverVideo]);
 
     useEffect(() => {
         const timer = setTimeout(async () => {
             await fetch('/api/v1/updateView', {
                 method: 'POST',
-                body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id })
+                body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id }),
             });
         }, 5000);
 
@@ -37,8 +43,12 @@ export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any; numEp: n
 
     return (
         <div className={cx('wrapper')}>
-            <Player key={numEp + 'video'} url={linkVideo} />
-            <FilmInteract serverVideo={serverVideo} setServerVideo={setServerVideo} data={filmEpisode[numEp - 1].link} />
+            <Player key={numEp + 'video'} url={linkVideo} numEp={numEp} maxEp={filmEpisode.length} />
+            <FilmInteract
+                serverVideo={serverVideo}
+                setServerVideo={setServerVideo}
+                data={filmEpisode[numEp - 1].link}
+            />
         </div>
     );
 }

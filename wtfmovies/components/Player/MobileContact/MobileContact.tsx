@@ -2,21 +2,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useDispatch, useSelector } from 'react-redux';
 import { forwardRef, useCallback, useEffect, useState } from 'react';
-import SkipPreviousOutlinedIcon from '@mui/icons-material/SkipPreviousOutlined';
 import CheckIcon from '@mui/icons-material/Check';
 import PictureInPictureAltOutlinedIcon from '@mui/icons-material/PictureInPictureAltOutlined';
 import ZoomOutMapIcon from '@mui/icons-material/ZoomOutMap';
-import ZoomInMapIcon from '@mui/icons-material/ZoomInMap';
-import SkipNextOutlinedIcon from '@mui/icons-material/SkipNextOutlined';
-import PauseIcon from '@mui/icons-material/PauseRounded';
-import PlayArrowIcon from '@mui/icons-material/PlayArrowRounded';
-import VolumeUpIcon from '@mui/icons-material/VolumeUp';
-import VolumeOffIcon from '@mui/icons-material/VolumeOff';
+import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import Tooltip from '@mui/material/Tooltip';
 import IconButton from '@mui/material/IconButton';
 import classNames from 'classnames/bind';
 
-import style from './Contact.module.scss';
+import style from './MobileContact.module.scss';
 import {
     changeVolume,
     toggleMuted,
@@ -80,22 +74,9 @@ interface ContactPlayer {
     isEdior?: boolean;
     handlePlayPause: (e: any) => void;
     handleMouseMove: () => void;
-    handleNextEp: () => void;
-    handlePrevEp: () => void;
 }
 const Contact = forwardRef(
-    (
-        {
-            handleClickFullscreen,
-            playerRef,
-            handlePlayPause,
-            handleMouseMove,
-            handleNextEp,
-            handlePrevEp,
-            isEdior,
-        }: ContactPlayer,
-        ref: any,
-    ) => {
+    ({ handleClickFullscreen, playerRef, handlePlayPause, handleMouseMove, isEdior }: ContactPlayer, ref: any) => {
         let x: NodeJS.Timeout, y: NodeJS.Timeout, z: NodeJS.Timeout;
 
         const contactState = useSelector(contactPlayerSelector);
@@ -118,6 +99,7 @@ const Contact = forwardRef(
             currentLevel: null,
             autoLevelEnabled: false,
         });
+        const [advContact, setAdvContact] = useState(false);
 
         // Rest of your component
         useEffect(() => {
@@ -158,79 +140,9 @@ const Contact = forwardRef(
             }
         }, [hlsPlayer.nextLevel, dispatch]);
 
-        // short-cut
-        useEffect(() => {
-            const handleKeyPress = (e: any) => {
-                const currTime = playerRef.current.getCurrentTime();
-
-                // If spacebar is pressed, toggle play/pause
-                switch (e.keyCode) {
-                    case 32:
-                        e.preventDefault();
-                        handlePlayPause(e);
-                        handleAnimBtnClick();
-                        break;
-                    case 70:
-                        handleClickFullscreen(e);
-                        break;
-                    case 73:
-                        handleTogglePIP(e);
-                        break;
-                    case 37:
-                    case 74:
-                        handleMouseMove();
-                        handleAnimLeftBtnClick();
-                        playerRef.current.seekTo(currTime - 5);
-                        break;
-                    case 75:
-                        handlePlayPause(e);
-                        handleAnimBtnClick();
-                        break;
-                    case 39:
-                    case 76:
-                        handleMouseMove();
-                        handleAnimRightBtnClick();
-                        playerRef.current.seekTo(currTime + 5);
-                        break;
-                    case 77:
-                        handleMouseMove();
-                        handleToggleMuted(e);
-                        break;
-                    default:
-                        break;
-                }
-            };
-
-            // Add event listener for keydown
-            window.addEventListener('keydown', handleKeyPress);
-
-            // Remove event listener on cleanup
-            return () => {
-                window.removeEventListener('keydown', handleKeyPress);
-            };
-            // eslint-disable-next-line react-hooks/exhaustive-deps
-        }, [contactState]);
-
-        const handleVolumeChange = useCallback((e: any) => {
-            e.preventDefault();
-            dispatch(changeVolume(e.target.value));
-        }, []);
-
         const handleOnPlaybackRateChange = useCallback((value: string) => {
             dispatch(changePlaybackRate(value));
         }, []);
-
-        const handleToggleMuted = useCallback(
-            (e: any) => {
-                e.preventDefault();
-
-                if (contactState.volume == 0) {
-                    dispatch(changeVolume(0.5));
-                }
-                dispatch(toggleMuted(!contactState.muted));
-            },
-            [contactState.muted],
-        );
 
         const handleSeekMouseDown = useCallback((e: any) => {
             dispatch(grabSeek(true));
@@ -304,69 +216,14 @@ const Contact = forwardRef(
 
         // else
         return (
-            <div ref={ref} className={cx('player-contact-wrapper', { 'contact-show': contactState.contactShow })}>
-                <div className={cx('progress-bar')}>
-                    <progress max={1} value={contactState.loaded} className={cx('loaded-bar')} />
-                    <progress max={1} value={contactState.played} className={cx('played-bar')} />
-                    <input
-                        type="range"
-                        min={0}
-                        max={0.999999}
-                        step="any"
-                        value={contactState.played}
-                        className={cx('seek-bar')}
-                        onMouseDown={handleSeekMouseDown}
-                        onTouchStart={handleSeekMouseDown}
-                        onChange={(e: any) => handleSeekChange(e.target.value)}
-                        onMouseUp={(e) => handleSeekMouseUp(e)}
-                        onTouchEnd={(e) => handleSeekMouseUp(e)}
-                    />
-                </div>
-                <div className={cx('btn-list')}>
-                    <div className={cx('left-btn-list')}>
-                        <Tooltip title="Tập trước" placement="top">
-                            <IconButton aria-label="delete" size="large" onClick={handlePrevEp}>
-                                <SkipPreviousOutlinedIcon fontSize="inherit" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Phát (k)" placement="top">
-                            <IconButton aria-label="delete" size="large" onClick={handlePlayPause}>
-                                {contactState.playing ? (
-                                    <PauseIcon fontSize="inherit" />
-                                ) : (
-                                    <PlayArrowIcon fontSize="inherit" />
-                                )}
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Tập tiếp theo" placement="top">
-                            <IconButton aria-label="delete" size="large" onClick={handleNextEp}>
-                                <SkipNextOutlinedIcon fontSize="inherit" />
-                            </IconButton>
-                        </Tooltip>
-                        <Tooltip title={contactState.muted ? 'Bật âm thanh (m)' : 'Tắt tiếng (m)'} placement="top">
-                            <button className={cx('action-btn', 'vol-btn')} onClick={handleToggleMuted}>
-                                {contactState.muted ? <VolumeOffIcon /> : <VolumeUpIcon />}
-                            </button>
-                        </Tooltip>
-                        <Tooltip title="Âm lượng" placement="top">
-                            <div className={cx('volumn-input-box', isEdior && 'volumn-input-box-editor')}>
-                                <input
-                                    type="range"
-                                    min={0}
-                                    max={1}
-                                    step="any"
-                                    value={contactState.volume}
-                                    className={cx('volumn-input')}
-                                    onChange={(e) => handleVolumeChange(e)}
-                                />
-                            </div>
-                        </Tooltip>
-
-                        <div className={cx('duration', isEdior && 'duration-editor')}>
-                            <Duration seconds={contactState.duration * contactState.played} /> /{' '}
-                            <Duration seconds={contactState.duration} />
-                        </div>
-                    </div>
+            <div
+                ref={ref}
+                className={cx('player-contact-wrapper', {
+                    'contact-show': !contactState.playing,
+                })}
+            >
+                <div style={{ display: advContact ? 'flex' : 'none' }} className={cx('btn-list')}>
+                    <div className={cx('left-btn-list')}></div>
                     <div className={cx('right-btn-list')}>
                         <Menu
                             playerMenu
@@ -401,7 +258,33 @@ const Contact = forwardRef(
                                 </button>
                             </Menu>
                         )}
-
+                    </div>
+                </div>
+                <div className={cx('progress-bar')}>
+                    <progress max={1} value={contactState.loaded} className={cx('loaded-bar')} />
+                    <progress max={1} value={contactState.played} className={cx('played-bar')} />
+                    <input
+                        type="range"
+                        min={0}
+                        max={0.999999}
+                        step="any"
+                        value={contactState.played}
+                        className={cx('seek-bar')}
+                        onMouseDown={handleSeekMouseDown}
+                        onTouchStart={handleSeekMouseDown}
+                        onChange={(e: any) => handleSeekChange(e.target.value)}
+                        onMouseUp={(e) => handleSeekMouseUp(e)}
+                        onTouchEnd={(e) => handleSeekMouseUp(e)}
+                    />
+                </div>
+                <div className={cx('btn-list')}>
+                    <div className={cx('left-btn-list')}>
+                        <div className={cx('duration', isEdior && 'duration-editor')}>
+                            <Duration seconds={contactState.duration * contactState.played} /> /{' '}
+                            <Duration seconds={contactState.duration} />
+                        </div>
+                    </div>
+                    <div className={cx('right-btn-list')}>
                         {ReactPlayer.canEnablePIP(contactState.url) && (
                             <Tooltip title="Trình phát thu nhỏ (i)" placement="top">
                                 <IconButton aria-label="delete" size="large" onClick={handleTogglePIP}>
@@ -409,6 +292,11 @@ const Contact = forwardRef(
                                 </IconButton>
                             </Tooltip>
                         )}
+                        <Tooltip title="Toàn màn hình (f)" placement="top">
+                            <IconButton aria-label="delete" size="large" onClick={() => setAdvContact((prev) => !prev)}>
+                                <SettingsOutlinedIcon fontSize="inherit" />
+                            </IconButton>
+                        </Tooltip>
                         <Tooltip title="Toàn màn hình (f)" placement="top">
                             <IconButton aria-label="delete" size="large" onClick={handleClickFullscreen}>
                                 <ZoomOutMapIcon fontSize="inherit" />

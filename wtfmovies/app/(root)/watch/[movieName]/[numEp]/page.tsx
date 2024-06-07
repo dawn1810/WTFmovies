@@ -4,7 +4,6 @@ import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
-// import DefaultLayout from '~/layouts/DefaultLayout';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
 import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
@@ -143,7 +142,6 @@ export default async function Watch({ params }: Props) {
     ];
 
     return (
-        // <DefaultLayout>
         <div className={cx('wrapper')}>
             <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
             <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
@@ -173,6 +171,5 @@ export default async function Watch({ params }: Props) {
                 className={cx('cmt-tab-box')}
             />
         </div>
-        // </DefaultLayout>
     );
 }

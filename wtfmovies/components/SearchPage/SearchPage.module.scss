@@ -31,11 +31,8 @@
 
         .films-list {
             display: grid;
-            grid-template-columns: auto auto auto;
-            grid-template-rows: auto auto auto auto;
+            grid-template-columns: repeat(3, calc(33% - 9px));
             gap: 18px 18px;
-            grid-template-areas:
-                ". . .";
             padding: 18px;
             border-radius: 5px;
             background-color: var(--card-background-color);
@@ -43,6 +40,22 @@
             // .large-film-card {
             //     grid-area: card;
             // }
+        }
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        .search-films {
+            .films-list {
+                grid-template-columns: 100%;
+                gap: 18px 18px;
+                padding: 18px;
+                border-radius: 5px;
+                background-color: var(--card-background-color);
+
+            }
         }
     }
 }
