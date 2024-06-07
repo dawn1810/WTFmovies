@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { MongoDate, ObjectId, mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
 type dataType = { content: string; userEmails: string[] };
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
         if (!session) return undefined;
 
-        const extendedUser: ExtendedUser | undefined = session?.user;
+        // const extendedUser: ExtendedUser | undefined = session?.user;
         // check auth
 
         const { content, userEmails }: dataType = await request.json();
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
                 time: MongoDate(today),
             });
 
-        if (!notifyAdd.insertedId) return toError('Gởi thông báo thất bại', 400);
+        if (!notifyAdd.insertedId) return toError('Gửi thông báo thất bại', 400);
 
         const userIds = await mongodb()
             .db('user')

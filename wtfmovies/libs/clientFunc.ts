@@ -272,3 +272,55 @@ export const convertGender = (gender?: number) => {
             return 'chưa biết';
     }
 };
+
+export function cropImage(imageSrc: string, croppedArea: {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}): Promise<Blob> {
+    return new Promise((resolve, reject) => {
+        const image = new Image();
+        image.src = imageSrc;
+
+        image.onload = () => {
+            const canvas = document.createElement('canvas');
+            const croppedWidth = croppedArea.width;
+            const croppedHeight = croppedArea.height;
+            const croppedX = croppedArea.x;
+            const croppedY = croppedArea.y;
+            canvas.width = croppedWidth;
+            canvas.height = croppedHeight;
+            const context = canvas.getContext('2d');
+            if (!context) {
+                reject(new Error('Unable to get canvas context'));
+                return;
+            }
+
+            context.drawImage(
+                image,
+                croppedX,
+                croppedY,
+                croppedWidth,
+                croppedHeight,
+                0,
+                0,
+                croppedWidth,
+                croppedHeight
+            );
+
+            canvas.toBlob((blob) => {
+                if (!blob) {
+                    reject(new Error('Unable to create blob from canvas'));
+                    return;
+                }
+
+                resolve(blob);
+            }, 'image/png');
+        };
+
+        image.onerror = () => {
+            reject(new Error('Unable to load image'));
+        };
+    });
+}

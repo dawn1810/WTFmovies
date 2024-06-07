@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { MongoDate, ObjectId, mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
 type dataType = { filmId: string };
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
 
         if (!session) return undefined;
 
-        const extendedUser: ExtendedUser | undefined = session?.user;
+        // const extendedUser: ExtendedUser | undefined = session?.user;
         // check auth
 
         const { filmId }: dataType = await request.json();
