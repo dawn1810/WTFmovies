@@ -39,9 +39,16 @@ function a11yProps(index: number) {
     };
 }
 interface MovieForm {
-    defaultValue?: any;
+    listEpisodeTiktok: any,
+    setListEpisodeTiktok: any,
+    listEpisodeYoutube: any,
+    setListEpisodeYoutube: any
 }
-export default function VerticalTabs({ defaultValue }: MovieForm) {
+export default function VerticalTabs({
+    listEpisodeTiktok,
+    setListEpisodeTiktok,
+    listEpisodeYoutube,
+    setListEpisodeYoutube, }: MovieForm) {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -64,10 +71,10 @@ export default function VerticalTabs({ defaultValue }: MovieForm) {
                 <Tab label="Youtube server" {...a11yProps(1)} />
             </Tabs>
             <TabPanel value={value} index={0}>
-                <TiktokUpload defaultValue={defaultValue}></TiktokUpload>
+                <TiktokUpload listEpisode={listEpisodeTiktok} setListEpisode={setListEpisodeTiktok}></TiktokUpload>
             </TabPanel>
             <TabPanel value={value} index={1}>
-                <YoutubeUpload defaultValue={defaultValue}></YoutubeUpload>
+                <YoutubeUpload listEpisode={listEpisodeYoutube} setListEpisode={setListEpisodeYoutube}></YoutubeUpload>
             </TabPanel>
 
         </Box>

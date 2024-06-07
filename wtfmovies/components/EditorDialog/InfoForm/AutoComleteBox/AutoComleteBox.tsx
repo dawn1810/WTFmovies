@@ -18,9 +18,9 @@ const filter = createFilterOptions<DataType>();
 
 export default function CreateOptionDialog({ id, label, placeholder, setValueData, valueData }:
     { id: string, label: string, placeholder: string, setValueData: any, valueData: any }) {
+    const dispatch = useDispatch();
     const [open, toggleOpen] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const dispatch = useDispatch();
     const [listData, setListData] = React.useState<DataType[]>([]);
     const [openAutoBox, setOpenAutoBox] = React.useState(false);
 

@@ -16,7 +16,8 @@ const cx = classNames.bind(style);
 
 import { useState } from 'react';
 interface MovieForm {
-    defaultValue?: any;
+    listEpisode: { link: string; index: number }[],
+    setListEpisode: any;
 }
 import { CloudUpload } from '@mui/icons-material';
 import InputLabel from '@mui/material/InputLabel';
@@ -33,10 +34,9 @@ interface FectData {
         views: number;
     }[]
 }
-export default function InfoForm({ defaultValue }: MovieForm) {
+export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     // console.log(defaultValue);
 
-    const [listEpisode, setListEpisode] = useState<{ link: string; index: number }[]>(defaultValue ? defaultValue.map((item: { link: { Youtube: any; }; }) => ({ ...item, link: item.link.Youtube })) : []);
     const [playlistId, setPlaylistId] = useState<any>('');
     const [loading, setLoading] = useState<any>(true);
 

@@ -16,8 +16,11 @@ import InfoForm from './InfoForm';
 import EpForm from './EpForm';
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { describe } from 'node:test';
-import { auth } from '~/app/api/auth/[...nextauth]/auth';
+import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { AlertColor } from '@mui/material';
+import { useDispatch } from 'react-redux';
+import { cropImage } from '~/libs/clientFunc';
+
 
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
@@ -52,6 +55,7 @@ export function MovieForm({
     handleClose: () => any;
 
 }) {
+    const [value, setValue] = useState(0);
 
     ///infoFilm
     const statusMovies = [
@@ -89,16 +93,51 @@ export function MovieForm({
     const [valueStatus, setValueStatus] = useState(
         statusMovies.find((item) => item.label === defaultValue.status)?.value || '',
     );
+    const [imgMovie, setImgMovie] = useState(defaultValue.img || undefined);
+    const [imgBannerMovie, setImgBannerMovie] = useState(defaultValue.poster || undefined);
+    const [cropResultBanner, setCropResultBanner] = useState<any>(null);
+    const [cropResult, setCropResult] = useState<any>(null);
+
+    //ep Film
+    const [listEpisodeTiktok, setListEpisodeTiktok] = useState<{ link: string; index: number }[]>(defaultValue.listEp ? defaultValue.listEp.map((item: { link: { Tiktok: any; }; }) => {
+        if (item.link.Tiktok) {
+            return { ...item, link: item.link.Tiktok };
+        }
+        return;
+    }).filter((item: any) => item !== undefined) : []);
+
+    const [listEpisodeYoutube, setListEpisodeYoutube] = useState<{ link: string; index: number }[]>(defaultValue.listEp ? defaultValue.listEp.map((item: { link: { Youtube: any; }; }) => {
+        if (item.link.Youtube) {
+            return { ...item, link: item.link.Youtube };
+        }
+        return;
+    }).filter((item: any) => item !== undefined) : []);
 
 
-    const [value, setValue] = useState(0);
+    //notify
+    const dispatch = useDispatch();
 
-    const sendInfo = () => {
+    const showAlert = (content: string, type: AlertColor) => {
+        dispatch(changeNotifyContent(content));
+        dispatch(changeNotifyType(type));
+        dispatch(changeNotifyOpen(true));
+    };
+    const sendInfo = async () => {
         const min = duration?.minute();
         const sec = duration?.second();
         let timeEp = 0;
-        if (min === undefined || sec === undefined)
-            return;
+        if (titleMovie === '' || sumaryMovie === '' ||
+            min === undefined || sec === undefined ||
+            valueGenres.length === 0 || valueDirectors.length === 0 ||
+            valueActors.length === 0 || valueAuthors.length === 0 ||
+            valueCountry === '' || valueStatus === '' ||
+            year === null || maxEp === undefined ||
+            imgMovie === undefined || imgBannerMovie === undefined
+        )
+            return showAlert('Vui lòng điền đầy đủ thông tin', 'error');
+        const dropedImage = await cropImage(imgMovie, cropResult);
+        const dropedImageBanner = await cropImage(imgBannerMovie, cropResultBanner);
+
         timeEp = min * 60 + sec;
         const data = {
             name: titleMovie,
@@ -113,21 +152,54 @@ export function MovieForm({
             maxEp: maxEp,
             duration: timeEp,
             status: statusMovies.find((item) => item.value === valueStatus)?.label,
-            img: imgMovie,
-            poster: imgBannerMovie,
-            listEp: []
+            img: dropedImage,
+            poster: dropedImageBanner,
+            listEp: {
+                tiktok: listEpisodeTiktok,
+                youtube: listEpisodeYoutube,
+            }
         }
 
         console.log(data);
-
+        handleAddMovie();
     }
+    const sendFetchData = async (data: any) => {
+        const rd = await fetch('/api/movie', { method: 'POST', body: JSON.stringify(data) });
+    };
+
+
+    const handleAddMovie = () => {
+        //reset image
+        setCropResult(null);
+        setCropResultBanner(null);
+        setImgBannerMovie(undefined);
+        setImgMovie(undefined);
+
+        //reset info
+        setTitleMovie('');
+        setSumaryMovie('');
+        setValueActors([]);
+        setValueAuthors([]);
+        setValueDirectors([]);
+        setValueGenres([]);
+        setValueCountry('');
+        setValueStatus('');
+        setvValueTag('');
+        setYear(null);
+        setMaxEp(undefined);
+        setDuration(null);
+
+        //reset ep
+        setListEpisodeTiktok([]);
+        setListEpisodeYoutube([]);
+
+        handleClose();
+    };
+
+
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
     };
-    const [imgMovie, setImgMovie] = useState(defaultValue.img || undefined);
-    const [imgBannerMovie, setImgBannerMovie] = useState(defaultValue.poster || undefined);
-    const [cropResultBanner, setCropResultBanner] = useState<any>(null);
-    const [cropResult, setCropResult] = useState<any>(null);
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -183,13 +255,18 @@ export function MovieForm({
                     ></InfoForm>
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    <EpForm defaultValue={defaultValue.listEp}></EpForm>
+                    <EpForm
+                        listEpisodeTiktok={listEpisodeTiktok}
+                        setListEpisodeTiktok={setListEpisodeTiktok}
+                        listEpisodeYoutube={listEpisodeYoutube}
+                        setListEpisodeYoutube={setListEpisodeYoutube}
+                    ></EpForm>
                 </TabPanel>
                 <DialogActions>
                     <Button variant="contained" onClick={handleClose}>
                         Huỷ
                     </Button>
-                    <Button autoFocus variant="contained" onClick={() => { handleClose(); sendInfo() }}>
+                    <Button autoFocus variant="contained" onClick={sendInfo}>
                         Lưu
                     </Button>
                 </DialogActions>
