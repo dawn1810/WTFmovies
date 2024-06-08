@@ -240,7 +240,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         { headerName: 'Id', field: 'id', width: 250 },
         { headerName: 'Email người gửi', field: 'email', width: 300 },
         { headerName: 'Tên người gửi', field: 'username', width: 230 },
-        // { headerName: 'Nội dung', field: 'content', width: 180 },
+        { headerName: 'Nội dung', field: 'content', width: 500 },
         { headerName: 'Thời gian', field: 'time', width: 150 },
         {
             headerName: 'Trạng thái',
@@ -249,23 +249,23 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             editable: true,
             width: 100,
         },
-        {
-            field: 'detail',
-            type: 'actions',
-            headerName: 'Chi tiết',
-            width: 100,
-            cellClassName: 'actions',
-            getActions: ({ id }: { id: string }) => {
-                return [
-                    <GridActionsCellItem
-                        icon={<LibraryBooksIcon />}
-                        label="detail"
-                        // onClick={() => handleOpen(id)}
-                        color="inherit"
-                    />,
-                ];
-            },
-        },
+        // {
+        //     field: 'detail',
+        //     type: 'actions',
+        //     headerName: 'Chi tiết',
+        //     width: 100,
+        //     cellClassName: 'actions',
+        //     getActions: ({ id }: { id: string }) => {
+        //         return [
+        //             <GridActionsCellItem
+        //                 icon={<LibraryBooksIcon />}
+        //                 label="detail"
+        //                 onClick={() => handleOpen(id)}
+        //                 color="inherit"
+        //             />,
+        //         ];
+        //     },
+        // },
     ];
 
     return (

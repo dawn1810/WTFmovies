@@ -63,7 +63,11 @@ function CommentInputForm({
     }, [extendedUser]);
 
     const handleInput = (event: any) => {
-        setCommentInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.value }));
+        if (event.target.name === 'content' && event.target.value > 500) {
+            showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
+        } else {
+            setCommentInfo((prev: any) => ({ ...prev, [event.target.name]: event.target.value }));
+        }
     };
 
     const handleSubmit = async (event: any) => {
@@ -89,6 +93,8 @@ function CommentInputForm({
             setCommentInfo((prev) => ({ ...prev, content: '' }));
         } else if (response.status === 400) {
             showAlert('Bình luận không hợp lệ', 'error');
+        } else if (response.status === 401) {
+            showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
         } else if (response.status === 403) {
             dispatch(changeModalShow(true));
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
@@ -109,8 +115,9 @@ function CommentInputForm({
                         value={commentInfo.content}
                         as="textarea"
                         rows={5}
-                        placeholder="Viết bình luận của bạn"
+                        placeholder="Viết bình luận của bạn (tối đa 500 ký tự)"
                         name="content"
+                        maxLength={500}
                         required
                         spellCheck={false}
                         onChange={(e) => handleInput(e)}

@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
         const today = new Date();
 
         if (content.length <= 0 || username.length <= 0) return toError('Bình luận không hợp lệ', 400);
-
+        if (content.length > 500) return toError('Độ dài bình luận vượt mức cho phép', 401);
         const result = await mongodb()
             .db('film')
             .collection('comment')

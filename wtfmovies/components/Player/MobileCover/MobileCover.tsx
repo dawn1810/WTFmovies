@@ -12,6 +12,7 @@ import { coverPlayerSelector } from '~/redux/selectors';
 import style from './MobileCover.module.scss';
 import images from '~/assets/image';
 import { useEffect, useRef, useState } from 'react';
+import { showLeftBtn, showRightBtn } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 interface coverI {
@@ -21,22 +22,13 @@ interface coverI {
     handlePrevEp: () => void;
 }
 function Cover({ playerRef, handlePlayPause, handleNextEp, handlePrevEp }: coverI) {
-    let y: NodeJS.Timeout;
+    let x: NodeJS.Timeout, y: NodeJS.Timeout, z: NodeJS.Timeout;
     const coverState = useSelector(coverPlayerSelector);
     const [visible, setVisible] = useState(false);
     const divRef = useRef<any>(null);
     const [clickNum, setClickNum] = useState(0);
 
-    // const dispatch = useDispatch();
-
-    // const handleAnimBtnClick = () => {
-    //     clearTimeout(y);
-    //     dispatch(showCenterBtn(true));
-
-    //     y = setTimeout(function () {
-    //         dispatch(showCenterBtn(false));
-    //     }, 500);
-    // };
+    const dispatch = useDispatch();
 
     useEffect(() => {
         const timeId = setTimeout(() => {
@@ -68,13 +60,33 @@ function Cover({ playerRef, handlePlayPause, handleNextEp, handlePrevEp }: cover
 
             if (mouseXPos <= halfDivWidth) {
                 handleTimeChange(-5);
+                handleAnimLeftBtnClick();
             } else {
                 handleTimeChange(5);
+                handleAnimRightBtnClick();
             }
             setClickNum(0);
         } else {
             setVisible(true);
         }
+    };
+
+    const handleAnimLeftBtnClick = () => {
+        clearTimeout(z);
+        dispatch(showLeftBtn(true));
+
+        z = setTimeout(function () {
+            dispatch(showLeftBtn(false));
+        }, 500);
+    };
+
+    const handleAnimRightBtnClick = () => {
+        clearTimeout(x);
+        dispatch(showRightBtn(true));
+
+        x = setTimeout(function () {
+            dispatch(showRightBtn(false));
+        }, 500);
     };
 
     return (
@@ -118,6 +130,20 @@ function Cover({ playerRef, handlePlayPause, handleNextEp, handlePrevEp }: cover
                     </div>
                 </>
             )}
+            <div
+                className={cx('center-btn', 'left-btn', 'skip-btn', {
+                    'animation-btn': coverState.leftBtn,
+                })}
+            >
+                <Replay5RoundedIcon fontSize="large" />
+            </div>
+            <div
+                className={cx('center-btn', 'right-btn', 'skip-btn', {
+                    'animation-btn': coverState.rightBtn,
+                })}
+            >
+                <Replay5RoundedIcon fontSize="large" style={{ transform: 'scaleX(-1)' }} />
+            </div>
         </div>
     );
 }

@@ -22,7 +22,8 @@
         transform: translate(-50%, -50%);
     }
 
-    .load-btn {
+    .load-btn,
+    .skip-btn {
         opacity: 0;
     }
 
@@ -34,6 +35,14 @@
     .right-btn {
         top: 50%;
         left: 80%;
+    }
+
+    .animation-btn {
+        opacity: 1;
+        width: 50px;
+        height: 50px;
+        font-size: 1.8rem;
+        animation: fadeInAndOut 0.5s 1;
     }
 
     .loading-btn {
@@ -49,6 +58,16 @@
         -webkit-user-select: none;
         user-select: none;
         animation: rotate 0.5s ease-in-out infinite;
+    }
+}
+
+
+@keyframes fadeInAndOut {
+    to {
+        opacity: 0;
+        width: 100px;
+        height: 100px;
+        font-size: 3.6rem;
     }
 }
 

@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(style);
 
-export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string, filmEpisode: any; numEp: number }) {
+export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string; filmEpisode: any; numEp: number }) {
     const dispatch = useDispatch();
     const [serverVideo, setServerVideo] = useState<string>(filmEpisode[numEp - 1].link.Tiktok ? 'Tiktok' : 'Youtube');
     const [linkVideo, setLinkVideo] = useState<string>(
@@ -45,6 +45,7 @@ export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string, 
         <div className={cx('wrapper')}>
             <Player key={numEp + 'video'} url={linkVideo} numEp={numEp} maxEp={filmEpisode.length} />
             <FilmInteract
+                filmInfo={{ id: film_id, numEp }}
                 serverVideo={serverVideo}
                 setServerVideo={setServerVideo}
                 data={filmEpisode[numEp - 1].link}
