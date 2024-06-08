@@ -12,7 +12,7 @@ import ImageCustom from '../../ImageCustom';
 import Button from '../../Button';
 import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 function CommentInputForm({
@@ -90,6 +90,7 @@ function CommentInputForm({
         } else if (response.status === 400) {
             showAlert('Bình luận không hợp lệ', 'error');
         } else if (response.status === 403) {
+            dispatch(changeModalShow(true));
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else if (response.status === 500) {
             showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');

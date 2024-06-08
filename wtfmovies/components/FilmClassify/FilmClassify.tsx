@@ -43,7 +43,12 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
     return (
         <div className={cx('wrapper')}>
             <Title title={tags.mainTitle} icon={tags.mainIcon} />
-            {isMobile ? (
+            {!isMobile ? (
+                <>
+                    <TabsBox tabs={newFilmTabs} defaultActiveKey="all" gridContent />
+                    <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={mapFilms(films)} />
+                </>
+            ) : (
                 <>
                     <TabsBox
                         tabs={newFilmTabs}
@@ -55,11 +60,6 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
                     <Button to={tags.mainDir} primary rightIcon={<ArrowForwardIosIcon />} className={cx('more-btn')}>
                         Xem thêm
                     </Button>
-                    <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={mapFilms(films)} />
-                </>
-            ) : (
-                <>
-                    <TabsBox tabs={newFilmTabs} defaultActiveKey="all" gridContent />
                     <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={mapFilms(films)} />
                 </>
             )}

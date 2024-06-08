@@ -11,8 +11,16 @@ import LoveFilms from './LoveFilms';
 
 const cx = classNames.bind(style);
 
-function Profile({ userInfo, loveFilmsInfo }: { userInfo: UserInfoInterface; loveFilmsInfo: any }) {
-    const [value, setValue] = useState('1');
+function Profile({
+    userInfo,
+    loveFilmsInfo,
+    currPage,
+}: {
+    userInfo: UserInfoInterface;
+    loveFilmsInfo: any;
+    currPage: string;
+}) {
+    const [value, setValue] = useState(currPage);
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
@@ -22,7 +30,7 @@ function Profile({ userInfo, loveFilmsInfo }: { userInfo: UserInfoInterface; lov
         <div className={cx('wrapper')}>
             <TabContext value={value}>
                 <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                    <TabList onChange={handleChange} aria-label="lab API tabs example">
+                    <TabList variant="scrollable" onChange={handleChange}>
                         <Tab label="Thông tin cá nhân" value="1" />
                         <Tab label="Thay đổi mật khẩu" value="2" />
                         <Tab label="Danh sách film yêu thích" value="3" />

@@ -240,24 +240,22 @@ function Header({
                         </Link>
                     )}
                     {isDatabase ||
-                        (isMobile ? (
+                        (!isMobile ? (
+                            <Search />
+                        ) : (
                             <div className={cx('search-box', { 'search-box-show': searchShow })}>
                                 <button className={cx('back-btn')} onClick={handleSearchClose}>
                                     <CloseIcon />
                                 </button>
                                 <Search />
                             </div>
-                        ) : (
-                            <Search />
                         ))}
 
                     <div className={cx('actions')}>
                         {isMobile && (
-                            <Tippy delay={[0, 50]} content="Search" placement="bottom">
-                                <button className={cx('action-btn')} onClick={handleSearchShow}>
-                                    <SearchIcon />
-                                </button>
-                            </Tippy>
+                            <button className={cx('action-btn')} onClick={handleSearchShow}>
+                                <SearchIcon />
+                            </button>
                         )}
                         {isLogged || (!!session && !!extendedUser) ? (
                             <>
@@ -287,21 +285,21 @@ function Header({
                             </>
                         ) : (
                             <>
-                                {isMobile ? (
-                                    <Button
-                                        primary
-                                        className={cx('mb-login-btn')}
-                                        onClick={() => dispatch(changeModalShow(true))}
-                                    >
-                                        <LoginIcon />
-                                    </Button>
-                                ) : (
+                                {!isMobile ? (
                                     <Button
                                         primary
                                         leftIcon={<LoginIcon />}
                                         onClick={() => dispatch(changeModalShow(true))}
                                     >
                                         Đăng Nhập
+                                    </Button>
+                                ) : (
+                                    <Button
+                                        primary
+                                        className={cx('mb-login-btn')}
+                                        onClick={() => dispatch(changeModalShow(true))}
+                                    >
+                                        <LoginIcon />
                                     </Button>
                                 )}
 

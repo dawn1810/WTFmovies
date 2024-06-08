@@ -23,7 +23,14 @@ const VisuallyHiddenInput = styled('input')({
 
 function InputFileUpload({ onChange = () => {} }: { onChange: (event: any) => void }) {
     return (
-        <Button component="label" role={undefined} variant="contained" tabIndex={-1} startIcon={<CloudUploadIcon />}>
+        <Button
+            component="label"
+            role={undefined}
+            variant="contained"
+            tabIndex={-1}
+            startIcon={<CloudUploadIcon />}
+            className={cx('upload-btn')}
+        >
             Tải ảnh lên
             <VisuallyHiddenInput type="file" onChange={onChange} />
         </Button>
