@@ -74,6 +74,7 @@ function Search() {
                 className={cx('search-input')}
                 type="text"
                 placeholder="Tìm kiếm"
+                autoFocus
                 onChange={handleSearchQueryChange}
                 onKeyDown={handleKeyDown}
             />

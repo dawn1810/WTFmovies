@@ -35,8 +35,8 @@ function FilmCarousel({ items }: { items: { films: FilmInfoInterface[]; loveFilm
 
     const mappedItems: CaptionsItemInterface[] = items.films.map((item): CaptionsItemInterface => {
         const subsType = item.videoType.find((type) => type.title === 'Subs') as any;
-        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
         const love = items.loveFilms.includes(item.film_id);
+        const totalEpisodes = subsType.episode[subsType.episode.length - 1];
 
         return {
             img: item.poster,
@@ -61,14 +61,14 @@ function FilmCarousel({ items }: { items: { films: FilmInfoInterface[]; loveFilm
                 {mappedItems.map((item, index) => (
                     <Carousel.Item key={index}>
                         <ImageCustom className={`d-block w-100 ${cx('bg-img')}`} src={item.img} alt={item.name} />
-                        {isMobile ? (
-                            <div className={cx('carousel-caption')}>
-                                <Captions item={item} loveState={item.love} />
-                            </div>
-                        ) : (
+                        {!isMobile ? (
                             <Carousel.Caption className={cx('carousel-caption')}>
                                 <Captions item={item} loveState={item.love} />
                             </Carousel.Caption>
+                        ) : (
+                            <div className={cx('carousel-caption')}>
+                                <Captions item={item} loveState={item.love} />
+                            </div>
                         )}
                     </Carousel.Item>
                 ))}

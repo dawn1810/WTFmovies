@@ -17,19 +17,8 @@ const MenuSidebar = ({ menuItems, scene }: any) => {
     const isMobile = viewPort.width <= 650;
     return (
         <>
-            {isMobile
+            {!isMobile
                 ? menuItems.map((item: any, index: any) => (
-                      <Button
-                          key={index}
-                          primary
-                          to={item.scene}
-                          className={cx('navBtn', { active: activeMenu === item.scene })}
-                          onClick={() => handleButtonClick(item)}
-                      >
-                          {item.icon}
-                      </Button>
-                  ))
-                : menuItems.map((item: any, index: any) => (
                       <Button
                           key={index}
                           primary
@@ -39,6 +28,17 @@ const MenuSidebar = ({ menuItems, scene }: any) => {
                           leftIcon={item.icon}
                       >
                           {item.title}
+                      </Button>
+                  ))
+                : menuItems.map((item: any, index: any) => (
+                      <Button
+                          key={index}
+                          primary
+                          to={item.scene}
+                          className={cx('navBtn', { active: activeMenu === item.scene })}
+                          onClick={() => handleButtonClick(item)}
+                      >
+                          {item.icon}
                       </Button>
                   ))}
         </>

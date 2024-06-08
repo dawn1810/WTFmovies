@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import ProfileForm from '~/components/ProfileForm';
 import { getUserInfo, getUserLoveFilmsInfo } from '~/libs/getData/profile';
+import NotFound from '../../not-found';
 
 async function Profile() {
     const session = await auth();
@@ -14,7 +15,9 @@ async function Profile() {
 
         const loveFilmsInfo = await getUserLoveFilmsInfo();
 
-        return <ProfileForm userInfo={userInfo} loveFilmsInfo={loveFilmsInfo} />;
+        if (!!userInfo && !!loveFilmsInfo)
+            return <ProfileForm userInfo={userInfo} loveFilmsInfo={loveFilmsInfo} currPage="1" />;
+        else return NotFound();
     }
 }
 

@@ -18,7 +18,8 @@ async function Review({ params }: { params: { movie: string } }) {
     const currentUser = await getCurrentUserInfo();
     const filmReviewInfo = await getFilmReviewInfo(movie);
     const loveFilms = await getUserLoveFilm();
-    if (!filmReviewInfo) return NotFound();
+    const proposeListFilms = await getProposeListFilms();
+    if (!filmReviewInfo || !proposeListFilms) return NotFound();
 
     const commentsFilm = await getAllFilmsComment(movie);
     const commentTabs = [
@@ -29,10 +30,7 @@ async function Review({ params }: { params: { movie: string } }) {
         },
     ];
 
-    const proposeListFilms = await getProposeListFilms();
-
     return (
-        // <DefaultLayout>
         <div className={cx('wrapper')}>
             <div className={cx('home-top')}>
                 <div className={cx('info-content')}>
@@ -48,7 +46,6 @@ async function Review({ params }: { params: { movie: string } }) {
                 className={cx('tab-box')}
             />
         </div>
-        // </DefaultLayout>
     );
 }
 

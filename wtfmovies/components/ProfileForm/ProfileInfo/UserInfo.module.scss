@@ -61,3 +61,13 @@
     }
 
 }
+
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper .user-info {
+        .user-info-content {
+            width: unset;
+        }
+    }
+}

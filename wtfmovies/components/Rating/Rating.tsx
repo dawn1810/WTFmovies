@@ -5,7 +5,7 @@ import { episodeSelector } from '~/redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { changeEpisode } from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 import { AlertColor } from '@mui/material';
 import { useDebounce } from '~/hooks';
 
@@ -51,7 +51,10 @@ export default function RatingMui() {
                 statusCode: number;
                 content: string;
             } = await response.json();
-            if (data.statusCode !== 200) showAlert('Vui lòng đăng nhập để đánh giá tập phim', 'info');
+            if (data.statusCode !== 200) {
+                dispatch(changeModalShow(true));
+                showAlert('Vui lòng đăng nhập để đánh giá tập phim', 'info');
+            }
         };
 
         fetchAPI();
