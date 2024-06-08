@@ -302,6 +302,9 @@ const Contact = forwardRef(
             }, 500);
         };
 
+        {
+            console.log(contactState.currResol);
+        }
         // else
         return (
             <div ref={ref} className={cx('player-contact-wrapper', { 'contact-show': contactState.contactShow })}>
@@ -367,7 +370,7 @@ const Contact = forwardRef(
                             <Duration seconds={contactState.duration} />
                         </div>
                     </div>
-                    <div className={cx('right-btn-list')}>
+                    <div key={contactState.currResol} className={cx('right-btn-list')}>
                         <Menu
                             playerMenu
                             items={VIDEO_SPEED}
@@ -380,9 +383,9 @@ const Contact = forwardRef(
                                 x {contactState.currSpeed}
                             </button>
                         </Menu>
-                        {isEdior || !!contactState.currResol || (
+
+                        {(isEdior || contactState.currResol === 'N/A') || (
                             <Menu
-                                key={contactState.currResol}
                                 playerMenu
                                 items={contactState.resolution.map((menuItem) => {
                                     if (menuItem.icon === true) {

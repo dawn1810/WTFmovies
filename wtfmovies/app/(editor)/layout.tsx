@@ -17,6 +17,7 @@ import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import NotFound from '../(root)/not-found';
 import { getNotificationList } from '~/libs/getData/notification';
 import { getCurrentUser } from '~/libs/getData/home';
+import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 
 const APP_NAME = 'Editor';
 const APP_DEFAULT_TITLE = 'Editor';
@@ -52,6 +53,11 @@ const menuItems = [
         title: 'Quản lý phim',
         icon: <MovieOutlinedIcon />,
         scene: 'film',
+    },
+    {
+        title: 'Quản lý bình luận',
+        icon: <ForumOutlinedIcon />,
+        scene: 'comment',
     },
 ];
 
