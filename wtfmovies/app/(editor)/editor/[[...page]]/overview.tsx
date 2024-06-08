@@ -9,9 +9,9 @@ export default async function OverView() {
     const session = await auth();
 
     const extendedUser: ExtendedUser | undefined = session?.user;
-    if (!extendedUser || !extendedUser?.id) return NotFound();
+    if (!extendedUser || !extendedUser?.email) return NotFound();
     const hotFilmList = await getTopHotFilm();
-    const numStatistical = await getNumberStatistical(ObjectId(extendedUser?.id));
+    const numStatistical = await getNumberStatistical(extendedUser?.email);
     const topSixUser = await getTopSixUser();
 
     return (

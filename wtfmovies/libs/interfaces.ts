@@ -343,6 +343,13 @@ export interface NumStatisticalInterface {
     films: number;
 }
 
+export interface NumStatisticalInterfaceE {
+    time: string;
+    views: number;
+    likes: number;
+    eps: number;
+}
+
 export interface FilmHotInterface {
     name: string;
     views: number;
@@ -376,6 +383,13 @@ export interface AdminDatasetInterface {
     view: LineChartDataInterface[];
     user: LineChartDataInterface[];
     film: LineChartDataInterface[];
+}
+
+
+export interface EditorDatasetInterface {
+    view: LineChartDataInterface[];
+    likes: LineChartDataInterface[];
+    eps: LineChartDataInterface[];
 }
 
 // Evaluate Table

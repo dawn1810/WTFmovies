@@ -13,7 +13,7 @@ import { useViewport } from '~/hooks';
 
 const cx = classNames.bind(style);
 
-async function search({ data }: { data: any[] }) {
+function search({ data }: { data: any[] }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
     return (

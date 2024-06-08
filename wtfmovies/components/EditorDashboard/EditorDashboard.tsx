@@ -7,9 +7,10 @@ import {
     FilmHotInterface,
     LineChartDataInterface,
     NumStatisticalInterface,
+    NumStatisticalInterfaceE,
     TopSixUserInfoInfterface,
 } from '~/libs/interfaces';
-import { calcViewChange, getDataByYear, getDataCurrentYear } from '~/libs/clientFunc';
+import { calcViewChange, calcViewChangeE, getDataByYear, getDataByYearE, getDataCurrentYear, getDataCurrentYearE } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
@@ -46,21 +47,21 @@ const convertNumberToMonth = (number: number) => {
 
 
 
-export default function AdminDashboard({
+export default function EditorDashboard({
     numStatistical,
     hotFilmList,
     topSixUser,
 }: {
-    numStatistical: NumStatisticalInterface[];
+    numStatistical: NumStatisticalInterfaceE[] | any;
     hotFilmList: FilmHotInterface[];
     topSixUser: TopSixUserInfoInfterface[];
 }) {
-    const yearDataset = getDataCurrentYear(numStatistical);
-    const allTimeDataset = getDataByYear(numStatistical);
+    const yearDataset = getDataCurrentYearE(numStatistical);
+    const allTimeDataset = getDataByYearE(numStatistical);
 
-    const views = calcViewChange(yearDataset, 'view');
-    const users = calcViewChange(yearDataset, 'user');
-    const films = calcViewChange(yearDataset, 'film');
+    const views = calcViewChangeE(yearDataset, 'view');
+    const likes = calcViewChangeE(yearDataset, 'likes');
+    const eps = calcViewChangeE(yearDataset, 'eps');
 
     return (
         <div className={cx('wrapper')}>
@@ -75,21 +76,21 @@ export default function AdminDashboard({
             />
             <NumCard
                 title="Lượt thích"
-                number={users.number}
-                change={users.change}
+                number={likes.number}
+                change={likes.change}
                 area="num2"
-                yearDataset={yearDataset.user}
-                allDataset={allTimeDataset.user}
-                up={users.up}
+                yearDataset={yearDataset.likes}
+                allDataset={allTimeDataset.likes}
+                up={likes.up}
             />
             <NumCard
                 title="Số tập đã upload"
-                number={users.number}
-                change={users.change}
+                number={eps.number}
+                change={eps.change}
                 area="num3"
-                yearDataset={yearDataset.user}
-                allDataset={allTimeDataset.user}
-                up={false}
+                yearDataset={yearDataset.eps}
+                allDataset={allTimeDataset.eps}
+                up={eps.up}
             />
             {/* <TableCard
                 area="table1"
