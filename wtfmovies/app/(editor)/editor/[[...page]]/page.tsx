@@ -5,6 +5,8 @@ import { getSideMovieFormInfo, getFilm } from '~/libs/getData/editor';
 
 import { redirect } from 'next/navigation';
 import FilmPage from '~/components/FilmManager';
+import ManageCommentTable from '~/components/ManageCommentTable';
+import { getAllComment } from '~/libs/getData/admin';
 async function getPage(params?: any) {
     const session = await auth();
     const extendedUser: ExtendedUser | undefined = session?.user;
@@ -17,6 +19,11 @@ async function getPage(params?: any) {
                 const data = await getFilm();
                 const sideMovieFormInfo = await getSideMovieFormInfo();
                 return <FilmPage data={data} sideMovieFormInfo={sideMovieFormInfo} />;
+            case 'comment':
+                const comments: any[] = await getAllComment();
+
+                if (!comments) break;
+                else return <ManageCommentTable dataset={comments} />;
             default:
                 return <OverViewPage />;
         }

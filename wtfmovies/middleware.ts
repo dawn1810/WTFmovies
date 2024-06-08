@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { auth } from './app/api/auth/[...nextauth]/auth';
 // import { ExtendedUser } from './libs/interfaces';
-const editer_path = ['film', 'overview'];
+const editer_path = ['film', 'overview', 'comment'];
 const admin_path = ['overview', 'users', 'report', 'evaluate', 'userevaluate', 'films', 'comment'];
 const login_path = ['/profile', '/editor'];
 
