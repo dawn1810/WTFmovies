@@ -94,6 +94,7 @@ export default function EditorDashboard({
                 up={eps.up}
             />
             <TableCard
+                url='/editor/comment'
                 area="table1"
                 title="Danh sách bình luận"
                 rows={topSixUser}

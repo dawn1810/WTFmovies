@@ -6,7 +6,6 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
-
 import { useRouter } from 'next/navigation';
 
 import style from './TableCard.module.scss';
@@ -30,18 +29,25 @@ export default function TableCard({
     area,
     title,
     rows,
+    url,
     cols,
 }: {
     area?: string;
     title: string;
     rows: any[];
+    url: string;
     cols: string[];
 }) {
     const router = useRouter();
 
     return (
         <Card style={{ gridArea: area }}>
-            <CardActionArea className={cx('card-area')}>
+            <CardActionArea
+                className={cx('card-area')}
+                onClick={() => {
+                    router.push(url);
+                }}
+            >
                 <h4 className={cx('card-title')}>{title}</h4>
                 <Table aria-label="customized table">
                     <TableHead>

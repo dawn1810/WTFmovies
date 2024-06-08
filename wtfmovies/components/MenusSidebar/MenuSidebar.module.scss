@@ -1,14 +1,8 @@
-.navBtn:hover {
-    transition-duration: 300ms;
-    // border-color: var(--primary);
-    background: var(--primary-hover);
-}
-
 .navBtn {
     width: 100%;
     height: 60px;
     border-radius: 0 !important;
-    // background-color: var(--primary) !important;
+    background-color: var(--primary) !important;
     min-width: auto;
 
     &:hover {
