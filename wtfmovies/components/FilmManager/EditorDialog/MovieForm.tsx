@@ -21,6 +21,7 @@ import { AlertColor } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { cropImage } from '~/libs/clientFunc';
 import { FilmInfo } from '~/libs/interfaces';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 
 function TabPanel(props: any) {
@@ -63,7 +64,8 @@ export function MovieForm({
 
 }) {
     const [value, setValue] = useState(0);
-    console.log(film_id);
+    const [loading, setLoading] = useState(false);
+
 
     ///infoFilm
     const statusMovies = [
@@ -90,7 +92,7 @@ export function MovieForm({
     const [valueDirectors, setValueDirectors] = useState(defaultValue.director || []);
     const [valueActors, setValueActors] = useState(defaultValue.actor || []);
     const [valueTag, setvValueTag] = useState(defaultValue.tag || '');
-    const [valueCountry, setValueCountry] = useState(defaultValue?.country?.[0].value || '');
+    const [valueCountry, setValueCountry] = useState(defaultValue?.country?.[0]?.value || '');
     const [sumaryMovie, setSumaryMovie] = useState(defaultValue.describe || '');
     const [titleMovie, setTitleMovie] = useState(defaultValue.name || '');
     const [year, setYear] = useState<Dayjs | null>(defaultValue.releaseYear ? dayjs(defaultValue.releaseYear) : null);
@@ -143,6 +145,8 @@ export function MovieForm({
             imgMovie === undefined || imgBannerMovie === undefined
         )
             return showAlert('Vui lòng điền đầy đủ thông tin', 'error');
+        setLoading(true);
+
         const dropedImage = await cropImage(imgMovie, cropResult);
         const dropedImageBanner = await cropImage(imgBannerMovie, cropResultBanner);
 
@@ -177,46 +181,23 @@ export function MovieForm({
             body: formData,
         });
         const dre: any = await rd.json();
+
         if (rd.status === 200) {
             showAlert('Thêm phim thành công!', 'success');
             handleAfterAddMovie(dre);
         } else if (rd.status === 500 && dre.error.name === 'MongodbError') {
             showAlert('Cập nhật phim thành công!', 'info');
             handleAfterAddMovie(dre);
-        }
-
-        else
+        } else
             showAlert('Thêm phim không thành công!', 'error');
+
+        setLoading(false);
+
     }
 
 
-    console.log(dataGrid);
 
     const handleAfterAddMovie = (data: any) => {
-        //reset image
-        setCropResult(null);
-        setCropResultBanner(null);
-        setImgBannerMovie(undefined);
-        setImgMovie(undefined);
-
-        //reset info
-        setTitleMovie('');
-        setSumaryMovie('');
-        setValueActors([]);
-        setValueAuthors([]);
-        setValueDirectors([]);
-        setValueGenres([]);
-        setValueCountry('');
-        setValueStatus('');
-        setvValueTag('');
-        setYear(null);
-        setMaxEp(undefined);
-        setDuration(null);
-
-        //reset ep
-        setListEpisodeTiktok([]);
-        setListEpisodeYoutube([]);
-
         //add to table
         const convertSecondsToDHMS = (seconds: number) => {
             const days = Math.floor(seconds / (24 * 60 * 60));
@@ -257,23 +238,55 @@ export function MovieForm({
                 },
             })
         }
+
         const rdata = {
             ...data,
-            tags: [valueTag],
+            tag: valueTag,
             actor: valueActors.map((item: any) => item.title),
             author: valueAuthors.map((item: any) => item.title),
-            country: countrys.find((item: any) => item.value === valueCountry)?.label,
+            country: [countrys.find((item: any) => item.value === valueCountry)?.label],
             director: valueDirectors.map((item: any) => item.title),
             genre: valueGenres.map((item: any) => item.title),
             listEp: proListEp,
             durationAsString: convertSecondsToDHMS(data.duration),
             id: data.film_id,
-            releaseYear: year?.year(),
+            releaseYear: year,
+            releaseYearASString: year?.year(),
             maxEpAsString: [maxLength, data.maxEp !== -1 ? data.maxEp : '?'].join(' / ') + ' tập',
             videoType: data.videoType.map((videoType: any) => videoType.title)
         };
 
-        setDataGrid([...dataGrid, rdata]);
+        function removeItemsById(arr: any, ids: any) {
+            return arr.filter((item: any) => !ids.includes(item.id));
+        }
+
+        setDataGrid([...removeItemsById(dataGrid, [rdata.id]), rdata]);
+
+        //reset image
+        setCropResult(null);
+        setCropResultBanner(null);
+        setImgBannerMovie(undefined);
+        setImgMovie(undefined);
+
+        //reset info
+        setTitleMovie('');
+        setSumaryMovie('');
+        setValueActors([]);
+        setValueAuthors([]);
+        setValueDirectors([]);
+        setValueGenres([]);
+        setValueCountry('');
+        setValueStatus('');
+        setvValueTag('');
+        setYear(null);
+        setMaxEp(undefined);
+        setDuration(null);
+
+        //reset ep
+        setListEpisodeTiktok([]);
+        setListEpisodeYoutube([]);
+
+
 
         handleClose();
     };
@@ -345,12 +358,13 @@ export function MovieForm({
                     ></EpForm>
                 </TabPanel>
                 <DialogActions>
-                    <Button variant="contained" onClick={handleClose}>
+                    <Button variant="outlined" onClick={handleClose}>
                         Huỷ
                     </Button>
-                    <Button autoFocus variant="contained" onClick={sendInfo}>
+                    <LoadingButton loading={loading}
+                        autoFocus variant="contained" onClick={sendInfo}>
                         Lưu
-                    </Button>
+                    </LoadingButton>
                 </DialogActions>
             </Dialog>
         </LocalizationProvider>

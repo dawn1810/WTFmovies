@@ -86,7 +86,8 @@ export const makeFilmData = async (
 
         if (!!filmExisted) {
             //send notify
-            if (episodeLength > filmExisted.videoType[0].episode.length) {
+            const filmExistedEpisodeLength = filmExisted.videoType[0]?.episode?.length;
+            if (episodeLength > filmExistedEpisodeLength || 0) {
                 await fetch('/api/v1/notify/filmUpdate',
                     {
                         method: 'POST',
@@ -165,5 +166,6 @@ export const makeFilmData = async (
         return cleanObject(result);
     } catch (e) {
         console.log(e);
+        return false;
     }
 };

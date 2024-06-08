@@ -1,6 +1,6 @@
 'use-client';
 
-import { AdminDatasetInterface, FilmInfoInterface, FilmsInterFace, NumStatisticalInterface } from './interfaces';
+import { AdminDatasetInterface, EditorDatasetInterface, FilmInfoInterface, FilmsInterFace, NumStatisticalInterface, NumStatisticalInterfaceE } from './interfaces';
 
 const bufferFromPEM = (pem: string) => {
     // Remove the PEM headers and base64 decode the binary data
@@ -247,9 +247,11 @@ export const getDataByYear = (data: NumStatisticalInterface[]): AdminDatasetInte
     return { view: Object.values(viewsByYear), user: Object.values(usersByYear), film: Object.values(filmsByYear) };
 };
 
+
+
 export const calcViewChange = (dataset: AdminDatasetInterface, typeData: 'view' | 'user' | 'film') => {
-    const currentMonth = dataset[typeData][dataset[typeData].length - 1].data;
-    const previousMonth = dataset[typeData][dataset[typeData].length - 2].data;
+    const currentMonth = dataset[typeData][dataset[typeData].length - 1]?.data;
+    const previousMonth = dataset[typeData][dataset[typeData].length - 2]?.data;
     const prevMonthChange = previousMonth / (currentMonth / 100);
     const changePersent = Math.round((100 - prevMonthChange) * 10) / 10;
 
@@ -273,6 +275,22 @@ export const convertGender = (gender?: number) => {
     }
 };
 
+
+export const generateUUIDv4 = (): string => {
+    // Create a placeholder array for UUID format
+    const template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
+
+    return template.replace(/[xy]/g, (c) => {
+        // Generate a random number between 0 and 15
+        const r = (Math.random() * 16) | 0;
+        // Adjust for 'y' values to conform to RFC 4122 which requires it to be 8, 9, A, or B
+        const v = c === 'x' ? r : (r & 0x3) | 0x8;
+        // Convert the number to its hexadecimal representation
+        return v.toString(16);
+    });
+};
+
+//editor
 export function cropImage(imageSrc: string, croppedArea: {
     x: number;
     y: number;
@@ -334,16 +352,74 @@ export function cropImage(imageSrc: string, croppedArea: {
     });
 }
 
-export const generateUUIDv4 = (): string => {
-    // Create a placeholder array for UUID format
-    const template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
 
-    return template.replace(/[xy]/g, (c) => {
-        // Generate a random number between 0 and 15
-        const r = (Math.random() * 16) | 0;
-        // Adjust for 'y' values to conform to RFC 4122 which requires it to be 8, 9, A, or B
-        const v = c === 'x' ? r : (r & 0x3) | 0x8;
-        // Convert the number to its hexadecimal representation
-        return v.toString(16);
+export const getDataCurrentYearE = (data: NumStatisticalInterfaceE[]): EditorDatasetInterface => {
+    // views statistic map
+    const current_year = new Date().getFullYear();
+
+    const yearDataset = data
+        .filter((data) => {
+            const dataTime = new Date(data.time);
+            return dataTime.getFullYear() === current_year;
+        })
+        .map((data) => {
+            const dataTime = new Date(data.time);
+            return {
+                month: convertNumberToMonth(dataTime.getMonth()),
+                view: data.views,
+                likes: data.likes,
+                eps: data.eps,
+            };
+        });
+
+    return {
+        view: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.view,
+        })),
+        likes: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.likes,
+        })),
+        eps: yearDataset.map((item) => ({
+            time: item.month,
+            data: item.eps,
+        })),
+    };
+};
+
+export const getDataByYearE = (data: NumStatisticalInterfaceE[]): EditorDatasetInterface => {
+    const viewsByYear: any = {};
+    const likesByYear: any = {};
+    const epsByYear: any = {};
+
+    data.forEach((item) => {
+        const year = new Date(item.time).getFullYear().toString();
+
+        if (!viewsByYear[year] || !likesByYear[year] || !epsByYear[year]) {
+            viewsByYear[year] = { time: year, data: 0 };
+            likesByYear[year] = { time: year, data: 0 };
+            epsByYear[year] = { time: year, data: 0 };
+        }
+
+        viewsByYear[year].data += item.views;
+        likesByYear[year].data += item.likes;
+        epsByYear[year].data += item.eps;
     });
+
+    return { view: Object.values(viewsByYear), likes: Object.values(likesByYear), eps: Object.values(epsByYear) };
+};
+
+
+export const calcViewChangeE = (dataset: EditorDatasetInterface, typeData: 'view' | 'likes' | 'eps') => {
+    const currentMonth = dataset[typeData][dataset[typeData].length - 1]?.data;
+    const previousMonth = dataset[typeData][dataset[typeData].length - 2]?.data;
+    const prevMonthChange = previousMonth / (currentMonth / 100);
+    const changePersent = Math.round((100 - prevMonthChange) * 10) / 10;
+
+    return {
+        number: currentMonth,
+        change: changePersent < 0 ? -changePersent : changePersent,
+        up: changePersent >= 0,
+    };
 };

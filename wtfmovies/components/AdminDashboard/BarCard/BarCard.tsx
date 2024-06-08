@@ -42,26 +42,26 @@ export default function BarCard({
 }) {
     const chartSetting: any = horizontal
         ? {
-              yAxis: [
-                  {
-                      scaleType: 'band',
-                      dataKey: ykey,
-                      valueFormatter: (value: any, context: any) =>
-                          context.location === 'tick' ? value.substring(0, 3) : value,
-                  },
-              ],
-              layout: 'horizontal',
-          }
+            yAxis: [
+                {
+                    scaleType: 'band',
+                    dataKey: ykey,
+                    valueFormatter: (value: any, context: any) =>
+                        context.location === 'tick' ? value.substring(0, 3) : value,
+                },
+            ],
+            layout: 'horizontal',
+        }
         : {
-              xAxis: [
-                  {
-                      scaleType: 'band',
-                      dataKey: ykey,
-                      valueFormatter: (value: any, context: any) =>
-                          context.location === 'tick' ? value.substring(0, 3) : value,
-                  },
-              ],
-          };
+            xAxis: [
+                {
+                    scaleType: 'band',
+                    dataKey: ykey,
+                    valueFormatter: (value: any, context: any) =>
+                        context.location === 'tick' ? value.substring(0, 3) : value,
+                },
+            ],
+        };
 
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState({ time: 0, sortBy: 0 });
@@ -141,36 +141,34 @@ export default function BarCard({
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        <div className={cx('filter')}>
-                            <h4>Thời gian:</h4>
-                            <RadioGroup
-                                row
-                                value={filter.time}
-                                name="time"
-                                className={cx('radio')}
-                                onChange={handleFilterChange}
-                            >
-                                <FormControlLabel value={0} control={<Radio />} label="Tuần" />
-                                <FormControlLabel value={1} control={<Radio />} label="Tháng" />
-                                <FormControlLabel value={2} control={<Radio />} label="Năm" />
-                            </RadioGroup>
-                        </div>
-                        <div className={cx('filter')}>
-                            <h4>Sắp xếp:</h4>
-                            <RadioGroup
-                                row
-                                value={filter.sortBy}
-                                name="sortBy"
-                                className={cx('radio')}
-                                onChange={handleFilterChange}
-                            >
-                                <FormControlLabel value={0} control={<Radio />} label="Lượt xem" />
-                                <FormControlLabel value={2} control={<Radio />} label="Lượt thích" />
-                                <FormControlLabel value={3} control={<Radio />} label="Điểm đánh giá" />
-                            </RadioGroup>
-                        </div>
-                    </DialogContentText>
+                    <div className={cx('filter')}>
+                        <h4>Thời gian:</h4>
+                        <RadioGroup
+                            row
+                            value={filter.time}
+                            name="time"
+                            className={cx('radio')}
+                            onChange={handleFilterChange}
+                        >
+                            <FormControlLabel value={0} control={<Radio />} label="Tuần" />
+                            <FormControlLabel value={1} control={<Radio />} label="Tháng" />
+                            <FormControlLabel value={2} control={<Radio />} label="Năm" />
+                        </RadioGroup>
+                    </div>
+                    <div className={cx('filter')}>
+                        <h4>Sắp xếp:</h4>
+                        <RadioGroup
+                            row
+                            value={filter.sortBy}
+                            name="sortBy"
+                            className={cx('radio')}
+                            onChange={handleFilterChange}
+                        >
+                            <FormControlLabel value={0} control={<Radio />} label="Lượt xem" />
+                            <FormControlLabel value={2} control={<Radio />} label="Lượt thích" />
+                            <FormControlLabel value={3} control={<Radio />} label="Điểm đánh giá" />
+                        </RadioGroup>
+                    </div>
                     <DialogActions>
                         <Button onClick={handleClose}>HUỶ</Button>
                         <Button onClick={handleFilter}>XEM</Button>

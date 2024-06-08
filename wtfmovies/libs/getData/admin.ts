@@ -3,18 +3,21 @@ import {
     AdminReportInfterface,
     FilmHotInterface,
     NumStatisticalInterface,
+    NumStatisticalInterfaceE,
+    ObjectMongo,
     TopSixUserInfoInfterface,
     UserAdminInfoInfterface,
 } from '../interfaces';
 // import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 // admin dashboard
-export const getNumberStatistical = async (): Promise<NumStatisticalInterface[]> => {
+export const getNumberStatistical = async (type: 'admin' | string): Promise<NumStatisticalInterface[] | NumStatisticalInterfaceE[]> => {
     try {
         const statInfo: NumStatisticalInterface[] = await mongodb()
             .db('statistical')
             .collection('webstats')
             .find({
+                filter: { type: type },
                 projection: {
                     _id: 0,
                 },

@@ -24,7 +24,7 @@ export default function AdminDashboard({
     hotGenreList,
     newReports,
 }: {
-    numStatistical: NumStatisticalInterface[];
+    numStatistical: NumStatisticalInterface[] | any;
     hotFilmList: FilmHotInterface[];
     hotGenreList: FilmHotInterface[];
     topSixUser: TopSixUserInfoInfterface[];

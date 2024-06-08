@@ -29,9 +29,9 @@ import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { viVN } from '@mui/x-data-grid/locales';
-import AlertDialog from '~/components/EditorDialog';
+import AlertDialog from '~/components/FilmManager/EditorDialog';
 
-import { MovieForm } from '~/components/EditorDialog';
+import { MovieForm } from '~/components/FilmManager/EditorDialog';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 import { generateUUIDv4 } from '~/libs/clientFunc';

@@ -35,8 +35,8 @@ function FilmCarousel({ items }: { items: { films: FilmInfoInterface[]; loveFilm
 
     const mappedItems: CaptionsItemInterface[] = items.films.map((item): CaptionsItemInterface => {
         const subsType = item.videoType.find((type) => type.title === 'Subs') as any;
+        const totalEpisodes = subsType?.episode?.[subsType.episode.length - 1];
         const love = items.loveFilms.includes(item.film_id);
-        const totalEpisodes = !!subsType.episode ? subsType.episode[subsType.episode.length - 1] : 0;
 
         return {
             img: item.poster,

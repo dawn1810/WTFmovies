@@ -1,6 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { MongoDate, ObjectId, generateUUIDv4, mongodb, toError, toJSON, uploadImagetoTiktok } from '~/libs/func';
+import { MongoDate, ObjectId, mongodb, toError, toJSON, uploadImagetoTiktok } from '~/libs/func';
 import { makeFilmData } from '~/libs/uploadAPI';
 import { ExtendedUser } from '~/libs/interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
@@ -81,8 +81,11 @@ export async function POST(request: NextRequest) {
                 })
             }
 
-            if (proListEp.length > 0)
+            if (proListEp.length > 0) {
+                await mongodb().db('film').collection('episode').deleteMany({ filter: { film_id: film_id } });
+
                 await mongodb().db('film').collection('episode').insertMany(proListEp);
+            }
 
             // add author, actor, director, tag, genre
             const authors = author.map((item: string) => (ObjectId(item)));
@@ -109,22 +112,22 @@ export async function POST(request: NextRequest) {
                 releaseYear,
                 proListEp.length,
             );
+            if (filmInfo) {
+                const response: any = await mongodb()
+                    .db('film')
+                    .collection('information')
+                    .updateOne({
+                        filter: {
+                            film_id: film_id,
+                        },
+                        update: { $set: filmInfo },
+                        upsert: true,
+                    });
 
-            const response: any = await mongodb()
-                .db('film')
-                .collection('information')
-                .updateOne({
-                    filter: {
-                        film_id: film_id,
-                    },
-                    update: { $set: filmInfo },
-                    upsert: true,
-                });
-
-            if (!!response) {
-                return toJSON(filmInfo, 200);
+                if (!!response) {
+                    return toJSON(filmInfo, 200);
+                }
             }
-
             return toError('Đăng tải phim không thành công', 400);
 
         } return toError('Lỗi xác thực', 403);

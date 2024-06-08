@@ -1,1 +1,1 @@
-export { default } from './FilmManager';
+export { default } from './film';

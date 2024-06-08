@@ -6,14 +6,11 @@ import Card from '@mui/material/Card';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import Select from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
@@ -29,7 +26,7 @@ const data = [
     { id: 4, value: 18, label: 'Đẹp gái nhất thế giới' },
 ];
 
-export default function PieCard({ area }: { area: string }) {
+export default function PieCard({ area, hotFilmList }: { area: string, hotFilmList: any }) {
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState({ time: 'week', sortBy: 'all' });
 
@@ -51,7 +48,7 @@ export default function PieCard({ area }: { area: string }) {
         <>
             <Card style={{ gridArea: area }} className={cx('card')}>
                 <div className={cx('card-header')}>
-                    <h4 className={cx('card-title')}>Tìm kiếm thịnh hành</h4>
+                    <h4 className={cx('card-title')}>Top phim thịnh hành</h4>
                     <IconButton aria-label="delete" onClick={handleOpen}>
                         <FilterListIcon />
                     </IconButton>
@@ -82,7 +79,7 @@ export default function PieCard({ area }: { area: string }) {
                 className={cx('dialog')}
             >
                 <DialogTitle className={cx('dialog-title')}>
-                    <span className={cx('title')}>Tìm kiếm thịnh hành</span>
+                    <span className={cx('title')}>Bộ lọc</span>
                     <IconButton aria-label="delete" onClick={handleClose}>
                         <CloseIcon />
                     </IconButton>
@@ -110,15 +107,12 @@ export default function PieCard({ area }: { area: string }) {
                             className={cx('radio')}
                             onChange={handleFilterChange}
                         >
-                            <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
-                            <FormControlLabel value="director" control={<Radio />} label="Tác giả | Đạo diễn" />
-                            <FormControlLabel value="actor" control={<Radio />} label="Diễn viên" />
-                            <FormControlLabel value="character" control={<Radio />} label="Nhân vật" />
-                            <FormControlLabel value="film" control={<Radio />} label="Phim" />
+                            <FormControlLabel value="all" control={<Radio />} label="Lượt thích" />
+                            <FormControlLabel value="director" control={<Radio />} label="Lượt xem" />
+                            <FormControlLabel value="actor" control={<Radio />} label="Số bình luận" />
                         </RadioGroup>
                     </div>
                     <DialogActions>
-                        <Button onClick={handleClose}>HUỶ</Button>
                         <Button onClick={handleClose}>XEM</Button>
                     </DialogActions>
                 </DialogContent>
