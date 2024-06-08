@@ -11,6 +11,7 @@ import {
     TopSixUserInfoInfterface,
 } from '~/libs/interfaces';
 import { calcViewChange, calcViewChangeE, getDataByYear, getDataByYearE, getDataCurrentYear, getDataCurrentYearE } from '~/libs/clientFunc';
+import PieCard from './PieCard';
 
 const cx = classNames.bind(style);
 
@@ -92,18 +93,14 @@ export default function EditorDashboard({
                 allDataset={allTimeDataset.eps}
                 up={eps.up}
             />
-            {/* <TableCard
+            <TableCard
                 area="table1"
                 title="Danh sách bình luận"
                 rows={topSixUser}
                 cols={['Email', 'Tên hiển thị']}
             />
-            <TableCard
-                area="table2"
-                title="Top những người yêu thích phim"
-                rows={topSixUser}
-                cols={['Email', 'Tên hiển thị']}
-            /> */}
+            <PieCard hotFilmList={hotFilmList} area="pie" />
+
 
 
 

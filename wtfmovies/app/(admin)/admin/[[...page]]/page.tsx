@@ -12,7 +12,6 @@ import {
     getTopHotGenre,
     getTopSixUser,
 } from '~/libs/getData/admin';
-import Link from '@mui/material/Link';
 import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
 import { AdminReportInfterface, ExtendedUser } from '~/libs/interfaces';
@@ -20,6 +19,8 @@ import NotFound from '~/app/(root)/not-found';
 import ManageCommentTable from '~/components/ManageCommentTable';
 import { redirect } from 'next/navigation';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
+import { getSideMovieFormInfo, getFilm } from '~/libs/getData/editor';
+import FilmPage from '~/components/FilmManager';
 
 const cx = classNames.bind(style);
 
@@ -67,7 +68,11 @@ async function getPage(params?: any) {
                 if (!comments) break;
                 else return <ManageCommentTable dataset={comments} />;
             case 'films':
-                return <p>Quản lý films</p>;
+                const data = await getFilm();
+                const sideMovieFormInfo = await getSideMovieFormInfo();
+                return <FilmPage data={data} sideMovieFormInfo={sideMovieFormInfo} />;
+
+
             default:
                 break;
         }

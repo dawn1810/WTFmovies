@@ -1,8 +1,10 @@
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import FilmPage from './film';
 import { ExtendedUser } from '~/libs/interfaces';
 import OverViewPage from './overview';
+import { getSideMovieFormInfo, getFilm } from '~/libs/getData/editor';
+
 import { redirect } from 'next/navigation';
+import FilmPage from '~/components/FilmManager';
 async function getPage(params?: any) {
     const session = await auth();
     const extendedUser: ExtendedUser | undefined = session?.user;
@@ -12,7 +14,9 @@ async function getPage(params?: any) {
     } else {
         switch (params.page[0]) {
             case 'film':
-                return <FilmPage />;
+                const data = await getFilm();
+                const sideMovieFormInfo = await getSideMovieFormInfo();
+                return <FilmPage data={data} sideMovieFormInfo={sideMovieFormInfo} />;
             default:
                 return <OverViewPage />;
         }
