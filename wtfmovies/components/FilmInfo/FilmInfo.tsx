@@ -57,9 +57,9 @@ function FilmInfo({
     const subsType = filmInfo.videoType.find((type) => type.title === 'Subs') as any;
     let totalEpisodes = '?';
     let lastThreeEpisodes = [];
-    if (subsType) {
-        totalEpisodes = subsType.episode[subsType.episode.length - 1];
-        lastThreeEpisodes = subsType.episode.slice(Math.max(subsType.episode.length - 3, 1));
+    if (subsType && subsType?.episode?.length > 0) {
+        totalEpisodes = subsType?.episode?.[subsType.episode.length - 1];
+        lastThreeEpisodes = subsType?.episode?.slice(Math.max(subsType.episode.length - 3, 1));
     }
     const infoList: FilmReviewInfoInterface = {
         searchName: filmInfo.searchName,
@@ -73,7 +73,7 @@ function FilmInfo({
             { title: 'Lượt yêu thích', info: formatNumber(filmInfo.likes), type: 'highLight' },
             {
                 title: 'Trạng thái',
-                info: subsType && subsType.episode.length > 0 ? filmInfo.status : 'Sắp phát hành',
+                info: subsType && subsType?.episode?.length > 0 ? filmInfo.status : 'Sắp phát hành',
                 type: 'highLight',
             },
             { title: 'Tác giả', info: filmInfo.author, type: 'searchAble', category: 'author' },
@@ -166,9 +166,9 @@ function FilmInfo({
                                         <span>{info.title}:</span> <span className={cx('high-light')}>{info.info}</span>
                                     </span>
                                 ) : info.type === 'watchAble' &&
-                                  typeof info.info === 'object' &&
-                                  subsType &&
-                                  subsType.episode.length > 0 ? (
+                                    typeof info.info === 'object' &&
+                                    subsType &&
+                                    subsType?.episode?.length > 0 ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>
                                         {info.info.map((info, index) => (
@@ -190,7 +190,7 @@ function FilmInfo({
                             </li>
                         ))}
                     </ul>
-                    {subsType && subsType.episode.length > 0 && (
+                    {subsType && subsType?.episode?.length > 0 && (
                         <FilmButtonGroup
                             dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
                             loveState={loveState}

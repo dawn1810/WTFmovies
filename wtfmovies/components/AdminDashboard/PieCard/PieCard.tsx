@@ -88,37 +88,35 @@ export default function PieCard({ area }: { area: string }) {
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        <div className={cx('filter')}>
-                            <h3>Thời gian:</h3>
-                            <RadioGroup
-                                row
-                                value={filter.time}
-                                name="time"
-                                className={cx('radio')}
-                                onChange={handleFilterChange}
-                            >
-                                <FormControlLabel value="week" control={<Radio />} label="Tuần" />
-                                <FormControlLabel value="month" control={<Radio />} label="Tháng" />
-                                <FormControlLabel value="year" control={<Radio />} label="Năm" />
-                            </RadioGroup>
-                        </div>
-                        <div className={cx('filter')}>
-                            <h3>Chủ đề:</h3>
-                            <RadioGroup
-                                value={filter.sortBy}
-                                name="sortBy"
-                                className={cx('radio')}
-                                onChange={handleFilterChange}
-                            >
-                                <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
-                                <FormControlLabel value="director" control={<Radio />} label="Tác giả | Đạo diễn" />
-                                <FormControlLabel value="actor" control={<Radio />} label="Diễn viên" />
-                                <FormControlLabel value="character" control={<Radio />} label="Nhân vật" />
-                                <FormControlLabel value="film" control={<Radio />} label="Phim" />
-                            </RadioGroup>
-                        </div>
-                    </DialogContentText>
+                    <div className={cx('filter')}>
+                        <h3>Thời gian:</h3>
+                        <RadioGroup
+                            row
+                            value={filter.time}
+                            name="time"
+                            className={cx('radio')}
+                            onChange={handleFilterChange}
+                        >
+                            <FormControlLabel value="week" control={<Radio />} label="Tuần" />
+                            <FormControlLabel value="month" control={<Radio />} label="Tháng" />
+                            <FormControlLabel value="year" control={<Radio />} label="Năm" />
+                        </RadioGroup>
+                    </div>
+                    <div className={cx('filter')}>
+                        <h3>Chủ đề:</h3>
+                        <RadioGroup
+                            value={filter.sortBy}
+                            name="sortBy"
+                            className={cx('radio')}
+                            onChange={handleFilterChange}
+                        >
+                            <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
+                            <FormControlLabel value="director" control={<Radio />} label="Tác giả | Đạo diễn" />
+                            <FormControlLabel value="actor" control={<Radio />} label="Diễn viên" />
+                            <FormControlLabel value="character" control={<Radio />} label="Nhân vật" />
+                            <FormControlLabel value="film" control={<Radio />} label="Phim" />
+                        </RadioGroup>
+                    </div>
                     <DialogActions>
                         <Button onClick={handleClose}>HUỶ</Button>
                         <Button onClick={handleClose}>XEM</Button>

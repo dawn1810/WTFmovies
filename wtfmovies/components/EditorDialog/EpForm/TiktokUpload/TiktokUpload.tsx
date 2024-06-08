@@ -185,7 +185,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                         borderRadius: '5px',
                     }}
                 >
-                    <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'}></Player>
+                    <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode + '?.m3u8'} numEp={0} maxEp={0}></Player>
                 </Box>
 
                 {/* Delete confirmation dialog */}

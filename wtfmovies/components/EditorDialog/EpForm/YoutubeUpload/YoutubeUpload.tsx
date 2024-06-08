@@ -174,7 +174,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                         borderRadius: '5px',
                     }}
                 >
-                    <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode}></Player>
+                    <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode} numEp={0} maxEp={0}></Player>
                 </Box>
 
 

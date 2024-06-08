@@ -248,8 +248,8 @@ export const getDataByYear = (data: NumStatisticalInterface[]): AdminDatasetInte
 };
 
 export const calcViewChange = (dataset: AdminDatasetInterface, typeData: 'view' | 'user' | 'film') => {
-    const currentMonth = dataset[typeData][dataset[typeData].length - 1].data;
-    const previousMonth = dataset[typeData][dataset[typeData].length - 2].data;
+    const currentMonth = dataset[typeData][dataset[typeData].length - 1]?.data;
+    const previousMonth = dataset[typeData][dataset[typeData].length - 2]?.data;
     const prevMonthChange = previousMonth / (currentMonth / 100);
     const changePersent = Math.round((100 - prevMonthChange) * 10) / 10;
 

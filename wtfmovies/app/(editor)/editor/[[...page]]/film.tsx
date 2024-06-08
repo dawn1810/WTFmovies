@@ -11,10 +11,14 @@ export const colum = [
     { headerName: 'Thời lượng', field: 'durationAsString', width: 100 },
     { headerName: 'Tổng số tập', field: 'maxEpAsString', width: 100 },
     { headerName: 'Loại video', field: 'videoType', width: 100 },
-    { headerName: 'Năm xuất bản', field: 'releaseYear', width: 100 },
+    { headerName: 'Năm xuất bản', field: 'releaseYearASString', width: 100 },
     { headerName: 'Quốc gia', field: 'country', width: 100 },
     { headerName: 'Giới hạn', field: 'tag', width: 130 },
     { headerName: 'Đánh giá', field: 'rating', width: 120 },
+    { headerName: 'Lượt xem', field: 'views', width: 120 },
+    { headerName: 'Lượt thích', field: 'likes', width: 120 },
+
+
 ];
 
 export default async function FilmPage() {

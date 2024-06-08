@@ -129,6 +129,8 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                             videoType: 1,
                             uploadedEp: { $arrayElemAt: [{ $arrayElemAt: ['$videoType.episode', 0] }, -1] },
                             views: 1,
+                            likes: 1,
+
                             maxEp: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                             img: 1,
@@ -148,7 +150,11 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
         return films.map(film => {
             return {
-                ...film, releaseYear: new Date(film.releaseYear).getFullYear(), durationAsString: convertSecondsToDHMS(film.duration), id: film.film_id, maxEpAsString: [film.uploadedEp || '0', film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập', videoType: film.videoType.map((videoType: any) => videoType.title)
+                ...film, releaseYearASString: new Date(film.releaseYear).getFullYear(),
+                durationAsString: convertSecondsToDHMS(film.duration),
+                id: film.film_id,
+                maxEpAsString: [film.uploadedEp || '0', film.maxEp !== -1 ? film.maxEp : '?'].join(' / ') + ' tập',
+                videoType: film.videoType.map((videoType: any) => videoType.title)
             };
         });
     } catch (err) {
@@ -217,23 +223,6 @@ export const getSideMovieFormInfo = async (): Promise<any> => {
 
 
 // editor dashboard
-export const getNumberStatistical = async (): Promise<NumStatisticalInterface[]> => {
-    try {
-        const statInfo: NumStatisticalInterface[] = await mongodb()
-            .db('statistical')
-            .collection('webstats')
-            .find({
-                projection: {
-                    _id: 0,
-                },
-            });
-
-        return statInfo;
-    } catch (err) {
-        console.log('😨😨😨 error at admin/getNumberStatistical function : ', err);
-        return [];
-    }
-};
 
 export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
     try {

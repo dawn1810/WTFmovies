@@ -36,7 +36,7 @@ async function getPage(params?: any) {
             case 'overview':
                 const hotFilmList = await getTopHotFilm();
                 const hotGenreList = await getTopHotGenre();
-                const numStatistical = await getNumberStatistical();
+                const numStatistical = await getNumberStatistical('admin');
                 const topSixUser = await getTopSixUser();
                 const newReports = await getNewReport();
 

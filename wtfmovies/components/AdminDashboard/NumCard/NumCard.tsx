@@ -86,36 +86,34 @@ export default function NumCard({
                     </IconButton>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText id="alert-dialog-description">
-                        <div className={cx('filter')}>
-                            <h3>Bộ lọc:</h3>
-                            <RadioGroup row value={filter} name="filter" onChange={handleFilterChange}>
-                                <FormControlLabel value="year" control={<Radio />} label="Năm nay" />
-                                <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
-                            </RadioGroup>
-                        </div>
-                        <LineChart
-                            xAxis={[
-                                {
-                                    scaleType: 'band',
-                                    dataKey: 'time',
-                                    valueFormatter: (time, context) =>
-                                        context.location === 'tick' && filter === 'year' ? time.slice(0, 3) : time,
-                                },
-                            ]}
-                            yAxis={[
-                                {
-                                    valueFormatter: (value, context) =>
-                                        context.location === 'tick' ? formatNumber(value) : value,
-                                },
-                            ]}
-                            series={[{ dataKey: 'data', label: title, showMark: false, stackOffset: 'none' }]}
-                            dataset={filter === 'year' ? yearDataset : allDataset}
-                            slotProps={{ legend: { hidden: true } }}
-                            width={500}
-                            height={300}
-                        />
-                    </DialogContentText>
+                    <div className={cx('filter')}>
+                        <h3>Bộ lọc:</h3>
+                        <RadioGroup row value={filter} name="filter" onChange={handleFilterChange}>
+                            <FormControlLabel value="year" control={<Radio />} label="Năm nay" />
+                            <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
+                        </RadioGroup>
+                    </div>
+                    <LineChart
+                        xAxis={[
+                            {
+                                scaleType: 'band',
+                                dataKey: 'time',
+                                valueFormatter: (time, context) =>
+                                    context.location === 'tick' && filter === 'year' ? time.slice(0, 3) : time,
+                            },
+                        ]}
+                        yAxis={[
+                            {
+                                valueFormatter: (value, context) =>
+                                    context.location === 'tick' ? formatNumber(value) : value,
+                            },
+                        ]}
+                        series={[{ dataKey: 'data', label: title, showMark: false, stackOffset: 'none' }]}
+                        dataset={filter === 'year' ? yearDataset : allDataset}
+                        slotProps={{ legend: { hidden: true } }}
+                        width={500}
+                        height={300}
+                    />
                 </DialogContent>
             </Dialog>
         </>
