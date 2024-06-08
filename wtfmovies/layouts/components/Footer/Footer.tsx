@@ -53,8 +53,8 @@ function Footer() {
                     <ul>
                         <li>
                             Liên hệ:{' '}
-                            <Link className={cx('mailtoEle')} href="mailto:mail@wtfdev.pages.dev">
-                                mail@wtfdev.pages.dev
+                            <Link className={cx('mailtoEle')} href="mailto:support@wtfdev.xyz">
+                                support@wtfdev.xyz
                             </Link>
                         </li>
                         <li>Ngày thành lập: 31/01/2024</li>

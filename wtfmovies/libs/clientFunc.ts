@@ -95,7 +95,7 @@ export const mapFilms = (films: FilmInfoInterface[]): FilmsInterFace[] => {
         ({ img, name, videoType, views, rating, poster, searchName }): FilmsInterFace => {
             // Calculate the total number of episodes across all video types
             const subsType = videoType.find((type) => type.title === 'Subs') as any;
-            if (!subsType) return { img, name, searchName, views, rating, poster, episodes: 0 };
+            if (!subsType || !subsType.episode) return { img, name, searchName, views, rating, poster, episodes: 0 };
 
             const totalEpisodes = subsType.episode[subsType.episode.length - 1];
             return {
