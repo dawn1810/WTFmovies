@@ -148,7 +148,7 @@ export default async function Watch({ params }: Props) {
         <div className={cx('wrapper')}>
             <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
             <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
-            <WatchWithEp numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
+            <WatchWithEp film_id={filmData?.film_id} numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>
 
             <TabsBox
                 tabs={episodesTabs}

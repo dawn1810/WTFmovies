@@ -10,7 +10,7 @@ import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(style);
 
-export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any; numEp: number }) {
+export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string, filmEpisode: any; numEp: number }) {
     const dispatch = useDispatch();
     const [serverVideo, setServerVideo] = useState<string>(filmEpisode[numEp - 1].link.Tiktok ? 'Tiktok' : 'Youtube');
     const [linkVideo, setLinkVideo] = useState<string>(
@@ -29,7 +29,7 @@ export function WatchWithEp({ filmEpisode, numEp }: { filmEpisode: any; numEp: n
         const timer = setTimeout(async () => {
             await fetch('/api/v1/updateView', {
                 method: 'POST',
-                body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id }),
+                body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id, film_id: film_id }),
             });
         }, 5000);
 
