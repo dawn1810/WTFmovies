@@ -85,6 +85,14 @@ export const makeFilmData = async (
         const today = new Date();
 
         if (!!filmExisted) {
+            //send notify
+            if (episodeLength > filmExisted.videoType[0].episode.length) {
+                await fetch('/api/v1/notify/filmUpdate',
+                    {
+                        method: 'POST',
+                        body: JSON.stringify({ filmId: film_id })
+                    });
+            }
             const result = {
                 film_id: film_id,
                 name: nameInput,
