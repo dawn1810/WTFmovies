@@ -9,7 +9,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import GoogleIcon from '@mui/icons-material/Google';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
-
+import { encryptData } from '~/libs/clientFunc';
 import { Modal, Form } from 'react-bootstrap';
 import classNames from 'classnames/bind';
 

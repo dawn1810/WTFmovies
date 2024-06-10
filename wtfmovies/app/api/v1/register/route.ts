@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { validateBirthDate, validateEmail, validatePassword } from '~/libs/clientFunc';
-import { getSHA256Hash, reply, toError } from '~/libs/func';
+import { decryptData, env, getSHA256Hash, reply, toError } from '~/libs/func';
 import { mongodb } from '~/libs/func';
 
 type dataType = {
@@ -15,17 +15,21 @@ export async function POST(request: NextRequest) {
     try {
         const { email, password, name, birthDate }: dataType = await request.json();
 
-        const hashPassword = await getSHA256Hash(password);
+        const decryptPass = await decryptData(env.PRIVATE_KEY, password);
+
+        if (!decryptPass) return toError('Mật khẩu không hợp lệ.', 400);
+
+        const hashPassword = await getSHA256Hash(decryptPass);
 
         // user exist or not
         const exist = await mongodb().db('user').collection('auth').findOne({ filter: { email } });
 
         if (!!exist) {
-            return toError('Email đã tồn tại', 400);
+            return toError('Email đã tồn tại', 403);
         } else {
             if (
                 validateEmail(email) &&
-                validatePassword(password) === 0 &&
+                validatePassword(decryptPass) === 0 &&
                 name.length !== 0 &&
                 validateBirthDate(birthDate)
             ) {
@@ -50,6 +54,6 @@ export async function POST(request: NextRequest) {
         }
     } catch (err) {
         console.log(err);
-        return toError('Lỗi trong quá trình thay đổi trạng thái', 500);
+        return toError('Lỗi trong quá trình đăng ký', 500);
     }
 }

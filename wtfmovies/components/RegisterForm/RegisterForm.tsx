@@ -1,4 +1,5 @@
 'use client';
+import { encryptData } from '~/libs/clientFunc';
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
@@ -20,8 +21,8 @@ import { signupSelector } from '~/redux/selectors';
 import Button from '~/components/Button';
 import style from './RegisterForm.module.scss';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
-//import { AlertColor } from '@mui/material';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+// import { cookies } from 'next/headers';
 
 const cx = classNames.bind(style);
 
@@ -98,23 +99,41 @@ function RegisterForm() {
         } else if (!validateBirthDate(birthDate)) {
             dispatch(changeSignUpBirthDateAlert(true));
         } else {
-            const response = await fetch('/api/v1/register', {
-                method: 'POST',
+            // const cookieStore = cookies();
+            // const key = String(cookieStore.get('PUBLISH_KEY'));
+            // console.log(key);
+            // const encriptPass: string = await encryptData(key, password);
+
+            const keyRes = await fetch('/api/v1/getPublishKey', {
+                method: 'GET',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email, password, name, birthDate }),
             });
 
-            if (response.ok) {
-                dispatch(changeModalShow(true));
-                setInfo({ email: '', password: '', againPass: '', name: '', birthDate: '' });
-                showAlert('Đăng ký thành công', 'success');
-            } else if (response.status === 400) {
-                dispatch(changeSignUpEmailAlert(true));
-                dispatch(changeSignupEmailAlertContent('Email đã tồn tại!'));
-            } else if (response.status === 422) {
-                showAlert('Thông tin đăng ký không hợp lệ', 'error');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            if (keyRes.ok) {
+                const key: string = await keyRes.json();
+                const encriptPass: string = await encryptData(key, password);
+
+                const response = await fetch('/api/v1/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password: encriptPass, name, birthDate }),
+                });
+
+                if (response.ok) {
+                    dispatch(changeModalShow(true));
+                    setInfo({ email: '', password: '', againPass: '', name: '', birthDate: '' });
+                    showAlert('Đăng ký thành công', 'success');
+                } else if (response.status === 400) {
+                    dispatch(changeSignUpPassAlert(true));
+                    dispatch(changeSignUpPassAlertContent('Mật khẩu không hợp lệ'));
+                } else if (response.status === 403) {
+                    dispatch(changeSignUpEmailAlert(true));
+                    dispatch(changeSignupEmailAlertContent('Email đã tồn tại!'));
+                } else if (response.status === 422) {
+                    showAlert('Thông tin đăng ký không hợp lệ', 'error');
+                } else if (response.status === 500) {
+                    showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                }
             }
         }
         setPending(false);
@@ -199,7 +218,7 @@ function RegisterForm() {
                 </Form.Group>
 
                 <Button disabled={pending} primary className={cx('submit')} type="submit">
-                    {pending ? 'Đang đăng ký' : 'Đăng ký'}
+                    {pending ? 'Đăng ký...' : 'Đăng ký'}
                 </Button>
             </Form>
         </div>

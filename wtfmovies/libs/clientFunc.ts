@@ -1,6 +1,13 @@
 'use-client';
-
-import { AdminDatasetInterface, EditorDatasetInterface, FilmInfoInterface, FilmsInterFace, NumStatisticalInterface, NumStatisticalInterfaceE } from './interfaces';
+import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
+import {
+    AdminDatasetInterface,
+    EditorDatasetInterface,
+    FilmInfoInterface,
+    FilmsInterFace,
+    NumStatisticalInterface,
+    NumStatisticalInterfaceE,
+} from './interfaces';
 
 const bufferFromPEM = (pem: string) => {
     // Remove the PEM headers and base64 decode the binary data
@@ -247,8 +254,6 @@ export const getDataByYear = (data: NumStatisticalInterface[]): AdminDatasetInte
     return { view: Object.values(viewsByYear), user: Object.values(usersByYear), film: Object.values(filmsByYear) };
 };
 
-
-
 export const calcViewChange = (dataset: AdminDatasetInterface, typeData: 'view' | 'user' | 'film') => {
     const currentMonth = dataset[typeData][dataset[typeData].length - 1]?.data;
     const previousMonth = dataset[typeData][dataset[typeData].length - 2]?.data;
@@ -275,7 +280,6 @@ export const convertGender = (gender?: number) => {
     }
 };
 
-
 export const generateUUIDv4 = (): string => {
     // Create a placeholder array for UUID format
     const template = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx';
@@ -291,12 +295,15 @@ export const generateUUIDv4 = (): string => {
 };
 
 //editor
-export function cropImage(imageSrc: string, croppedArea: {
-    x: number;
-    y: number;
-    width: number;
-    height: number;
-}): Promise<Blob | string> {
+export function cropImage(
+    imageSrc: string,
+    croppedArea: {
+        x: number;
+        y: number;
+        width: number;
+        height: number;
+    },
+): Promise<Blob | string> {
     return new Promise((resolve, reject) => {
         try {
             if (!croppedArea) {
@@ -328,7 +335,7 @@ export function cropImage(imageSrc: string, croppedArea: {
                     0,
                     0,
                     croppedWidth,
-                    croppedHeight
+                    croppedHeight,
                 );
 
                 canvas.toBlob((blob) => {
@@ -347,11 +354,8 @@ export function cropImage(imageSrc: string, croppedArea: {
         } catch (error) {
             return resolve(imageSrc);
         }
-
-
     });
 }
-
 
 export const getDataCurrentYearE = (data: NumStatisticalInterfaceE[]): EditorDatasetInterface => {
     // views statistic map
@@ -409,7 +413,6 @@ export const getDataByYearE = (data: NumStatisticalInterfaceE[]): EditorDatasetI
 
     return { view: Object.values(viewsByYear), likes: Object.values(likesByYear), eps: Object.values(epsByYear) };
 };
-
 
 export const calcViewChangeE = (dataset: EditorDatasetInterface, typeData: 'view' | 'likes' | 'eps') => {
     const currentMonth = dataset[typeData][dataset[typeData].length - 1]?.data;

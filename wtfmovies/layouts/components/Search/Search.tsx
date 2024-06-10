@@ -20,7 +20,6 @@ function Search() {
     const btnContainerRef = useRef(null);
     const inputSearchRef = useRef<any>(null);
 
-
     const [searchValue, setSearchValue] = useState('');
     useEffect(() => {
         const interBubble: any = interactiveRef.current;
@@ -68,10 +67,8 @@ function Search() {
     };
 
     const handleSearch = (event: any) => {
-        if (searchValue)
-            router.push(`/search?query=${searchValue}&type=name`);
+        if (searchValue) router.push(`/search?query=${searchValue}&type=name`);
         else inputSearchRef.current.focus();
-
     };
 
     return (
@@ -81,7 +78,6 @@ function Search() {
                 className={cx('search-input')}
                 type="text"
                 placeholder="Tìm kiếm"
-                autoFocus
                 onChange={handleSearchQueryChange}
                 onKeyDown={handleKeyDown}
             />

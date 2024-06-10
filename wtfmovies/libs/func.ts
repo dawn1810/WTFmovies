@@ -4,16 +4,19 @@ import Mongodb from 'mongodb-cloudflare';
 import { DateMongo, ObjectMongo, ResponseTiktokOK, RowInterface, ScoreInterface } from './interfaces';
 export const { env } = getOptionalRequestContext() ?? {
     env: {
-        AUTH_SECRET: 'haha',
-        APIKey: 'haha',
-        URL_Endpoint: 'haha',
-        TIKTOKCOOKIE: 'haha',
+        AUTH_SECRET: '',
+        APIKey: '',
+        URL_Endpoint: '',
+        TIKTOKCOOKIE: '',
         GOOGLE_CLIENT_ID: '',
         GOOGLE_CLIENT_SECRET: '',
         GITHUB_CLIENT_ID: '',
         GITHUB_CLIENT_SECRET: '',
+        PUBLISH_KEY: '',
+        PRIVATE_KEY: '',
     },
 };
+
 export function mongodb(): Mongodb {
     return new Mongodb({
         apiKey: env.APIKey,
@@ -65,28 +68,32 @@ export const encryptData = async (publicKeyPEM: string, data: string) => {
 
 export const decryptData = async (privateKeyPEM: string, encryptedData: string) => {
     // Import the private key
-    const privateKey = await crypto.subtle.importKey(
-        'pkcs8',
-        bufferFromPEM(privateKeyPEM),
-        {
-            name: 'RSA-OAEP',
-            hash: 'SHA-256',
-        },
-        true,
-        ['decrypt'],
-    );
+    try {
+        const privateKey = await crypto.subtle.importKey(
+            'pkcs8',
+            bufferFromPEM(privateKeyPEM),
+            {
+                name: 'RSA-OAEP',
+                hash: 'SHA-256',
+            },
+            true,
+            ['decrypt'],
+        );
 
-    // Convert the Base64 encoded data to an ArrayBuffer
-    const decrypted = await crypto.subtle.decrypt(
-        {
-            name: 'RSA-OAEP',
-        },
-        privateKey,
-        base64ToBuffer(encryptedData),
-    );
+        // Convert the Base64 encoded data to an ArrayBuffer
+        const decrypted = await crypto.subtle.decrypt(
+            {
+                name: 'RSA-OAEP',
+            },
+            privateKey,
+            base64ToBuffer(encryptedData),
+        );
 
-    // Convert the decrypted ArrayBuffer back into a string
-    return new TextDecoder().decode(new Uint8Array(decrypted));
+        // Convert the decrypted ArrayBuffer back into a string
+        return new TextDecoder().decode(new Uint8Array(decrypted));
+    } catch (err) {
+        console.log(err);
+    }
 };
 
 //auth
@@ -248,7 +255,6 @@ export const generateOTP = (length: number = 5): string => {
     }
     return otp;
 };
-
 
 // upload film
 export const createSearchName = (name: string): string => {

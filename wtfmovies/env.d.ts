@@ -1,8 +1,8 @@
 interface CloudflareEnv {
     URL_Endpoint: string;
     APIKey: string;
-    publicKey: string;
-    privateKey: string;
+    PUBLISH_KEY: string;
+    PRIVATE_KEY: string;
     AUTH_SECRET: string;
     TIKTOKCOOKIE: string;
     GOOGLE_CLIENT_ID: string;
