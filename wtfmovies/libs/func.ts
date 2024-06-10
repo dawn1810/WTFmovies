@@ -1,26 +1,14 @@
 export const runtime = 'edge';
 import { getOptionalRequestContext } from '@cloudflare/next-on-pages';
 import Mongodb from 'mongodb-cloudflare';
-import { DateMongo, ObjectMongo, ResponseTiktokOK, RowInterface, ScoreInterface } from './interfaces';
-export const { env } = getOptionalRequestContext() ?? {
-    env: {
-        AUTH_SECRET: '',
-        APIKey: '',
-        URL_Endpoint: '',
-        TIKTOKCOOKIE: '',
-        GOOGLE_CLIENT_ID: '',
-        GOOGLE_CLIENT_SECRET: '',
-        GITHUB_CLIENT_ID: '',
-        GITHUB_CLIENT_SECRET: '',
-        PUBLISH_KEY: '',
-        PRIVATE_KEY: '',
-    },
+import { DateMongo, ObjectMongo, ResponseTiktokOK, RowInterface } from './interfaces';
+export const { env }: { env: CloudflareEnv } = (getOptionalRequestContext() ?? { env: process.env }) as {
+    env: CloudflareEnv;
 };
-
 export function mongodb(): Mongodb {
     return new Mongodb({
-        apiKey: env.APIKey,
-        apiUrl: env.URL_Endpoint,
+        apiKey: env?.APIKey,
+        apiUrl: env?.URL_Endpoint,
         dataSource: 'WTFmovies',
     });
 }
@@ -161,7 +149,7 @@ export function MongoDate(data: Date): DateMongo {
 // or
 // sessionid_ads= 49aec6dd1283b4f8214dd2b1bbee2358
 
-let currentCookie = `csrftoken=9BrXKhM5zk3UXppyxHP2EtgbdLWZJg9W;sessionid_ss_ads=${env.TIKTOKCOOKIE}`;
+let currentCookie = `csrftoken=9BrXKhM5zk3UXppyxHP2EtgbdLWZJg9W;sessionid_ss_ads=${env?.TIKTOKCOOKIE}`;
 
 function updateCookie(currentCookie: string, newCookie: string) {
     const currentCookies = currentCookie ? currentCookie.split(';') : [];

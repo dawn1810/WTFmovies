@@ -121,6 +121,8 @@ const Contact = forwardRef(
 
         // Rest of your component
         useEffect(() => {
+            dispatch(changeCurrentResolution('N/A'));
+
             const updateHlsPlayerInfo = (hls: any) => {
                 const hasAutoLevel = hls && hls.autoLevelEnabled && hls.levels.length > 0;
                 const indexLevel = hls.loadLevel !== -1 ? hls.loadLevel : hls.firstLevel;
@@ -149,7 +151,7 @@ const Contact = forwardRef(
                     updateHlsPlayerInfo(internalHlsPlayer);
                 }
             }
-        }, [contactState.ready, dispatch]);
+        }, [contactState.ready, dispatch, contactState.url, playerRef?.current?.getInternalPlayer()]);
 
         // Separate useEffect if necessary based on additional logic requirements.
         useEffect(() => {
@@ -302,9 +304,7 @@ const Contact = forwardRef(
             }, 500);
         };
 
-        {
-            console.log(contactState.currResol);
-        }
+
         // else
         return (
             <div ref={ref} className={cx('player-contact-wrapper', { 'contact-show': contactState.contactShow })}>
