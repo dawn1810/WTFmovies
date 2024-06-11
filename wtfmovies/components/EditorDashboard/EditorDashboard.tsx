@@ -22,7 +22,7 @@ export default function EditorDashboard({
     topSixUser,
 }: {
     numStatistical: NumStatisticalInterfaceE[] | any;
-    hotFilmList: FilmTopInterface[];
+    hotFilmList: FilmTopInterface;
     topSixUser: TopSixUserInfoInfterface[];
 }) {
     const yearDataset = getDataCurrentYearE(numStatistical);

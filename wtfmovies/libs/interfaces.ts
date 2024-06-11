@@ -9,11 +9,39 @@ export interface ExtendedFile extends File {
     preview: string;
 }
 
-
+export interface OneFilmTopInterface {
+    _id: string,
+    likes: number,
+    monthLikes: number,
+    monthViews: number,
+    name: string,
+    views: number,
+    weekLikes: number,
+    weekViews: number,
+    weekComments: number,
+    monthComments: number,
+    comments: number,
+    [key: string]: number | string,
+}
 export interface FilmTopInterface {
-    id: number;
-    value: number;
-    label: string;
+    week: {
+        views: OneFilmTopInterface[],
+        likes: OneFilmTopInterface[],
+        comments: OneFilmTopInterface[],
+    },
+    month: {
+        views: OneFilmTopInterface[],
+        likes: OneFilmTopInterface[],
+        comments: OneFilmTopInterface[],
+    },
+    all: {
+        views: OneFilmTopInterface[],
+        likes: OneFilmTopInterface[],
+        comments: OneFilmTopInterface[],
+    },
+    [key: string]: {
+        [key: string]: OneFilmTopInterface[];
+    };
 }
 export interface reduxStateInterface {
     player: {

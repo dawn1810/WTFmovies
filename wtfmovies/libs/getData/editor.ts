@@ -1,4 +1,4 @@
-import { FilmHotInterface, FilmInfo, NumStatisticalInterface, TopSixUserInfoInfterface } from "../interfaces";
+import { FilmHotInterface, FilmInfo, NumStatisticalInterface, OneFilmTopInterface, TopSixUserInfoInfterface } from "../interfaces";
 import { mongodb } from '~/libs/func';
 
 export const getFilm = async (): Promise<FilmInfo[]> => {
@@ -222,43 +222,52 @@ export const getSideMovieFormInfo = async (): Promise<any> => {
 };
 // editor dashboard
 
-export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
+
+export const getTopHotFilm = async (sortField: 'views' | 'likes' | 'comments', type: 'week' | 'month' | 'all'): Promise<OneFilmTopInterface[]> => {
     try {
-        const filmList: FilmHotInterface[] = await mongodb()
+        const sortObject: any = {};
+        if (type === 'all') {
+            sortObject[sortField] = -1;
+        } else {
+            sortObject[`${type}${capitalizeFirstLetter(sortField)}`] = -1;
+        }
+
+        const filmList: OneFilmTopInterface[] = await mongodb()
             .db('film')
             .collection('information')
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
                     {
-                        $lookup: {
-                            from: 'episode',
-                            localField: 'film_id',
-                            foreignField: 'film_id',
-                            as: 'reviews',
-                        },
-                    },
-                    {
                         $project: {
-                            _id: 0,
+                            _id: 1,
                             name: 1,
-                            views: '$weekViews',
                             likes: 1,
-                            rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                            views: 1,
+                            comments: { $size: { $ifNull: ["$comment", []] } },
+                            monthViews: 1,
+                            monthLikes: 1,
+                            monthComments: 1,
+                            weekViews: 1,
+                            weekLikes: 1,
+                            weekComments: 1,
                         },
                     },
-                    { $sort: { views: -1, likes: -1, rating: -1 } },
+                    { $sort: sortObject },
                     { $limit: 5 },
                 ],
             });
 
         return filmList;
     } catch (err) {
-        console.log('😨😨😨 error at admin/getTopHotFilm function : ', err);
+        console.log('😨😨😨 error at editor/getTopHotFilm function : ', err);
         return [];
     }
 };
 
+function capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
     try {
