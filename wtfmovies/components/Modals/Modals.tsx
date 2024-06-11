@@ -47,6 +47,10 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
         await signIn('github');
     };
 
+    const handleSignInFacebook = async () => {
+        await signIn('facebook');
+    };
+
     const handleSubmit = async (event: any): Promise<void> => {
         event.preventDefault();
         clearAllAlert();
@@ -119,7 +123,7 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                         Google
                     </Button>
 
-                    <Button primary leftIcon={<FacebookIcon />} className={cx('fb-btn')}>
+                    <Button primary leftIcon={<FacebookIcon />} className={cx('fb-btn')} onClick={handleSignInFacebook}>
                         Facebook
                     </Button>
 

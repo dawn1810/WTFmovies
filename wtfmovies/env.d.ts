@@ -9,6 +9,8 @@ interface CloudflareEnv {
     GOOGLE_CLIENT_SECRET: string;
     GITHUB_CLIENT_ID: string;
     GITHUB_CLIENT_SECRET: string;
+    FACEBOOK_CLENT_ID: string;
+    FACEBOOK_CLIENT_SECRET: string;
     // Add here the Cloudflare Bindings you want to have available in your application
     // (for more details on Bindings see: https://developers.cloudflare.com/pages/functions/bindings/)
     //

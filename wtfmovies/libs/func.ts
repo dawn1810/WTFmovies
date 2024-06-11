@@ -5,6 +5,7 @@ import { DateMongo, ObjectMongo, ResponseTiktokOK, RowInterface } from './interf
 export const { env }: { env: CloudflareEnv } = (getOptionalRequestContext() ?? { env: process.env }) as {
     env: CloudflareEnv;
 };
+
 export function mongodb(): Mongodb {
     return new Mongodb({
         apiKey: env?.APIKey,
