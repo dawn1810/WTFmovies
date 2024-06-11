@@ -95,6 +95,8 @@ const authOptions: NextAuthConfig = {
     ],
     callbacks: {
         async signIn({ user, account, profile }): Promise<string | boolean> {
+            console.log(user);
+
             if (account?.provider === 'google') {
                 return !!profile?.email_verified;
             }

@@ -62,27 +62,31 @@ function Notification({ notify }: { notify: any[] }) {
                 DANH SÁCH THÔNG BÁO
             </Divider>
             <List className={cx('list-item')}>
-                {notifications.map((note, index) => (
-                    <ListItem
-                        key={index}
-                        className={cx('item')}
-                        secondaryAction={
-                            <IconButton edge="end" onClick={() => handleRemove(index)}>
-                                <CloseIcon />
-                            </IconButton>
-                        }
-                        disablePadding
-                    >
-                        <ListItemButton role={undefined} onClick={() => handleRedirect(index)}>
-                            <ListItemAvatar>
-                                <Avatar>
-                                    <NotificationsNoneIcon />
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText primary={note.content} secondary={timePassed(note.time)} />
-                        </ListItemButton>
-                    </ListItem>
-                ))}
+                {notifications.length > 0 ? (
+                    notifications.map((note, index) => (
+                        <ListItem
+                            key={index}
+                            className={cx('item')}
+                            secondaryAction={
+                                <IconButton edge="end" onClick={() => handleRemove(index)}>
+                                    <CloseIcon />
+                                </IconButton>
+                            }
+                            disablePadding
+                        >
+                            <ListItemButton role={undefined} onClick={() => handleRedirect(index)}>
+                                <ListItemAvatar>
+                                    <Avatar>
+                                        <NotificationsNoneIcon />
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText primary={note.content} secondary={timePassed(note.time)} />
+                            </ListItemButton>
+                        </ListItem>
+                    ))
+                ) : (
+                    <div className={cx('empty-list')}>Danh sách thông báo trống</div>
+                )}
             </List>
         </div>
     );
