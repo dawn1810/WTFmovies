@@ -15,18 +15,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
 import style from './PieCard.module.scss';
+import { FilmTopInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
 
-const data = [
-    { id: 0, value: 100, label: 'Naruto' },
-    { id: 1, value: 75, label: 'Sasuke' },
-    { id: 2, value: 70, label: '寂しい 犬' },
-    { id: 3, value: 50, label: 'Lon Dai dE' },
-    { id: 4, value: 18, label: 'Đẹp gái nhất thế giới' },
-];
-
-export default function PieCard({ area, hotFilmList }: { area: string, hotFilmList: any }) {
+export default function PieCard({ area, hotFilmList }: { area: string, hotFilmList: FilmTopInterface[] }) {
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState({ time: 'week', sortBy: 'all' });
 
@@ -56,7 +49,7 @@ export default function PieCard({ area, hotFilmList }: { area: string, hotFilmLi
                 <PieChart
                     series={[
                         {
-                            data,
+                            data: hotFilmList, // Update 'hotFilmList' to 'data'
                             highlightScope: { faded: 'global', highlighted: 'item' },
                             faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
                             startAngle: 90,

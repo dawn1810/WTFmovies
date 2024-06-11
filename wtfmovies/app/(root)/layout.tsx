@@ -1,5 +1,5 @@
-import '../globals.scss';
 export const runtime = 'edge';
+import '../globals.scss';
 import { SessionProvider } from 'next-auth/react';
 import type { Metadata, Viewport } from 'next';
 import { montserrat } from '../font';

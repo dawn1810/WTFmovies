@@ -220,8 +220,6 @@ export const getSideMovieFormInfo = async (): Promise<any> => {
         tags: await getTags(),
     }
 };
-
-
 // editor dashboard
 
 export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {

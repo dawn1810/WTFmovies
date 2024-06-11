@@ -9,6 +9,12 @@ export interface ExtendedFile extends File {
     preview: string;
 }
 
+
+export interface FilmTopInterface {
+    id: number;
+    value: number;
+    label: string;
+}
 export interface reduxStateInterface {
     player: {
         url: string;

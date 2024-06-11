@@ -4,47 +4,15 @@ import style from './EditorDashboard.module.scss';
 import NumCard from './NumCard';
 import TableCard from './TableCard';
 import {
-    FilmHotInterface,
-    LineChartDataInterface,
-    NumStatisticalInterface,
+    FilmTopInterface,
     NumStatisticalInterfaceE,
     TopSixUserInfoInfterface,
 } from '~/libs/interfaces';
-import { calcViewChange, calcViewChangeE, getDataByYear, getDataByYearE, getDataCurrentYear, getDataCurrentYearE } from '~/libs/clientFunc';
+import { calcViewChangeE, getDataByYearE, getDataCurrentYearE } from '~/libs/clientFunc';
 import PieCard from './PieCard';
 
 const cx = classNames.bind(style);
 
-
-
-interface DatasetInterface {
-    view: LineChartDataInterface[];
-    user: LineChartDataInterface[];
-    film: LineChartDataInterface[];
-}
-
-const convertNumberToMonth = (number: number) => {
-    const months = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-    ];
-
-    if (number < 0 || number > 11) {
-        return 'Invalid month number';
-    }
-
-    return months[number];
-};
 
 
 
@@ -54,7 +22,7 @@ export default function EditorDashboard({
     topSixUser,
 }: {
     numStatistical: NumStatisticalInterfaceE[] | any;
-    hotFilmList: FilmHotInterface[];
+    hotFilmList: FilmTopInterface[];
     topSixUser: TopSixUserInfoInfterface[];
 }) {
     const yearDataset = getDataCurrentYearE(numStatistical);
