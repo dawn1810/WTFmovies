@@ -92,9 +92,7 @@ function PassChange() {
         setValidated((prev) => ({ ...prev, [event.target.name]: '' }));
     };
     const handleSubmit = async () => {
-        if (info.oldPass.length === 0) {
-            setValidated({ oldPass: 'Nhập mật khẩu cũ của bạn', newPass: '', rnewPass: '' });
-        } else if (validatePassword(info.newPass) !== 0) {
+        if (validatePassword(info.newPass) !== 0) {
             switch (validatePassword(info.newPass)) {
                 case 1:
                     setValidated({ rnewPass: '', oldPass: '', newPass: 'Mật khẩu phải dài hơn 8 kí tự!' });
@@ -134,7 +132,7 @@ function PassChange() {
                 setInfo({ oldPass: '', newPass: '', rnewPass: '' });
                 showAlert('Thay đổi mật khẩu thành công', 'success');
             } else if (response.status === 400) {
-                setValidated({ oldPass: '何？', newPass: '', rnewPass: '' });
+                showAlert('Xác thực thất bại', 'error');
             } else if (response.status === 401) {
                 setInfo((prev) => ({ ...prev, oldPass: '' }));
                 setValidated({ oldPass: 'Mật khẩu không chính xác', newPass: '', rnewPass: '' });
@@ -152,6 +150,13 @@ function PassChange() {
             <Divider textAlign="left" className={cx('divider')}>
                 THAY ĐỔI MẬT KHẨU
             </Divider>
+            <h4 style={{ color: 'var(--text-color)' }}>
+                <span style={{ color: 'var(--highlight-color)' }}>*NOTE:</span> Nếu bạn đăng nhập bằng{' '}
+                <span style={{ color: '#e94235' }}>Google</span> | <span style={{ color: '#010409' }}>Github</span> |{' '}
+                <span style={{ color: '#0866ff' }}>FaceBook</span> và chưa có mật khẩu sẳn có hãy để trống{' '}
+                <span style={{ color: 'var(--highlight-color)' }}>"Mật khẩu cũ"</span> nó sẽ được coi như thêm một mật
+                khẩu mới cho tài khoản của bạn.
+            </h4>
             <PassInput
                 label="Mật khẩu cũ"
                 value={info.oldPass}

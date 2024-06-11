@@ -28,10 +28,11 @@ export async function POST(request: NextRequest) {
 
         if (!userAuth) return toJSON('Email không tồn tại', 400);
 
-        // have user check password
-        const passAuth = await comparePassWord(userAuth.password, hashPassword);
-
-        if (!passAuth) return toJSON('Mật khẩu không chính xác', 401);
+        // have user check password (if they have no password yet this is add newpass)
+        if (!!userAuth.password) {
+            const passAuth = await comparePassWord(userAuth.password, hashPassword);
+            if (!passAuth) return toJSON('Mật khẩu không chính xác', 401);
+        }
 
         const response = await mongodb()
             .db('user')
