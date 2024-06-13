@@ -9,11 +9,14 @@
 }
 
 .search-box {
+    margin-top: 8px;
+    border-radius: 10px;
     position: fixed;
     width: 550px;
     max-height: 500px;
     overflow: auto;
-    background-color: var(--card-background-color);
+    backdrop-filter: blur(10px);
+    background-color: var(--card-blur-color);
 }
 
 .input-container {
@@ -27,7 +30,7 @@
         width: 90%;
         height: 40px;
         padding: 5px 18px;
-        border-radius: 5px 0px 0px 5px;
+        border-radius: 10px 0px 0px 10px;
         background: var(--lighten-primary-active-color);
         color: var(--text-color);
 
@@ -57,7 +60,7 @@
             position: absolute;
             width: 100%;
             border-left: none;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 10px 10px 0;
             color: var(--body-color);
             font-size: 1.8rem;
 
@@ -84,7 +87,7 @@
             top: 0;
             left: 0;
             z-index: 0;
-            border-radius: 0 5px 5px 0;
+            border-radius: 0 10px 10px 0;
 
             font-size: 1.8rem;
             background-color: beige;

@@ -232,6 +232,8 @@ function Search() {
             ) : (
                 <Popover
                     id={id}
+                    sx={{ '& .MuiPaper-rounded': { borderRadius: '10px', backgroundImage: 'unset' } }}
+
                     open={open}
                     anchorEl={ref.current}
                     className={cx('popover')}
