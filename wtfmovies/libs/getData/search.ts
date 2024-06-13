@@ -10,9 +10,9 @@ export const getGenres = async (): Promise<
 > => {
     try {
         const defautlGenres = [
-            { name: 'Tất cả', to: '/', special: true },
-            { name: 'Thịnh hành', to: '/search?query=hot&type=genre', special: true },
-            { name: 'Mới', to: '/search?query=new&type=genre', special: true },
+            { name: 'Tất cả', to: '/search', special: true },
+            { name: 'Thịnh hành', to: '/search?query=hot&tab=all&type=rcm', special: true },
+            { name: 'Mới', to: '/search?query=new&tab=all&type=rcm', special: true },
         ];
         const genres: SearchInterface | any = await mongodb()
             .db('film')
@@ -54,8 +54,8 @@ async function getSerachByType(type: string, query: string, limit: number, full 
     const match = full
         ? {}
         : {
-              [type]: { $regex: `(?i)${query}` },
-          };
+            [type]: { $regex: `(?i)${query}` },
+        };
 
     return await mongodb()
         .db('film')
@@ -168,9 +168,14 @@ export const getSearch = async ({
     type: string;
 }): Promise<SearchInterface[] | undefined> => {
     try {
-        const searchable = ['director', 'genre', 'author', 'actor', 'name'];
-        if (searchable.includes(type)) return await getSerachByType(type, query, 30);
-        else return await getSerachByType(type, query, 30, true);
+        const searchable = ['director', 'genre', 'author', 'actor', 'name']
+        if (searchable.includes(type))
+            return await getSerachByType(type, query, 30);
+        if (type === 'type') {
+            return await getSerachByType('tag', query, 30);
+        }
+        else
+            return await getSerachByType(type, query, 30, true);
     } catch (err) {
         console.log('😨😨😨 error at search/getSearch function: ', err);
     }

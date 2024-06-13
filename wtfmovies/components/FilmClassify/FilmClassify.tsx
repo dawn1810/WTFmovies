@@ -10,6 +10,7 @@ import Button from '../Button';
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import { FilmClassifyInterface, TabInterface } from '~/libs/interfaces';
 import { mapFilms } from '~/libs/clientFunc';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
@@ -25,7 +26,7 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
         },
         {
             title: '#QUÝ NÀY',
-            eventKey: 'summerTo2024',
+            eventKey: 'summer',
             content: tabs[1],
         },
         {
@@ -39,25 +40,27 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
             content: tabs[3],
         },
     ];
+    const [currTab, setCurrTab] = useState('all');
 
     return (
         <div className={cx('wrapper')}>
             <Title title={tags.mainTitle} icon={tags.mainIcon} />
             {!isMobile ? (
                 <>
-                    <TabsBox tabs={newFilmTabs} defaultActiveKey="all" gridContent />
+                    <TabsBox setCurrTab={setCurrTab} currTab={currTab} to={tags.mainDir} tabs={newFilmTabs} defaultActiveKey="all" gridContent />
                     <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={mapFilms(films)} />
                 </>
             ) : (
                 <>
                     <TabsBox
+                        setCurrTab={setCurrTab} currTab={currTab}
                         tabs={newFilmTabs}
                         listContent
                         textContent
                         defaultActiveKey="all"
                         className={cx('tab-box')}
                     />
-                    <Button to={tags.mainDir} primary rightIcon={<ArrowForwardIosIcon />} className={cx('more-btn')}>
+                    <Button to={`/search?query=${tags.mainDir}&tab=${currTab}&type=rcm`} primary rightIcon={<ArrowForwardIosIcon />} className={cx('more-btn')}>
                         Xem thêm
                     </Button>
                     <SideBox to={tags.extraDir} title={tags.extraTitle} icon={tags.extraIcon} films={mapFilms(films)} />

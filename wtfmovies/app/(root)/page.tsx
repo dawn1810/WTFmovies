@@ -55,8 +55,8 @@ async function Home() {
                     films={mostWatchFilms}
                     tabs={[allNewFilms, currNewFilms, seriesNewFilms, movieNewFilms]}
                     tags={{
-                        mainDir: '/new_update',
-                        extraDir: '/most_views',
+                        mainDir: 'new_update',
+                        extraDir: 'most_views',
                         mainTitle: 'MỚI CẬP NHẬT',
                         extraTitle: 'XEM NHIỀU',
                         mainIcon: <AccessTimeIcon fontSize="large" />,
@@ -67,8 +67,8 @@ async function Home() {
                     films={mostLikeFilms}
                     tabs={[allHotFilms, currHotFilms, seriesHotFilms, movieHotFilms]}
                     tags={{
-                        mainDir: '/hot',
-                        extraDir: '/most_likes',
+                        mainDir: 'hot',
+                        extraDir: 'most_likes',
                         mainTitle: 'PHIM HOT',
                         extraTitle: 'YÊU THÍCH',
                         mainIcon: <LocalFireDepartmentOutlinedIcon fontSize="large" />,

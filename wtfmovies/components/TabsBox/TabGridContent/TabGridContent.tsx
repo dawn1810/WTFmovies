@@ -8,10 +8,11 @@ import style from './TabGridContent.module.scss';
 import { useViewport } from '~/hooks';
 import { FilmInfoInterface } from '~/libs/interfaces';
 import { mapFilms } from '~/libs/clientFunc';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
-function TabGridContent({ films }: { films: FilmInfoInterface[] }) {
+function TabGridContent({ films, to, currTab = '' }: { films: FilmInfoInterface[], to?: string, currTab?: string }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
     const mappedFilms = mapFilms(films);
@@ -33,10 +34,10 @@ function TabGridContent({ films }: { films: FilmInfoInterface[] }) {
                         />
                     ))
                 ) : (
-                    <div>Không có phim cho tabs này</div>
+                    <div className={cx('noFilm')}>Không có phim cho tab này</div>
                 )}
             </div>
-            <Button to="/search" primary rightIcon={<ExpandMoreIcon />} className={cx('more-btn')}>
+            <Button to={`/search?query=${to}&tab=${currTab}&type=rcm`} primary rightIcon={<ExpandMoreIcon />} className={cx('more-btn')}>
                 Xem thêm
             </Button>
         </div>

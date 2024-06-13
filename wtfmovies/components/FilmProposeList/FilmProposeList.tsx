@@ -77,19 +77,21 @@ function FilmProposeList({ films, className }: FilmProposeListInterface) {
 
     return (
         <div className={cx('wrapper', className)}>
-            <Slider {...settings}>
-                {mappedFilms.map((film, index) => (
-                    <FilmCard
-                        key={index}
-                        imgSrc={film.img}
-                        filmName={film.name}
-                        searchName={film.searchName}
-                        views={film.views}
-                        rating={film.rating}
-                        episodes={film.episodes}
-                    />
-                ))}
-            </Slider>
+            {mappedFilms.length > 0 ?
+                <Slider {...settings}>
+                    {mappedFilms.map((film, index) => (
+                        <FilmCard
+                            key={index}
+                            imgSrc={film.img}
+                            filmName={film.name}
+                            searchName={film.searchName}
+                            views={film.views}
+                            rating={film.rating}
+                            episodes={film.episodes}
+                        />
+                    ))}
+                </Slider> :
+                (<div className={cx('noFilm')}>Không có phim cho tab này</div>)}
         </div>
     );
 }

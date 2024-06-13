@@ -35,7 +35,7 @@ export default async function OverView() {
             comments: await getTopHotFilm('comments', 'all'),
         }
     }
-    console.log(hotFilmList);
+    // console.log(hotFilmList);
 
     const numStatistical = await getNumberStatistical(extendedUser?.email);
     const topSixUser = await getTopSixUser();

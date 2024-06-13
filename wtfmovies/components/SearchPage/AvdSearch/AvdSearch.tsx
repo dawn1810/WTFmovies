@@ -13,7 +13,7 @@ import { useViewport } from '~/hooks';
 
 const cx = classNames.bind(style);
 
-function search({ data, query }: { data: any[], query: string }) {
+function search({ data }: { data: any[] }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
     return (
@@ -29,7 +29,7 @@ function search({ data, query }: { data: any[], query: string }) {
                 </Breadcrumbs> */}
             <div className={cx('search-films')}>
                 <div className={cx('top-bar')}>
-                    <Title title={`Kết quả tìm kiếm ${query ? query : ""}`} icon={<SearchIcon className={cx('search-films-title')} />} />
+                    <Title title="Phim tìm kiếm" icon={<SearchIcon className={cx('search-films-title')} />} />
                     {!isMobile ? (
                         <Button primary rightIcon={<FilterAltIcon />}>
                             Bộ lọc
@@ -42,7 +42,7 @@ function search({ data, query }: { data: any[], query: string }) {
                 </div>
 
                 <div className={cx('films-list')}>
-                    {data.length > 0 ? data?.map((item, index) => (
+                    {data?.map((item, index) => (
                         <FilmCard
                             key={index}
                             largeNoOverlay
@@ -59,7 +59,7 @@ function search({ data, query }: { data: any[], query: string }) {
                             className={cx('large-film-card')}
                             searchName={item.searchName}
                         />
-                    )) : (<div className={cx('textNoData')}>Không tìm thấy dữ liệu</div>)}
+                    ))}
                 </div>
             </div>
         </div>

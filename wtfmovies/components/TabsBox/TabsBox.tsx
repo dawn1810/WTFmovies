@@ -6,6 +6,7 @@ import TabGridContent from './TabGridContent';
 import style from './TabsBox.module.scss';
 import TabFlexContent from './TabFlexContent';
 import FilmProposeList from '../FilmProposeList';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
@@ -16,6 +17,7 @@ type tab = {
 };
 
 function TabBox({
+    to,
     commentContent = false,
     listContent = false,
     flexContent = false,
@@ -23,10 +25,15 @@ function TabBox({
     gridContent = false,
     listIdEp,
     tabs,
+    setCurrTab,
+    currTab,
     active_episode,
     defaultActiveKey,
     className,
 }: {
+    to?: string;
+    setCurrTab?: any;
+    currTab?: any;
     commentContent?: boolean;
     listContent?: boolean;
     flexContent?: boolean;
@@ -38,12 +45,14 @@ function TabBox({
     defaultActiveKey?: string;
     className?: string | [];
 }) {
+
     return (
         <div className={cx('wrapper', className)}>
             <Tabs
                 transition={false}
                 className={cx('tabs', 'flex-nowrap', { 'cmt-tabs': commentContent })}
                 defaultActiveKey={defaultActiveKey}
+                onSelect={(e: any) => setCurrTab(e)}
             >
                 {tabs.map((tab, index) => (
                     <Tab
@@ -53,12 +62,13 @@ function TabBox({
                             'list-content': listContent,
                             'cmt-content': commentContent,
                         })}
+
                         key={index}
                         eventKey={tab.eventKey}
                         title={tab.title}
                     >
                         {gridContent ? (
-                            <TabGridContent films={tab.content} />
+                            <TabGridContent currTab={currTab} to={to} films={tab.content} />
                         ) : flexContent ? (
                             <TabFlexContent
                                 episodes={tab.content}
@@ -73,7 +83,7 @@ function TabBox({
                     </Tab>
                 ))}
             </Tabs>
-        </div>
+        </div >
     );
 }
 

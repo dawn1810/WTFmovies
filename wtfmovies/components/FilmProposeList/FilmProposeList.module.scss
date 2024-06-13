@@ -5,6 +5,14 @@
     border-radius: 5px;
     background-color: var(--card-background-color);
 
+    .noFilm {
+        min-height: 190px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
     .carousel {
         width: 100%;
         border-radius: 5px;

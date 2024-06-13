@@ -22,6 +22,19 @@
     grid-area: button;
 }
 
+.noFilm {
+    color: var(--text-color);
+    width: 100%;
+    height: 100%;
+    margin-top: 35px;
+    grid-column: 1 / -1;
+    grid-row: 1 / -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 @media screen and (max-width: 1024px) {
     .content-info {
         grid-template-columns: auto;

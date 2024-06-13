@@ -13,6 +13,10 @@
     }
 
     .title {
+        max-width: 50vw;
+        text-wrap: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         font-size: 2.4rem;
         font-weight: 600;
     }

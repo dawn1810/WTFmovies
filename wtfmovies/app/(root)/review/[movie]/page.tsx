@@ -9,9 +9,20 @@ import style from './Review.module.scss';
 import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
 import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import NotFound from '~/app/(root)/not-found';
+import { Metadata, ResolvingMetadata } from 'next/types';
 
 const cx = classNames.bind(style);
 
+export async function generateMetadata({ params }: { params: { movie: string } }, parent: ResolvingMetadata): Promise<Metadata> {
+    //get Param
+    const { movie } = params;
+    const filmReviewInfo = await getFilmReviewInfo(movie);
+
+
+    return {
+        title: `Thông tin phim ${filmReviewInfo.name}`,
+    };
+}
 async function Review({ params }: { params: { movie: string } }) {
     const { movie } = params;
 
