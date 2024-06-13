@@ -8,7 +8,20 @@ import { Placement } from 'react-bootstrap/esm/types';
 export interface ExtendedFile extends File {
     preview: string;
 }
-
+export interface SearchData {
+    query?: string;
+    sortName?: string;
+    sortTime?: string;
+    sortView?: string;
+    tab?: string;
+    sortReview?: string;
+    type?: string;
+    typefilm?: string;
+    seasion?: string;
+    year?: string;
+    genres?: string;
+    avd?: string;
+};
 export interface OneFilmTopInterface {
     _id: string;
     likes: number;
@@ -177,11 +190,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-        | {
-              title?: string;
-              episode?: number[];
-          }[]
-        | any;
+    | {
+        title?: string;
+        episode?: number[];
+    }[]
+    | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;

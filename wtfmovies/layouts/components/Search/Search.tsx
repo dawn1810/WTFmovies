@@ -334,7 +334,7 @@ function Search() {
                             )}
                             {!!searchValueDebounce && (
                                 <ListItem disablePadding>
-                                    <ListItemButton component="a" href="#simple-list">
+                                    <ListItemButton component="a" href={`/search?query=${searchValueDebounce}&type=name`}>
                                         <ListItemText primary={`Kết quả tìm kiếm của: ${searchValueDebounce}`} />
                                     </ListItemButton>
                                 </ListItem>

@@ -55,7 +55,7 @@ async function Home() {
                     films={mostWatchFilms}
                     tabs={[allNewFilms, currNewFilms, seriesNewFilms, movieNewFilms]}
                     tags={{
-                        mainDir: 'new_update',
+                        mainDir: 'new',
                         extraDir: 'most_views',
                         mainTitle: 'MỚI CẬP NHẬT',
                         extraTitle: 'XEM NHIỀU',

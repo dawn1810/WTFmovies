@@ -33,15 +33,15 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
 
 }));
 
-export default function CustomizedDialogs({ open, setOpen }: { open: boolean, setOpen: any }) {
-    const [nameBtn, setNameBtn] = useState('Tên A-Z');
-    const [newBtn, setNewBtn] = useState('Mới nhất');
-    const [viewBtn, setViewBtn] = useState('Lượt xem nhiều nhất');
-    const [reviewBtn, setReviewBtn] = useState('Đánh giá cao nhất');
-    const [valueGenres, setValueGenres] = useState([]);
-    const [valueTypeFilm, setTypeFlim] = useState('all');
-    const [valueSeasionFilm, setSeasionFlim] = useState('all');
-    const [valueYearFilm, setYearFlim] = useState('all');
+export default function CustomizedDialogs({ open, setOpen, query }: { open: boolean, setOpen: any, query: any }) {
+    const [nameBtn, setNameBtn] = useState(query.sortName == 1 || !query.sortName ? 'Tên A-Z' : 'Tên Z-A');
+    const [newBtn, setNewBtn] = useState(query.sortTime == -1 || !query.sortTime ? 'Mới nhất' : 'Cũ nhất');
+    const [viewBtn, setViewBtn] = useState(query.sortView == -1 || !query.sortView ? 'Lượt xem nhiều nhất' : 'Lượt xem ít nhất');
+    const [reviewBtn, setReviewBtn] = useState(query.sortReview == -1 || !query.sortReview ? 'Đánh giá cao nhất' : 'Đánh giá thấp nhất');
+    const [valueGenres, setValueGenres] = useState(query?.genres?.split(',')?.map((item: any) => ({ title: item })) || []);
+    const [valueTypeFilm, setTypeFlim] = useState(query?.typefilm || '');
+    // const [valueSeasionFilm, setSeasionFlim] = useState(query.seasion || '');
+    const [valueYearFilm, setYearFlim] = useState(query?.year || '');
 
     const handleClose = () => {
         setOpen(false);
@@ -64,14 +64,14 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
 
     const handleSearch = () => {
         const reDdata: { [key: string]: string } = {
-            'Tên A-Z': 'nameDown',
-            'Tên Z-A': 'nameUp',
-            'Mới nhất': 'newest',
-            'Cũ nhất': 'oldest',
-            'Lượt xem nhiều nhất': 'mostviews',
-            'Lượt xem ít nhất': 'downviews',
-            'Đánh giá cao nhất': 'mostreview',
-            'Đánh giá thấp nhất': 'downreview',
+            'Tên A-Z': '1',
+            'Tên Z-A': '-1',
+            'Mới nhất': '-1',
+            'Cũ nhất': '1',
+            'Lượt xem nhiều nhất': '-1',
+            'Lượt xem ít nhất': '1',
+            'Đánh giá cao nhất': '-1',
+            'Đánh giá thấp nhất': '1',
 
         }
 
@@ -80,16 +80,16 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
             sortTime: reDdata[newBtn],
             sortView: reDdata[viewBtn],
             sortReview: reDdata[reviewBtn],
-            type: valueTypeFilm,
-            seasion: valueSeasionFilm,
+            typefilm: valueTypeFilm,
+            // seasion: valueSeasionFilm,
             year: valueYearFilm,
-            genres: valueGenres.map((item: any) => item.id).join(','),
+            genres: valueGenres.map((item: any) => item.title).join(','),
         }
 
         const queryParams = new URLSearchParams(sendDate);
         const queryString = queryParams.toString();
 
-        router.push(`/search?${queryString}`);
+        router.push(`/search?${queryString}&avd=1`);
         handleClose();
 
 
@@ -123,7 +123,7 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
                     <Box sx={{
                         padding: 3, display: 'grid',
                         gap: 2,
-                        gridTemplateAreas: `'sort type type sum sum'
+                        gridTemplateAreas: `'sort type type type type'
                                             'sort genre genre genre genre'
                                             'sort time time time time'
                                             `,
@@ -164,9 +164,9 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
 
                             }} variant="contained" orientation="vertical" aria-label="Vertical button group">
                                 <Button startIcon={<AccessTimeIcon />} onClick={handleNew} key="newest">{newBtn}</Button>,
-                                <Button startIcon={<SortByAlphaIcon />} onClick={handleName} key="name">{nameBtn}</Button>,
-                                <Button startIcon={<VisibilityIcon />} onClick={handleView} key="review">{viewBtn}</Button>,
+                                <Button startIcon={<VisibilityIcon />} onClick={handleView} key="views">{viewBtn}</Button>,
                                 <Button startIcon={<ReviewsIcon />} onClick={handleReview} key="review">{reviewBtn}</Button>,
+                                <Button startIcon={<SortByAlphaIcon />} onClick={handleName} key="name">{nameBtn}</Button>,
                             </ButtonGroup>
                         </Box>
                         <Box sx={{
@@ -206,20 +206,20 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
                                     row
                                     onChange={(e) => setTypeFlim(e.target.value)}
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="all"
+                                    value={valueTypeFilm}
                                     name="radio-buttons-group"
                                 >
-                                    <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
+                                    <FormControlLabel value="" control={<Radio />} label="Tất cả" />
                                     <FormControlLabel value="le" control={<Radio />} label="Phim lẻ" />
                                     <FormControlLabel value="full" control={<Radio />} label="Phim bộ" />
                                     <FormControlLabel value="done" control={<Radio />} label="Hoàn thành" />
                                     <FormControlLabel value="doing" control={<Radio />} label="Đang ra" />
-                                    <FormControlLabel value="going" control={<Radio />} label="Sắp chiếu" />
+                                    <FormControlLabel value="going" control={<Radio />} label="Sắp phát hành" />
 
                                 </RadioGroup>
                             </FormControl>
                         </Box>
-                        <Box sx={{
+                        {/* <Box sx={{
                             gridArea: 'sum',
                             padding: 2,
                             borderRadius: '5px',
@@ -233,17 +233,17 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
                                     onChange={(e) => setSeasionFlim(e.target.value)}
 
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="all"
+                                    value={valueSeasionFilm}
                                     name="radio-buttons-group"
                                 >
-                                    <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
+                                    <FormControlLabel value="" control={<Radio />} label="Tất cả" />
                                     <FormControlLabel value="string" control={<Radio />} label="Xuân" />
                                     <FormControlLabel value="summer" control={<Radio />} label="Hạ" />
                                     <FormControlLabel value="fall" control={<Radio />} label="Thu" />
                                     <FormControlLabel value="winter" control={<Radio />} label="Đông" />
                                 </RadioGroup>
                             </FormControl>
-                        </Box>
+                        </Box> */}
                         <Box sx={{
                             gridArea: 'time',
                             padding: 2,
@@ -262,10 +262,10 @@ export default function CustomizedDialogs({ open, setOpen }: { open: boolean, se
                                     onChange={(e) => setYearFlim(e.target.value)}
 
                                     aria-labelledby="demo-radio-buttons-group-label"
-                                    defaultValue="all"
+                                    value={valueYearFilm}
                                     name="radio-buttons-group"
                                 >
-                                    <FormControlLabel value="all" control={<Radio />} label="Tất cả" />
+                                    <FormControlLabel value="" control={<Radio />} label="Tất cả" />
                                     {Array.from({ length: new Date().getFullYear() - 2011 + 1 }, (_, i) => new Date().getFullYear() - i).map((item) => (
                                         <FormControlLabel key={item} value={item} control={<Radio />} label={item} />
                                     ))}

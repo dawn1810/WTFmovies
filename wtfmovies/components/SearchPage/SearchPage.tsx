@@ -15,7 +15,7 @@ import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
-function search({ data, query }: { data: any[], query: string }) {
+function search({ data, query }: { data: any[], query: any }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
     const [open, setOpen] = useState(false);
@@ -25,7 +25,7 @@ function search({ data, query }: { data: any[], query: string }) {
     }
     return (
         <div className={cx('wrapper')}>
-            <AvdSearch open={open} setOpen={setOpen} ></AvdSearch>
+            <AvdSearch open={open} query={query} setOpen={setOpen} ></AvdSearch>
             {/* <Breadcrumbs maxItems={3} aria-label="breadcrumb" className={cx('bread-crumbs')}>
                     <Link underline="hover" color="inherit" href="/">
                         Home
@@ -37,7 +37,7 @@ function search({ data, query }: { data: any[], query: string }) {
                 </Breadcrumbs> */}
             <div className={cx('search-films')}>
                 <div className={cx('top-bar')}>
-                    <Title title={`Kết quả tìm kiếm ${query ? query : ""}`} icon={<SearchIcon className={cx('search-films-title')} />} />
+                    <Title title={`Kết quả tìm kiếm ${query.query ? query.query : ""}`} icon={<SearchIcon className={cx('search-films-title')} />} />
                     {!isMobile ? (
                         <Button onClick={openAndSearch} primary rightIcon={<FilterAltIcon />}>
                             Bộ lọc
@@ -52,7 +52,7 @@ function search({ data, query }: { data: any[], query: string }) {
                 <div className={cx('films-list')}>
                     {data.length > 0 ? data?.map((item, index) => (
                         <FilmCard
-                            key={index}
+                            key={item.searchName + index}
                             largeNoOverlay
                             imgSrc={item.poster}
                             filmName={item.name}
@@ -60,7 +60,7 @@ function search({ data, query }: { data: any[], query: string }) {
                             author={item.author}
                             genre={item.genre}
                             tag={item.tag}
-                            maxEp={item.maxEp || 18} // Lỗi ở đây
+                            maxEp={item.maxEp || undefined} // Lỗi ở đây
                             releaseYear={new Date(item.releaseYear)}
                             rating={item.rating}
                             episodes={item.episodes}
