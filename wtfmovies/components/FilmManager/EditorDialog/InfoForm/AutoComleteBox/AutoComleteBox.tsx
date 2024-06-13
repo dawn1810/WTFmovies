@@ -16,8 +16,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 const filter = createFilterOptions<DataType>();
 
-export default function CreateOptionDialog({ id, label, placeholder, setValueData, valueData }:
-    { id: string, label: string, placeholder: string, setValueData: any, valueData: any }) {
+export default function CreateOptionDialog({ id, label, placeholder, setValueData, valueData, notEditor = false }:
+    { id: string, label: string, placeholder: string, setValueData: any, valueData: any, notEditor?: boolean }) {
     const dispatch = useDispatch();
     const [open, toggleOpen] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
@@ -129,7 +129,7 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
 
-                    if (params.inputValue !== '') {
+                    if (params.inputValue !== '' && !notEditor) {
                         filtered.push({
                             inputValue: params.inputValue,
                             title: `Thêm "${params.inputValue}"`,
