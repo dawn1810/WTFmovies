@@ -10,14 +10,14 @@ import React, { useState, FormEvent, Fragment, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
-import { AlertColor } from '@mui/material';
+import { AlertColor, SxProps } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const filter = createFilterOptions<DataType>();
 
-export default function CreateOptionDialog({ id, label, placeholder, setValueData, valueData, notEditor = false }:
-    { id: string, label: string, placeholder: string, setValueData: any, valueData: any, notEditor?: boolean }) {
+export default function CreateOptionDialog({ sx, id, label, placeholder, setValueData, valueData, notEditor = false }:
+    { id: string, label: string, sx?: SxProps, placeholder: string, setValueData: any, valueData: any, notEditor?: boolean }) {
     const dispatch = useDispatch();
     const [open, toggleOpen] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
@@ -98,6 +98,7 @@ export default function CreateOptionDialog({ id, label, placeholder, setValueDat
             <Autocomplete
                 limitTags={1}
                 multiple
+                sx={sx}
                 id={id}
                 onOpen={() => {
                     setOpenAutoBox(true);
