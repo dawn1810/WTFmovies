@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: { params: { movie: string } }
 
 
     return {
-        title: `Thông tin phim ${filmReviewInfo.name}`,
+        title: `Thông tin phim ${filmReviewInfo?.name}`,
     };
 }
 async function Review({ params }: { params: { movie: string } }) {

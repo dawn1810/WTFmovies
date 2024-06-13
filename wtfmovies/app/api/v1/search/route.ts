@@ -29,7 +29,10 @@ export async function POST(request: NextRequest) {
             .db('film')
             .collection('information')
             .find({
-                filter: { searchName: { $regex: `(?i)${processString}` } },
+                filter: {
+                    searchName: { $regex: `(?i)${processString}` },
+                    status: { $ne: 'delete' }
+                },
                 projection: { _id: 0, name: 1, searchName: 1, updateTime: 1, img: 1 },
                 limit: 5,
                 sort: { view: -1, like: -1, updateTime: -1, name: 1 },
@@ -44,6 +47,6 @@ export async function POST(request: NextRequest) {
         );
     } catch (err) {
         console.log(err);
-        return toError('Lỗi trong quá trình đăng ký', 500);
+        return toError('Lỗi trong quá trình tìm kiếm', 500);
     }
 }
