@@ -3,9 +3,10 @@ import Divider from '@mui/material/Divider';
 
 import style from './LoveFilms.module.scss';
 import Table from './Table';
+import { LoveFilmsInterface } from '~/libs/interfaces';
 
 const cx = classNames.bind(style);
-function LoveFilms({ loveFilmsInfo }: { loveFilmsInfo: any }) {
+function LoveFilms({ loveFilmsInfo }: { loveFilmsInfo: LoveFilmsInterface[] }) {
     const dataset = loveFilmsInfo.map((info: any) => ({
         ...info,
         id: info.film_id,
@@ -17,7 +18,11 @@ function LoveFilms({ loveFilmsInfo }: { loveFilmsInfo: any }) {
             <Divider textAlign="left" className={cx('divider')}>
                 DANH SÁCH PHIM YÊU THÍCH
             </Divider>
-            <Table dataset={dataset} />
+            {!!loveFilmsInfo.length ? (
+                <Table dataset={dataset} />
+            ) : (
+                <div className={cx('empty-list')}>Chưa có phim yêu thích. ❤️❤️❤️</div>
+            )}
         </div>
     );
 }

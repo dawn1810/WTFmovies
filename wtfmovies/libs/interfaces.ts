@@ -10,35 +10,35 @@ export interface ExtendedFile extends File {
 }
 
 export interface OneFilmTopInterface {
-    _id: string,
-    likes: number,
-    monthLikes: number,
-    monthViews: number,
-    name: string,
-    views: number,
-    weekLikes: number,
-    weekViews: number,
-    weekComments: number,
-    monthComments: number,
-    comments: number,
-    [key: string]: number | string,
+    _id: string;
+    likes: number;
+    monthLikes: number;
+    monthViews: number;
+    name: string;
+    views: number;
+    weekLikes: number;
+    weekViews: number;
+    weekComments: number;
+    monthComments: number;
+    comments: number;
+    [key: string]: number | string;
 }
 export interface FilmTopInterface {
     week: {
-        views: OneFilmTopInterface[],
-        likes: OneFilmTopInterface[],
-        comments: OneFilmTopInterface[],
-    },
+        views: OneFilmTopInterface[];
+        likes: OneFilmTopInterface[];
+        comments: OneFilmTopInterface[];
+    };
     month: {
-        views: OneFilmTopInterface[],
-        likes: OneFilmTopInterface[],
-        comments: OneFilmTopInterface[],
-    },
+        views: OneFilmTopInterface[];
+        likes: OneFilmTopInterface[];
+        comments: OneFilmTopInterface[];
+    };
     all: {
-        views: OneFilmTopInterface[],
-        likes: OneFilmTopInterface[],
-        comments: OneFilmTopInterface[],
-    },
+        views: OneFilmTopInterface[];
+        likes: OneFilmTopInterface[];
+        comments: OneFilmTopInterface[];
+    };
     [key: string]: {
         [key: string]: OneFilmTopInterface[];
     };
@@ -87,25 +87,24 @@ export interface reduxStateInterface {
     editor: {
         alertStatus: { content: any; status: boolean };
         dataFilm: {
-            name: string,
-            describe: string,
-            author: ObjectMongo[],
-            genre: ObjectMongo[],
-            director: ObjectMongo[],
-            actor: ObjectMongo[],
-            tag: ObjectMongo[],
-            country: ObjectMongo,
-            releaseYear: string,
-            maxEp: number,
-            duration: number,
-            status: string,
-            videoType: [],
-            img: string,
-            poster: string,
-            notification: [],
-            searchName: string,
-
-        }
+            name: string;
+            describe: string;
+            author: ObjectMongo[];
+            genre: ObjectMongo[];
+            director: ObjectMongo[];
+            actor: ObjectMongo[];
+            tag: ObjectMongo[];
+            country: ObjectMongo;
+            releaseYear: string;
+            maxEp: number;
+            duration: number;
+            status: string;
+            videoType: [];
+            img: string;
+            poster: string;
+            notification: [];
+            searchName: string;
+        };
     };
     watch: {
         episode: { _id: string; index: number; rating: number; link: string };
@@ -178,11 +177,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-    | {
-        title?: string;
-        episode?: number[];
-    }[]
-    | any;
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -419,7 +418,6 @@ export interface AdminDatasetInterface {
     film: LineChartDataInterface[];
 }
 
-
 export interface EditorDatasetInterface {
     view: LineChartDataInterface[];
     likes: LineChartDataInterface[];
@@ -452,4 +450,15 @@ export interface ScoreInterface {
     adminScore?: any[];
     time: string;
     version: string;
+}
+
+// love Film
+export interface LoveFilmsInterface {
+    film_id: string;
+    name: string;
+    img: string;
+    views: number;
+    likes: number;
+    status: boolean;
+    updateTime: string;
 }

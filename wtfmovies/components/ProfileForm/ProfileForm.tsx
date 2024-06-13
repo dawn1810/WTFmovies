@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { Box, Tab, Tabs, Typography } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import classNames from 'classnames/bind';
-import { UserInfoInterface } from '~/libs/interfaces';
+import { LoveFilmsInterface, UserInfoInterface } from '~/libs/interfaces';
 import style from './ProfileForm.module.scss';
 import ProfileInfo from './ProfileInfo';
 import PassChange from './PassChange';
@@ -17,7 +17,7 @@ function Profile({
     currPage,
 }: {
     userInfo: UserInfoInterface;
-    loveFilmsInfo: any;
+    loveFilmsInfo: LoveFilmsInterface[];
     currPage: string;
 }) {
     const [value, setValue] = useState(currPage);

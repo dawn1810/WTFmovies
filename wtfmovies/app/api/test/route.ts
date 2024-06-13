@@ -1,56 +1,37 @@
-import { MongoDate, ObjectId, mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, ObjectId, mongodb, preprocessString, toError, toJSON } from '~/libs/func';
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 
-const getFilms = async (): Promise<any[]> => {
+const getFilms = async (): Promise<any> => {
     try {
-        const films: any[] = await mongodb()
-            .db('film')
-            .collection('episode')
-            .find();
-        films.forEach(async (film) => {
-            if (film.film_id != 'bfae10e9-d0c9-4746-9be9-a6ea16f369b1')
-                await mongodb()
-                    .db('film')
-                    .collection('episode')
-                    .updateOne({
-                        filter: { _id: ObjectId(film._id) }, update: {
-                            $set: {
-                                link: {
-                                    Youtube: film.link,
-                                    Tiktok: ''
-                                }
-                            }
-                        }
-                    }); else
-                await mongodb()
-                    .db('film')
-                    .collection('episode')
-                    .updateOne({
-                        filter: { _id: ObjectId(film._id) }, update: {
-                            $set: {
-                                link: {
-                                    Youtube: '',
-                                    Tiktok: film.link
-                                }
-                            }
-                        }
-                    });
+        const searchString = 'inu';
 
+        const processString: string = preprocessString(searchString);
+
+        const keywordList: any[] = await mongodb()
+            .db('statistical')
+            .collection('search')
+            .find({ filter: { content: { $regex: `(?i)${processString}` } } });
+
+        const filmsList: any[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .find({
+                filter: { searchName: { $regex: `(?i)${processString}` } },
+                projection: { _id: 0, name: 1, searchName: 1, updateTime: 1 },
+            });
+        return JSON.stringify({
+            keywordList,
+            filmsList,
         });
-        return films;
     } catch (err) {
         console.log('😨😨😨 error at home/getFilms function  : ', err);
         return [];
     }
 };
 
-
 export async function GET(request: NextRequest) {
     try {
-
-
-
         return toJSON(await getFilms());
     } catch (err) {
         return toError('Lỗi ' + err, 500);

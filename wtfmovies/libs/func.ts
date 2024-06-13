@@ -328,3 +328,14 @@ export const getSessionTime = (season: string, year: number) => {
 
     return { start, end };
 };
+
+// search
+export const preprocessString = (input: string) => {
+    // Remove spaces and convert to lowercase
+    let processed = input.replace(/\s+/g, '').toLowerCase();
+
+    // Remove all special characters
+    processed = processed.replace(/[^a-z0-9]/gi, '');
+
+    return processed;
+};

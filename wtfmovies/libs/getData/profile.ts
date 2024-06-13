@@ -1,5 +1,13 @@
 import { mongodb } from '~/libs/func';
-import { EpisodeInterFace, ExtendedUser, FilmInfo, MongoUpdate, ObjectMongo, UserInfoInterface } from '../interfaces';
+import {
+    EpisodeInterFace,
+    ExtendedUser,
+    FilmInfo,
+    LoveFilmsInterface,
+    MongoUpdate,
+    ObjectMongo,
+    UserInfoInterface,
+} from '../interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { getUserLoveFilm } from './home';
 
@@ -47,14 +55,14 @@ export const getUserInfo = async (): Promise<any> => {
     }
 };
 
-export const getUserLoveFilmsInfo = async (): Promise<any> => {
+export const getUserLoveFilmsInfo = async (): Promise<LoveFilmsInterface[] | undefined> => {
     try {
         const session = await auth();
         if (!session) return undefined;
 
         const loveFilms = await getUserLoveFilm();
 
-        const filmsInfo: any[] = await mongodb()
+        const filmsInfo: LoveFilmsInterface[] = await mongodb()
             .db('film')
             .collection('information')
             .find({

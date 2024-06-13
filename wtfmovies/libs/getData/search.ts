@@ -5,9 +5,10 @@ interface SearchInterface {
     searchName: string;
 }
 
-export const getGenres = async (): Promise<{ name: string; to: string; special?: boolean | undefined; }[] | undefined> => {
+export const getGenres = async (): Promise<
+    { name: string; to: string; special?: boolean | undefined }[] | undefined
+> => {
     try {
-
         const defautlGenres = [
             { name: 'Tất cả', to: '/', special: true },
             { name: 'Thịnh hành', to: '/search?query=hot&type=genre', special: true },
@@ -23,13 +24,11 @@ export const getGenres = async (): Promise<{ name: string; to: string; special?:
                     name: 1,
                 },
             });
-        const updatedGenres = genres.map((genre: { name: any; }) => ({
+        const updatedGenres = genres.map((genre: { name: any }) => ({
             ...genre,
             to: '/search?query=' + genre.name + '&type=genre',
         }));
         const combinedGenres = [...defautlGenres, ...updatedGenres];
-
-
 
         return combinedGenres;
     } catch (err) {
@@ -39,22 +38,24 @@ export const getGenres = async (): Promise<{ name: string; to: string; special?:
 interface SearchInterface {
     poster: string;
     name: string;
-    views: number,
-    rating: number,
-    episodes: number,
-    searchName: string,
-    releaseYear: string
-    status: string,
-    author: string[],
-    tag: string[],
+    views: number;
+    rating: number;
+    episodes: number;
+    searchName: string;
+    releaseYear: string;
+    status: string;
+    author: string[];
+    tag: string[];
     maxEp: number | null;
-    genre: string[],
+    genre: string[];
 }
 
 async function getSerachByType(type: string, query: string, limit: number, full = false) {
-    const match = full ? {} : {
-        [type]: { $regex: `(?i)${query}` }
-    }
+    const match = full
+        ? {}
+        : {
+              [type]: { $regex: `(?i)${query}` },
+          };
 
     return await mongodb()
         .db('film')
@@ -71,7 +72,7 @@ async function getSerachByType(type: string, query: string, limit: number, full 
                             {
                                 $match: {
                                     $expr: { $in: ['$_id', '$$genreIds'] },
-                                }
+                                },
                             }, // Match the genre ids
                             { $project: { _id: 0, name: 1 } }, // Get name only
                         ],
@@ -151,7 +152,7 @@ async function getSerachByType(type: string, query: string, limit: number, full 
                     },
                 },
                 {
-                    $match: match
+                    $match: match,
                 },
                 { $limit: limit },
                 { $sort: { likes: -1, views: -1, rating: -1 } },
@@ -159,18 +160,17 @@ async function getSerachByType(type: string, query: string, limit: number, full 
         });
 }
 
-
-export const getSearch = async ({ query, type }: { query: string, type: string }): Promise<SearchInterface[] | undefined> => {
+export const getSearch = async ({
+    query,
+    type,
+}: {
+    query: string;
+    type: string;
+}): Promise<SearchInterface[] | undefined> => {
     try {
-        const searchable = ['director', 'genre', 'author', 'actor', 'name']
-        if (searchable.includes(type))
-            return await getSerachByType(type, query, 30);
-        else
-            return await getSerachByType(type, query, 30, true);
-
-
-
-
+        const searchable = ['director', 'genre', 'author', 'actor', 'name'];
+        if (searchable.includes(type)) return await getSerachByType(type, query, 30);
+        else return await getSerachByType(type, query, 30, true);
     } catch (err) {
         console.log('😨😨😨 error at search/getSearch function: ', err);
     }
