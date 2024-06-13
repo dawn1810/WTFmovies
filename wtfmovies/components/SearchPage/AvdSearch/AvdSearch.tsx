@@ -1,69 +1,73 @@
-// import { Breadcrumbs, Link, Typography } from '@mui/material';
-'use client';
+import Button from '@mui/material/Button';
+import { styled } from '@mui/material/styles';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogActions from '@mui/material/DialogActions';
 import IconButton from '@mui/material/IconButton';
-import FilterAltIcon from '@mui/icons-material/FilterAlt';
-import SearchIcon from '@mui/icons-material/Search';
-import classNames from 'classnames/bind';
+import CloseIcon from '@mui/icons-material/Close';
+import Typography from '@mui/material/Typography';
+import { Fragment, useState } from 'react';
 
-import style from './SearchPage.module.scss';
-import Title from '~/components/FilmClassify/Title';
-import FilmCard from '~/components/FilmCard';
-import Button from '~/components/Button';
-import { useViewport } from '~/hooks';
+const BootstrapDialog = styled(Dialog)(({ theme }) => ({
+    '& .MuiDialogContent-root': {
+        padding: theme.spacing(2),
+    },
+    '& .MuiDialogActions-root': {
+        padding: theme.spacing(1),
+    },
+}));
 
-const cx = classNames.bind(style);
+export default function CustomizedDialogs({ open, setOpen }: { open: boolean, setOpen: any }) {
 
-function search({ data }: { data: any[] }) {
-    const viewPort = useViewport();
-    const isMobile = viewPort.width <= 1024;
+    const handleClose = () => {
+        setOpen(false);
+    };
+
     return (
-        <div className={cx('wrapper')}>
-            {/* <Breadcrumbs maxItems={3} aria-label="breadcrumb" className={cx('bread-crumbs')}>
-                    <Link underline="hover" color="inherit" href="/">
-                        Home
-                    </Link>
-                    <Link underline="hover" color="inherit" href="/search">
-                        Search
-                    </Link>
-                    <Typography className={cx('curr-page')}>Phim mới nhất</Typography>
-                </Breadcrumbs> */}
-            <div className={cx('search-films')}>
-                <div className={cx('top-bar')}>
-                    <Title title="Phim tìm kiếm" icon={<SearchIcon className={cx('search-films-title')} />} />
-                    {!isMobile ? (
-                        <Button primary rightIcon={<FilterAltIcon />}>
-                            Bộ lọc
-                        </Button>
-                    ) : (
-                        <IconButton color='error' size="large">
-                            <FilterAltIcon fontSize="inherit" />
-                        </IconButton>
-                    )}
-                </div>
-
-                <div className={cx('films-list')}>
-                    {data?.map((item, index) => (
-                        <FilmCard
-                            key={index}
-                            largeNoOverlay
-                            imgSrc={item.poster}
-                            filmName={item.name}
-                            views={item.views}
-                            author={item.author}
-                            genre={item.genre}
-                            tag={item.tag}
-                            maxEp={item.maxEp || 18} // Lỗi ở đây
-                            releaseYear={new Date(item.releaseYear)}
-                            rating={item.rating}
-                            episodes={item.episodes}
-                            className={cx('large-film-card')}
-                            searchName={item.searchName}
-                        />
-                    ))}
-                </div>
-            </div>
-        </div>
+        <Fragment>
+            <BootstrapDialog
+                onClose={handleClose}
+                aria-labelledby="customized-dialog-title"
+                open={open}
+            >
+                <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
+                    Modal title
+                </DialogTitle>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={{
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: (theme) => theme.palette.grey[500],
+                    }}
+                >
+                    <CloseIcon />
+                </IconButton>
+                <DialogContent dividers>
+                    <Typography gutterBottom>
+                        Cras mattis consectetur purus sit amet fermentum. Cras justo odio,
+                        dapibus ac facilisis in, egestas eget quam. Morbi leo risus, porta ac
+                        consectetur ac, vestibulum at eros.
+                    </Typography>
+                    <Typography gutterBottom>
+                        Praesent commodo cursus magna, vel scelerisque nisl consectetur et.
+                        Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.
+                    </Typography>
+                    <Typography gutterBottom>
+                        Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus
+                        magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec
+                        ullamcorper nulla non metus auctor fringilla.
+                    </Typography>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={handleClose}>
+                        Save changes
+                    </Button>
+                </DialogActions>
+            </BootstrapDialog>
+        </Fragment>
     );
 }
-
-export default search;

@@ -64,9 +64,16 @@ $blur-background-color: transparentize($card-background-color, 0.8);
 
 html {
     font-size: 62.5%;
+    height: 100svh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
 }
 
 body {
+
+    // width: calc(100vw + 8px);
+    padding-right: 0 !important;
     padding-top: 150px;
     font-family: var(--font-family);
     font-size: 1.6rem;

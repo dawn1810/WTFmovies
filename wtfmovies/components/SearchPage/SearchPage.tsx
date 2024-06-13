@@ -10,14 +10,22 @@ import Title from '~/components/FilmClassify/Title';
 import FilmCard from '~/components/FilmCard';
 import Button from '~/components/Button';
 import { useViewport } from '~/hooks';
+import AvdSearch from './AvdSearch';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
 function search({ data, query }: { data: any[], query: string }) {
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
+    const [open, setOpen] = useState(false);
+
+    const openAndSearch = () => {
+        setOpen(true)
+    }
     return (
         <div className={cx('wrapper')}>
+            <AvdSearch open={open} setOpen={setOpen} ></AvdSearch>
             {/* <Breadcrumbs maxItems={3} aria-label="breadcrumb" className={cx('bread-crumbs')}>
                     <Link underline="hover" color="inherit" href="/">
                         Home
@@ -31,11 +39,11 @@ function search({ data, query }: { data: any[], query: string }) {
                 <div className={cx('top-bar')}>
                     <Title title={`Kết quả tìm kiếm ${query ? query : ""}`} icon={<SearchIcon className={cx('search-films-title')} />} />
                     {!isMobile ? (
-                        <Button primary rightIcon={<FilterAltIcon />}>
+                        <Button onClick={openAndSearch} primary rightIcon={<FilterAltIcon />}>
                             Bộ lọc
                         </Button>
                     ) : (
-                        <IconButton color='error' size="large">
+                        <IconButton onClick={openAndSearch} color='error' size="large">
                             <FilterAltIcon fontSize="inherit" />
                         </IconButton>
                     )}
