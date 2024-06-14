@@ -202,9 +202,9 @@ const Contact = forwardRef(
                         break;
                 }
             };
-
-            // Add event listener for keydown
-            window.addEventListener('keydown', handleKeyPress);
+            if (!isEdior)
+                // Add event listener for keydown
+                window.addEventListener('keydown', handleKeyPress);
 
             // Remove event listener on cleanup
             return () => {
