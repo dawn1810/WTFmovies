@@ -241,7 +241,6 @@ export const getAvdSearch = async ({
             if (key === 'genre' && value.$in.includes('')) return false; // Loại bỏ nếu genre.$in chỉ chứa chuỗi rỗng
             return true; // Giữ lại các key khác
         }));
-        console.log(match);
 
         let sortOptions: any = { updateTime: parseInt(sortTime), views: parseInt(sortView), rating: parseInt(sortReview), name: parseInt(sortName) };
 
