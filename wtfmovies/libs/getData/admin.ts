@@ -2,6 +2,7 @@ import { MongoDate, mongodb } from '~/libs/func';
 import {
     AdminReportInfterface,
     FilmHotInterface,
+    GenresDatasetInterface,
     NumStatisticalInterface,
     NumStatisticalInterfaceE,
     ObjectMongo,
@@ -11,7 +12,9 @@ import {
 // import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 // admin dashboard
-export const getNumberStatistical = async (type: 'admin' | string): Promise<NumStatisticalInterface[] | NumStatisticalInterfaceE[]> => {
+export const getNumberStatistical = async (
+    type: 'admin' | string,
+): Promise<NumStatisticalInterface[] | NumStatisticalInterfaceE[]> => {
     try {
         const statInfo: NumStatisticalInterface[] = await mongodb()
             .db('statistical')
@@ -212,6 +215,33 @@ export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
         return userInfo;
     } catch (err) {
         console.log('😨😨😨 error at admin/getTopSixUser function : ', err);
+        return [];
+    }
+};
+
+// search manage
+export const getTopSearch = async (): Promise<GenresDatasetInterface[]> => {
+    try {
+        const search: GenresDatasetInterface[] = await mongodb()
+            .db('statistical')
+            .collection('search')
+            .aggregate({
+                pipeline: [
+                    {
+                        $project: {
+                            _id: 0,
+                            content: 1,
+                            time: 1,
+                        },
+                    },
+                    { $limit: 5 },
+                    { $sort: { time: -1 } },
+                ],
+            });
+
+        return search;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getTopGenres function : ', err);
         return [];
     }
 };

@@ -6,14 +6,11 @@ import Card from '@mui/material/Card';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import IconButton from '@mui/material/IconButton';
-import MenuItem from '@mui/material/MenuItem';
 import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
-import Select from '@mui/material/Select';
 import CloseIcon from '@mui/icons-material/Close';
 import FilterListIcon from '@mui/icons-material/FilterList';
 
@@ -21,15 +18,7 @@ import style from './PieCard.module.scss';
 
 const cx = classNames.bind(style);
 
-const data = [
-    { id: 0, value: 100, label: 'Naruto' },
-    { id: 1, value: 75, label: 'Sasuke' },
-    { id: 2, value: 70, label: '寂しい 犬' },
-    { id: 3, value: 50, label: 'Lon Dai dE' },
-    { id: 4, value: 18, label: 'Đẹp gái nhất thế giới' },
-];
-
-export default function PieCard({ area }: { area: string }) {
+export default function PieCard({ area, data }: { area: string; data: any[] }) {
     const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState({ time: 'week', sortBy: 'all' });
 
@@ -62,13 +51,20 @@ export default function PieCard({ area }: { area: string }) {
                             data,
                             highlightScope: { faded: 'global', highlighted: 'item' },
                             faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
-                            startAngle: 90,
-                            endAngle: 360,
+                            innerRadius: 18,
+                            outerRadius: 120,
+                            paddingAngle: 5,
+                            cornerRadius: 5,
+                            cx: 180,
+                            cy: 200,
+                            // startAngle: 90,
+                            // endAngle: 360,
                         },
                     ]}
                     slotProps={{
                         legend: {
-                            position: { horizontal: 'right', vertical: 'top' },
+                            direction: 'row',
+                            position: { horizontal: 'left', vertical: 'top' },
                         },
                     }}
                     height={350}

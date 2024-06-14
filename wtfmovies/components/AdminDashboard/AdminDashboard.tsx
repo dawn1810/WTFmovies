@@ -6,7 +6,13 @@ import NumCard from './NumCard';
 import BarCard from './BarCard';
 import TableCard from './TableCard';
 import PieCard from './PieCard';
-import { FilmHotInterface, NumStatisticalInterface, TopSixUserInfoInfterface } from '~/libs/interfaces';
+import {
+    FilmHotInterface,
+    GenresDatasetInterface,
+    GenresUserDatasetInterface,
+    NumStatisticalInterface,
+    TopSixUserInfoInfterface,
+} from '~/libs/interfaces';
 import { calcViewChange, getDataByYear, getDataCurrentYear } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
@@ -23,12 +29,14 @@ export default function AdminDashboard({
     topSixUser,
     hotGenreList,
     newReports,
+    topSearch,
 }: {
     numStatistical: NumStatisticalInterface[] | any;
     hotFilmList: FilmHotInterface[];
     hotGenreList: FilmHotInterface[];
     topSixUser: TopSixUserInfoInfterface[];
     newReports: any[];
+    topSearch: GenresDatasetInterface[];
 }) {
     const yearDataset = getDataCurrentYear(numStatistical);
     const allTimeDataset = getDataByYear(numStatistical);
@@ -36,6 +44,15 @@ export default function AdminDashboard({
     const views = calcViewChange(yearDataset, 'view');
     const users = calcViewChange(yearDataset, 'user');
     const films = calcViewChange(yearDataset, 'film');
+
+    const dataSearch: GenresUserDatasetInterface[] = topSearch.map((search, index) => {
+        return {
+            id: index,
+            value: search.time,
+            label: search.content,
+        };
+    });
+    console.log(dataSearch);
 
     return (
         <div className={cx('wrapper')}>
@@ -92,7 +109,7 @@ export default function AdminDashboard({
                 height={350}
                 api="hotGenreFilter"
             />
-            <PieCard area="pie" />
+            <PieCard area="pie" data={dataSearch} />
             <TableCard
                 area="table2"
                 title="Danh sách báo cáo"

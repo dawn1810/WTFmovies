@@ -21,7 +21,7 @@ export interface SearchData {
     year?: string;
     genres?: string;
     avd?: string;
-};
+}
 export interface OneFilmTopInterface {
     _id: string;
     likes: number;
@@ -190,11 +190,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-    | {
-        title?: string;
-        episode?: number[];
-    }[]
-    | any;
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -437,6 +437,16 @@ export interface EditorDatasetInterface {
     eps: LineChartDataInterface[];
 }
 
+export interface GenresDatasetInterface {
+    content: string;
+    time: number;
+}
+
+export interface GenresUserDatasetInterface {
+    id: number;
+    value: number;
+    label: string;
+}
 // Evaluate Table
 export interface CriteriaInterface {
     name: string;

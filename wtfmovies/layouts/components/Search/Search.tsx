@@ -69,7 +69,7 @@ function Search() {
         const fetchApi = async () => {
             // setLoading(true);
 
-            const response = await fetch('/api/v1/search', {
+            const response = await fetch('/api/v1/search/search', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ searchValue }),
@@ -140,7 +140,7 @@ function Search() {
 
     const handleKeyDown = (event: any) => {
         if (event.keyCode === 13) {
-            handleSearch(event);
+            handleSearch();
         }
     };
 
@@ -167,20 +167,20 @@ function Search() {
         } else inputSearchRef.current.focus();
     };
 
-    const handleSearch = (searchName?: string) => {
+    const handleSearch = async (searchName?: string) => {
         if (!!searchName) {
             router.push(`/search?query=${searchName}&type=name`);
-            setSearchValue('');
-            setSearchResult({
-                keywordList: [],
-                filmsList: [],
+            await fetch('/api/v1/search/updateSearch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ searchName }),
             });
         } else if (!!searchValue) {
             router.push(`/search?query=${searchValue}&type=name`);
-            setSearchValue('');
-            setSearchResult({
-                keywordList: [],
-                filmsList: [],
+            await fetch('/api/v1/search/updateSearch', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ searchValue }),
             });
         }
         inputSearchRef.current.focus();
@@ -233,7 +233,6 @@ function Search() {
                 <Popover
                     id={id}
                     sx={{ '& .MuiPaper-rounded': { borderRadius: '10px', backgroundImage: 'unset' } }}
-
                     open={open}
                     anchorEl={ref.current}
                     className={cx('popover')}
@@ -334,7 +333,10 @@ function Search() {
                             )}
                             {!!searchValueDebounce && (
                                 <ListItem disablePadding>
-                                    <ListItemButton component="a" href={`/search?query=${searchValueDebounce}&type=name`}>
+                                    <ListItemButton
+                                        component="a"
+                                        href={`/search?query=${searchValueDebounce}&type=name`}
+                                    >
                                         <ListItemText primary={`Kết quả tìm kiếm của: ${searchValueDebounce}`} />
                                     </ListItemButton>
                                 </ListItem>

@@ -1,29 +1,28 @@
 import { MongoDate, ObjectId, mongodb, preprocessString, toError, toJSON } from '~/libs/func';
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
+import { GenresDatasetInterface } from '~/libs/interfaces';
 
 const getFilms = async (): Promise<any> => {
     try {
-        const searchString = 'inu';
-
-        const processString: string = preprocessString(searchString);
-
-        const keywordList: any[] = await mongodb()
+        const search: GenresDatasetInterface[] = await mongodb()
             .db('statistical')
             .collection('search')
-            .find({ filter: { content: { $regex: `(?i)${processString}` } } });
-
-        const filmsList: any[] = await mongodb()
-            .db('film')
-            .collection('information')
-            .find({
-                filter: { searchName: { $regex: `(?i)${processString}` } },
-                projection: { _id: 0, name: 1, searchName: 1, updateTime: 1 },
+            .aggregate({
+                pipeline: [
+                    {
+                        $project: {
+                            _id: 0,
+                            content: 1,
+                            time: 1,
+                        },
+                    },
+                    { $limit: 5 },
+                    { $sort: { time: -1 } },
+                ],
             });
-        return JSON.stringify({
-            keywordList,
-            filmsList,
-        });
+
+        return search;
     } catch (err) {
         console.log('😨😨😨 error at home/getFilms function  : ', err);
         return [];

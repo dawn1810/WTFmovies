@@ -10,6 +10,7 @@ import {
     getNumberStatistical,
     getTopHotFilm,
     getTopHotGenre,
+    getTopSearch,
     getTopSixUser,
 } from '~/libs/getData/admin';
 import ManageEditorTable from '~/components/ManageEditorTable';
@@ -40,6 +41,8 @@ async function getPage(params?: any) {
                 const numStatistical = await getNumberStatistical('admin');
                 const topSixUser = await getTopSixUser();
                 const newReports = await getNewReport();
+                const topSearch = await getTopSearch();
+                console.log(topSearch);
 
                 if (!hotFilmList || !hotGenreList || !numStatistical || !topSixUser || !newReports) break;
                 else
@@ -50,6 +53,7 @@ async function getPage(params?: any) {
                             topSixUser={topSixUser}
                             hotGenreList={hotGenreList}
                             newReports={newReports}
+                            topSearch={topSearch}
                         />
                     );
             case 'users':
@@ -71,7 +75,6 @@ async function getPage(params?: any) {
                 const data = await getFilm();
                 const sideMovieFormInfo = await getSideMovieFormInfo();
                 return <FilmPage data={data} sideMovieFormInfo={sideMovieFormInfo} />;
-
 
             default:
                 break;
