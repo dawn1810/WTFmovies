@@ -47,7 +47,7 @@ async function search({ searchParams }: { searchParams: SearchData }) {
     }
 
     if (data) return <SearchPage query={searchParams} data={data} />;
-    else return NotFound();
+    else return <SearchPage query={searchParams} data={[]} />;
 }
 
 export default search;

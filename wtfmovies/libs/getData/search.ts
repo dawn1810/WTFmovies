@@ -57,7 +57,6 @@ async function getSerachByType(type: string, query: string, limit: number, full 
         : customMatch ? customMatch : {
             [type]: { $regex: `(?i)${query}` },
         };
-    console.log(match);
 
     return await mongodb()
         .db('film')
@@ -211,32 +210,44 @@ export const getAvdSearch = async ({
         if (year === undefined || genres === undefined || sortName === undefined || sortTime === undefined || sortView === undefined || sortReview === undefined || typefilm === undefined || avd === undefined) return;
         let match: any = {
             genre: { $in: genres.split(',') },
-            releaseYeartoS: year
-
-        };;
+            releaseYeartoS: (year !== 'old') ? parseInt(year) : { $lte: (new Date()).getFullYear() - 13 }
+        };
         if (['le', 'full'].includes(typefilm)) {
-            if (typefilm === 'full')
+            if (typefilm == 'full')
                 match = {
                     maxEp: { $gte: 1 },
                     genre: { $in: genres.split(',') },
-                    releaseYeartoS: year
+                    releaseYeartoS: (year !== 'old') ? parseInt(year) : { $lte: (new Date()).getFullYear() - 13 }
+
+                };
+            else if (typefilm == 'le')
+                match = {
+                    maxEp: { $eq: 1 },
+                    genre: { $in: genres.split(',') },
+                    releaseYeartoS: (year !== 'old') ? parseInt(year) : { $lte: (new Date()).getFullYear() - 13 }
+
                 };
         }
         else {
             match = {
                 status: typefilm,
                 genre: { $in: genres.split(',') },
-                releaseYeartoS: year
-
+                releaseYeartoS: (year !== 'old') ? parseInt(year) : { $lte: (new Date()).getFullYear() - 13 }
             };
         };
+
+        match = Object.fromEntries(Object.entries(match).filter(([key, value]: any) => {
+            if (!value) return false; // Loại bỏ nếu giá trị là chuỗi rỗng
+            if (key === 'genre' && value.$in.includes('')) return false; // Loại bỏ nếu genre.$in chỉ chứa chuỗi rỗng
+            return true; // Giữ lại các key khác
+        }));
         console.log(match);
 
         let sortOptions: any = { updateTime: parseInt(sortTime), views: parseInt(sortView), rating: parseInt(sortReview), name: parseInt(sortName) };
 
         // Filter out keys with values of 0
         sortOptions = Object.fromEntries(Object.entries(sortOptions).filter(([key, value]) => value !== 0));
-        return await getSerachByType('null', 'null', 30, true, match, sortOptions);
+        return await getSerachByType('null', 'null', 30, false, match, sortOptions);
     } catch (err) {
         console.log('😨😨😨 error at search/getAvdSearch function: ', err);
     }

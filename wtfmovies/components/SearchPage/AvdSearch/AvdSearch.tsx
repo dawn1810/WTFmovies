@@ -18,8 +18,6 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ReviewsIcon from '@mui/icons-material/Reviews';
-import CategoryIcon from '@mui/icons-material/Category';
-import Chip from '@mui/material/Chip';
 import AutocompleteBox from '~/components/FilmManager/EditorDialog/InfoForm/AutoComleteBox/AutoComleteBox';
 import { useRouter } from 'next/navigation';
 
@@ -38,7 +36,7 @@ export default function CustomizedDialogs({ open, setOpen, query }: { open: bool
     const [newBtn, setNewBtn] = useState(query.sortTime == -1 || !query.sortTime ? 'Mới nhất' : 'Cũ nhất');
     const [viewBtn, setViewBtn] = useState(query.sortView == -1 || !query.sortView ? 'Lượt xem nhiều nhất' : 'Lượt xem ít nhất');
     const [reviewBtn, setReviewBtn] = useState(query.sortReview == -1 || !query.sortReview ? 'Đánh giá cao nhất' : 'Đánh giá thấp nhất');
-    const [valueGenres, setValueGenres] = useState(query?.genres?.split(',')?.map((item: any) => ({ title: item })) || []);
+    const [valueGenres, setValueGenres] = useState(query?.genres !== "" ? query?.genres?.split(',')?.map((item: any) => ({ title: item })) || [] : []);
     const [valueTypeFilm, setTypeFlim] = useState(query?.typefilm || '');
     // const [valueSeasionFilm, setSeasionFlim] = useState(query.seasion || '');
     const [valueYearFilm, setYearFlim] = useState(query?.year || '');
@@ -75,7 +73,7 @@ export default function CustomizedDialogs({ open, setOpen, query }: { open: bool
 
         }
 
-        const sendDate = {
+        let sendDate: any = {
             sortName: reDdata[nameBtn],
             sortTime: reDdata[newBtn],
             sortView: reDdata[viewBtn],
@@ -85,7 +83,6 @@ export default function CustomizedDialogs({ open, setOpen, query }: { open: bool
             year: valueYearFilm,
             genres: valueGenres.map((item: any) => item.title).join(','),
         }
-
         const queryParams = new URLSearchParams(sendDate);
         const queryString = queryParams.toString();
 
@@ -212,9 +209,9 @@ export default function CustomizedDialogs({ open, setOpen, query }: { open: bool
                                     <FormControlLabel value="" control={<Radio />} label="Tất cả" />
                                     <FormControlLabel value="le" control={<Radio />} label="Phim lẻ" />
                                     <FormControlLabel value="full" control={<Radio />} label="Phim bộ" />
-                                    <FormControlLabel value="done" control={<Radio />} label="Hoàn thành" />
-                                    <FormControlLabel value="doing" control={<Radio />} label="Đang ra" />
-                                    <FormControlLabel value="going" control={<Radio />} label="Sắp phát hành" />
+                                    <FormControlLabel value="Hoàn thành" control={<Radio />} label="Hoàn thành" />
+                                    <FormControlLabel value="Đang ra" control={<Radio />} label="Đang ra" />
+                                    <FormControlLabel value="Sắp phát hành" control={<Radio />} label="Sắp phát hành" />
 
                                 </RadioGroup>
                             </FormControl>
@@ -278,7 +275,10 @@ export default function CustomizedDialogs({ open, setOpen, query }: { open: bool
 
                 </DialogContent>
                 <DialogActions>
-                    <Button sx={{ color: 'var(--text-color)' }} autoFocus onClick={handleSearch}>
+                    <Button variant='contained' sx={{
+                        color: 'var(--text-color)', backgroundColor: 'var(--highlight-color)',
+                        '&:hover': { backgroundColor: 'var(--highlight-color)' }
+                    }} autoFocus onClick={handleSearch}>
                         Tìm kiếm theo bộ lọc
                     </Button>
                 </DialogActions>
