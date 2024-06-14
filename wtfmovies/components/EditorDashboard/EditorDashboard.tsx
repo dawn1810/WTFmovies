@@ -62,11 +62,12 @@ export default function EditorDashboard({
                 up={eps.up}
             />
             <TableCard
+                key={'aaa'}
                 url='/editor/comment'
                 area="table1"
                 title="Danh sách bình luận"
                 rows={topSixUser}
-                cols={['Email', 'Tên hiển thị']}
+                cols={['Username', 'Nội dung', 'Thời gian']}
             />
             <PieCard hotFilmList={hotFilmList} area="pie" />
 

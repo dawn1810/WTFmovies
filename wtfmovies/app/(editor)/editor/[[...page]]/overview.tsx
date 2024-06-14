@@ -39,6 +39,7 @@ export default async function OverView() {
 
     const numStatistical = await getNumberStatistical(extendedUser?.email);
     const topSixUser = await getTopSixUser();
+    console.log(topSixUser);
 
     return (
         <EditorDashboard

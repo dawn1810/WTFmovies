@@ -44,6 +44,7 @@ export default function TableCard({
         <Card style={{ gridArea: area }}>
             <CardActionArea
                 className={cx('card-area')}
+                key={'aa'}
                 onClick={() => {
                     router.push(url);
                 }}
@@ -58,21 +59,22 @@ export default function TableCard({
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <TableRow key={row.email || row.from}>
-                                {row.type && (
+                        {rows.map((row) =>
+                            <TableRow key={row._id}>
+
+                                {row.username && (
                                     <TableCell component="th" scope="row" className={cx('table-cell')}>
-                                        {row.type}
+                                        {row.username}
                                     </TableCell>
                                 )}
                                 <TableCell component="th" scope="row" className={cx('table-cell')}>
-                                    {row.email || row.from}
+                                    {row.content}
                                 </TableCell>
                                 <TableCell align="left" className={cx('table-cell')}>
-                                    {row.name || timePassed(row.time)}
+                                    {timePassed(row.time)}
                                 </TableCell>
                             </TableRow>
-                        ))}
+                        )}
                     </TableBody>
                 </Table>
             </CardActionArea>

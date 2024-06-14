@@ -272,16 +272,17 @@ function capitalizeFirstLetter(string: string) {
 export const getTopSixUser = async (): Promise<TopSixUserInfoInfterface[]> => {
     try {
         const userInfo: TopSixUserInfoInfterface[] = await mongodb()
-            .db('user')
-            .collection('information')
+            .db('film')
+            .collection('comment')
             .find({
                 projection: {
-                    _id: 0,
-                    email: 1,
-                    name: 1,
+                    _id: 1,
+                    content: 1,
+                    username: 1,
+                    time: 1
                 },
-                sort: { name: 1 },
-                limit: 6,
+                sort: { time: -1, username: 1 },
+                limit: 7,
             });
 
         return userInfo;

@@ -195,6 +195,7 @@ function Search() {
                         className={cx('search-input')}
                         type="text"
                         value={searchValue}
+                        onChange={() => { }}
                         placeholder="Tìm kiếm"
                         maxLength={250}
                         onFocus={(e: any) => handleClick(e)}
@@ -233,14 +234,18 @@ function Search() {
                 <Popover
                     id={id}
                     sx={{ '& .MuiPaper-rounded': { borderRadius: '10px', backgroundImage: 'unset' } }}
+                    // transformOrigin={{ vertical: 'top', horizontal: 'center' }}
                     open={open}
                     anchorEl={ref.current}
                     className={cx('popover')}
                     onClose={handleClose}
-                    anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'left',
-                    }}
+                    // anchorOrigin={{
+                    //     vertical: 'top',
+                    //     horizontal: 'center',
+                    // }}
+                    transitionDuration={
+                        { appear: 0, enter: 0, exit: 0 }
+                    }
                 >
                     <div className={cx('input-container')}>
                         <input
@@ -344,8 +349,9 @@ function Search() {
                         </div>
                     )}
                 </Popover>
-            )}
-        </div>
+            )
+            }
+        </div >
     );
 }
 

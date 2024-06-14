@@ -13,7 +13,7 @@ import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 // import styled from '@mui/material/styled';
-
+import { generateUUIDv4 } from '~/libs/clientFunc';
 import classNames from 'classnames/bind';
 import DeleteIcon from '@mui/icons-material/Delete';
 
@@ -50,7 +50,8 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
 
     const handleChange = (event: SelectChangeEvent) => {
-        setEpisode(event.target.value);
+        if (event.target.value !== 'add-new')
+            setEpisode(event.target.value);
     };
 
     function handleCloseDeleteDialog(event: any): void {
@@ -59,28 +60,29 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
     function handleConfirmDelete(event: any): void {
         setListEpisode((prevArray: { link: string; index: number }[]) => {
-            const updatedArray = prevArray.filter((item) => item.index !== deleteIndex);
-            console.log(deleteIndex, updatedArray);
+            const updatedArray = prevArray.filter((item) => item.index !== deleteIndex)
+                .map((item, index) => ({ ...item, index: index + 1 }));
 
             return updatedArray;
         });
-        console.log('delelte');
+        setEpisode('');
+
         handleCloseDeleteDialog(event);
     }
     function handleAddItem(event: any): void {
+        const id = generateUUIDv4();
+
         setListEpisode((prevArray: { link: string; index: number }[]) => [
             ...prevArray,
-            { link: 'https://rurimeiko.pages.dev/dadada.m3u8', index: prevArray.length + 1 },
+            { ...prevArray, index: prevArray.length + 1, link: id },
         ]);
-        setEpisode('https://rurimeiko.pages.dev/dadada.m3u8');
+        setEpisode(id);
     }
 
-    function handleItemChange(e: any, index: number) { }
     function handleDeleteItem(index: number) {
         setDeleteIndex(index);
         setOpenDeleteDialog(true);
 
-        setEpisode('');
     }
 
     return (
@@ -130,7 +132,8 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                             label="Chọn tập"
                             onChange={handleChange}
                         >
-                            <MenuItem sx={{ padding: 0 }}>
+                            <MenuItem value='add-new'
+                                sx={{ padding: 0 }}>
                                 <Button sx={{ width: '100%', height: '60px' }} onClick={handleAddItem}>
                                     Thêm
                                 </Button>
@@ -190,9 +193,9 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
                 {/* Delete confirmation dialog */}
                 <Dialog open={openDeleteDialog} onClose={handleCloseDeleteDialog}>
-                    <DialogTitle>Delete Item</DialogTitle>
+                    <DialogTitle>Xoá tập</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>Are you sure you want to delete this item?</DialogContentText>
+                        <DialogContentText>Bạn có chắc chắn xoá?</DialogContentText>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
