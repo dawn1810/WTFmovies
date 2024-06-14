@@ -163,6 +163,8 @@ const Contact = forwardRef(
         // short-cut
         useEffect(() => {
             const handleKeyPress = (e: any) => {
+                console.log(e.keyCode);
+
                 const currTime = playerRef.current.getCurrentTime();
 
                 // If spacebar is pressed, toggle play/pause
@@ -208,7 +210,8 @@ const Contact = forwardRef(
 
             // Remove event listener on cleanup
             return () => {
-                window.removeEventListener('keydown', handleKeyPress);
+                if (!isEdior)
+                    window.removeEventListener('keydown', handleKeyPress);
             };
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [contactState]);

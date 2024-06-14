@@ -109,7 +109,7 @@ function ForgetPassForm() {
 
     // otp
     const handleSendOTP = async () => {
-        if (!userInfo.email || !userInfo.name) {
+        if (userInfo.email || userInfo.name) {
             const response = await fetch('/api/v1/otp/sendOTP', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -128,7 +128,8 @@ function ForgetPassForm() {
             } else if (response.status === 500) {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
-        }
+        } else showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+
     };
 
     const handleSendAgainOTP = async () => {

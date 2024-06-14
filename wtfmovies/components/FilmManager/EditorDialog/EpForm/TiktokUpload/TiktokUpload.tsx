@@ -89,8 +89,9 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     }
 
     const handleClick = (event: any) => {
-        if (event.target.value !== 'add-new')
-            setEpisode(event.target.value);
+        console.log(event.target.value);
+
+        setEpisode(event.target.value);
 
     };
 
@@ -168,15 +169,15 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                         </Select>
                     </FormControl>
 
-                    <TextField id="outlined-basic" label="Liên kết" value={episode} variant="outlined" />
+                    <TextField onChange={handleClick} id="outlined-basic" label="Liên kết" value={episode} variant="outlined" />
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                         <Button target='_blank' href='https://drive.google.com/file/d/1saMoYbp9UMlI0WjNEe5-LLjXUsElFplq/view?usp=sharing' variant="contained" startIcon={<GetAppIcon />}>
                             Tải bộ toolkit
                         </Button>
-                        <Button variant="contained" onClick={handleClick} startIcon={<SaveAsIcon />}>
+                        {/* <Button variant="contained" onClick={handleClick} startIcon={<SaveAsIcon />}>
                             Lưu tập
-                        </Button>
+                        </Button> */}
                         {/* <Button
                             component="label"
                             role={undefined}
