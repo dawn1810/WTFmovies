@@ -52,7 +52,10 @@ function TabBox({
                 transition={false}
                 className={cx('tabs', 'flex-nowrap', { 'cmt-tabs': commentContent })}
                 defaultActiveKey={defaultActiveKey}
-                onSelect={(e: any) => setCurrTab(e)}
+                onSelect={(e: any) => {
+                    if (setCurrTab)
+                        setCurrTab(e)
+                }}
             >
                 {tabs.map((tab, index) => (
                     <Tab
