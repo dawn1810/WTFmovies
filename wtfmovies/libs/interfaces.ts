@@ -178,6 +178,7 @@ export interface DateMongo {
 export interface MongoUpdate {
     matchedCount: number;
     modifiedCount: number;
+    upsertedId: string;
 }
 
 export interface FilmInfo {
@@ -190,11 +191,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-        | {
-              title?: string;
-              episode?: number[];
-          }[]
-        | any;
+    | {
+        title?: string;
+        episode?: number[];
+    }[]
+    | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
