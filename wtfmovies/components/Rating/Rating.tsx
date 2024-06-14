@@ -21,6 +21,7 @@ export default function RatingMui() {
     const isFirstRender = useRef(true);
     const Ep = useSelector(episodeSelector);
     const [value, setValue] = useState<number>(Ep.rating);
+    const [oldValue, setOldValue] = useState<any>(Ep);
 
     const ratingDebounce = useDebounce(value, 1000);
 
@@ -54,6 +55,8 @@ export default function RatingMui() {
             if (data.statusCode !== 200) {
                 dispatch(changeModalShow(true));
                 showAlert('Vui lòng đăng nhập để đánh giá tập phim', 'info');
+                dispatch(changeEpisode(oldValue));
+
             }
         };
 
@@ -62,6 +65,7 @@ export default function RatingMui() {
 
     const handleRating = async (event: any, value: number | any) => {
         const newRating = { ...Ep };
+        setOldValue(Ep);
         newRating.rating = value;
         dispatch(changeEpisode(newRating));
         isFirstRender.current = false;

@@ -62,8 +62,7 @@ export async function POST(request: NextRequest) {
             upsert: true,
 
         });
-
-    if ((updateRes.matchedCount === 1 && UpdateRatingEp.matchedCount === 1) || (updateRes.upsertedId && UpdateRatingEp.upsertedId))
+    if ((updateRes.matchedCount === 1 || UpdateRatingEp.matchedCount === 1) || (updateRes.upsertedId || UpdateRatingEp.upsertedId))
         return toJSON({ statusCode: 200, content: 'ok' });
     else return toError({ statusCode: 404, content: 'wrong data' }, 200);
 }
