@@ -1,5 +1,5 @@
 import LinearProgress from '@mui/material/LinearProgress';
-import { styled } from '@mui/material';
+import { TextField, styled } from '@mui/material';
 
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
@@ -13,10 +13,11 @@ import IconButton from '@mui/material/IconButton';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 // import styled from '@mui/material/styled';
+import SaveAsIcon from '@mui/icons-material/SaveAs';
 import { generateUUIDv4 } from '~/libs/clientFunc';
 import classNames from 'classnames/bind';
 import DeleteIcon from '@mui/icons-material/Delete';
-
+import GetAppIcon from '@mui/icons-material/GetApp';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import Player from '~/components/Player';
 import style from './TiktokUpload.module.scss';
@@ -28,6 +29,7 @@ interface MovieForm {
     setListEpisode: any;
 }
 import { CloudUpload } from '@mui/icons-material';
+import { AnyARecord } from 'dns';
 
 const VisuallyHiddenInput = styled('input')({
     clip: 'rect(0 0 0 0)',
@@ -45,6 +47,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     // console.log(defaultValue);
 
     const [deleteIndex, setDeleteIndex] = useState<number>(0);
+    const [loading, setLoading] = useState<any>(true);
 
     const [episode, setEpisode] = useState(listEpisode.length > 0 ? listEpisode[0].link : '');
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -85,6 +88,13 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
     }
 
+    const handleClick = (event: any) => {
+        if (event.target.value !== 'add-new')
+            setEpisode(event.target.value);
+
+    };
+
+
     return (
         <Box>
 
@@ -102,7 +112,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                     display: 'flex',
                     padding: '1rem',
                     alignItems: 'stretch',
-                    gap: '1rem',
+                    gap: '2rem',
                     width: '100%',
                 }}
                 autoComplete="off"
@@ -158,9 +168,16 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                         </Select>
                     </FormControl>
 
+                    <TextField id="outlined-basic" label="Liên kết" value={episode} variant="outlined" />
 
                     <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-                        <Button
+                        <Button target='_blank' href='https://drive.google.com/file/d/1saMoYbp9UMlI0WjNEe5-LLjXUsElFplq/view?usp=sharing' variant="contained" startIcon={<GetAppIcon />}>
+                            Tải bộ toolkit
+                        </Button>
+                        <Button variant="contained" onClick={handleClick} startIcon={<SaveAsIcon />}>
+                            Lưu tập
+                        </Button>
+                        {/* <Button
                             component="label"
                             role={undefined}
                             variant="contained"
@@ -169,9 +186,9 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                         >
                             Upload file
                             <VisuallyHiddenInput type="file" />
-                        </Button>
+                        </Button> */}
                         <Box sx={{ width: '100%' }}>
-                            <LinearProgress variant="determinate" value={20} />
+                            <LinearProgress variant="query" hidden={loading} />
                         </Box>
                     </Box>
 
