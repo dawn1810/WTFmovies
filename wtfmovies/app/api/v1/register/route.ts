@@ -53,7 +53,6 @@ export async function POST(request: NextRequest) {
             return reply();
         }
     } catch (err) {
-        console.log(err);
         return toError('Lỗi trong quá trình đăng ký', 500);
     }
 }

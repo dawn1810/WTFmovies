@@ -18,6 +18,7 @@ const login = async (credentials: any) => {
         });
 
     if (!userAuth) throw new Error('Email không tồn tại');
+    else if (!userAuth.status) throw new Error('Tài khoản đang bị cấm');
 
     // have user check password
     const passAuth = await comparePassWord(userAuth.password, credentials.password);
