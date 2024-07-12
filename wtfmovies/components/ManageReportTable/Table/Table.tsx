@@ -170,15 +170,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     >
                         Duyệt
                     </Button>
-                    <Button
-                        variant="outlined"
-                        startIcon={<ReplyIcon />}
-                        disabled={rowSelectionModel.length === 0}
-                        className={cx('btncustom')}
-                        onClick={handleOpen}
-                    >
-                        Phản hồi
-                    </Button>
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>
             </div>

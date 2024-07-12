@@ -6,13 +6,36 @@ import style from './test.module.scss';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
 
 const cx = classNames.bind(style);
 
 function Test() {
+    useEffect(() => {
+        const socket = new WebSocket('wss://websocket.binhminh19112003.workers.dev');
+
+        socket.onopen = () => {
+            console.log('Connected to the WebSocket server');
+
+            // Gửi tin nhắn tới server sau khi kết nối thành công
+            socket.send('Hello from client');
+        };
+
+        socket.onmessage = (event: any) => {
+            console.log('Message received from server:', event.data);
+        };
+
+        socket.onclose = () => {
+            console.log('Disconnected from the WebSocket server');
+        };
+
+        return () => {
+            socket.close();
+        };
+    }, []);
+
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
