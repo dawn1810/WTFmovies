@@ -80,6 +80,27 @@
             }
         }
     }
+
+    .reply-container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 18px;
+
+        .input-container {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .btn-list {
+            width: 100%;
+            display: flex;
+            justify-content: flex-end;
+            gap: 18px;
+        }
+    }
 }
 
 /** Mobile layout **/

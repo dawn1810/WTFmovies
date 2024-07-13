@@ -2,6 +2,9 @@
 import classNames from 'classnames/bind';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
+import Avatar from '@mui/material/Avatar';
+import TextField from '@mui/material/TextField';
+import Button from '@mui/material/Button';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
@@ -17,6 +20,23 @@ import { formatNumber, timePassed } from '~/libs/clientFunc';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/redux/actions';
 
 const cx = classNames.bind(style);
+const replyList = [
+    {
+        avt: 'https://external-preview.redd.it/oGZz2_J2HBzIeKkE1EwgoJ9PRWLKHkJwim13rGIVhCo.jpg?auto=webp&s=e35909b1339259ba04a26a31d825fd762c0c69cf',
+        content: 'Hãm ak coi hay vậy 🐧🐧🐧',
+        time: '2024-04-21T04:46:40.675+00:00',
+    },
+    {
+        avt: 'https://preview.redd.it/e7a52rf78c291.png?auto=webp&s=9b727cca0fb206a0e7baaaab6bba48d94af3ed68',
+        content: 'Hay vãi ò.',
+        time: '2024-05-21T01:27:02.968+00:00',
+    },
+    {
+        avt: 'https://www.google.com/url?sa=i&url=https%3A%2F%2Fmozart.edu.vn%2Favatar-cute-dang-yeu-a13899.html&psig=AOvVaw1XDInVcRMV4xOcWm7eYCmY&ust=1720969827955000&source=images&cd=vfe&opi=89978449&ved=0CBEQjRxqFwoTCKCqqK6mpIcDFQAAAAAdAAAAABAE',
+        content: 'Dcmm phim hay chê cc. siuu cr7 is the GOAT siuuuuuuuuuuuuuuuuuu.',
+        time: '2024-05-21T15:35:06.983+00:00',
+    },
+];
 
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
@@ -31,6 +51,8 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
     const [likeCount, setLikeCount] = useState<number>(0);
     const [like, setLike] = useState<boolean>(false);
     const [unlike, setUnlike] = useState<boolean>(false);
+    const [reply, setReply] = useState<boolean>(false);
+    const [replyValue, setReplyValue] = useState<string>('');
 
     const handleShowMore = () => isExpanded || setIsExpanded(true);
     const handleShowLess = () => isExpanded && setIsExpanded(false);
@@ -76,6 +98,10 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
             setLikeCount((prev) => prev - 1);
             setLike(false);
         }
+    };
+
+    const handleChange = (event: any) => {
+        setReplyValue(event.target.value);
     };
 
     return (
@@ -134,8 +160,36 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                             {unlike ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
                         </IconButton>
                     </div>
-                    <div className={cx('cmt-time', 'cmt-reply')}>Phản hồi</div>
+                    <div className={cx('cmt-time', 'cmt-reply')} onClick={() => setReply(true)}>
+                        Phản hồi
+                    </div>
                 </div>
+                {reply && (
+                    <div className={cx('reply-container')}>
+                        <div className={cx('input-container')}>
+                            <Avatar
+                                alt="Remy Sharp"
+                                src="https://preview.redd.it/e7a52rf78c291.png?auto=webp&s=9b727cca0fb206a0e7baaaab6bba48d94af3ed68"
+                            />
+                            <TextField
+                                variant="standard"
+                                placeholder="Phản hồi"
+                                value={replyValue}
+                                multiline
+                                fullWidth
+                                onChange={handleChange}
+                            />
+                        </div>
+                        <div className={cx('btn-list')}>
+                            <Button variant="text" onClick={() => setReply(false)}>
+                                Huỷ
+                            </Button>
+                            <Button disabled={replyValue.length === 0} variant="contained" startIcon>
+                                Phản hồi
+                            </Button>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
