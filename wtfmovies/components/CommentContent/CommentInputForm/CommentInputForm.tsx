@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames/bind';
-// //import { AlertColor } from '@mui/material';
 import SendOutlinedIcon from '@mui/icons-material/SendOutlined';
 
 import { Form } from 'react-bootstrap';
