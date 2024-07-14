@@ -3,60 +3,28 @@ import classNames from 'classnames/bind';
 import { useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import { useDispatch } from 'react-redux';
 import { useViewport } from '~/hooks';
 
-import style from './Comment.module.scss';
+import style from '../Comment.module.scss';
 import { CommentInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/redux/actions';
-import ContactLine from './ContactLine';
-import ReplyComment from './ReplyComment';
+import ContactLine from '../ContactLine';
 
 const cx = classNames.bind(style);
-const replyList = [
-    {
-        _id: '1',
-        username: 'Cánh cụt',
-        avatar: 'https://external-preview.redd.it/oGZz2_J2HBzIeKkE1EwgoJ9PRWLKHkJwim13rGIVhCo.jpg?auto=webp&s=e35909b1339259ba04a26a31d825fd762c0c69cf',
-        content: 'Hãm ak coi hay vậy 🐧🐧🐧',
-        time: '2024-04-21T04:46:40.675+00:00',
-        status: true,
-    },
-    {
-        _id: '2',
-        username: 'Hổ báo cáo chồn',
-        avatar: 'https://preview.redd.it/e7a52rf78c291.png?auto=webp&s=9b727cca0fb206a0e7baaaab6bba48d94af3ed68',
-        content: 'Hay vãi ò.',
-        time: '2024-05-21T01:27:02.968+00:00',
-        status: true,
-    },
-    {
-        _id: '3',
-        username: 'Báo cha mẹ anh chị ba con cô bác',
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyAizFaM85rYHrbDMCoz472Ym6hnL6ZPJdkw&s',
-        content: 'Dcmm phim hay chê cc. siuu cr7 is the GOAT siuuuuuuuuuuuuuuuuuu.',
-        time: '2024-05-21T15:35:06.983+00:00',
-        status: true,
-    },
-];
 
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
-const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: string; name?: string }) => {
+const ReplyComment = ({ comment, avt, name }: { comment: CommentInterface; avt?: string; name?: string }) => {
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
-    const [replyShow, setReplyShow] = useState<boolean>(false);
 
     const handleShowMore = () => isExpanded || setIsExpanded(true);
     const handleShowLess = () => isExpanded && setIsExpanded(false);
@@ -90,15 +58,10 @@ const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: stri
         dispatch(changeRpContent('bình luận: ' + comment._id));
     };
 
-    const handleReplyShow = () => {
-        setReplyShow((prev) => !prev);
-    };
-
     return (
-        <div className={cx('wrapper')}>
+        <div className={cx('reply-comment')}>
             <div className={cx('user-info')}>
-                {/* <ImageCustom className={cx('avatar')} src={comment.avatar} alt={comment.username} /> */}
-                <Avatar src={comment.avatar} alt={comment.username} sx={{ width: 48, height: 48 }} />
+                <Avatar src={comment.avatar} alt={comment.username} />
                 {isMobile && (
                     <div className={cx('header')}>
                         <div>
@@ -140,36 +103,9 @@ const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: stri
                     )
                 )}
                 <ContactLine avt={avt} name={name} />
-                {replyList.length > 0 && (
-                    <Button
-                        className={cx('reply-watch-btn')}
-                        variant="text"
-                        startIcon={replyShow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-                        onClick={handleReplyShow}
-                    >
-                        {replyList.length + ' phản hồi'}
-                    </Button>
-                )}
-                {replyShow && (
-                    <>
-                        <div className={cx('reply-comment-list')}>
-                            {replyList.map((reply, index) => (
-                                <ReplyComment key={index} comment={reply} />
-                            ))}
-                        </div>
-                        <Button
-                            className={cx('reply-watch-btn', 'more-cmt-btn')}
-                            variant="text"
-                            startIcon={<SubdirectoryArrowRightIcon />}
-                            // onClick={handleReplyShow}
-                        >
-                            Hiễn thị thêm phản hồi
-                        </Button>
-                    </>
-                )}
             </div>
         </div>
     );
 };
 
-export default Comment;
+export default ReplyComment;
