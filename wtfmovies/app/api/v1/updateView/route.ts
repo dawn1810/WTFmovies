@@ -7,28 +7,22 @@ export async function POST(request: NextRequest) {
     const data = (await request.json()) as any;
     const { epId, film_id } = data;
 
-    if (!epId || !film_id)
-        return toError({ statusCode: 403, content: 'missing data' }, 200);
+    if (!epId || !film_id) return toError({ statusCode: 403, content: 'missing data' }, 200);
 
     const updateRes: MongoUpdate = await mongodb()
         .db('film')
         .collection('episode')
-        .updateOne(
-            {
-                filter: {
-                    _id:
-                        ObjectId(epId)
+        .updateOne({
+            filter: {
+                _id: ObjectId(epId),
+            },
+            update: {
+                $inc: {
+                    views: 1,
                 },
-                update: {
-                    $inc: {
-                        views: 1
-                    }
-                },
-                upsert: true,
-
-            }
-
-        );
+            },
+            upsert: true,
+        });
 
     const UpdateViewsFilm: MongoUpdate = await mongodb()
         .db('film')
@@ -37,11 +31,10 @@ export async function POST(request: NextRequest) {
             filter: { film_id: film_id },
             update: {
                 $inc: {
-                    views: 1
-                }
+                    views: 1,
+                },
             },
             upsert: true,
-
         });
 
     if (updateRes.matchedCount === 1 && UpdateViewsFilm.matchedCount === 1)

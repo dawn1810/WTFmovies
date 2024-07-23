@@ -8,6 +8,7 @@ export const headerSlice = createSlice({
         fbDialog: false,
         fbDialogType: 'report',
         rpContent: '',
+        wsdata: '',
     },
     reducers: {
         changeModalShow: (state, action) => {
@@ -22,9 +23,13 @@ export const headerSlice = createSlice({
         changeRpContent: (state, action) => {
             state.rpContent = action.payload;
         },
+        changeWsdata: (state, action) => {
+            state.wsdata = action.payload;
+        },
     },
 });
 
-export const { changeModalShow, changeFbDialog, changeFbDialogType, changeRpContent } = headerSlice.actions;
+export const { changeModalShow, changeFbDialog, changeFbDialogType, changeRpContent, changeWsdata } =
+    headerSlice.actions;
 
 export default headerSlice.reducer;

@@ -25,6 +25,7 @@ const signupBirthDateAlertSelector = (state: reduxStateInterface) => state.regis
 
 //header
 const modalShowSelector = (state: reduxStateInterface) => state.header.modalShow;
+const wsdataSelector = (state: reduxStateInterface) => state.header.wsdata;
 
 //editor
 export const alertStatusSelector = (state: reduxStateInterface) => state.editor.alertStatus;
@@ -88,11 +89,13 @@ export const headerSelector = createSelector(
     fbDialogSelector,
     fbDialogTypeSelector,
     rpContentSelector,
-    (modalShow, fbDialog, fbDialogType, rpContent) => ({
+    wsdataSelector,
+    (modalShow, fbDialog, fbDialogType, rpContent, wsdata) => ({
         modalShow,
         fbDialog,
         fbDialogType,
         rpContent,
+        wsdata,
     }),
 );
 

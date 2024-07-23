@@ -1,6 +1,6 @@
 //import { AlertColor } from '@mui/material';
 
-import { DateMongo, ObjectMongo } from "~/libs/interfaces";
+import { DateMongo, ObjectMongo } from '~/libs/interfaces';
 
 // signup
 export const changeSignUpEmailAlert = (emailAlert: boolean) => {
@@ -60,8 +60,14 @@ export const changeModalShow = (modalShow: boolean) => {
     };
 };
 
-//
+export const changeWsdata = (wsdata: string) => {
+    return {
+        type: 'header/changeWsdata',
+        payload: wsdata,
+    };
+};
 
+//
 
 // player
 export const changeUrl = (url: string) => {
@@ -258,7 +264,6 @@ export const changeRpContent = (content: string) => {
     };
 };
 
-
 // Editor
 export const changeAlertStatus = (status: { content: any; status: boolean }) => {
     return {
@@ -266,4 +271,3 @@ export const changeAlertStatus = (status: { content: any; status: boolean }) => 
         payload: status,
     };
 };
-

@@ -87,6 +87,7 @@ export interface reduxStateInterface {
         fbDialog: boolean;
         fbDialogType: 'report' | 'feedback';
         rpContent: string;
+        wsdata: string;
     };
     register: {
         signupEmailAlert: boolean;
@@ -191,11 +192,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-    | {
-        title?: string;
-        episode?: number[];
-    }[]
-    | any;
+        | {
+              title?: string;
+              episode?: number[];
+          }[]
+        | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;

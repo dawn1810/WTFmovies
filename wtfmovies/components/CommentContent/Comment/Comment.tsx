@@ -19,7 +19,7 @@ import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
 
 const cx = classNames.bind(style);
-const replyList = [
+const replyList: any[] = [
     {
         _id: '1',
         username: 'Cánh cụt',

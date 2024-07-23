@@ -5,7 +5,7 @@ import style from './CommentContent.module.scss';
 import CommentInputForm from './CommentInputForm';
 import Comment from './Comment';
 import { CommentInterface, UserInfoInterface } from '~/libs/interfaces';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const cx = classNames.bind(style);
 
@@ -19,6 +19,21 @@ function CommentContent({
     currUser?: UserInfoInterface;
 }) {
     const [commentList, setCommentList] = useState(comments);
+
+    // useEffect(() => {
+    //     const handleNewMessage = (event: any) => {
+    //         const newMessage = event.detail;
+    //         console.log(newMessage);
+
+    //         // Update the UI with the new message
+    //     };
+
+    //     document.addEventListener('newMessage', handleNewMessage);
+
+    //     return () => {
+    //         document.removeEventListener('newMessage', handleNewMessage);
+    //     };
+    // }, []);
 
     const addComment = (comment: CommentInterface) => {
         const today = new Date();

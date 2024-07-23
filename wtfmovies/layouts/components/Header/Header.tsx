@@ -21,7 +21,7 @@ import FeedbackOutlinedIcon from '@mui/icons-material/FeedbackOutlined';
 
 import styles from './Header.module.scss';
 import { headerSelector } from '~/redux/selectors';
-import { changeFbDialog, changeFbDialogType, changeModalShow } from './headerSlice';
+import { changeFbDialog, changeFbDialogType, changeModalShow, changeWsdata } from './headerSlice';
 import { useViewport } from '~/hooks';
 import Genres from '~/components/Genres';
 import Modals from '~/components/Modals';
@@ -34,7 +34,10 @@ import { ExtendedUser } from '~/libs/interfaces';
 import Notify from '~/components/Notify';
 import { Badge, IconButton } from '@mui/material';
 import FeedbackDialog from '~/components/FeedbackDialog';
+import { connectWebSocket } from '~/websocket/websocketService';
+import { io } from 'socket.io-client';
 
+const socket = io('http://localhost:3001');
 const cx = classNames.bind(styles);
 
 type MenuItem = {
@@ -148,6 +151,32 @@ function Header({
     const [searchShow, setSearchShow] = useState<boolean>(false);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
+
+    useEffect(() => {
+        if (socket.connected) {
+            onConnect();
+        }
+
+        function onConnect() {
+            console.log('Server connected');
+
+            socket.io.engine.on('upgrade', (transport) => {
+                console.log(transport.name);
+            });
+        }
+
+        function onDisconnect() {
+            console.log('Server disconnected');
+        }
+
+        socket.on('connect', onConnect);
+        socket.on('disconnect', onDisconnect);
+
+        return () => {
+            socket.off('connect', onConnect);
+            socket.off('disconnect', onDisconnect);
+        };
+    }, []);
 
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);

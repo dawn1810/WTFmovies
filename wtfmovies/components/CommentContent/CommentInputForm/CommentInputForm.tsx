@@ -12,6 +12,7 @@ import Button from '../../Button';
 import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { sendMessage } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
 function CommentInputForm({
@@ -78,28 +79,31 @@ function CommentInputForm({
             content: commentInfo.content.replace(/\n/g, '<br/>'),
         };
 
-        const response = await fetch('/api/v1/comment/sendComment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                searchName: filmName,
-                ...comment,
-            }),
-        });
+        // sendMessage(JSON.stringify({ ...comment, userEmail: extendedUser?.email, type: 'comment' }));
 
-        if (response.ok) {
-            addComment(comment);
-            setCommentInfo((prev) => ({ ...prev, content: '' }));
-        } else if (response.status === 400) {
-            showAlert('Bình luận không hợp lệ', 'error');
-        } else if (response.status === 401) {
-            showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
-        } else if (response.status === 403) {
-            dispatch(changeModalShow(true));
-            showAlert('Xin hãy đăng nhập để bình luận', 'info');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        }
+        // update to mongodatabase
+        // const response = await fetch('/api/v1/comment/sendComment', {
+        //     method: 'POST',
+        //     headers: { 'Content-Type': 'application/json' },
+        //     body: JSON.stringify({
+        //         searchName: filmName,
+        //         ...comment,
+        //     }),
+        // });
+
+        // if (response.ok) {
+        //     addComment(comment);
+        //     setCommentInfo((prev) => ({ ...prev, content: '' }));
+        // } else if (response.status === 400) {
+        //     showAlert('Bình luận không hợp lệ', 'error');
+        // } else if (response.status === 401) {
+        //     showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
+        // } else if (response.status === 403) {
+        //     dispatch(changeModalShow(true));
+        //     showAlert('Xin hãy đăng nhập để bình luận', 'info');
+        // } else if (response.status === 500) {
+        //     showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+        // }
     };
 
     return (
