@@ -12,7 +12,7 @@ import Button from '../../Button';
 import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
-import { sendMessage } from '~/websocket/websocketService';
+import { sendMessage, socket } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
 function CommentInputForm({
@@ -62,6 +62,41 @@ function CommentInputForm({
         if (!!session) fetchUserInfo();
     }, [extendedUser]);
 
+    useEffect(() => {
+        socket.on('newComment', async (data) => {
+            addComment(data);
+
+            // update to mongodatabase
+            const response = await fetch('/api/v1/comment/sendComment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    searchName: filmName,
+                    ...data,
+                }),
+            });
+
+            if (response.ok) {
+                setCommentInfo((prev) => ({ ...prev, content: '' }));
+            } else {
+                if (response.status === 400) {
+                    showAlert('Bình luận không hợp lệ', 'error');
+                } else if (response.status === 401) {
+                    showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
+                } else if (response.status === 403) {
+                    dispatch(changeModalShow(true));
+                    showAlert('Xin hãy đăng nhập để bình luận', 'info');
+                } else if (response.status === 500) {
+                    showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                }
+            }
+        });
+
+        return () => {
+            socket.off('newComment');
+        };
+    }, []);
+
     const handleInput = (event: any) => {
         if (event.target.name === 'content' && event.target.value > 500) {
             showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
@@ -79,31 +114,7 @@ function CommentInputForm({
             content: commentInfo.content.replace(/\n/g, '<br/>'),
         };
 
-        // sendMessage(JSON.stringify({ ...comment, userEmail: extendedUser?.email, type: 'comment' }));
-
-        // update to mongodatabase
-        // const response = await fetch('/api/v1/comment/sendComment', {
-        //     method: 'POST',
-        //     headers: { 'Content-Type': 'application/json' },
-        //     body: JSON.stringify({
-        //         searchName: filmName,
-        //         ...comment,
-        //     }),
-        // });
-
-        // if (response.ok) {
-        //     addComment(comment);
-        //     setCommentInfo((prev) => ({ ...prev, content: '' }));
-        // } else if (response.status === 400) {
-        //     showAlert('Bình luận không hợp lệ', 'error');
-        // } else if (response.status === 401) {
-        //     showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
-        // } else if (response.status === 403) {
-        //     dispatch(changeModalShow(true));
-        //     showAlert('Xin hãy đăng nhập để bình luận', 'info');
-        // } else if (response.status === 500) {
-        //     showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        // }
+        sendMessage('comment', JSON.stringify({ comment, receiver: [] }));
     };
 
     return (

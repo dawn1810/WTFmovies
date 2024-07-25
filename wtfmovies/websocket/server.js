@@ -20,8 +20,16 @@ app.prepare().then(() => {
     });
 
     io.on('connection', (socket) => {
+        console.log('Client connected');
+
+        socket.on('join', (data) => {
+            socket.join(data.email);
+        });
+
         socket.on('comment', (message) => {
-            io.emit('comment', message);
+            const data = JSON.parse(message);
+            // io.in(message.receiver).emit('notify', message.comment);
+            io.emit('newComment', data.comment);
         });
 
         socket.on('disconnect', () => {

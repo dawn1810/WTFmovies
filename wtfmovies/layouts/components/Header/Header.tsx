@@ -34,10 +34,8 @@ import { ExtendedUser } from '~/libs/interfaces';
 import Notify from '~/components/Notify';
 import { Badge, IconButton } from '@mui/material';
 import FeedbackDialog from '~/components/FeedbackDialog';
-import { connectWebSocket } from '~/websocket/websocketService';
-import { io } from 'socket.io-client';
+import { socket } from '~/websocket/websocketService';
 
-const socket = io('http://localhost:3001');
 const cx = classNames.bind(styles);
 
 type MenuItem = {
@@ -158,7 +156,7 @@ function Header({
         }
 
         function onConnect() {
-            console.log('Server connected');
+            socket.emit('join', currentUser?.email);
 
             socket.io.engine.on('upgrade', (transport) => {
                 console.log(transport.name);
