@@ -1,11 +1,10 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { MongoDate, ObjectId, mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
 
 interface dataType {
-    searchName: string;
     avatar: string;
     username: string;
     content: string;
@@ -19,15 +18,17 @@ export async function POST(request: NextRequest) {
     try {
         const extendedUser: ExtendedUser | undefined = session?.user;
 
-        const { searchName, avatar, username, content }: dataType = await request.json();
+        const { avatar, username, content }: dataType = await request.json();
         const today = new Date();
 
         if (content.length <= 0 || username.length <= 0) return toError('Bình luận không hợp lệ', 400);
         if (content.length > 500) return toError('Bình luận quá dài', 401);
-        const result = await mongodb()
+
+        await mongodb()
             .db('film')
             .collection('comment')
             .insertOne({
+                reply: true,
                 email: extendedUser?.email,
                 username: username,
                 avatar: avatar,
@@ -36,17 +37,8 @@ export async function POST(request: NextRequest) {
                 status: true,
             });
 
-        await mongodb()
-            .db('film')
-            .collection('information')
-            .updateOne({
-                filter: { searchName: searchName },
-                update: { $push: { comment: ObjectId(result.insertedId) } },
-                upsert: true,
-            });
-
-        return toJSON('Gửi bình luận thành công');
+        return toJSON('Phản hồi bình luận thành công');
     } catch (error) {
-        return toError('Lỗi gửi bình luận: ' + error, 500);
+        return toError('Lỗi phản hồi bình luận: ' + error, 500);
     }
 }

@@ -20,30 +20,30 @@ import ReplyComment from './ReplyComment';
 
 const cx = classNames.bind(style);
 const replyList: any[] = [
-    {
-        _id: '1',
-        username: 'Cánh cụt',
-        avatar: 'https://external-preview.redd.it/oGZz2_J2HBzIeKkE1EwgoJ9PRWLKHkJwim13rGIVhCo.jpg?auto=webp&s=e35909b1339259ba04a26a31d825fd762c0c69cf',
-        content: 'Hãm ak coi hay vậy 🐧🐧🐧',
-        time: '2024-04-21T04:46:40.675+00:00',
-        status: true,
-    },
-    {
-        _id: '2',
-        username: 'Hổ báo cáo chồn',
-        avatar: 'https://preview.redd.it/e7a52rf78c291.png?auto=webp&s=9b727cca0fb206a0e7baaaab6bba48d94af3ed68',
-        content: 'Hay vãi ò.',
-        time: '2024-05-21T01:27:02.968+00:00',
-        status: true,
-    },
-    {
-        _id: '3',
-        username: 'Báo cha mẹ anh chị ba con cô bác',
-        avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyAizFaM85rYHrbDMCoz472Ym6hnL6ZPJdkw&s',
-        content: 'Dcmm phim hay chê cc. siuu cr7 is the GOAT siuuuuuuuuuuuuuuuuuu.',
-        time: '2024-05-21T15:35:06.983+00:00',
-        status: true,
-    },
+    // {
+    //     _id: '1',
+    //     username: 'Cánh cụt',
+    //     avatar: 'https://external-preview.redd.it/oGZz2_J2HBzIeKkE1EwgoJ9PRWLKHkJwim13rGIVhCo.jpg?auto=webp&s=e35909b1339259ba04a26a31d825fd762c0c69cf',
+    //     content: 'Hãm ak coi hay vậy 🐧🐧🐧',
+    //     time: '2024-04-21T04:46:40.675+00:00',
+    //     status: true,
+    // },
+    // {
+    //     _id: '2',
+    //     username: 'Hổ báo cáo chồn',
+    //     avatar: 'https://preview.redd.it/e7a52rf78c291.png?auto=webp&s=9b727cca0fb206a0e7baaaab6bba48d94af3ed68',
+    //     content: 'Hay vãi ò.',
+    //     time: '2024-05-21T01:27:02.968+00:00',
+    //     status: true,
+    // },
+    // {
+    //     _id: '3',
+    //     username: 'Báo cha mẹ anh chị ba con cô bác',
+    //     avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyAizFaM85rYHrbDMCoz472Ym6hnL6ZPJdkw&s',
+    //     content: 'Dcmm phim hay chê cc. siuu cr7 is the GOAT siuuuuuuuuuuuuuuuuuu.',
+    //     time: '2024-05-21T15:35:06.983+00:00',
+    //     status: true,
+    // },
 ];
 
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.

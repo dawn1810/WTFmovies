@@ -22,8 +22,8 @@ app.prepare().then(() => {
     io.on('connection', (socket) => {
         console.log('Client connected');
 
-        socket.on('join', (data) => {
-            socket.join(data.email);
+        socket.on('join', (email) => {
+            email && socket.join(email);
         });
 
         socket.on('comment', (message) => {

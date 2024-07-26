@@ -39,6 +39,12 @@ function CommentContent({
         const today = new Date();
         const newComment = { ...comment, time: String(today) };
         setCommentList((prev) => [newComment, ...prev]);
+        return commentList.length + 1;
+    };
+
+    const removeComment = (index: number) => {
+        // index is count from final element to current element
+        if (index > -1) setCommentList((prev) => prev.splice(prev.length - index, 1));
     };
 
     return (
