@@ -29,7 +29,7 @@ app.prepare().then(() => {
         socket.on('comment', (message) => {
             const data = JSON.parse(message);
             // io.in(message.receiver).emit('notify', message.comment);
-            io.emit('newComment', data.comment);
+            socket.broadcast.emit('newComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
         socket.on('disconnect', () => {

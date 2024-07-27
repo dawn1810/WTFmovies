@@ -19,7 +19,7 @@ import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
 
 const cx = classNames.bind(style);
-const replyList: any[] = [
+const replys: any[] = [
     // {
     //     _id: '1',
     //     username: 'Cánh cụt',
@@ -57,6 +57,7 @@ const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: stri
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [replyShow, setReplyShow] = useState<boolean>(false);
+    const [replyList, setReplyList] = useState<any[]>(replys);
 
     const handleShowMore = () => isExpanded || setIsExpanded(true);
     const handleShowLess = () => isExpanded && setIsExpanded(false);
@@ -92,6 +93,17 @@ const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: stri
 
     const handleReplyShow = () => {
         setReplyShow((prev) => !prev);
+    };
+
+    const addReplyComment = (comment: CommentInterface) => {
+        const today = new Date();
+        const newComment = { ...comment, time: String(today) };
+        setReplyList((prev) => [newComment, ...prev]);
+        return replyList.length + 1;
+    };
+
+    const removeComment = (index: number) => {
+        if (index > -1) setReplyList((prev) => prev.splice(prev.length - index, 1));
     };
 
     return (

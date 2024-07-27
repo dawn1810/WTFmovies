@@ -5,7 +5,7 @@ import style from './CommentContent.module.scss';
 import CommentInputForm from './CommentInputForm';
 import Comment from './Comment';
 import { CommentInterface, UserInfoInterface } from '~/libs/interfaces';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const cx = classNames.bind(style);
 
@@ -20,21 +20,6 @@ function CommentContent({
 }) {
     const [commentList, setCommentList] = useState(comments);
 
-    // useEffect(() => {
-    //     const handleNewMessage = (event: any) => {
-    //         const newMessage = event.detail;
-    //         console.log(newMessage);
-
-    //         // Update the UI with the new message
-    //     };
-
-    //     document.addEventListener('newMessage', handleNewMessage);
-
-    //     return () => {
-    //         document.removeEventListener('newMessage', handleNewMessage);
-    //     };
-    // }, []);
-
     const addComment = (comment: CommentInterface) => {
         const today = new Date();
         const newComment = { ...comment, time: String(today) };
@@ -44,12 +29,22 @@ function CommentContent({
 
     const removeComment = (index: number) => {
         // index is count from final element to current element
-        if (index > -1) setCommentList((prev) => prev.splice(prev.length - index, 1));
+
+        if (index > -1)
+            setCommentList((prev) => {
+                const newList = prev.filter((_, idx) => idx !== prev.length - index);
+                return newList;
+            });
     };
 
     return (
         <div className={cx('wrapper')}>
-            <CommentInputForm filmName={filmName} currUser={currUser} addComment={addComment} />
+            <CommentInputForm
+                filmName={filmName}
+                currUser={currUser}
+                addComment={addComment}
+                removeComment={removeComment}
+            />
             <div className={cx('comment-list')}>
                 {commentList.map((comment, index) => (
                     <Comment key={index} comment={comment} avt={currUser?.avatar} name={currUser?.name} />

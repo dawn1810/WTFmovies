@@ -19,10 +19,12 @@ function CommentInputForm({
     filmName,
     currUser,
     addComment,
+    removeComment,
 }: {
     filmName: string;
     currUser?: UserInfoInterface;
     addComment: any;
+    removeComment: any;
 }) {
     const dispatch = useDispatch();
 
@@ -63,8 +65,9 @@ function CommentInputForm({
     }, [extendedUser]);
 
     useEffect(() => {
-        socket.on('newComment', async (data) => {
-            addComment(data);
+        socket.on('newComment', async (message) => {
+            const { comment, msgFilmName } = JSON.parse(message);
+            if (msgFilmName === filmName) addComment(comment);
         });
 
         return () => {
@@ -88,10 +91,9 @@ function CommentInputForm({
             username: commentInfo.name,
             content: commentInfo.content.replace(/\n/g, '<br/>'),
         };
+        const newMegIndex = addComment(comment);
 
-        sendMessage('comment', JSON.stringify({ comment, receiver: [] }));
-
-        // update to mongodatabase
+        // update to mongodb
         const response = await fetch('/api/v1/comment/sendComment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -101,17 +103,27 @@ function CommentInputForm({
             }),
         });
 
+        // check for
         if (response.ok) {
             setCommentInfo((prev) => ({ ...prev, content: '' }));
-        } else if (response.status === 400) {
-            showAlert('Bình luận không hợp lệ', 'error');
-        } else if (response.status === 401) {
-            showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
-        } else if (response.status === 403) {
-            dispatch(changeModalShow(true));
-            showAlert('Xin hãy đăng nhập để bình luận', 'info');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            // send message to another user
+            if (socket.connected) {
+                socket.emit('comment', JSON.stringify({ comment, filmName, receiver: [] }));
+            } else {
+                console.error('WebSocket connection not open.');
+            }
+        } else {
+            if (response.status === 400) {
+                showAlert('Bình luận không hợp lệ', 'error');
+            } else if (response.status === 401) {
+                showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
+            } else if (response.status === 403) {
+                dispatch(changeModalShow(true));
+                showAlert('Xin hãy đăng nhập để bình luận', 'info');
+            } else if (response.status === 500) {
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+            removeComment(newMegIndex);
         }
     };
 
