@@ -12,7 +12,7 @@ import Button from '../../Button';
 import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
-import { sendMessage, socket } from '~/websocket/websocketService';
+import { socket } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
 function CommentInputForm({
@@ -85,45 +85,54 @@ function CommentInputForm({
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
+        const content = commentInfo.content.replace(/\n/g, '<br/>');
 
-        const comment = {
-            avatar: currentUser.avatar,
-            username: commentInfo.name,
-            content: commentInfo.content.replace(/\n/g, '<br/>'),
-        };
-        const newMegIndex = addComment(comment);
-
-        // update to mongodb
-        const response = await fetch('/api/v1/comment/sendComment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                searchName: filmName,
-                ...comment,
-            }),
-        });
-
-        // check for
-        if (response.ok) {
-            setCommentInfo((prev) => ({ ...prev, content: '' }));
-            // send message to another user
-            if (socket.connected) {
-                socket.emit('comment', JSON.stringify({ comment, filmName, receiver: [] }));
-            } else {
-                console.error('WebSocket connection not open.');
-            }
+        // client check
+        if (content.length <= 0 || commentInfo.name.length <= 0) showAlert('Bình luận không hợp lệ', 'error');
+        else if (content.length > 500) showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
+        else if (!extendedUser || !extendedUser?.email) {
+            dispatch(changeModalShow(true));
+            showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else {
-            if (response.status === 400) {
-                showAlert('Bình luận không hợp lệ', 'error');
-            } else if (response.status === 401) {
-                showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
-            } else if (response.status === 403) {
-                dispatch(changeModalShow(true));
-                showAlert('Xin hãy đăng nhập để bình luận', 'info');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            const comment = {
+                avatar: currentUser.avatar,
+                username: commentInfo.name,
+                content,
+            };
+            const newMegIndex = addComment(comment);
+
+            // update to mongodb
+            const response = await fetch('/api/v1/comment/sendComment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    searchName: filmName,
+                    ...comment,
+                }),
+            });
+
+            // check for
+            if (response.ok) {
+                setCommentInfo((prev) => ({ ...prev, content: '' }));
+                // send message to another user
+                if (socket.connected) {
+                    socket.emit('comment', JSON.stringify({ comment, filmName, receiver: [] }));
+                } else {
+                    console.error('WebSocket connection not open.');
+                }
+            } else {
+                if (response.status === 400) {
+                    showAlert('Bình luận không hợp lệ', 'error');
+                } else if (response.status === 401) {
+                    showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
+                } else if (response.status === 403) {
+                    dispatch(changeModalShow(true));
+                    showAlert('Xin hãy đăng nhập để bình luận', 'info');
+                } else if (response.status === 500) {
+                    showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                }
+                removeComment(newMegIndex);
             }
-            removeComment(newMegIndex);
         }
     };
 

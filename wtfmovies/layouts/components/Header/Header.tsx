@@ -219,6 +219,7 @@ function Header({
         useEffect(() => {
             setHeaderClass('wrapper-show');
         }, []);
+
         useEffect(() => {
             let ticking = false;
 

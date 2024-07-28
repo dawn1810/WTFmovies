@@ -5,6 +5,7 @@ import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { ExtendedUser } from '~/libs/interfaces';
 
 interface dataType {
+    receiver: string;
     avatar: string;
     username: string;
     content: string;

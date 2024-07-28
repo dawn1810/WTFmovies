@@ -48,6 +48,12 @@ const Comment = ({ avt, name }: { avt?: string; name?: string }) => {
         setReply((prev) => !prev);
     };
 
+    const handleReply = (event: any) => {
+        event.preventDefault();
+
+        const replyContent = replyValue.replace(/\n/g, '<br/>');
+    };
+
     return (
         <>
             <div className={cx('contact-line')}>
@@ -83,7 +89,7 @@ const Comment = ({ avt, name }: { avt?: string; name?: string }) => {
                         <Button variant="text" onClick={() => setReply(false)}>
                             Huỷ
                         </Button>
-                        <Button disabled={replyValue.length === 0} variant="contained" startIcon>
+                        <Button disabled={replyValue.length === 0} variant="contained" startIcon onClick={handleReply}>
                             Phản hồi
                         </Button>
                     </div>

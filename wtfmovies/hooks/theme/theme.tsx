@@ -11,13 +11,6 @@ const darkTheme = createTheme({
     },
 });
 
-
-
-export default function ThemeP({ children }: { children: React.ReactNode; }) {
-
-    return (
-        <ThemeProvider theme={darkTheme} >
-            {children}
-        </ThemeProvider>
-    );
+export default function ThemeP({ children }: { children: React.ReactNode }) {
+    return <ThemeProvider theme={darkTheme}>{children}</ThemeProvider>;
 }
