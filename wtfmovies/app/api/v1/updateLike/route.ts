@@ -10,7 +10,7 @@ export async function POST(request: NextRequest) {
     try {
         const session = await auth();
 
-        if (!session) return undefined;
+        if (!session) return toError('Xác thực thất bại', 403);
 
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { filmId, love }: dataType = await request.json();

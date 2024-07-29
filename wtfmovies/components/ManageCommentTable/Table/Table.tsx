@@ -29,7 +29,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -42,9 +42,9 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);

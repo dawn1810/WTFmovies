@@ -17,9 +17,14 @@ export const notifySlice = createSlice({
         changeType: (state, action) => {
             state.type = action.payload;
         },
+        showNotify: (state, action) => {
+            state.type = action.payload.type;
+            state.content = action.payload.content;
+            state.open = action.payload.open;
+        },
     },
 });
 
-export const { changeOpen, changeContent, changeType } = notifySlice.actions;
+export const { changeOpen, changeContent, changeType, showNotify } = notifySlice.actions;
 
 export default notifySlice.reducer;

@@ -14,7 +14,8 @@ import TextField from '@mui/material/TextField';
 
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { changeFbDialog, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeFbDialog } from '~/layouts/components/Header/headerSlice';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { headerSelector } from '~/redux/selectors';
 
 export default function FormDialog() {
@@ -25,9 +26,9 @@ export default function FormDialog() {
     const [violate, setViolate] = useState();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
 
     const handleClose = () => {

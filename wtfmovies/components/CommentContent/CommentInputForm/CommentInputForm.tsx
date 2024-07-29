@@ -11,7 +11,8 @@ import ImageCustom from '../../ImageCustom';
 import Button from '../../Button';
 import images from '~/assets/image';
 import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
-import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeModalShow } from '~/layouts/components/Header/headerSlice';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { socket } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
@@ -29,9 +30,7 @@ function CommentInputForm({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const { data: session } = useSession();

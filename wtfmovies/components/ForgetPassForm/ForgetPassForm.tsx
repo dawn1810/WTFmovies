@@ -20,7 +20,7 @@ import OTP from '~/components/OtpForm/OtpForm';
 import { validatePassword } from '~/libs/clientFunc';
 import PassInput from '~/components/PassInput';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -29,9 +29,9 @@ function ForgetPassForm() {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
 
     const router = useRouter();
@@ -129,7 +129,6 @@ function ForgetPassForm() {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
         } else showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-
     };
 
     const handleSendAgainOTP = async () => {

@@ -166,9 +166,9 @@ function FilmInfo({
                                         <span>{info.title}:</span> <span className={cx('high-light')}>{info.info}</span>
                                     </span>
                                 ) : info.type === 'watchAble' &&
-                                    typeof info.info === 'object' &&
-                                    subsType &&
-                                    subsType?.episode?.length > 0 ? (
+                                  typeof info.info === 'object' &&
+                                  subsType &&
+                                  subsType?.episode?.length > 0 ? (
                                     <span className={cx('info-title')}>
                                         <span>{info.title}:</span>
                                         {info.info.map((info, index) => (
@@ -194,7 +194,7 @@ function FilmInfo({
                         <FilmButtonGroup
                             dir={watch ? `/review/${filmInfo.searchName}` : `/watch/${filmInfo.searchName}/tap1`}
                             loveState={loveState}
-                            filmId={filmInfo.searchName}
+                            filmId={filmInfo.film_id}
                             searchName={filmInfo.searchName}
                         />
                     )}

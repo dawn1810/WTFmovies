@@ -11,7 +11,8 @@ import { useDebounce } from '~/hooks';
 import style from './FilmButtonGroup.module.scss';
 
 import Button from '../Button';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeModalShow } from '~/layouts/components/Header/headerSlice';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { useDispatch } from 'react-redux';
 
 const cx = classNames.bind(style);
@@ -31,9 +32,9 @@ function FilmButtonGroup({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
 
     const isFirstRender = useRef(true);
@@ -58,6 +59,9 @@ function FilmButtonGroup({
                 setLoading(false);
             } else if (response.status === 400) {
                 showAlert('Cập nhật yêu thích thất bại!', 'error');
+            } else if (response.status === 403) {
+                dispatch(changeModalShow(true));
+                showAlert('Xác thực thất bại, đăng nhập để yêu thích phim', 'info');
             } else if (response.status === 500) {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }

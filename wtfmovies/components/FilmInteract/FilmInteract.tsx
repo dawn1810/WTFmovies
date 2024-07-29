@@ -6,7 +6,7 @@ import Button from '~/components/Button';
 import Rating from '~/components/Rating';
 import style from './FilmInteract.module.scss';
 import { useDispatch } from 'react-redux';
-import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/redux/actions';
+import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
 
 const cx = classNames.bind(style);
 

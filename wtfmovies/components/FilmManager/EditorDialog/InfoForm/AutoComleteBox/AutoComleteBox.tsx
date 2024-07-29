@@ -9,15 +9,30 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState, FormEvent, Fragment, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { AlertColor, SxProps } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const filter = createFilterOptions<DataType>();
 
-export default function CreateOptionDialog({ sx, id, label, placeholder, setValueData, valueData, notEditor = false }:
-    { id: string, label: string, sx?: SxProps, placeholder: string, setValueData: any, valueData: any, notEditor?: boolean }) {
+export default function CreateOptionDialog({
+    sx,
+    id,
+    label,
+    placeholder,
+    setValueData,
+    valueData,
+    notEditor = false,
+}: {
+    id: string;
+    label: string;
+    sx?: SxProps;
+    placeholder: string;
+    setValueData: any;
+    valueData: any;
+    notEditor?: boolean;
+}) {
     const dispatch = useDispatch();
     const [open, toggleOpen] = useState(false);
     const [loadingDelete, setLoadingDelete] = useState(false);
@@ -35,7 +50,7 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
         (async () => {
             const data = await fetch('/api/v1/editor/fetchData', {
                 method: 'POST',
-                body: JSON.stringify({ collection: id })
+                body: JSON.stringify({ collection: id }),
             });
             const decodeData: DataType[] = await data.json();
             if (decodeData.length > 0 && active) {
@@ -54,44 +69,42 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
     };
 
     const [dialogValue, setDialogValue] = useState<DataType>({
-        inputValue: "",
-        title: "",
-        id: "",
-        firstLetter: ""
+        inputValue: '',
+        title: '',
+        id: '',
+        firstLetter: '',
     });
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setLoadingDelete(true);
 
-        const data = await fetch('/api/v1/editor/addNewInfo',
-            {
-                method: 'POST',
-                body: JSON.stringify({ name: dialogValue.title, typeInfo: id })
-            });
-        const iId: { statusCode: number, content: string } = await data.json();
+        const data = await fetch('/api/v1/editor/addNewInfo', {
+            method: 'POST',
+            body: JSON.stringify({ name: dialogValue.title, typeInfo: id }),
+        });
+        const iId: { statusCode: number; content: string } = await data.json();
 
         if (iId.statusCode === 200) {
             const temp = { ...dialogValue };
             delete temp.inputValue;
-            listData.push({ ...temp, id: iId.content })
+            listData.push({ ...temp, id: iId.content });
             setValueData([...valueData, { ...temp, id: iId.content }]);
-            showAlert('Thêm dữ liệu thành công', 'success')
+            showAlert('Thêm dữ liệu thành công', 'success');
             setDialogValue({
-                inputValue: "",
-                title: "",
-                id: "",
-                firstLetter: ""
-            })
+                inputValue: '',
+                title: '',
+                id: '',
+                firstLetter: '',
+            });
             return handleClose();
         }
-        return showAlert('Có lỗi xảy ra khi thêm dữ liệu', 'error')
+        return showAlert('Có lỗi xảy ra khi thêm dữ liệu', 'error');
     };
-
 
     return (
         <Fragment>
@@ -111,18 +124,20 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
                         if (newValue[newValue.length - 1].inputValue) {
                             // timeout to avoid instant validation of the dialog's form.
                             setTimeout(() => {
-                                const ndata = { ...newValue[newValue.length - 1], title: newValue[newValue.length - 1].inputValue, firstLetter: newValue[newValue.length - 1].inputValue[0].toUpperCase() };
+                                const ndata = {
+                                    ...newValue[newValue.length - 1],
+                                    title: newValue[newValue.length - 1].inputValue,
+                                    firstLetter: newValue[newValue.length - 1].inputValue[0].toUpperCase(),
+                                };
                                 setDialogValue(ndata);
 
                                 toggleOpen(true);
-
                             });
                         } else {
                             setValueData(newValue);
                         }
                     else setValueData(newValue);
-                }
-                }
+                }}
                 options={listData.sort((a: any, b: any) => -b?.firstLetter.localeCompare(a?.firstLetter))}
                 getOptionLabel={(option) => option.title}
                 groupBy={(option) => option.firstLetter}
@@ -144,11 +159,7 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
                 }}
                 renderTags={(tagValue, getTagProps) =>
                     tagValue.map((option, index) => (
-                        <Chip
-                            {...getTagProps({ index })}
-                            key={option.title}
-                            label={option.title}
-                        />
+                        <Chip {...getTagProps({ index })} key={option.title} label={option.title} />
                     ))
                 }
                 filterSelectedOptions
@@ -179,9 +190,7 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
                 <form onSubmit={handleSubmit}>
                     <DialogTitle>Thêm dữ liệu còn thiếu</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                            Bạn vừa thêm một dữ liệu? Hãy điền thông tin chi tiết.
-                        </DialogContentText>
+                        <DialogContentText>Bạn vừa thêm một dữ liệu? Hãy điền thông tin chi tiết.</DialogContentText>
                         <TextField
                             sx={{ width: '100%' }}
                             autoFocus
@@ -202,8 +211,9 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
-                        <LoadingButton loading={loadingDelete}
-                            type="submit">Thêm</LoadingButton>
+                        <LoadingButton loading={loadingDelete} type="submit">
+                            Thêm
+                        </LoadingButton>
                     </DialogActions>
                 </form>
             </Dialog>
@@ -212,8 +222,8 @@ export default function CreateOptionDialog({ sx, id, label, placeholder, setValu
 }
 
 interface DataType {
-    inputValue?: string,
-    title: string,
-    id?: string,
-    firstLetter?: string
+    inputValue?: string;
+    title: string;
+    id?: string;
+    firstLetter?: string;
 }

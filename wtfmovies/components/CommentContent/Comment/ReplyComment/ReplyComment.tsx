@@ -10,7 +10,7 @@ import { useViewport } from '~/hooks';
 import style from '../Comment.module.scss';
 import { CommentInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
-import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/redux/actions';
+import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
 import ContactLine from '../ContactLine';
 
 const cx = classNames.bind(style);

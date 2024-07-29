@@ -27,7 +27,7 @@ import {
 
 import style from './Table.module.scss';
 import CurrentDialog from './CurrentDialog';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -37,9 +37,9 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
 
     const [open, setOpen] = useState<boolean>(false);

@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import classNames from 'classnames/bind';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { AlertColor } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -16,7 +16,7 @@ const cx = classNames.bind(style);
 
 import { useState } from 'react';
 interface MovieForm {
-    listEpisode: { link: string; index: number }[],
+    listEpisode: { link: string; index: number }[];
     setListEpisode: any;
 }
 import { CloudUpload } from '@mui/icons-material';
@@ -32,7 +32,7 @@ interface FectData {
         upload_date: any;
         uploader_email: string;
         views: number;
-    }[]
+    }[];
 }
 export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     // console.log(defaultValue);
@@ -43,34 +43,34 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     const [episode, setEpisode] = useState(listEpisode.length > 0 ? listEpisode[0].link : '');
 
     const handleChange = (event: SelectChangeEvent) => {
-
         setEpisode(event.target.value);
     };
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
 
     const handleClickFetch = async (event: any): Promise<void> => {
         setLoading(false);
-        const lEp = await fetch('/api/v1/editor/fetchEpYoutube', { method: 'POST', body: JSON.stringify({ type: 'fetchEpisodes', playlistId: playlistId }) })
+        const lEp = await fetch('/api/v1/editor/fetchEpYoutube', {
+            method: 'POST',
+            body: JSON.stringify({ type: 'fetchEpisodes', playlistId: playlistId }),
+        });
         if (lEp.status === 200) {
             const lEpDe: FectData = await lEp.json();
             setListEpisode(lEpDe.result.map((item) => ({ link: item.link.Youtube, index: item.index })));
-            setEpisode(lEpDe.result[0].link.Youtube)
-            showAlert('Tải dữ liệu tập phim thành công', 'success')
-
+            setEpisode(lEpDe.result[0].link.Youtube);
+            showAlert('Tải dữ liệu tập phim thành công', 'success');
         } else {
-            showAlert('Có lỗi xảy ra khi tải dữ liệu tập phim', 'error')
+            showAlert('Có lỗi xảy ra khi tải dữ liệu tập phim', 'error');
             setListEpisode([]);
             setEpisode('');
         }
         setLoading(true);
-
-    }
+    };
 
     return (
         <Box>
@@ -96,32 +96,41 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                 }}
                 autoComplete="off"
             >
-
                 <Box
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
                         justifyContent: 'space-between',
                         gap: 1,
-                        position: 'relative'
+                        position: 'relative',
                     }}
                 >
-                    <Box sx={{ minWidth: 450, p: 3, display: 'flex', flexDirection: 'column', flexGrow: 1, justifyContent: 'space-between' }}>
-                        <TextField id="outlined-basic" label="Liên kết danh sách phát" variant="outlined" onChange={(e) => {
-                            try {
-                                const u: URL = new URL(e.target.value);
-                                const idp = u.searchParams.get('list');
-                                setPlaylistId(idp);
-                            } catch (error) {
-                                setPlaylistId('');
-                            }
+                    <Box
+                        sx={{
+                            minWidth: 450,
+                            p: 3,
+                            display: 'flex',
+                            flexDirection: 'column',
+                            flexGrow: 1,
+                            justifyContent: 'space-between',
+                        }}
+                    >
+                        <TextField
+                            id="outlined-basic"
+                            label="Liên kết danh sách phát"
+                            variant="outlined"
+                            onChange={(e) => {
+                                try {
+                                    const u: URL = new URL(e.target.value);
+                                    const idp = u.searchParams.get('list');
+                                    setPlaylistId(idp);
+                                } catch (error) {
+                                    setPlaylistId('');
+                                }
+                            }}
+                        />
 
-                        }} />
-
-                        <FormControl fullWidth
-
-                        >
-
+                        <FormControl fullWidth>
                             <InputLabel id="demo-simple-select-label">Chọn tập</InputLabel>
 
                             <Select
@@ -131,21 +140,13 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                                 label="Chọn tập"
                                 onChange={handleChange}
                             >
-
-
                                 {listEpisode &&
                                     listEpisode.map((item: { link: string; index: number }) => (
-                                        <MenuItem
-                                            value={item.link}
-                                            key={item.index}
-                                        >
+                                        <MenuItem value={item.link} key={item.index}>
                                             {item.index}
-
                                         </MenuItem>
                                     ))}
-
                             </Select>
-
                         </FormControl>
                         <Button
                             component="label"
@@ -157,10 +158,6 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                             Load danh sách phát
                         </Button>
                     </Box>
-
-
-
-
                 </Box>
 
                 <Box
@@ -174,10 +171,15 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                         borderRadius: '5px',
                     }}
                 >
-                    <Player isEdior className={cx('uploadPlayer')} key={episode} url={episode} numEp={0} maxEp={0}></Player>
+                    <Player
+                        isEdior
+                        className={cx('uploadPlayer')}
+                        key={episode}
+                        url={episode}
+                        numEp={0}
+                        maxEp={0}
+                    ></Player>
                 </Box>
-
-
             </Box>
         </Box>
     );

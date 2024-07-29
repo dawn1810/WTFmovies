@@ -33,11 +33,11 @@ import AlertDialog from '~/components/FilmManager/EditorDialog';
 
 import { MovieForm } from '~/components/FilmManager/EditorDialog';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { generateUUIDv4 } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
-export default function DataGridCom({
+export default function FilmManager({
     colum,
     children,
     sideFormInfo,
@@ -57,15 +57,15 @@ export default function DataGridCom({
     const [film_id_form, setFilm_id_form] = useState(valueFilm.film_id);
 
     useEffect(() => {
-        setFilm_id_form(valueFilm.film_id)
+        setFilm_id_form(valueFilm.film_id);
     }, [valueFilm.film_id]);
 
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
     async function handleEdit(event: any) {
         const selectedIDs = new Set(rowSelectionModel);
@@ -95,14 +95,12 @@ export default function DataGridCom({
     }
 
     function handleAdd() {
-        setFilm_id_form(generateUUIDv4())
+        setFilm_id_form(generateUUIDv4());
 
         setOpenForm(true);
     }
 
     function handleCloseForm() {
-
-
         setOpenForm(false);
         setValueFilm({});
     }
@@ -249,15 +247,12 @@ export default function DataGridCom({
                         defaultValue={valueFilm}
                         film_id={film_id_form}
                         isOpen={openForm}
-                        handleClose={handleCloseForm} tags={sideFormInfo.tags} countrys={sideFormInfo.countrys}                    ></MovieForm>
+                        handleClose={handleCloseForm}
+                        tags={sideFormInfo.tags}
+                        countrys={sideFormInfo.countrys}
+                    ></MovieForm>
                 ),
-                [
-                    valueFilm,
-                    sideFormInfo.tags,
-                    sideFormInfo.countrys,
-                    openForm,
-                    film_id_form,
-                ],
+                [valueFilm, sideFormInfo.tags, sideFormInfo.countrys, openForm, film_id_form],
             )}
 
             <h1 className={cx('title_name')}>{title_name}</h1>

@@ -16,13 +16,12 @@ import InfoForm from './InfoForm';
 import EpForm from './EpForm';
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { AlertColor } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { cropImage } from '~/libs/clientFunc';
 import { FilmInfo } from '~/libs/interfaces';
 import LoadingButton from '@mui/lab/LoadingButton';
-
 
 function TabPanel(props: any) {
     const { children, value, index, ...other } = props;
@@ -53,19 +52,17 @@ export function MovieForm({
     film_id,
     handleClose,
 }: {
-    dataGrid: any,
+    dataGrid: any;
     setDataGrid: any;
     defaultValue?: any;
     tags: any;
     countrys: any;
-    film_id: string,
+    film_id: string;
     isOpen: boolean;
     handleClose: () => any;
-
 }) {
     const [value, setValue] = useState(0);
     const [loading, setLoading] = useState(false);
-
 
     ///infoFilm
     const statusMovies = [
@@ -109,40 +106,59 @@ export function MovieForm({
     const [cropResult, setCropResult] = useState<any>(null);
 
     //ep Film
-    const [listEpisodeTiktok, setListEpisodeTiktok] = useState<{ link: string; index: number }[]>(defaultValue.listEp ? defaultValue.listEp.map((item: { link: { Tiktok: any; }; }) => {
-        if (item.link.Tiktok) {
-            return { ...item, link: item.link.Tiktok };
-        }
-        return;
-    }).filter((item: any) => item !== undefined) : []);
+    const [listEpisodeTiktok, setListEpisodeTiktok] = useState<{ link: string; index: number }[]>(
+        defaultValue.listEp
+            ? defaultValue.listEp
+                  .map((item: { link: { Tiktok: any } }) => {
+                      if (item.link.Tiktok) {
+                          return { ...item, link: item.link.Tiktok };
+                      }
+                      return;
+                  })
+                  .filter((item: any) => item !== undefined)
+            : [],
+    );
 
-    const [listEpisodeYoutube, setListEpisodeYoutube] = useState<{ link: string; index: number }[]>(defaultValue.listEp ? defaultValue.listEp.map((item: { link: { Youtube: any; }; }) => {
-        if (item.link.Youtube) {
-            return { ...item, link: item.link.Youtube };
-        }
-        return;
-    }).filter((item: any) => item !== undefined) : []);
-
+    const [listEpisodeYoutube, setListEpisodeYoutube] = useState<{ link: string; index: number }[]>(
+        defaultValue.listEp
+            ? defaultValue.listEp
+                  .map((item: { link: { Youtube: any } }) => {
+                      if (item.link.Youtube) {
+                          return { ...item, link: item.link.Youtube };
+                      }
+                      return;
+                  })
+                  .filter((item: any) => item !== undefined)
+            : [],
+    );
 
     //notify
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(changeContent(content));
+        dispatch(changeType(type));
+        dispatch(changeOpen(true));
     };
     const sendInfo = async () => {
         const min = duration?.minute();
         const sec = duration?.second();
         let timeEp = 0;
-        if (titleMovie === '' || sumaryMovie === '' ||
-            min === undefined || sec === undefined ||
-            valueGenres.length === 0 || valueDirectors.length === 0 ||
-            valueActors.length === 0 || valueAuthors.length === 0 ||
-            valueCountry === '' || valueStatus === '' ||
-            year === null || maxEp === undefined ||
-            imgMovie === undefined || imgBannerMovie === undefined
+        if (
+            titleMovie === '' ||
+            sumaryMovie === '' ||
+            min === undefined ||
+            sec === undefined ||
+            valueGenres.length === 0 ||
+            valueDirectors.length === 0 ||
+            valueActors.length === 0 ||
+            valueAuthors.length === 0 ||
+            valueCountry === '' ||
+            valueStatus === '' ||
+            year === null ||
+            maxEp === undefined ||
+            imgMovie === undefined ||
+            imgBannerMovie === undefined
         )
             return showAlert('Vui lòng điền đầy đủ thông tin', 'error');
         setLoading(true);
@@ -168,8 +184,8 @@ export function MovieForm({
             listEp: {
                 tiktok: listEpisodeTiktok,
                 youtube: listEpisodeYoutube,
-            }
-        }
+            },
+        };
 
         const formData = new FormData();
         if (!!dropedImage) formData.append('image', dropedImage);
@@ -188,14 +204,10 @@ export function MovieForm({
         } else if (rd.status === 500 && dre.error.name === 'MongodbError') {
             showAlert('Cập nhật phim thành công!', 'info');
             handleAfterAddMovie(dre);
-        } else
-            showAlert('Thêm phim không thành công!', 'error');
+        } else showAlert('Thêm phim không thành công!', 'error');
 
         setLoading(false);
-
-    }
-
-
+    };
 
     const handleAfterAddMovie = (data: any) => {
         //add to table
@@ -220,11 +232,11 @@ export function MovieForm({
             }
 
             return result.trim();
-        }
+        };
         const lisEp = {
             tiktok: listEpisodeTiktok,
             youtube: listEpisodeYoutube,
-        }
+        };
         const arrays = Object.values(lisEp);
         const lengths = arrays.map((arr: any) => arr.length);
         const maxLength = lengths.reduce((max, length) => Math.max(max, length), 0);
@@ -233,10 +245,10 @@ export function MovieForm({
             proListEp.push({
                 index: index + 1,
                 link: {
-                    Youtube: lisEp.youtube[index]?.link || "",
-                    Tiktok: lisEp.tiktok[index]?.link || ""
+                    Youtube: lisEp.youtube[index]?.link || '',
+                    Tiktok: lisEp.tiktok[index]?.link || '',
                 },
-            })
+            });
         }
 
         const rdata = {
@@ -253,7 +265,7 @@ export function MovieForm({
             releaseYear: year,
             releaseYearASString: year?.year(),
             maxEpAsString: [maxLength, data.maxEp !== -1 ? data.maxEp : '?'].join(' / ') + ' tập',
-            videoType: data.videoType.map((videoType: any) => videoType.title)
+            videoType: data.videoType.map((videoType: any) => videoType.title),
         };
 
         function removeItemsById(arr: any, ids: any) {
@@ -286,11 +298,8 @@ export function MovieForm({
         setListEpisodeTiktok([]);
         setListEpisodeYoutube([]);
 
-
-
         handleClose();
     };
-
 
     const handleChange = (event: any, newValue: any) => {
         setValue(newValue);
@@ -312,7 +321,6 @@ export function MovieForm({
                 </AppBar>
                 <TabPanel value={value} index={0}>
                     <InfoForm
-
                         cropResult={cropResult}
                         setCropResultBanner={setCropResultBanner}
                         cropResultBanner={cropResultBanner}
@@ -321,7 +329,8 @@ export function MovieForm({
                         setImgBannerMovie={setImgBannerMovie}
                         imgBannerMovie={imgBannerMovie}
                         imgMovie={imgMovie}
-                        tags={tags} countrys={countrys}
+                        tags={tags}
+                        countrys={countrys}
                         statusMovies={statusMovies}
                         setValueStatus={setValueStatus}
                         valueStatus={valueStatus}
@@ -361,8 +370,7 @@ export function MovieForm({
                     <Button variant="outlined" onClick={handleClose}>
                         Huỷ
                     </Button>
-                    <LoadingButton loading={loading}
-                        autoFocus variant="contained" onClick={sendInfo}>
+                    <LoadingButton loading={loading} autoFocus variant="contained" onClick={sendInfo}>
                         Lưu
                     </LoadingButton>
                 </DialogActions>
