@@ -11,11 +11,12 @@ export async function POST(request: NextRequest) {
     try {
         const session = await auth();
 
-        if (!session) return undefined;
+        if (!session) return toJSON('Xác thực thất bại', 403);
 
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { oldPass, newPass }: dataType = await request.json();
 
+        if (oldPass === newPass) return toJSON('Mật khẩu không có thay đổi', 406);
         if (validatePassword(newPass) !== 0) return toJSON('Email không tồn tại', 422);
 
         const hashPassword = await getSHA256Hash(oldPass);

@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import FormControl from '@mui/material/FormControl';
 import MenuItem from '@mui/material/MenuItem';
 import classNames from 'classnames/bind';
-import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { AlertColor } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -48,9 +48,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeContent(content));
-        dispatch(changeType(type));
-        dispatch(changeOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const handleClickFetch = async (event: any): Promise<void> => {

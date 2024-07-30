@@ -33,7 +33,7 @@ import AlertDialog from '~/components/FilmManager/EditorDialog';
 
 import { MovieForm } from '~/components/FilmManager/EditorDialog';
 import { useDispatch } from 'react-redux';
-import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { generateUUIDv4 } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
@@ -63,9 +63,7 @@ export default function FilmManager({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeContent(content));
-        dispatch(changeType(type));
-        dispatch(changeOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
     async function handleEdit(event: any) {
         const selectedIDs = new Set(rowSelectionModel);

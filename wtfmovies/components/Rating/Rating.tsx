@@ -5,7 +5,8 @@ import { episodeSelector } from '~/redux/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { changeEpisode } from '~/app/(root)/watch/[movieName]/[numEp]/watchSlice';
-import { changeModalShow, changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { changeModalShow } from '~/layouts/components/Header/headerSlice';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { AlertColor } from '@mui/material';
 import { useDebounce } from '~/hooks';
 
@@ -13,9 +14,7 @@ export default function RatingMui() {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const isFirstRender = useRef(true);
@@ -56,7 +55,6 @@ export default function RatingMui() {
                 dispatch(changeModalShow(true));
                 showAlert('Vui lòng đăng nhập để đánh giá tập phim', 'info');
                 dispatch(changeEpisode(oldValue));
-
             }
         };
 

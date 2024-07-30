@@ -17,7 +17,7 @@ import NotificationsNoneIcon from '@mui/icons-material/NotificationsNone';
 import style from './NotificationList.module.scss';
 import { timePassed } from '~/libs/clientFunc';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -26,9 +26,7 @@ function Notification({ notify }: { notify: any[] }) {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const [notifications, setNotifications] = useState(notify);

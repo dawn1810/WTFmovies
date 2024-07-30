@@ -18,7 +18,7 @@ import ImageCustom from '~/components/ImageCustom';
 import { formatNumber, timePassed } from '~/libs/clientFunc';
 import UnlikeButton from './UnlikeButton';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -27,9 +27,7 @@ export default function DataGridCom({ dataset }: { dataset: any[] }) {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);

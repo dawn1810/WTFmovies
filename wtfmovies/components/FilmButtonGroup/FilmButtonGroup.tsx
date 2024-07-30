@@ -12,7 +12,7 @@ import style from './FilmButtonGroup.module.scss';
 
 import Button from '../Button';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
-import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { useDispatch } from 'react-redux';
 
 const cx = classNames.bind(style);
@@ -32,9 +32,7 @@ function FilmButtonGroup({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeContent(content));
-        dispatch(changeType(type));
-        dispatch(changeOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const isFirstRender = useRef(true);

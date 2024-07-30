@@ -16,7 +16,7 @@ import SendIcon from '@mui/icons-material/Send';
 
 import style from '../Table.module.scss';
 import EmailTemplate from '~/components/ManageReportTable/EmailTemplate';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -39,9 +39,7 @@ function CurrentDialog({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const [loading, setLoading] = useState<boolean>(false);

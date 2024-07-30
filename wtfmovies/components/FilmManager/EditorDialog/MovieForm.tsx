@@ -16,7 +16,7 @@ import InfoForm from './InfoForm';
 import EpForm from './EpForm';
 import { useState } from 'react';
 import dayjs, { Dayjs } from 'dayjs';
-import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { AlertColor } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import { cropImage } from '~/libs/clientFunc';
@@ -136,9 +136,7 @@ export function MovieForm({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeContent(content));
-        dispatch(changeType(type));
-        dispatch(changeOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
     const sendInfo = async () => {
         const min = duration?.minute();

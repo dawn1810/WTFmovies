@@ -27,6 +27,10 @@
         opacity: 0;
     }
 
+    .skip-btn {
+        z-index: -1;
+    }
+
     .left-btn {
         top: 50%;
         left: 20%;

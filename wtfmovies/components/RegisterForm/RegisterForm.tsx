@@ -21,7 +21,7 @@ import { signupSelector } from '~/redux/selectors';
 import Button from '~/components/Button';
 import style from './RegisterForm.module.scss';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 // import { cookies } from 'next/headers';
 
 const cx = classNames.bind(style);
@@ -36,9 +36,7 @@ function RegisterForm() {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const handlePassEye = () => {

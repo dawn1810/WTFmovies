@@ -9,7 +9,7 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 import React, { useState, FormEvent, Fragment, useEffect } from 'react';
 import Chip from '@mui/material/Chip';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { AlertColor, SxProps } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -75,9 +75,7 @@ export default function CreateOptionDialog({
         firstLetter: '',
     });
     const showAlert = (content: string, type: AlertColor) => {
-        dispatch(changeContent(content));
-        dispatch(changeType(type));
-        dispatch(changeOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
     const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();

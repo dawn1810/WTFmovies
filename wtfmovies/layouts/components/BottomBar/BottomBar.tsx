@@ -14,7 +14,7 @@ import { useSession } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 
 import { useViewport } from '~/hooks';
-import { changeModalShow } from '~/redux/actions';
+import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 
 function BottomBar() {
     const dispatch = useDispatch();

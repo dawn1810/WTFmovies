@@ -20,7 +20,7 @@ import style from '../UserInfo.module.scss';
 import { LoadingButton } from '@mui/lab';
 import AvatarUpload from '../AvatarUpload';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -52,9 +52,7 @@ function UserInfo({
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const { data: session, update } = useSession();

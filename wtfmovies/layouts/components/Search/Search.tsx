@@ -20,7 +20,7 @@ import ClearIcon from '@mui/icons-material/Clear';
 import styles from './Search.module.scss';
 import { useDebounce } from '~/hooks';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 import { timePassed } from '~/libs/clientFunc';
 
 interface ResultInterface {
@@ -52,9 +52,7 @@ function Search() {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     useEffect(() => {
@@ -195,7 +193,7 @@ function Search() {
                         className={cx('search-input')}
                         type="text"
                         value={searchValue}
-                        onChange={() => { }}
+                        onChange={() => {}}
                         placeholder="Tìm kiếm"
                         maxLength={250}
                         onFocus={(e: any) => handleClick(e)}
@@ -243,9 +241,7 @@ function Search() {
                     //     vertical: 'top',
                     //     horizontal: 'center',
                     // }}
-                    transitionDuration={
-                        { appear: 0, enter: 0, exit: 0 }
-                    }
+                    transitionDuration={{ appear: 0, enter: 0, exit: 0 }}
                 >
                     <div className={cx('input-container')}>
                         <input
@@ -349,9 +345,8 @@ function Search() {
                         </div>
                     )}
                 </Popover>
-            )
-            }
-        </div >
+            )}
+        </div>
     );
 }
 

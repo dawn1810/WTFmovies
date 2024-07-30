@@ -9,7 +9,7 @@ import style from '~/components/ProfileForm/ProfileInfo/UserInfo.module.scss';
 import { validatePassword } from '~/libs/clientFunc';
 import PassInput from '~/components/PassInput';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -74,9 +74,7 @@ function PassChange() {
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const [validated, setValidated] = useState({
@@ -120,6 +118,9 @@ function PassChange() {
                 newPass: '',
                 rnewPass: 'Mật khẩu nhập lại không trùng khớp',
             }));
+        } else if (info.oldPass === info.newPass) {
+            setInfo((prev) => ({ ...prev, newPass: '', rnewPass: '' }));
+            setValidated({ oldPass: '', newPass: 'Mật khẩu không có thay đổi', rnewPass: '' });
         } else {
             setLoading(true);
             const response = await fetch('/api/v1/profile/changePass', {
@@ -136,6 +137,11 @@ function PassChange() {
             } else if (response.status === 401) {
                 setInfo((prev) => ({ ...prev, oldPass: '' }));
                 setValidated({ oldPass: 'Mật khẩu không chính xác', newPass: '', rnewPass: '' });
+            } else if (response.status === 403) {
+                showAlert('Xác thực thất bại.', 'error');
+            } else if (response.status === 406) {
+                setInfo((prev) => ({ ...prev, newPass: '', rnewPass: '' }));
+                setValidated({ oldPass: '', newPass: 'Mật khẩu không có thay đổi', rnewPass: '' });
             } else if (response.status === 422) {
                 showAlert('Thông tin thay đổi mật khẩu không hợp lệ', 'error');
             } else if (response.status === 500) {

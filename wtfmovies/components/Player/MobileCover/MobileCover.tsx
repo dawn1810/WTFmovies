@@ -12,7 +12,7 @@ import { coverPlayerSelector } from '~/redux/selectors';
 import style from './MobileCover.module.scss';
 import images from '~/assets/image';
 import { useEffect, useRef, useState } from 'react';
-import { showLeftBtn, showRightBtn } from '~/redux/actions';
+import { showLeftBtn, showRightBtn } from '~/components/Player/playerSlice';
 
 const cx = classNames.bind(style);
 interface coverI {
@@ -87,6 +87,10 @@ function Cover({ playerRef, handlePlayPause, handleNextEp, handlePrevEp }: cover
         x = setTimeout(function () {
             dispatch(showRightBtn(false));
         }, 500);
+    };
+
+    const handleTest = () => {
+        console.log('test');
     };
 
     return (

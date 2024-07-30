@@ -3,14 +3,14 @@ import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { notifySelector } from '~/redux/selectors';
-import { changeNotifyOpen } from '~/redux/actions';
+import { changeOpen } from '~/components/Notify/notifySlide';
 
 function Notify() {
     const dispatch = useDispatch();
     const state = useSelector(notifySelector);
 
     const handleClose = () => {
-        dispatch(changeNotifyOpen(!state.open));
+        dispatch(changeOpen(!state.open));
     };
 
     return (

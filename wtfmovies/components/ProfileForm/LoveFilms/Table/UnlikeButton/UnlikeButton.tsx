@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { changeNotifyContent, changeNotifyOpen, changeNotifyType } from '~/redux/actions';
+import { showNotify } from '~/components/Notify/notifySlide';
 import HeartBrokenOutlinedIcon from '@mui/icons-material/HeartBrokenOutlined';
 //import { AlertColor } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
@@ -10,9 +10,7 @@ export default function UnklikeButton({ searchName, unLikeFilm }: { searchName: 
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeNotifyContent(content));
-        dispatch(changeNotifyType(type));
-        dispatch(changeNotifyOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
     const [loading, setLoading] = useState(false);
 

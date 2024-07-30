@@ -27,7 +27,7 @@ import { viVN } from '@mui/x-data-grid/locales';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
-import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(style);
 
@@ -62,9 +62,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const dispatch = useDispatch();
 
     const showAlert = (content: string, type: any) => {
-        dispatch(changeContent(content));
-        dispatch(changeType(type));
-        dispatch(changeOpen(true));
+        dispatch(showNotify({ content, type, open: true }));
     };
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
