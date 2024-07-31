@@ -8,13 +8,14 @@ import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useViewport } from '~/hooks';
 
 import style from './Comment.module.scss';
 import { CommentInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
+import { commentContentSelector } from '~/redux/selectors';
 import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
 
@@ -49,7 +50,8 @@ const replys: any[] = [
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
-const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: string; name?: string }) => {
+const Comment = ({ comment }: { comment: CommentInterface }) => {
+    // const state = useSelector(commentContentSelector);
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
@@ -109,7 +111,6 @@ const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: stri
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                {/* <ImageCustom className={cx('avatar')} src={comment.avatar} alt={comment.username} /> */}
                 <Avatar src={comment.avatar} alt={comment.username} sx={{ width: 48, height: 48 }} />
                 {isMobile && (
                     <div className={cx('header')}>
@@ -151,7 +152,7 @@ const Comment = ({ comment, avt, name }: { comment: CommentInterface; avt?: stri
                         </span>
                     )
                 )}
-                <ContactLine avt={avt} name={name} />
+                <ContactLine />
                 {replyList.length > 0 && (
                     <Button
                         className={cx('reply-watch-btn')}

@@ -1,6 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { reduxStateInterface } from '~/libs/interfaces';
 
+// comment
+export const commentsSelector = (state: reduxStateInterface) => state.comment.comments;
+export const filmNameSelector = (state: reduxStateInterface) => state.comment.filmName;
+export const currUserSelector = (state: reduxStateInterface) => state.comment.currUser;
+
 //feedback
 export const fbDialogSelector = (state: reduxStateInterface) => state.header.fbDialog;
 export const fbDialogTypeSelector = (state: reduxStateInterface) => state.header.fbDialogType;
@@ -239,5 +244,16 @@ export const notifySelector = createSelector(
         open,
         content,
         type,
+    }),
+);
+
+export const commentContentSelector = createSelector(
+    commentsSelector,
+    filmNameSelector,
+    currUserSelector,
+    (comments, filmName, currUser) => ({
+        comments,
+        filmName,
+        currUser,
     }),
 );

@@ -134,6 +134,11 @@ export interface reduxStateInterface {
         content: string;
         type?: any;
     };
+    comment: {
+        comments: CommentInterface[];
+        filmName: string;
+        currUser: ExtendedUser | undefined;
+    };
 }
 
 interface EpisodeType {

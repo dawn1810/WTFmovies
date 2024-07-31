@@ -5,7 +5,10 @@ import style from './CommentContent.module.scss';
 import CommentInputForm from './CommentInputForm';
 import Comment from './Comment';
 import { CommentInterface, UserInfoInterface } from '~/libs/interfaces';
-import { useState } from 'react';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { commentContentSelector } from '~/redux/selectors';
+import { setCommentContent } from './commentSlice';
 
 const cx = classNames.bind(style);
 
@@ -16,40 +19,30 @@ function CommentContent({
 }: {
     comments: CommentInterface[];
     filmName: string;
-    currUser?: UserInfoInterface;
+    currUser?: UserInfoInterface | undefined;
 }) {
-    const [commentList, setCommentList] = useState(comments);
+    const state = useSelector(commentContentSelector);
+    const dispatch = useDispatch();
 
-    const addComment = (comment: CommentInterface) => {
-        const today = new Date();
-        const newComment = { ...comment, time: String(today) };
-        setCommentList((prev) => [newComment, ...prev]);
-        return commentList.length + 1;
-    };
-
-    const removeComment = (index: number) => {
-        // index is count from final element to current element
-
-        if (index > -1)
-            setCommentList((prev) => {
-                const newList = prev.filter((_, idx) => idx !== prev.length - index);
-                return newList;
-            });
-    };
+    // get all data first
+    useEffect(() => {
+        dispatch(
+            setCommentContent({
+                comments,
+                filmName,
+                currUser,
+            }),
+        );
+    }, []);
 
     return (
         <div className={cx('wrapper')}>
-            <CommentInputForm
-                filmName={filmName}
-                currUser={currUser}
-                addComment={addComment}
-                removeComment={removeComment}
-            />
+            <CommentInputForm />
             <div className={cx('comment-list')}>
-                {commentList.map((comment, index) => (
-                    <Comment key={index} comment={comment} avt={currUser?.avatar} name={currUser?.name} />
+                {state.comments.map((comment, index) => (
+                    <Comment key={index} comment={comment} />
                 ))}
-                {!commentList.length && <div className={cx('no-comment')}>Không có bình luận</div>}
+                {!state.comments.length && <div className={cx('no-comment')}>Không có bình luận</div>}
             </div>
         </div>
     );

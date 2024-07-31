@@ -13,10 +13,14 @@ import { useViewport } from '~/hooks';
 
 import style from '../Comment.module.scss';
 import { formatNumber } from '~/libs/clientFunc';
+import { useSelector } from 'react-redux';
+import { commentContentSelector } from '~/redux/selectors';
 
 const cx = classNames.bind(style);
 
-const Comment = ({ avt, name }: { avt?: string; name?: string }) => {
+const ContactLine = () => {
+    const state = useSelector(commentContentSelector);
+
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -75,7 +79,7 @@ const Comment = ({ avt, name }: { avt?: string; name?: string }) => {
             {reply && (
                 <div className={cx('reply-container')}>
                     <div className={cx('input-container')}>
-                        <Avatar alt={name} src={avt} />
+                        <Avatar alt={state.currUser?.name || 'unknown'} src={state.currUser?.avatar} />
                         <TextField
                             variant="standard"
                             placeholder="Phản hồi"
@@ -99,4 +103,4 @@ const Comment = ({ avt, name }: { avt?: string; name?: string }) => {
     );
 };
 
-export default Comment;
+export default ContactLine;
