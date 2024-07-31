@@ -16,6 +16,7 @@ import { showNotify } from '~/components/Notify/notifySlide';
 import { socket } from '~/websocket/websocketService';
 import { addComments, removeComments } from '../commentSlice';
 import { commentContentSelector } from '~/redux/selectors';
+import { Avatar } from '@mui/material';
 
 const cx = classNames.bind(style);
 function CommentInputForm() {
@@ -98,7 +99,6 @@ function CommentInputForm() {
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         const content = commentInfo.replace(/\n/g, '<br/>');
-        const today = new Date();
 
         // client check
         if (content.length <= 0) showAlert('Bình luận không hợp lệ', 'error');
@@ -126,10 +126,19 @@ function CommentInputForm() {
 
             // check for
             if (response.ok) {
+                const res: any = await response.json();
+
                 setCommentInfo('');
                 // send message to another user
                 if (socket.connected) {
-                    socket.emit('comment', JSON.stringify({ comment, filmName: state.filmName, receiver: [] }));
+                    socket.emit(
+                        'comment',
+                        JSON.stringify({
+                            comment: { ...comment, _id: res.commentId },
+                            filmName: state.filmName,
+                            receiver: [],
+                        }),
+                    );
                 } else {
                     console.error('WebSocket connection not open.');
                 }
@@ -152,7 +161,8 @@ function CommentInputForm() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <ImageCustom className={cx('avatar')} src={currentUser.avatar || images.logo} alt="unknown" />
+                <Avatar className={cx('avatar')} alt={currentUser.name || 'Người ẩn danh'} src={currentUser.avatar} />
+                {/* <ImageCustom className={cx('avatar')} src={currentUser.avatar || images.logo} alt="unknown" /> */}
                 <div className={cx('user-name')}>{currentUser.name || 'Người ẩn danh'}</div>
             </div>
             <Form className={cx('form')} onSubmit={(e) => handleSubmit(e)}>

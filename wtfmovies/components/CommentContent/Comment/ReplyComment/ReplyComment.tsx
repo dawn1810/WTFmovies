@@ -102,7 +102,7 @@ const ReplyComment = ({ comment, avt, name }: { comment: CommentInterface; avt?:
                         </span>
                     )
                 )}
-                <ContactLine avt={avt} name={name} />
+                <ContactLine />
             </div>
         </div>
     );

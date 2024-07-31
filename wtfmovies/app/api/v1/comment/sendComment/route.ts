@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
                 upsert: true,
             });
 
-        return toJSON('Gửi bình luận thành công');
+        return toJSON({ content: 'Gửi bình luận thành công', commentId: result.insertedId });
     } catch (error) {
         return toError('Lỗi gửi bình luận: ' + error, 500);
     }

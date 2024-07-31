@@ -93,7 +93,7 @@ const ContactLine = () => {
                         <Button variant="text" onClick={() => setReply(false)}>
                             Huỷ
                         </Button>
-                        <Button disabled={replyValue.length === 0} variant="contained" startIcon onClick={handleReply}>
+                        <Button disabled={replyValue.length === 0} variant="contained" onClick={handleReply}>
                             Phản hồi
                         </Button>
                     </div>
