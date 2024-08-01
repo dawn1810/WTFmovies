@@ -148,6 +148,7 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
                             pipeline: [
                                 { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
                                 { $match: { status: true } }, // This line includes only documents with status true
+                                { $project: { replyIdList: 0 } },
                                 { $sort: { time: -1 } },
                             ],
                             as: 'commentDetails',
@@ -164,6 +165,7 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
 
         if (comments.length > 0 && comments[0].comments.length > 0) {
             //loop to get reply comment
+            console.log(comments[0].comments);
             return comments[0].comments;
         } else {
             return [];

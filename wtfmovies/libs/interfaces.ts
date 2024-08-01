@@ -305,10 +305,13 @@ export interface FilmReviewInfoInterface {
 export interface CommentInterface {
     _id: string;
     avatar?: string;
+    email: string;
     content: string;
     time: string;
     status: boolean;
     username: string;
+    replyList?: CommentInterface[];
+    replyLength?: number;
 }
 
 export interface OptionInterface {

@@ -14,7 +14,7 @@ import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { socket } from '~/websocket/websocketService';
-import { addComments, removeComments } from '../commentSlice';
+import { addComments, removeComments, setCurrentUser } from '../commentSlice';
 import { commentContentSelector } from '~/redux/selectors';
 import { Avatar } from '@mui/material';
 
@@ -29,32 +29,31 @@ function CommentInputForm() {
 
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
-    const [currentUser, setCurrentUser] = useState({ avatar: state.currUser?.avatar, name: state.currUser?.name });
     const [commentInfo, setCommentInfo] = useState('');
 
     useEffect(() => {
-        const getUserInfo = async () => {
-            const response = await fetch('/api/v1/comment/getCommentUserInfo', {
-                method: 'GET',
-                headers: { 'Content-Type': 'application/json' },
-            });
+        // const getUserInfo = async () => {
+        //     const response = await fetch('/api/v1/comment/getCommentUserInfo', {
+        //         method: 'GET',
+        //         headers: { 'Content-Type': 'application/json' },
+        //     });
 
-            if (response.ok) {
-                const res = response.json();
-                return res;
-            }
-            if (response.status === 500) {
-                return undefined;
-            }
-        };
+        //     if (response.ok) {
+        //         const res = response.json();
+        //         return res;
+        //     }
+        //     if (response.status === 500) {
+        //         return undefined;
+        //     }
+        // };
 
-        const fetchUserInfo = async () => {
-            const info = await getUserInfo();
+        // const fetchUserInfo = async () => {
+        //     const info = await getUserInfo();
 
-            setCurrentUser((prev) => ({ ...prev, ...(info || {}) }));
-        };
+        //     setCurrentUser((prev) => ({ ...prev, ...(info || {}) }));
+        // };
 
-        if (!!session) fetchUserInfo();
+        if (!!session) dispatch<any>(setCurrentUser());
     }, [extendedUser]);
 
     // catch socket event
@@ -103,13 +102,13 @@ function CommentInputForm() {
         // client check
         if (content.length <= 0) showAlert('Bình luận không hợp lệ', 'error');
         else if (content.length > 500) showAlert('Bình luận vượt quá độ dài cho phép', 'warning');
-        else if (!extendedUser || !extendedUser?.email) {
+        else if (!extendedUser || !extendedUser.email) {
             dispatch(changeModalShow(true));
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else {
             const comment = {
-                avatar: currentUser.avatar,
-                username: currentUser.name,
+                avatar: state.currUser?.avatar,
+                username: state.currUser?.name,
                 content,
             };
             const newMegIndex = addCommentToList(comment);
@@ -134,9 +133,8 @@ function CommentInputForm() {
                     socket.emit(
                         'comment',
                         JSON.stringify({
-                            comment: { ...comment, _id: res.commentId },
+                            comment: { ...comment, _id: res.commentId, email: extendedUser.email },
                             filmName: state.filmName,
-                            receiver: [],
                         }),
                     );
                 } else {
@@ -161,9 +159,13 @@ function CommentInputForm() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('user-info')}>
-                <Avatar className={cx('avatar')} alt={currentUser.name || 'Người ẩn danh'} src={currentUser.avatar} />
+                <Avatar
+                    className={cx('avatar')}
+                    alt={state.currUser?.name || 'Người ẩn danh'}
+                    src={state.currUser?.avatar}
+                />
                 {/* <ImageCustom className={cx('avatar')} src={currentUser.avatar || images.logo} alt="unknown" /> */}
-                <div className={cx('user-name')}>{currentUser.name || 'Người ẩn danh'}</div>
+                <div className={cx('user-name')}>{state.currUser?.name || 'Người ẩn danh'}</div>
             </div>
             <Form className={cx('form')} onSubmit={(e) => handleSubmit(e)}>
                 <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">

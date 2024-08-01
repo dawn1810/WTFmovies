@@ -59,7 +59,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
 
     const [isExpanded, setIsExpanded] = useState<boolean>(false);
     const [replyShow, setReplyShow] = useState<boolean>(false);
-    const [replyList, setReplyList] = useState<any[]>(replys);
+    // const [replyList, setReplyList] = useState<any[]>(replys);
 
     const handleShowMore = () => isExpanded || setIsExpanded(true);
     const handleShowLess = () => isExpanded && setIsExpanded(false);
@@ -95,17 +95,6 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
 
     const handleReplyShow = () => {
         setReplyShow((prev) => !prev);
-    };
-
-    const addReplyComment = (comment: CommentInterface) => {
-        const today = new Date();
-        const newComment = { ...comment, time: String(today) };
-        setReplyList((prev) => [newComment, ...prev]);
-        return replyList.length + 1;
-    };
-
-    const removeComment = (index: number) => {
-        if (index > -1) setReplyList((prev) => prev.splice(prev.length - index, 1));
     };
 
     return (
@@ -152,21 +141,21 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                         </span>
                     )
                 )}
-                <ContactLine />
-                {replyList.length > 0 && (
+                <ContactLine commentId={comment._id} senderEmail={comment.email} />
+                {comment.replyLength && (
                     <Button
                         className={cx('reply-watch-btn')}
                         variant="text"
                         startIcon={replyShow ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
                         onClick={handleReplyShow}
                     >
-                        {replyList.length + ' phản hồi'}
+                        {comment.replyLength + ' phản hồi'}
                     </Button>
                 )}
-                {replyShow && (
+                {comment.replyList && replyShow && (
                     <>
                         <div className={cx('reply-comment-list')}>
-                            {replyList.map((reply, index) => (
+                            {comment.replyList.map((reply, index) => (
                                 <ReplyComment key={index} comment={reply} />
                             ))}
                         </div>

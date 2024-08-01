@@ -18,7 +18,9 @@ const cx = classNames.bind(style);
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
-const ReplyComment = ({ comment, avt, name }: { comment: CommentInterface; avt?: string; name?: string }) => {
+const ReplyComment = ({ comment }: { comment: CommentInterface }) => {
+    console.log(comment);
+
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
@@ -102,7 +104,7 @@ const ReplyComment = ({ comment, avt, name }: { comment: CommentInterface; avt?:
                         </span>
                     )
                 )}
-                <ContactLine />
+                <ContactLine commentId={comment._id} senderEmail={comment.email} />
             </div>
         </div>
     );

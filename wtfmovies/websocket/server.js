@@ -32,6 +32,10 @@ app.prepare().then(() => {
             socket.broadcast.emit('newComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
+        socket.on('replyComment', (message) => {
+            console.log(message);
+        });
+
         socket.on('disconnect', () => {
             console.log('Client disconnected');
         });

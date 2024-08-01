@@ -42,7 +42,6 @@ export async function POST(request: NextRequest) {
             .updateOne({
                 filter: { searchName: searchName },
                 update: { $push: { comment: ObjectId(result.insertedId) } },
-                upsert: true,
             });
 
         return toJSON({ content: 'Gửi bình luận thành công', commentId: result.insertedId });
