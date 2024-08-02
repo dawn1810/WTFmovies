@@ -18,6 +18,7 @@ import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/c
 import { commentContentSelector } from '~/redux/selectors';
 import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
+import { getCurrReply } from '../commentSlice';
 
 const cx = classNames.bind(style);
 const replys: any[] = [
@@ -94,6 +95,14 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
     };
 
     const handleReplyShow = () => {
+        console.log('aaa');
+
+        dispatch<any>(
+            getCurrReply({
+                commentId: comment._id,
+                skip: comment.replyList?.length || 0,
+            }),
+        );
         setReplyShow((prev) => !prev);
     };
 

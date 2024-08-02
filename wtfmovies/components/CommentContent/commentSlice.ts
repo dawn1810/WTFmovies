@@ -20,9 +20,12 @@ export const commentSlice = createSlice({
             const commentToUpdate = state.comments.find((comment) => comment._id === commentId);
             if (commentToUpdate) {
                 if (!commentToUpdate.replyList) {
-                    commentToUpdate.replyList = [];
+                    commentToUpdate.replyList = [newComment];
+                } else {
+                    commentToUpdate.replyList.unshift(newComment);
                 }
-                commentToUpdate.replyList.unshift(newComment);
+                if (commentToUpdate.replyLength) commentToUpdate.replyLength += 1;
+                else commentToUpdate.replyLength = 1;
             }
         },
         removeReply: (state, action) => {
@@ -30,6 +33,7 @@ export const commentSlice = createSlice({
             const commentToUpdate = state.comments.find((comment) => comment._id === commentId);
             if (commentToUpdate && commentToUpdate.replyList) {
                 commentToUpdate.replyList.splice(index, 1);
+                if (commentToUpdate.replyLength) commentToUpdate.replyLength -= 1;
             }
         },
         // setReplyList: (state, action) => {
@@ -49,9 +53,23 @@ export const commentSlice = createSlice({
         },
     },
     extraReducers: (builder) => {
-        builder.addCase(setCurrentUser.fulfilled, (state, action) => {
-            state.currUser = action.payload as UserInfoInterface;
-        });
+        builder
+            .addCase(setCurrentUser.fulfilled, (state, action) => {
+                state.currUser = action.payload as UserInfoInterface;
+            })
+            .addCase(getCurrReply.fulfilled, (state, action) => {
+                const { commentId, data }: { commentId: string; data: CommentInterface[] } = action.payload;
+
+                const commentToUpdate = state.comments.find((comment) => comment._id === commentId);
+                if (commentToUpdate) {
+                    console.log(data);
+                    if (!commentToUpdate.replyList) {
+                        commentToUpdate.replyList = data;
+                    } else {
+                        commentToUpdate.replyList = commentToUpdate.replyList.concat(data);
+                    }
+                }
+            });
     },
 });
 
@@ -63,6 +81,17 @@ export const setCurrentUser = createAsyncThunk('comment/setCurrentUser', async (
 
     const res = await response.json();
     return res;
+});
+
+export const getCurrReply = createAsyncThunk('comment/getCurrReply', async (body: any) => {
+    const response = await fetch('/api/v1/comment/getMoreReply', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
+
+    const data: any = await response.json();
+    return { data: data.data, commentId: body.commentId };
 });
 
 export const { addComments, removeComments, addReply, removeReply, setCommentContent } = commentSlice.actions;

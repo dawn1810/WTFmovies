@@ -47,14 +47,12 @@ const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmai
     const addCommentToList = (comment: any) => {
         const today = new Date();
         const newComment = { ...comment, time: String(today) };
-        console.log(comment);
         dispatch(addReply({ commentId, newComment }));
         return state.comments.length + 1;
     };
 
     const removeCommentFromList = (index: number) => {
         // index is count from final element to current element
-
         if (index > -1) dispatch(removeReply({ commentId, index: state.comments.length + 1 - index }));
     };
 

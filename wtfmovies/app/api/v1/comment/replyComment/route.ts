@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
             .db('film')
             .collection('comment')
             .insertOne({
-                reply: true,
+                parentId: ObjectId(commentId),
                 email: extendedUser?.email,
                 username: username,
                 avatar: avatar,
@@ -44,7 +44,6 @@ export async function POST(request: NextRequest) {
             .updateOne({
                 filter: { _id: ObjectId(commentId) },
                 update: {
-                    $push: { replyIdList: ObjectId(result.insertedId) },
                     $inc: { replyLength: 1 },
                 },
             });

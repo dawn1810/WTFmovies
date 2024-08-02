@@ -165,7 +165,6 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
 
         if (comments.length > 0 && comments[0].comments.length > 0) {
             //loop to get reply comment
-            console.log(comments[0].comments);
             return comments[0].comments;
         } else {
             return [];
