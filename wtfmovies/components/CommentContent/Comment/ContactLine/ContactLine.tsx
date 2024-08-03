@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
@@ -12,7 +12,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { useViewport } from '~/hooks';
 
 import style from '../Comment.module.scss';
-import { formatNumber } from '~/libs/clientFunc';
+import { formatNumber, generateUUIDv4 } from '~/libs/clientFunc';
 import { useDispatch, useSelector } from 'react-redux';
 import { commentContentSelector } from '~/redux/selectors';
 import { showNotify } from '~/components/Notify/notifySlide';
@@ -24,7 +24,15 @@ import { addReply, removeReply } from '../../commentSlice';
 
 const cx = classNames.bind(style);
 
-const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmail: string }) => {
+const ContactLine = ({
+    commentId,
+    senderEmail,
+    parentId,
+}: {
+    commentId: string;
+    senderEmail: string;
+    parentId?: string;
+}) => {
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
 
@@ -40,6 +48,17 @@ const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmai
     const [reply, setReply] = useState<boolean>(false);
     const [replyValue, setReplyValue] = useState<string>('');
 
+    useEffect(() => {
+        socket.on('newReplyComment', async (message) => {
+            const { comment, msgFilmName } = JSON.parse(message);
+            if (msgFilmName === state.filmName) addCommentToList(comment);
+        });
+
+        return () => {
+            socket.off('newReplyComment');
+        };
+    }, [state.filmName]);
+
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
     };
@@ -47,7 +66,7 @@ const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmai
     const addCommentToList = (comment: any) => {
         const today = new Date();
         const newComment = { ...comment, time: String(today) };
-        dispatch(addReply({ commentId, newComment }));
+        dispatch(addReply({ commentId: comment.parentId, newComment }));
         return state.comments.length + 1;
     };
 
@@ -75,6 +94,7 @@ const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmai
     };
 
     const handleReplyShow = () => {
+        console.log(commentId);
         setReply((prev) => !prev);
     };
 
@@ -94,7 +114,8 @@ const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmai
                 username: state.currUser?.name,
                 content,
             };
-            const newMegIndex = addCommentToList(comment);
+
+            let newMegIndex = -1;
 
             // update to mongodb
             const response = await fetch('/api/v1/comment/replyComment', {
@@ -109,14 +130,22 @@ const ContactLine = ({ commentId, senderEmail }: { commentId: string; senderEmai
             // check for
             if (response.ok) {
                 const res: any = await response.json();
+                const newReply = {
+                    ...comment,
+                    _id: res.commentId,
+                    parentId: parentId || commentId,
+                };
 
                 setReplyValue('');
+
+                newMegIndex = addCommentToList(newReply);
+
                 // send message to another user
                 if (socket.connected) {
                     socket.emit(
                         'replyComment',
                         JSON.stringify({
-                            comment: { ...comment, _id: res.commentId },
+                            comment: newReply,
                             filmName: state.filmName,
                             receiver: senderEmail,
                         }),

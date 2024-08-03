@@ -17,6 +17,7 @@ import { socket } from '~/websocket/websocketService';
 import { addComments, removeComments, setCurrentUser } from '../commentSlice';
 import { commentContentSelector } from '~/redux/selectors';
 import { Avatar } from '@mui/material';
+import { generateUUIDv4 } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 function CommentInputForm() {
@@ -66,25 +67,17 @@ function CommentInputForm() {
         return () => {
             socket.off('newComment');
         };
-    }, []);
+    }, [state.filmName]);
 
     const addCommentToList = (comment: any) => {
         const today = new Date();
         const newComment = { ...comment, time: String(today) };
         dispatch(addComments(newComment));
-        // setCommentList((prev) => [newComment, ...prev]);
         return state.comments.length + 1;
     };
 
     const removeCommentFromList = (index: number) => {
-        // index is count from final element to current element
-
         if (index > -1) dispatch(removeComments(state.comments.length + 1 - index));
-
-        // setCommentList((prev) => {
-        //     const newList = prev.filter((_, idx) => idx !== prev.length - index);
-        //     return newList;
-        // });
     };
 
     const handleInput = (event: any) => {
@@ -106,12 +99,13 @@ function CommentInputForm() {
             dispatch(changeModalShow(true));
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else {
+            let newMegIndex = -1;
+
             const comment = {
                 avatar: state.currUser?.avatar,
                 username: state.currUser?.name,
                 content,
             };
-            const newMegIndex = addCommentToList(comment);
 
             // update to mongodb
             const response = await fetch('/api/v1/comment/sendComment', {
@@ -127,13 +121,21 @@ function CommentInputForm() {
             if (response.ok) {
                 const res: any = await response.json();
 
+                const newComment = {
+                    ...comment,
+                    _id: res.commentId,
+                    email: extendedUser.email,
+                };
+
+                newMegIndex = addCommentToList(newComment);
+
                 setCommentInfo('');
                 // send message to another user
                 if (socket.connected) {
                     socket.emit(
                         'comment',
                         JSON.stringify({
-                            comment: { ...comment, _id: res.commentId, email: extendedUser.email },
+                            comment: newComment,
                             filmName: state.filmName,
                         }),
                     );

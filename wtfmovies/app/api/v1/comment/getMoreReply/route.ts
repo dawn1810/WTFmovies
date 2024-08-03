@@ -1,9 +1,6 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { MongoDate, mongodb, ObjectId, toError, toJSON } from '~/libs/func';
-import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { ExtendedUser } from '~/libs/interfaces';
-import { skip } from 'node:test';
+import { mongodb, ObjectId, toError, toJSON } from '~/libs/func';
 
 interface dataType {
     commentId: string;
@@ -11,10 +8,6 @@ interface dataType {
 }
 
 export async function POST(request: NextRequest) {
-    const session = await auth();
-
-    if (!session) return toError('Lỗi xác thực', 403);
-
     try {
         const { commentId, skip }: dataType = await request.json();
 
@@ -25,6 +18,7 @@ export async function POST(request: NextRequest) {
                 filter: {
                     parentId: ObjectId(commentId),
                 },
+                sort: { time: -1 },
                 limit: 10,
                 skip: skip,
             });

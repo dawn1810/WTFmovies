@@ -304,6 +304,7 @@ export interface FilmReviewInfoInterface {
 
 export interface CommentInterface {
     _id: string;
+    parentId?: string;
     avatar?: string;
     email: string;
     content: string;

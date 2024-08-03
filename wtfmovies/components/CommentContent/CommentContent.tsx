@@ -28,9 +28,9 @@ function CommentContent({
     useEffect(() => {
         dispatch(
             setCommentContent({
-                comments,
-                filmName,
-                currUser,
+                comments: comments,
+                filmName: filmName,
+                currUser: currUser,
             }),
         );
     }, []);

@@ -8,6 +8,7 @@ import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
+import CircularProgress from '@mui/material/CircularProgress';
 import { useDispatch, useSelector } from 'react-redux';
 import { useViewport } from '~/hooks';
 
@@ -15,7 +16,6 @@ import style from './Comment.module.scss';
 import { CommentInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
-import { commentContentSelector } from '~/redux/selectors';
 import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
 import { getCurrReply } from '../commentSlice';
@@ -52,7 +52,6 @@ const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
 const Comment = ({ comment }: { comment: CommentInterface }) => {
-    // const state = useSelector(commentContentSelector);
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
@@ -95,14 +94,18 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
     };
 
     const handleReplyShow = () => {
-        console.log('aaa');
-
-        dispatch<any>(
-            getCurrReply({
-                commentId: comment._id,
-                skip: comment.replyList?.length || 0,
-            }),
-        );
+        if (
+            comment.replyLength &&
+            (!comment.replyList ||
+                (comment.replyList && comment.replyList.length < 10 && comment.replyList.length < comment.replyLength))
+        ) {
+            dispatch<any>(
+                getCurrReply({
+                    commentId: comment._id,
+                    skip: 0,
+                }),
+            );
+        }
         setReplyShow((prev) => !prev);
     };
 
@@ -150,7 +153,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                         </span>
                     )
                 )}
-                <ContactLine commentId={comment._id} senderEmail={comment.email} />
+                <ContactLine commentId={comment._id} senderEmail={comment.email} parentId={comment.parentId} />
                 {comment.replyLength && (
                     <Button
                         className={cx('reply-watch-btn')}
@@ -168,14 +171,16 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                                 <ReplyComment key={index} comment={reply} />
                             ))}
                         </div>
-                        <Button
-                            className={cx('reply-watch-btn', 'more-cmt-btn')}
-                            variant="text"
-                            startIcon={<SubdirectoryArrowRightIcon />}
-                            // onClick={handleReplyShow}
-                        >
-                            Hiễn thị thêm phản hồi
-                        </Button>
+                        {comment.replyLength && comment.replyLength > comment.replyList.length && (
+                            <Button
+                                className={cx('reply-watch-btn', 'more-cmt-btn')}
+                                variant="text"
+                                startIcon={<SubdirectoryArrowRightIcon />}
+                                // onClick={handleReplyShow}
+                            >
+                                Hiễn thị thêm phản hồi
+                            </Button>
+                        )}
                     </>
                 )}
             </div>

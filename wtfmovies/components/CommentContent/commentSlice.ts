@@ -17,6 +17,7 @@ export const commentSlice = createSlice({
         },
         addReply: (state, action) => {
             const { commentId, newComment } = action.payload;
+
             const commentToUpdate = state.comments.find((comment) => comment._id === commentId);
             if (commentToUpdate) {
                 if (!commentToUpdate.replyList) {
@@ -36,16 +37,6 @@ export const commentSlice = createSlice({
                 if (commentToUpdate.replyLength) commentToUpdate.replyLength -= 1;
             }
         },
-        // setReplyList: (state, action) => {
-        //     const commentId = action.payload.commentId; // Assuming you have a way to determine the specific comment
-        //     const commentToUpdate = state.comments.find((comment) => comment._id === commentId);
-
-        //     if (commentToUpdate) {
-        //         commentToUpdate.replyList = action.payload;
-        //     } else {
-        //         // Handle the case where the comment does not exist
-        //     }
-        // },
         setCommentContent: (state, action) => {
             state.comments = action.payload.comments;
             state.filmName = action.payload.filmName;
@@ -62,7 +53,6 @@ export const commentSlice = createSlice({
 
                 const commentToUpdate = state.comments.find((comment) => comment._id === commentId);
                 if (commentToUpdate) {
-                    console.log(data);
                     if (!commentToUpdate.replyList) {
                         commentToUpdate.replyList = data;
                     } else {

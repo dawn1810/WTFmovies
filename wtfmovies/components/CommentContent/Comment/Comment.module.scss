@@ -141,7 +141,7 @@
 /** Mobile layout **/
 @media screen and (max-width: 1024px) {
     .wrapper {
-        gap: 18px;
+        gap: 10px;
         flex-direction: column;
         align-items: flex-start;
 
@@ -166,5 +166,21 @@
                 text-align: start;
             }
         }
+
+        .content {
+            margin-left: 20px;
+
+            .reply-comment-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+
+        .reply-comment {
+            flex-direction: column;
+            gap: 10px;
+        }
+
     }
 }

@@ -27,16 +27,20 @@ app.prepare().then(() => {
         });
 
         socket.on('comment', (message) => {
+            console.log(message);
             const data = JSON.parse(message);
-            // io.in(message.receiver).emit('notify', message.comment);
             socket.broadcast.emit('newComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
         socket.on('replyComment', (message) => {
             console.log(message);
+            const data = JSON.parse(message);
+            io.in(message.receiver).emit('notify', message.comment);
+            socket.broadcast.emit('newReplyComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
         socket.on('disconnect', () => {
+            // socket.leave(email);
             console.log('Client disconnected');
         });
     });
