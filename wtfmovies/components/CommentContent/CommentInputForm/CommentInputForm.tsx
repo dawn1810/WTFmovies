@@ -14,7 +14,7 @@ import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { socket } from '~/websocket/websocketService';
-import { addComments, removeComments, setCurrentUser } from '../commentSlice';
+import { addComments, addReply, removeComments, setCurrentUser } from '../commentSlice';
 import { commentContentSelector } from '~/redux/selectors';
 import { Avatar } from '@mui/material';
 import { generateUUIDv4 } from '~/libs/clientFunc';
@@ -64,8 +64,14 @@ function CommentInputForm() {
             if (msgFilmName === state.filmName) addCommentToList(comment);
         });
 
+        socket.on('newReplyComment', async (message) => {
+            const { comment, msgFilmName } = JSON.parse(message);
+            if (msgFilmName === state.filmName) addCommentToReply(comment);
+        });
+
         return () => {
             socket.off('newComment');
+            socket.off('newReplyComment');
         };
     }, [state.filmName]);
 
@@ -78,6 +84,13 @@ function CommentInputForm() {
 
     const removeCommentFromList = (index: number) => {
         if (index > -1) dispatch(removeComments(state.comments.length + 1 - index));
+    };
+
+    const addCommentToReply = (comment: any) => {
+        const today = new Date();
+        const newComment = { ...comment, time: String(today) };
+        dispatch(addReply({ commentId: comment.parentId, newComment }));
+        return state.comments.length + 1;
     };
 
     const handleInput = (event: any) => {

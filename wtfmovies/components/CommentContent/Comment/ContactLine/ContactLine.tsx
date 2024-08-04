@@ -48,17 +48,6 @@ const ContactLine = ({
     const [reply, setReply] = useState<boolean>(false);
     const [replyValue, setReplyValue] = useState<string>('');
 
-    useEffect(() => {
-        socket.on('newReplyComment', async (message) => {
-            const { comment, msgFilmName } = JSON.parse(message);
-            if (msgFilmName === state.filmName) addCommentToList(comment);
-        });
-
-        return () => {
-            socket.off('newReplyComment');
-        };
-    }, [state.filmName]);
-
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
     };
@@ -94,7 +83,7 @@ const ContactLine = ({
     };
 
     const handleReplyShow = () => {
-        console.log(commentId);
+        setReplyValue(parentId ? '@' + senderEmail + ' ' : '');
         setReply((prev) => !prev);
     };
 
@@ -122,7 +111,7 @@ const ContactLine = ({
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    commentId,
+                    commentId: parentId || commentId,
                     ...comment,
                 }),
             });

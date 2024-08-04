@@ -35,6 +35,7 @@ import Notify from '~/components/Notify';
 import { Badge, IconButton } from '@mui/material';
 import FeedbackDialog from '~/components/FeedbackDialog';
 import { socket } from '~/websocket/websocketService';
+import { showNotify } from '~/components/Notify/notifySlide';
 
 const cx = classNames.bind(styles);
 
@@ -170,11 +171,19 @@ function Header({
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
 
+        socket.on('commentNotify', async (message) => {
+            showAlert(`${message} nhắc đến bạn trong một bình luận`, 'info');
+        });
+
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
         };
     }, []);
+
+    const showAlert = (content: string, type: any) => {
+        dispatch(showNotify({ content, type, open: true }));
+    };
 
     const handleSearchClose = () => setSearchShow(false);
     const handleSearchShow = () => setSearchShow(true);

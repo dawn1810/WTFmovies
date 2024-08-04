@@ -102,11 +102,21 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
             dispatch<any>(
                 getCurrReply({
                     commentId: comment._id,
-                    skip: 0,
+                    skip: comment.replyList?.length || 0,
                 }),
             );
         }
         setReplyShow((prev) => !prev);
+    };
+
+    const handleMoreReply = () => {
+        if (comment.replyList && comment.replyLength && comment.replyList.length < comment.replyLength)
+            dispatch<any>(
+                getCurrReply({
+                    commentId: comment._id,
+                    skip: comment.replyList?.length,
+                }),
+            );
     };
 
     return (
@@ -176,7 +186,7 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                                 className={cx('reply-watch-btn', 'more-cmt-btn')}
                                 variant="text"
                                 startIcon={<SubdirectoryArrowRightIcon />}
-                                // onClick={handleReplyShow}
+                                onClick={handleMoreReply}
                             >
                                 Hiễn thị thêm phản hồi
                             </Button>

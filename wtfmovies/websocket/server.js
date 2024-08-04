@@ -27,15 +27,13 @@ app.prepare().then(() => {
         });
 
         socket.on('comment', (message) => {
-            console.log(message);
             const data = JSON.parse(message);
             socket.broadcast.emit('newComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
         socket.on('replyComment', (message) => {
-            console.log(message);
             const data = JSON.parse(message);
-            io.in(message.receiver).emit('notify', message.comment);
+            io.in(data.receiver).emit('commentNotify', JSON.stringify(data.comment.username));
             socket.broadcast.emit('newReplyComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
