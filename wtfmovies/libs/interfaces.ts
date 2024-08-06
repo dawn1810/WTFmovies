@@ -138,6 +138,8 @@ export interface reduxStateInterface {
         comments: CommentInterface[];
         filmName: string;
         currUser: ExtendedUser | undefined;
+        loading: boolean;
+        full: boolean;
     };
 }
 

@@ -150,6 +150,7 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
                                 { $match: { status: true } }, // This line includes only documents with status true
                                 { $project: { replyIdList: 0 } },
                                 { $sort: { time: -1 } },
+                                { $limit: 10 },
                             ],
                             as: 'commentDetails',
                         },

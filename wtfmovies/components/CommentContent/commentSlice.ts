@@ -7,6 +7,8 @@ export const commentSlice = createSlice({
         comments: [] as CommentInterface[],
         filmName: '',
         currUser: undefined as UserInfoInterface | undefined,
+        loading: true,
+        full: false,
     },
     reducers: {
         addComments: (state, action) => {
@@ -41,6 +43,7 @@ export const commentSlice = createSlice({
             state.comments = action.payload.comments;
             state.filmName = action.payload.filmName;
             state.currUser = action.payload.currUser;
+            state.loading = false;
         },
     },
     extraReducers: (builder) => {
@@ -59,6 +62,15 @@ export const commentSlice = createSlice({
                         commentToUpdate.replyList = commentToUpdate.replyList.concat(data);
                     }
                 }
+            })
+            .addCase(getMoreComments.pending, (state, action) => {
+                state.loading = true;
+            })
+            .addCase(getMoreComments.fulfilled, (state, action) => {
+                const data = action.payload;
+                if (data.length === 0) state.full = true;
+                state.comments = state.comments.concat(action.payload);
+                state.loading = false;
             });
     },
 });
@@ -82,6 +94,17 @@ export const getCurrReply = createAsyncThunk('comment/getCurrReply', async (body
 
     const data: any = await response.json();
     return { data: data.data, commentId: body.commentId };
+});
+
+export const getMoreComments = createAsyncThunk('comment/getMoreComments', async (body: any) => {
+    const response = await fetch('/api/v1/comment/getMoreComment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
+
+    const data: any = await response.json();
+    return data.data;
 });
 
 export const { addComments, removeComments, addReply, removeReply, setCommentContent } = commentSlice.actions;

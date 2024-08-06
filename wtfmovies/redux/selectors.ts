@@ -5,6 +5,8 @@ import { reduxStateInterface } from '~/libs/interfaces';
 export const commentsSelector = (state: reduxStateInterface) => state.comment.comments;
 export const filmNameSelector = (state: reduxStateInterface) => state.comment.filmName;
 export const currUserSelector = (state: reduxStateInterface) => state.comment.currUser;
+export const commentLoadSelector = (state: reduxStateInterface) => state.comment.loading;
+export const commentFullSelector = (state: reduxStateInterface) => state.comment.full;
 
 //feedback
 export const fbDialogSelector = (state: reduxStateInterface) => state.header.fbDialog;
@@ -251,9 +253,13 @@ export const commentContentSelector = createSelector(
     commentsSelector,
     filmNameSelector,
     currUserSelector,
-    (comments, filmName, currUser) => ({
+    commentLoadSelector,
+    commentFullSelector,
+    (comments, filmName, currUser, loading, full) => ({
         comments,
         filmName,
         currUser,
+        loading,
+        full,
     }),
 );

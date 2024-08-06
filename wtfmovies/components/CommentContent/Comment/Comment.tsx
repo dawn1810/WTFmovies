@@ -9,6 +9,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import CircularProgress from '@mui/material/CircularProgress';
+import Box from '@mui/material/Box';
 import { useDispatch, useSelector } from 'react-redux';
 import { useViewport } from '~/hooks';
 
@@ -174,25 +175,30 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                         {comment.replyLength + ' phản hồi'}
                     </Button>
                 )}
-                {comment.replyList && replyShow && (
-                    <>
-                        <div className={cx('reply-comment-list')}>
-                            {comment.replyList.map((reply, index) => (
-                                <ReplyComment key={index} comment={reply} />
-                            ))}
-                        </div>
-                        {comment.replyLength && comment.replyLength > comment.replyList.length && (
-                            <Button
-                                className={cx('reply-watch-btn', 'more-cmt-btn')}
-                                variant="text"
-                                startIcon={<SubdirectoryArrowRightIcon />}
-                                onClick={handleMoreReply}
-                            >
-                                Hiễn thị thêm phản hồi
-                            </Button>
-                        )}
-                    </>
-                )}
+                {replyShow &&
+                    (comment.replyList ? (
+                        <>
+                            <div className={cx('reply-comment-list')}>
+                                {comment.replyList.map((reply, index) => (
+                                    <ReplyComment key={index} comment={reply} />
+                                ))}
+                            </div>
+                            {comment.replyLength && comment.replyLength > comment.replyList.length && (
+                                <Button
+                                    className={cx('reply-watch-btn', 'more-cmt-btn')}
+                                    variant="text"
+                                    startIcon={<SubdirectoryArrowRightIcon />}
+                                    onClick={handleMoreReply}
+                                >
+                                    Hiễn thị thêm phản hồi
+                                </Button>
+                            )}
+                        </>
+                    ) : (
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress />
+                        </Box>
+                    ))}
             </div>
         </div>
     );
