@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
@@ -9,7 +9,7 @@ import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
-import { useViewport } from '~/hooks';
+import { useDebounce, useViewport } from '~/hooks';
 
 import style from '../Comment.module.scss';
 import { formatNumber, generateUUIDv4 } from '~/libs/clientFunc';
@@ -42,11 +42,69 @@ const ContactLine = ({
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
+    const isFirstRender = useRef(true);
+
     const [likeCount, setLikeCount] = useState<number>(0);
     const [like, setLike] = useState<boolean>(false);
     const [unlike, setUnlike] = useState<boolean>(false);
     const [reply, setReply] = useState<boolean>(false);
     const [replyValue, setReplyValue] = useState<string>('');
+    const [loading, setLoading] = useState(false);
+
+    const likeDebounce = useDebounce(like, 500);
+    const unlikeDebounce = useDebounce(unlike, 500);
+
+    useEffect(() => {
+        if (isFirstRender.current) return;
+
+        const fetchApi = async () => {
+            setLoading(true);
+            const response = await fetch('/api/v1/comment/likeComment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ commentId, like: likeDebounce, filmName: state.filmName }),
+            });
+
+            if (response.ok) {
+                setLoading(false);
+            } else if (response.status === 400) {
+                showAlert('Yêu thích bình luận thất bại!', 'error');
+            } else if (response.status === 403) {
+                dispatch(changeModalShow(true));
+                showAlert('Xác thực thất bại, đăng nhập để yêu thích bình luận này', 'info');
+            } else if (response.status === 500) {
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+        };
+
+        fetchApi();
+    }, [likeDebounce]);
+
+    useEffect(() => {
+        if (isFirstRender.current) return;
+
+        const fetchApi = async () => {
+            setLoading(true);
+            const response = await fetch('/api/v1/comment/unlikeComment', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ commentId, unlike: unlikeDebounce, filmName: state.filmName }),
+            });
+
+            if (response.ok) {
+                setLoading(false);
+            } else if (response.status === 400) {
+                showAlert('Yêu thích bình luận thất bại!', 'error');
+            } else if (response.status === 403) {
+                dispatch(changeModalShow(true));
+                showAlert('Xác thực thất bại, đăng nhập để yêu thích bình luận này', 'info');
+            } else if (response.status === 500) {
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+        };
+
+        fetchApi();
+    }, [unlikeDebounce]);
 
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
@@ -64,13 +122,15 @@ const ContactLine = ({
         if (index > -1) dispatch(removeReply({ commentId, index: state.comments.length + 1 - index }));
     };
 
-    const handleLike = () => {
+    const handleLike = async () => {
+        isFirstRender.current = false;
         setLike((prev) => !prev);
         setLikeCount((prev) => (like ? prev - 1 : prev + 1));
         if (unlike) setUnlike(false);
     };
 
     const handleUnlikeLike = () => {
+        isFirstRender.current = false;
         setUnlike((prev) => !prev);
         if (like) {
             setLikeCount((prev) => prev - 1);
@@ -163,12 +223,12 @@ const ContactLine = ({
             <div className={cx('contact-line')}>
                 <div className={cx('btn-list')}>
                     <div className="like-btn">
-                        <IconButton onClick={handleLike} size="small">
+                        <IconButton onClick={handleLike} size="small" disabled={loading}>
                             {like ? <ThumbUpIcon /> : <ThumbUpOutlinedIcon />}
                         </IconButton>
                         {likeCount > 0 && <span className="lke-count">{formatNumber(likeCount)}</span>}
                     </div>
-                    <IconButton onClick={handleUnlikeLike} size="small">
+                    <IconButton onClick={handleUnlikeLike} size="small" disabled={loading}>
                         {unlike ? <ThumbDownIcon /> : <ThumbDownOutlinedIcon />}
                     </IconButton>
                 </div>

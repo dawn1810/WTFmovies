@@ -13,11 +13,13 @@ import { Metadata, ResolvingMetadata } from 'next/types';
 
 const cx = classNames.bind(style);
 
-export async function generateMetadata({ params }: { params: { movie: string } }, parent: ResolvingMetadata): Promise<Metadata> {
+export async function generateMetadata(
+    { params }: { params: { movie: string } },
+    parent: ResolvingMetadata,
+): Promise<Metadata> {
     //get Param
     const { movie } = params;
     const filmReviewInfo = await getFilmReviewInfo(movie);
-
 
     return {
         title: `Thông tin phim ${filmReviewInfo?.name}`,
@@ -33,6 +35,7 @@ async function Review({ params }: { params: { movie: string } }) {
     if (!filmReviewInfo || !proposeListFilms) return NotFound();
 
     const commentsFilm = await getAllFilmsComment(movie);
+    // const likeCommentList = await getAllFilmsComment(movie);
     const commentTabs = [
         {
             title: '#BÌNH LUẬN',

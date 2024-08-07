@@ -1,5 +1,6 @@
 import { mongodb } from '~/libs/func';
-import { CommentInterface, FilmInfoInterface } from '../interfaces';
+import { CommentInterface, ExtendedUser, FilmInfoInterface } from '../interfaces';
+import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInterface> => {
     try {
@@ -133,7 +134,7 @@ interface CommentsFilmsInterface {
 
 export const getAllFilmsComment = async (filmName: string): Promise<CommentInterface[]> => {
     try {
-        const comments: any[] = await mongodb()
+        const comments: CommentsFilmsInterface[] = await mongodb()
             .db('film')
             .collection('information')
             .aggregate({
@@ -172,6 +173,32 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
         }
     } catch (err) {
         console.log('😨😨😨 error at review/getAllFilmsComment function  : ', err);
+        return [];
+    }
+};
+
+export const getUserLikeComment = async (): Promise<any> => {
+    try {
+        const session = await auth();
+
+        if (!session) return [];
+
+        const extendedUser: ExtendedUser | undefined = session?.user;
+
+        const likeList: any = await mongodb()
+            .db('user')
+            .collection('information')
+            .findOne({
+                filter: { email: extendedUser?.email },
+                projection: {
+                    _id: 0,
+                    likeCmt: 1,
+                },
+            });
+
+        return likeList.likeCmt;
+    } catch (err) {
+        console.log('😨😨😨 error at review/getUserLikeComment function: ', err);
         return [];
     }
 };
