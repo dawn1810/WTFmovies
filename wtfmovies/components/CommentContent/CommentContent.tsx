@@ -4,7 +4,7 @@ import classNames from 'classnames/bind';
 import style from './CommentContent.module.scss';
 import CommentInputForm from './CommentInputForm';
 import Comment from './Comment';
-import { CommentInterface, UserInfoInterface } from '~/libs/interfaces';
+import { CommentInterface, LikeCommentListInterface, UserInfoInterface } from '~/libs/interfaces';
 import { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { commentContentSelector } from '~/redux/selectors';
@@ -18,10 +18,12 @@ function CommentContent({
     comments,
     filmName,
     currUser,
+    likeList,
 }: {
     comments: CommentInterface[];
     filmName: string;
     currUser?: UserInfoInterface | undefined;
+    likeList?: LikeCommentListInterface;
 }) {
     const state = useSelector(commentContentSelector);
     const dispatch = useDispatch();
@@ -30,9 +32,10 @@ function CommentContent({
     useEffect(() => {
         dispatch(
             setCommentContent({
-                comments: comments,
-                filmName: filmName,
-                currUser: currUser,
+                comments,
+                filmName,
+                currUser,
+                likeList,
             }),
         );
     }, []);
@@ -42,8 +45,11 @@ function CommentContent({
         if (bottom && !state.full && !state.loading && state.comments.length >= 10) {
             dispatch<any>(
                 getMoreComments({
-                    filmName,
-                    skip: state.comments.length,
+                    body: {
+                        filmName,
+                        skip: state.comments.length,
+                    },
+                    likeList,
                 }),
             );
         }
@@ -54,7 +60,7 @@ function CommentContent({
             <CommentInputForm />
             <div className={cx('comment-list')} onScroll={handleScroll}>
                 {state.comments.map((comment, index) => (
-                    <Comment key={index} comment={comment} />
+                    <Comment key={index} comment={comment} likeList={likeList} />
                 ))}
                 {state.loading && (
                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>

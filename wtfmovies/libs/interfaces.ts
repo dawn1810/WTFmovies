@@ -189,6 +189,7 @@ export interface MongoUpdate {
     upsertedId: string;
 }
 
+// film watch
 export interface FilmInfo {
     _id?: ObjectMongo;
     film_id?: string;
@@ -304,6 +305,7 @@ export interface FilmReviewInfoInterface {
     info: { title: string; info?: string[] | string | number[] | number; type?: string; category?: string }[];
 }
 
+// comment
 export interface CommentInterface {
     _id: string;
     parentId?: string;
@@ -315,6 +317,15 @@ export interface CommentInterface {
     username: string;
     replyList?: CommentInterface[];
     replyLength?: number;
+    beLike?: boolean;
+    beUnlike?: boolean;
+    like?: number;
+    unlike?: number;
+}
+
+export interface LikeCommentListInterface {
+    likeComments?: string[];
+    unlikeComments?: string[];
 }
 
 export interface OptionInterface {

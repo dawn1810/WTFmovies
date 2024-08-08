@@ -102,7 +102,16 @@ const ReplyComment = ({ comment }: { comment: CommentInterface }) => {
                         </span>
                     )
                 )}
-                <ContactLine commentId={comment._id} senderEmail={comment.email} parentId={comment.parentId} />
+                <ContactLine
+                    commentInfo={{
+                        commentId: comment._id,
+                        senderEmail: comment.email,
+                        parentId: comment.parentId,
+                        beLike: comment.beLike,
+                        beUnlike: comment.beUnlike,
+                        likeNum: comment.like,
+                    }}
+                />
             </div>
         </div>
     );

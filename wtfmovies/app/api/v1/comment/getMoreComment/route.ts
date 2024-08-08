@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
                             pipeline: [
                                 { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
                                 { $match: { status: true } }, // This line includes only documents with status true
-                                { $project: { replyIdList: 0 } },
+                                { $project: { unlike: 0 } },
                                 { $sort: { time: -1 } },
                                 { $skip: skip },
                                 { $limit: 10 },

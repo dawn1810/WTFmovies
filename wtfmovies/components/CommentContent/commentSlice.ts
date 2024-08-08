@@ -40,9 +40,19 @@ export const commentSlice = createSlice({
             }
         },
         setCommentContent: (state, action) => {
-            state.comments = action.payload.comments;
-            state.filmName = action.payload.filmName;
-            state.currUser = action.payload.currUser;
+            const { comments, filmName, currUser, likeList } = action.payload;
+            const newComments = comments.map((e: CommentInterface) => {
+                if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
+                    return { ...e, beLike: true }; // Update the comment with 'beLike' property
+                } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
+                    return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+                }
+                return e; // Return the original comment if no update is needed
+            });
+
+            state.comments = newComments;
+            state.filmName = filmName;
+            state.currUser = currUser;
             state.loading = false;
         },
     },
@@ -69,7 +79,7 @@ export const commentSlice = createSlice({
             .addCase(getMoreComments.fulfilled, (state, action) => {
                 const data = action.payload;
                 if (data.length === 0) state.full = true;
-                state.comments = state.comments.concat(action.payload);
+                state.comments = state.comments.concat(data);
                 state.loading = false;
             });
     },
@@ -85,7 +95,8 @@ export const setCurrentUser = createAsyncThunk('comment/setCurrentUser', async (
     return res;
 });
 
-export const getCurrReply = createAsyncThunk('comment/getCurrReply', async (body: any) => {
+export const getCurrReply = createAsyncThunk('comment/getCurrReply', async (prob: { body: any; likeList: any }) => {
+    const { body, likeList } = prob;
     const response = await fetch('/api/v1/comment/getMoreReply', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -93,19 +104,44 @@ export const getCurrReply = createAsyncThunk('comment/getCurrReply', async (body
     });
 
     const data: any = await response.json();
-    return { data: data.data, commentId: body.commentId };
-});
 
-export const getMoreComments = createAsyncThunk('comment/getMoreComments', async (body: any) => {
-    const response = await fetch('/api/v1/comment/getMoreComment', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(body),
+    // update beLike and beUnlike
+    const result = data.data.map((e: CommentInterface) => {
+        if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
+            return { ...e, beLike: true }; // Update the comment with 'beLike' property
+        } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
+            return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+        }
+        return e; // Return the original comment if no update is needed
     });
 
-    const data: any = await response.json();
-    return data.data;
+    return { data: result, commentId: body.commentId };
 });
+
+export const getMoreComments = createAsyncThunk(
+    'comment/getMoreComments',
+    async (prob: { body: any; likeList: any }) => {
+        const { body, likeList } = prob;
+        const response = await fetch('/api/v1/comment/getMoreComment', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body),
+        });
+
+        const data: any = await response.json();
+
+        // update beLike and beUnlike
+        const result = data.data.map((e: CommentInterface) => {
+            if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
+                return { ...e, beLike: true }; // Update the comment with 'beLike' property
+            } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
+                return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+            }
+            return e; // Return the original comment if no update is needed
+        });
+        return result;
+    },
+);
 
 export const { addComments, removeComments, addReply, removeReply, setCommentContent } = commentSlice.actions;
 

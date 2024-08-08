@@ -6,7 +6,7 @@ import TabBox from '~/components/TabsBox/TabsBox';
 import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 // import DefaultLayout from '~/layouts/DefaultLayout';
-import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
+import { getAllFilmsComment, getFilmReviewInfo, getUserLikeComment } from '~/libs/getData/review';
 import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import NotFound from '~/app/(root)/not-found';
 import { Metadata, ResolvingMetadata } from 'next/types';
@@ -35,12 +35,20 @@ async function Review({ params }: { params: { movie: string } }) {
     if (!filmReviewInfo || !proposeListFilms) return NotFound();
 
     const commentsFilm = await getAllFilmsComment(movie);
-    // const likeCommentList = await getAllFilmsComment(movie);
+    const likeCommentList = await getUserLikeComment(movie);
+
     const commentTabs = [
         {
             title: '#BÌNH LUẬN',
             eventKey: 'comment',
-            content: <CommentContent comments={commentsFilm} currUser={currentUser} filmName={movie} />,
+            content: (
+                <CommentContent
+                    comments={commentsFilm}
+                    currUser={currentUser}
+                    filmName={movie}
+                    likeList={likeCommentList}
+                />
+            ),
         },
     ];
 

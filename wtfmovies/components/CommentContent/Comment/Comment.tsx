@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useViewport } from '~/hooks';
 
 import style from './Comment.module.scss';
-import { CommentInterface } from '~/libs/interfaces';
+import { CommentInterface, LikeCommentListInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
 import ContactLine from './ContactLine';
@@ -52,7 +52,7 @@ const replys: any[] = [
 const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
-const Comment = ({ comment }: { comment: CommentInterface }) => {
+const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: LikeCommentListInterface }) => {
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
@@ -102,8 +102,11 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
         ) {
             dispatch<any>(
                 getCurrReply({
-                    commentId: comment._id,
-                    skip: comment.replyList?.length || 0,
+                    body: {
+                        commentId: comment._id,
+                        skip: comment.replyList?.length || 0,
+                    },
+                    likeList,
                 }),
             );
         }
@@ -114,8 +117,11 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
         if (comment.replyList && comment.replyLength && comment.replyList.length < comment.replyLength)
             dispatch<any>(
                 getCurrReply({
-                    commentId: comment._id,
-                    skip: comment.replyList?.length,
+                    body: {
+                        commentId: comment._id,
+                        skip: comment.replyList?.length,
+                    },
+                    likeList,
                 }),
             );
     };
@@ -164,7 +170,16 @@ const Comment = ({ comment }: { comment: CommentInterface }) => {
                         </span>
                     )
                 )}
-                <ContactLine commentId={comment._id} senderEmail={comment.email} parentId={comment.parentId} />
+                <ContactLine
+                    commentInfo={{
+                        commentId: comment._id,
+                        senderEmail: comment.email,
+                        parentId: comment.parentId,
+                        beLike: comment.beLike,
+                        beUnlike: comment.beUnlike,
+                        likeNum: comment.like,
+                    }}
+                />
                 {comment.replyLength && (
                     <Button
                         className={cx('reply-watch-btn')}

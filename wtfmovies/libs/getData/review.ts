@@ -1,5 +1,5 @@
 import { mongodb } from '~/libs/func';
-import { CommentInterface, ExtendedUser, FilmInfoInterface } from '../interfaces';
+import { CommentInterface, ExtendedUser, FilmInfoInterface, LikeCommentListInterface } from '../interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInterface> => {
@@ -149,7 +149,7 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
                             pipeline: [
                                 { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
                                 { $match: { status: true } }, // This line includes only documents with status true
-                                { $project: { replyIdList: 0 } },
+                                { $project: { unlike: 0 } },
                                 { $sort: { time: -1 } },
                                 { $limit: 10 },
                             ],
@@ -177,11 +177,11 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
     }
 };
 
-export const getUserLikeComment = async (): Promise<any> => {
+export const getUserLikeComment = async (filmName: string): Promise<LikeCommentListInterface | undefined> => {
     try {
         const session = await auth();
 
-        if (!session) return [];
+        if (!session) return undefined;
 
         const extendedUser: ExtendedUser | undefined = session?.user;
 
@@ -196,10 +196,10 @@ export const getUserLikeComment = async (): Promise<any> => {
                 },
             });
 
-        return likeList.likeCmt;
+        return likeList.likeCmt[filmName];
     } catch (err) {
         console.log('😨😨😨 error at review/getUserLikeComment function: ', err);
-        return [];
+        return undefined;
     }
 };
 

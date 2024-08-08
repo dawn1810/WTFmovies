@@ -12,7 +12,7 @@ import ThumbDownIcon from '@mui/icons-material/ThumbDown';
 import { useDebounce, useViewport } from '~/hooks';
 
 import style from '../Comment.module.scss';
-import { formatNumber, generateUUIDv4 } from '~/libs/clientFunc';
+import { formatNumber } from '~/libs/clientFunc';
 import { useDispatch, useSelector } from 'react-redux';
 import { commentContentSelector } from '~/redux/selectors';
 import { showNotify } from '~/components/Notify/notifySlide';
@@ -25,16 +25,20 @@ import { addReply, removeReply } from '../../commentSlice';
 const cx = classNames.bind(style);
 
 const ContactLine = ({
-    commentId,
-    senderEmail,
-    parentId,
+    commentInfo,
 }: {
-    commentId: string;
-    senderEmail: string;
-    parentId?: string;
+    commentInfo: {
+        commentId: string;
+        senderEmail: string;
+        parentId?: string;
+        beLike?: boolean;
+        beUnlike?: boolean;
+        likeNum?: number;
+    };
 }) => {
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
+    const { commentId, senderEmail, parentId, beLike, beUnlike, likeNum } = commentInfo;
 
     const state = useSelector(commentContentSelector);
     const dispatch = useDispatch();
@@ -43,10 +47,11 @@ const ContactLine = ({
     const isMobile = viewPort.width <= 1024;
 
     const isFirstRender = useRef(true);
+    // const usetoLike = state.likeList.likeComments ? state.likeList.likeComments.include(extendedUser?.email) : false;
 
-    const [likeCount, setLikeCount] = useState<number>(0);
-    const [like, setLike] = useState<boolean>(false);
-    const [unlike, setUnlike] = useState<boolean>(false);
+    const [likeCount, setLikeCount] = useState<number>(likeNum || 0);
+    const [like, setLike] = useState<boolean>(beLike || false);
+    const [unlike, setUnlike] = useState<boolean>(beUnlike || false);
     const [reply, setReply] = useState<boolean>(false);
     const [replyValue, setReplyValue] = useState<string>('');
     const [loading, setLoading] = useState(false);

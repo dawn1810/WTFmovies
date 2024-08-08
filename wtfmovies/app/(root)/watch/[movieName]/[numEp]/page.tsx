@@ -4,7 +4,7 @@ import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
-import { getAllFilmsComment, getFilmReviewInfo } from '~/libs/getData/review';
+import { getAllFilmsComment, getFilmReviewInfo, getUserLikeComment } from '~/libs/getData/review';
 import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
 
@@ -53,6 +53,7 @@ export default async function Watch({ params }: Props) {
     //for film comment
     const currentUser = await getCurrentUserInfo();
     const commentsFilm = await getAllFilmsComment(movieName);
+    const likeCommentList = await getUserLikeComment(movieName);
 
     //get info for component
     const filmData = await getFilmInfoWithCache(movieName, numEp);
@@ -93,7 +94,14 @@ export default async function Watch({ params }: Props) {
         {
             title: '#BÌNH LUẬN',
             eventKey: 'comment',
-            content: <CommentContent comments={commentsFilm} filmName={movieName} currUser={currentUser} />,
+            content: (
+                <CommentContent
+                    comments={commentsFilm}
+                    filmName={movieName}
+                    currUser={currentUser}
+                    likeList={likeCommentList}
+                />
+            ),
         },
         {
             title: '#THÔNG TIN PHIM',
