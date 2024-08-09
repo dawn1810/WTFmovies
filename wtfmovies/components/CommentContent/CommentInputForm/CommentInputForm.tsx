@@ -31,6 +31,7 @@ function CommentInputForm() {
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
     const [commentInfo, setCommentInfo] = useState('');
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         // const getUserInfo = async () => {
@@ -112,6 +113,7 @@ function CommentInputForm() {
             dispatch(changeModalShow(true));
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else {
+            setLoading(true);
             let newMegIndex = -1;
 
             const comment = {
@@ -168,6 +170,7 @@ function CommentInputForm() {
                 }
                 removeCommentFromList(newMegIndex);
             }
+            setLoading(false);
         }
     };
 
@@ -197,7 +200,7 @@ function CommentInputForm() {
                     />
                 </Form.Group>
                 <Form.Group className={`mb-3 ${cx('form-bottom')}`} controlId="exampleForm.ControlInput1">
-                    <Button primary leftIcon={<SendOutlinedIcon />} onClick={handleSubmit}>
+                    <Button primary disabled={loading} leftIcon={<SendOutlinedIcon />} onClick={handleSubmit}>
                         Gửi
                     </Button>
                 </Form.Group>

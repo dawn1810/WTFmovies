@@ -10,16 +10,18 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useViewport } from '~/hooks';
 
 import style from './Comment.module.scss';
-import { CommentInterface, LikeCommentListInterface } from '~/libs/interfaces';
+import { CommentInterface, ExtendedUser, LikeCommentListInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
 import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
 import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
 import { getCurrReply } from '../commentSlice';
+import ButtonMenu from '../ButtonMenu';
+import { useSession } from 'next-auth/react';
 
 const cx = classNames.bind(style);
 const replys: any[] = [
@@ -53,6 +55,9 @@ const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
 const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: LikeCommentListInterface }) => {
+    const { data: session } = useSession();
+    const extendedUser: ExtendedUser | undefined = session?.user;
+
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
@@ -87,12 +92,6 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
     };
 
     const shownComment = isExpanded ? comment.content : calculateShortVersion();
-
-    const handleOpenReport = () => {
-        dispatch(changeFbDialog(true));
-        dispatch(changeFbDialogType('report'));
-        dispatch(changeRpContent('bình luận: ' + comment._id));
-    };
 
     const handleReplyShow = () => {
         if (
@@ -136,9 +135,7 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                             <div className={cx('user-name')}>{comment.username}</div>
                             <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                         </div>
-                        <IconButton onClick={handleOpenReport}>
-                            <FlagOutlinedIcon />
-                        </IconButton>
+                        <ButtonMenu userCmt={comment.email === extendedUser?.email} commentId={comment._id} />
                     </div>
                 )}
             </div>
@@ -149,9 +146,7 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                             <h4 style={{ margin: 0 }}>{comment.username}</h4>
                             <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                         </div>
-                        <IconButton onClick={handleOpenReport}>
-                            <FlagOutlinedIcon />
-                        </IconButton>
+                        <ButtonMenu userCmt={comment.email === extendedUser?.email} commentId={comment._id} />
                     </div>
                 )}
                 <div

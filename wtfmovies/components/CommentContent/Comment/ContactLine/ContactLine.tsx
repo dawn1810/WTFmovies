@@ -47,7 +47,6 @@ const ContactLine = ({
     const isMobile = viewPort.width <= 1024;
 
     const isFirstRender = useRef(true);
-    // const usetoLike = state.likeList.likeComments ? state.likeList.likeComments.include(extendedUser?.email) : false;
 
     const [likeCount, setLikeCount] = useState<number>(likeNum || 0);
     const [like, setLike] = useState<boolean>(beLike || false);
@@ -55,6 +54,7 @@ const ContactLine = ({
     const [reply, setReply] = useState<boolean>(false);
     const [replyValue, setReplyValue] = useState<string>('');
     const [loading, setLoading] = useState(false);
+    const [replyLoading, setReplyLoading] = useState(false);
 
     const likeDebounce = useDebounce(like, 500);
     const unlikeDebounce = useDebounce(unlike, 500);
@@ -163,6 +163,7 @@ const ContactLine = ({
             dispatch(changeModalShow(true));
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else {
+            setReplyLoading(true);
             const comment = {
                 avatar: state.currUser?.avatar,
                 username: state.currUser?.name,
@@ -220,6 +221,7 @@ const ContactLine = ({
                 }
                 removeCommentFromList(newMegIndex);
             }
+            setReplyLoading(false);
         }
     };
 
@@ -258,7 +260,11 @@ const ContactLine = ({
                         <Button variant="text" onClick={() => setReply(false)}>
                             Huỷ
                         </Button>
-                        <Button disabled={replyValue.length === 0} variant="contained" onClick={handleReply}>
+                        <Button
+                            disabled={replyLoading || replyValue.length === 0}
+                            variant="contained"
+                            onClick={handleReply}
+                        >
                             Phản hồi
                         </Button>
                     </div>
