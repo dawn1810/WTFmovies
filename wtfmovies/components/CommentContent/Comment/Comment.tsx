@@ -1,10 +1,8 @@
 'use client';
 import classNames from 'classnames/bind';
 import { useState } from 'react';
-import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
-import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import SubdirectoryArrowRightIcon from '@mui/icons-material/SubdirectoryArrowRight';
@@ -14,9 +12,8 @@ import { useDispatch } from 'react-redux';
 import { useViewport } from '~/hooks';
 
 import style from './Comment.module.scss';
-import { CommentInterface, ExtendedUser, LikeCommentListInterface } from '~/libs/interfaces';
+import { CommentInterface, LikeCommentListInterface } from '~/libs/interfaces';
 import { timePassed } from '~/libs/clientFunc';
-import { changeFbDialog, changeFbDialogType, changeRpContent } from '~/layouts/components/Header/headerSlice';
 import ContactLine from './ContactLine';
 import ReplyComment from './ReplyComment';
 import { getCurrReply } from '../commentSlice';
@@ -55,9 +52,6 @@ const LIMIT_LENGTH = 150; // The limit for the short version of the text.
 const LIMIT_NEWLINES = 2; // The number of <br/> before showing 'expand more'
 
 const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: LikeCommentListInterface }) => {
-    const { data: session } = useSession();
-    const extendedUser: ExtendedUser | undefined = session?.user;
-
     const dispatch = useDispatch();
 
     const viewPort = useViewport();
@@ -135,7 +129,13 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                             <div className={cx('user-name')}>{comment.username}</div>
                             <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                         </div>
-                        <ButtonMenu userCmt={comment.email === extendedUser?.email} commentId={comment._id} />
+                        <ButtonMenu
+                            commentInfo={{
+                                senderEmail: comment.email,
+                                commentId: comment._id,
+                                content: comment.content,
+                            }}
+                        />
                     </div>
                 )}
             </div>
@@ -146,13 +146,20 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                             <h4 style={{ margin: 0 }}>{comment.username}</h4>
                             <span className={cx('cmt-time')}>{timePassed(comment.time)}</span>
                         </div>
-                        <ButtonMenu userCmt={comment.email === extendedUser?.email} commentId={comment._id} />
+                        <ButtonMenu
+                            commentInfo={{
+                                senderEmail: comment.email,
+                                commentId: comment._id,
+                                content: comment.content,
+                            }}
+                        />
                     </div>
                 )}
                 <div
                     onClick={isExpanded ? handleShowLess : handleShowMore}
                     dangerouslySetInnerHTML={{ __html: shownComment }}
                 />
+                {comment.edit && <div className={cx('edit-tag')}>(Bình luận đã được sửa chửa)</div>}
                 {shouldShorten && !isExpanded ? (
                     <span onClick={handleShowMore} className={cx('read-more-btn')}>
                         Xem thêm

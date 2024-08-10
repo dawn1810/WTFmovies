@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
             });
 
         if (updateUser && updateUnlike) return toJSON({ content: 'Không yêu thích bình luận thành công' });
-        else return toError('Không yêu thích bình luận thất bại', 500);
+        else return toError('Không yêu thích bình luận thất bại', 400);
     } catch (error) {
         return toError('Lỗi không yêu thích bình luận: ' + error, 500);
     }

@@ -42,7 +42,7 @@ function CommentContent({
 
     const handleScroll = (e: any) => {
         const bottom = Math.abs(e.target.scrollHeight - (e.target.scrollTop + e.target.clientHeight)) <= 1;
-        if (bottom && !state.full && !state.loading && state.comments.length >= 10) {
+        if (bottom && !state.full && !state.loading) {
             dispatch<any>(
                 getMoreComments({
                     body: {

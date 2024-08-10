@@ -321,6 +321,7 @@ export interface CommentInterface {
     beUnlike?: boolean;
     like?: number;
     unlike?: number;
+    edit?: boolean;
 }
 
 export interface LikeCommentListInterface {

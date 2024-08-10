@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $match: { status: { $ne: 'delete' } } },
+                    { $match: { status: { $ne: false } } },
                     { $match: { searchName: filmName } },
                     { $match: { comment: { $exists: true, $ne: [] } } },
                     {

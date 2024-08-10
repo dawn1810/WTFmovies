@@ -53,7 +53,7 @@ export async function POST(request: NextRequest) {
             });
 
         if (updateUser && updateLike) return toJSON({ content: 'Yêu thích bình luận thành công' });
-        else return toError('Yêu thích bình luận thất bại', 500);
+        else return toError('Yêu thích bình luận thất bại', 400);
     } catch (error) {
         return toError('Lỗi yêu thích bình luận: ' + error, 500);
     }

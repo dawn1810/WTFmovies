@@ -17,6 +17,18 @@ export const commentSlice = createSlice({
         removeComments: (state, action) => {
             state.comments.splice(action.payload, 1);
         },
+        removeCommentsById: (state, action) => {
+            state.comments = state.comments.filter((comment) => comment._id !== action.payload);
+        },
+        updateComment: (state, action) => {
+            const { commentId, newContent } = action.payload;
+            state.comments = state.comments.map((comment) => {
+                if (comment._id === commentId) {
+                    return { ...comment, content: newContent };
+                }
+                return comment;
+            });
+        },
         addReply: (state, action) => {
             const { commentId, newComment } = action.payload;
 
@@ -143,6 +155,14 @@ export const getMoreComments = createAsyncThunk(
     },
 );
 
-export const { addComments, removeComments, addReply, removeReply, setCommentContent } = commentSlice.actions;
+export const {
+    addComments,
+    removeComments,
+    removeCommentsById,
+    updateComment,
+    addReply,
+    removeReply,
+    setCommentContent,
+} = commentSlice.actions;
 
 export default commentSlice.reducer;

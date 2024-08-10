@@ -17,6 +17,7 @@ export async function POST(request: NextRequest) {
             .find({
                 filter: {
                     parentId: ObjectId(commentId),
+                    status: { $ne: false },
                 },
                 sort: { time: -1 },
                 limit: 10,
