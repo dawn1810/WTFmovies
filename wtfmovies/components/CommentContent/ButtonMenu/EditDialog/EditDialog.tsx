@@ -9,7 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
-import { updateComment } from '../../commentSlice';
+import { updateComment, updateReply } from '../../commentSlice';
 
 export default function EditDialog({
     open,
@@ -18,11 +18,11 @@ export default function EditDialog({
 }: {
     open: boolean;
     handleClose: any;
-    commentInfo: { senderEmail: string; commentId: string; content: string };
+    commentInfo: { senderEmail: string; commentId: string; content: string; parentId?: string };
 }) {
     const dispatch = useDispatch();
 
-    const { senderEmail, commentId, content } = commentInfo;
+    const { senderEmail, commentId, content, parentId } = commentInfo;
     const [value, setValue] = useState(content);
 
     const showAlert = (content: string, type: any) => {
@@ -46,7 +46,8 @@ export default function EditDialog({
         });
 
         if (response.ok) {
-            dispatch(updateComment({ commentId, newContent }));
+            if (parentId) dispatch(updateReply({ parentId, commentId, newContent }));
+            else dispatch(updateComment({ commentId, newContent }));
             handleClose();
         } else if (response.status === 400) {
             showAlert('Cập nhật bình luận thất bại!', 'error');

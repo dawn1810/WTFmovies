@@ -67,6 +67,19 @@
         .edit-tag {
             opacity: 0.7;
         }
+
+        .comment-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+
+            .tag {
+                color: var(--submit-color);
+                background-color: var(--green-highlight-color);
+                border-radius: 5px;
+                padding: 2px;
+            }
+        }
     }
 
     .cmt-time {

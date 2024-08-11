@@ -24,7 +24,7 @@ export const commentSlice = createSlice({
             const { commentId, newContent } = action.payload;
             state.comments = state.comments.map((comment) => {
                 if (comment._id === commentId) {
-                    return { ...comment, content: newContent };
+                    return { ...comment, content: newContent, edit: true };
                 }
                 return comment;
             });
@@ -50,6 +50,40 @@ export const commentSlice = createSlice({
                 commentToUpdate.replyList.splice(index, 1);
                 if (commentToUpdate.replyLength) commentToUpdate.replyLength -= 1;
             }
+        },
+        removeReplyById: (state, action) => {
+            const { parentId, commentId } = action.payload;
+            state.comments = state.comments.map((comment) => {
+                if (comment._id === parentId && comment.replyList) {
+                    const updatedReplyList = comment.replyList.filter((reply) => reply._id !== commentId);
+                    return {
+                        ...comment,
+                        replyList: updatedReplyList,
+                        replyLength: comment.replyLength ? comment.replyLength - 1 : 0,
+                    };
+                }
+                return comment;
+            });
+        },
+        updateReply: (state, action) => {
+            const { parentId, commentId, newContent } = action.payload;
+
+            state.comments = state.comments.map((comment) => {
+                if (comment._id === parentId && comment.replyList) {
+                    const updatedReplyList = comment.replyList.map((reply) => {
+                        if (reply._id === commentId) {
+                            return { ...reply, content: newContent, edit: true };
+                        }
+                        return comment;
+                    });
+                    return {
+                        ...comment,
+                        replyList: updatedReplyList,
+                        replyLength: comment.replyLength ? comment.replyLength - 1 : 0,
+                    };
+                }
+                return comment;
+            });
         },
         setCommentContent: (state, action) => {
             const { comments, filmName, currUser, likeList } = action.payload;
@@ -162,6 +196,8 @@ export const {
     updateComment,
     addReply,
     removeReply,
+    removeReplyById,
+    updateReply,
     setCommentContent,
 } = commentSlice.actions;
 

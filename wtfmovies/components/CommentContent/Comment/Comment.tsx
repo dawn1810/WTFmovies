@@ -133,6 +133,7 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                             commentInfo={{
                                 senderEmail: comment.email,
                                 commentId: comment._id,
+                                parentId: comment.parentId,
                                 content: comment.content,
                             }}
                         />
@@ -150,6 +151,7 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                             commentInfo={{
                                 senderEmail: comment.email,
                                 commentId: comment._id,
+                                parentId: comment.parentId,
                                 content: comment.content,
                             }}
                         />

@@ -322,6 +322,7 @@ export interface CommentInterface {
     like?: number;
     unlike?: number;
     edit?: boolean;
+    tag?: string;
 }
 
 export interface LikeCommentListInterface {

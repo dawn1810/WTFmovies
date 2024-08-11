@@ -22,12 +22,16 @@ import {
     changeModalShow,
     changeRpContent,
 } from '~/layouts/components/Header/headerSlice';
-import { removeCommentsById } from '../commentSlice';
+import { removeCommentsById, removeReplyById } from '../commentSlice';
 import { showNotify } from '~/components/Notify/notifySlide';
 import EditDialog from './EditDialog';
 
-const ButtonMenu = ({ commentInfo }: { commentInfo: { senderEmail: string; commentId: string; content: string } }) => {
-    const { senderEmail, commentId } = commentInfo;
+const ButtonMenu = ({
+    commentInfo,
+}: {
+    commentInfo: { senderEmail: string; commentId: string; parentId?: string; content: string };
+}) => {
+    const { senderEmail, commentId, parentId } = commentInfo;
     const dispatch = useDispatch();
 
     const { data: session } = useSession();
@@ -72,11 +76,13 @@ const ButtonMenu = ({ commentInfo }: { commentInfo: { senderEmail: string; comme
             body: JSON.stringify({
                 commentId,
                 senderEmail,
+                parentId,
             }),
         });
 
         if (response.ok) {
-            dispatch(removeCommentsById(commentId));
+            if (parentId) dispatch(removeReplyById({ parentId, commentId }));
+            else dispatch(removeCommentsById(commentId));
             setAnchorEl(null);
         } else if (response.status === 400) {
             showAlert('Thu hồi bình luận thất bại!', 'error');

@@ -1,14 +1,19 @@
 'use client';
 import classNames from 'classnames/bind';
-import { useEffect, useRef, useState } from 'react';
+// mui component
 import IconButton from '@mui/material/IconButton';
 import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
+import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
+//mui icon
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined';
 import ThumbDownOutlinedIcon from '@mui/icons-material/ThumbDownOutlined';
 import ThumbUpIcon from '@mui/icons-material/ThumbUp';
 import ThumbDownIcon from '@mui/icons-material/ThumbDown';
+// hooks
+import { useEffect, useRef, useState } from 'react';
 import { useDebounce, useViewport } from '~/hooks';
 
 import style from '../Comment.module.scss';
@@ -16,7 +21,7 @@ import { formatNumber } from '~/libs/clientFunc';
 import { useDispatch, useSelector } from 'react-redux';
 import { commentContentSelector } from '~/redux/selectors';
 import { showNotify } from '~/components/Notify/notifySlide';
-import { ExtendedUser } from '~/libs/interfaces';
+import { CommentInterface, ExtendedUser } from '~/libs/interfaces';
 import { useSession } from 'next-auth/react';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import { socket } from '~/websocket/websocketService';
@@ -55,6 +60,7 @@ const ContactLine = ({
     const [replyValue, setReplyValue] = useState<string>('');
     const [loading, setLoading] = useState(false);
     const [replyLoading, setReplyLoading] = useState(false);
+    const [tag, setTag] = useState(parentId ? senderEmail : undefined);
 
     const likeDebounce = useDebounce(like, 500);
     const unlikeDebounce = useDebounce(unlike, 500);
@@ -148,7 +154,7 @@ const ContactLine = ({
     };
 
     const handleReplyShow = () => {
-        setReplyValue(parentId ? '@' + senderEmail + ' ' : '');
+        setTag(parentId ? senderEmail : undefined);
         setReply((prev) => !prev);
     };
 
@@ -164,11 +170,12 @@ const ContactLine = ({
             showAlert('Xin hãy đăng nhập để bình luận', 'info');
         } else {
             setReplyLoading(true);
-            const comment = {
+            const comment: any = {
                 avatar: state.currUser?.avatar,
                 username: state.currUser?.name,
                 content,
             };
+            if (tag) comment.tag = tag;
 
             let newMegIndex = -1;
 
@@ -188,6 +195,7 @@ const ContactLine = ({
                 const newReply = {
                     ...comment,
                     _id: res.commentId,
+                    email: extendedUser.email,
                     parentId: parentId || commentId,
                 };
 
@@ -225,6 +233,10 @@ const ContactLine = ({
         }
     };
 
+    const handleDeleteChip = () => {
+        setTag(undefined);
+    };
+
     return (
         <>
             <div className={cx('contact-line')}>
@@ -247,6 +259,7 @@ const ContactLine = ({
                 <div className={cx('reply-container')}>
                     <div className={cx('input-container')}>
                         <Avatar alt={state.currUser?.name || 'unknown'} src={state.currUser?.avatar} />
+                        {tag && <Chip label={tag} icon={<AlternateEmailIcon />} onDelete={handleDeleteChip} />}
                         <TextField
                             variant="standard"
                             placeholder="Phản hồi"

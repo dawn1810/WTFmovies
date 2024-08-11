@@ -7,6 +7,7 @@ import { ExtendedUser } from '~/libs/interfaces';
 interface dataType {
     commentId: string;
     senderEmail: string;
+    parentId: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -17,7 +18,7 @@ export async function POST(request: NextRequest) {
     if (!session) return toError('Lỗi xác thực', 403);
 
     try {
-        const { commentId, senderEmail }: dataType = await request.json();
+        const { commentId, senderEmail, parentId }: dataType = await request.json();
         if (senderEmail !== extendedUser?.email) {
             return toError('Thu hồi tin nhắn không hợp lệ', 401);
         }
@@ -31,6 +32,20 @@ export async function POST(request: NextRequest) {
                     $set: { status: false },
                 },
             });
+
+        if (parentId) {
+            const updateParentComment = await mongodb()
+                .db('film')
+                .collection('comment')
+                .updateOne({
+                    filter: { _id: ObjectId(parentId) },
+                    update: {
+                        $inc: { replyLength: -1 },
+                    },
+                });
+
+            if (!updateParentComment) return toError('Thu hồi bình luận thất bại', 400);
+        }
 
         if (updateComment) return toJSON({ content: 'Thu hồi bình luận thành công' });
         else return toError('Thu hồi bình luận thất bại', 400);

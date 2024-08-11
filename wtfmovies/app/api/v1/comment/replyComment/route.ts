@@ -2,13 +2,14 @@ export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { MongoDate, mongodb, ObjectId, toError, toJSON } from '~/libs/func';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { ExtendedUser } from '~/libs/interfaces';
+import { CommentInterface, ExtendedUser } from '~/libs/interfaces';
 
 interface dataType {
     avatar: string;
     username: string;
     content: string;
     commentId: string;
+    tag: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -19,24 +20,27 @@ export async function POST(request: NextRequest) {
     try {
         const extendedUser: ExtendedUser | undefined = session?.user;
 
-        const { avatar, username, content, commentId }: dataType = await request.json();
+        const { avatar, username, content, commentId, tag }: dataType = await request.json();
         const today = new Date();
 
         if (content.length <= 0 || username.length <= 0) return toError('Bình luận không hợp lệ', 400);
         if (content.length > 500) return toError('Bình luận quá dài', 401);
 
-        const result = await mongodb()
-            .db('film')
-            .collection('comment')
-            .insertOne({
-                parentId: ObjectId(commentId),
-                email: extendedUser?.email,
-                username: username,
-                avatar: avatar,
-                content: content,
-                time: MongoDate(today),
-                status: true,
-            });
+        const newComment: any = {
+            parentId: ObjectId(commentId),
+            email: extendedUser?.email,
+            username: username,
+            avatar: avatar,
+            content: content,
+            time: MongoDate(today),
+            status: true,
+        };
+
+        if (tag) {
+            newComment.tag = tag;
+        }
+
+        const result = await mongodb().db('film').collection('comment').insertOne(newComment);
 
         await mongodb()
             .db('film')
