@@ -25,6 +25,7 @@ import {
 import { removeCommentsById, removeReplyById } from '../commentSlice';
 import { showNotify } from '~/components/Notify/notifySlide';
 import EditDialog from './EditDialog';
+import RecallDialog from './RecallDialog';
 
 const ButtonMenu = ({
     commentInfo,
@@ -39,6 +40,7 @@ const ButtonMenu = ({
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [openEditDialog, setOpenEditDialog] = useState(false);
+    const [openRecallDialog, setOpenRecallDialog] = useState(false);
     const open = Boolean(anchorEl);
 
     const handleOpenEdit = () => {
@@ -48,6 +50,15 @@ const ButtonMenu = ({
 
     const handleCloseEdit = () => {
         setOpenEditDialog(false);
+    };
+
+    const handleOpenRecall = () => {
+        setOpenRecallDialog(true);
+        setAnchorEl(null);
+    };
+
+    const handleCloseRecall = () => {
+        setOpenRecallDialog(false);
     };
 
     const showAlert = (content: string, type: any) => {
@@ -69,32 +80,32 @@ const ButtonMenu = ({
         setAnchorEl(null);
     };
 
-    const handleRecallComment = async () => {
-        const response = await fetch(`/api/v1/comment/recallComment`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                commentId,
-                senderEmail,
-                parentId,
-            }),
-        });
+    // const handleRecallComment = async () => {
+    //     const response = await fetch(`/api/v1/comment/recallComment`, {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({
+    //             commentId,
+    //             senderEmail,
+    //             parentId,
+    //         }),
+    //     });
 
-        if (response.ok) {
-            if (parentId) dispatch(removeReplyById({ parentId, commentId }));
-            else dispatch(removeCommentsById(commentId));
-            setAnchorEl(null);
-        } else if (response.status === 400) {
-            showAlert('Thu hồi bình luận thất bại!', 'error');
-        } else if (response.status === 401) {
-            showAlert('Thu hồi bình luận không hợp lệ', 'error');
-        } else if (response.status === 403) {
-            dispatch(changeModalShow(true));
-            showAlert('Xác thực thất bại, đăng nhập để thu hồi bình luận này', 'info');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-        }
-    };
+    //     if (response.ok) {
+    //         if (parentId) dispatch(removeReplyById({ parentId, commentId }));
+    //         else dispatch(removeCommentsById(commentId));
+    //         setAnchorEl(null);
+    //     } else if (response.status === 400) {
+    //         showAlert('Thu hồi bình luận thất bại!', 'error');
+    //     } else if (response.status === 401) {
+    //         showAlert('Thu hồi bình luận không hợp lệ', 'error');
+    //     } else if (response.status === 403) {
+    //         dispatch(changeModalShow(true));
+    //         showAlert('Xác thực thất bại, đăng nhập để thu hồi bình luận này', 'info');
+    //     } else if (response.status === 500) {
+    //         showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+    //     }
+    // };
 
     return (
         <>
@@ -132,7 +143,7 @@ const ButtonMenu = ({
                                 </ListItemIcon>
                                 <ListItemText>Chỉnh sửa</ListItemText>
                             </MenuItem>
-                            <MenuItem onClick={handleRecallComment}>
+                            <MenuItem onClick={handleOpenRecall}>
                                 <ListItemIcon>
                                     <RestoreIcon fontSize="small" />
                                 </ListItemIcon>
@@ -149,6 +160,7 @@ const ButtonMenu = ({
                 </Menu>
             </div>
             <EditDialog open={openEditDialog} handleClose={handleCloseEdit} commentInfo={commentInfo} />
+            <RecallDialog open={openRecallDialog} handleClose={handleCloseRecall} commentInfo={commentInfo} />
         </>
     );
 };
