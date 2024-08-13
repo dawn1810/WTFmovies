@@ -6,7 +6,6 @@ import { ExtendedUser } from '~/libs/interfaces';
 
 interface dataType {
     searchName: string;
-    avatar: string;
     username: string;
     content: string;
 }
@@ -19,7 +18,7 @@ export async function POST(request: NextRequest) {
     try {
         const extendedUser: ExtendedUser | undefined = session?.user;
 
-        const { searchName, avatar, username, content }: dataType = await request.json();
+        const { searchName, username, content }: dataType = await request.json();
         const today = new Date();
 
         if (content.length <= 0 || username.length <= 0) return toError('Bình luận không hợp lệ', 400);
@@ -30,7 +29,6 @@ export async function POST(request: NextRequest) {
             .insertOne({
                 email: extendedUser?.email,
                 username: username,
-                avatar: avatar,
                 content: content,
                 time: MongoDate(today),
                 status: true,

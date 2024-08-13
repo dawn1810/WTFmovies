@@ -167,7 +167,22 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
 
         if (comments.length > 0 && comments[0].comments.length > 0) {
             //loop to get reply comment
-            return comments[0].comments;
+            const cmtList: CommentInterface[] = await Promise.all(
+                comments[0].comments.map(async (cmt) => {
+                    const avt = await mongodb()
+                        .db('user')
+                        .collection('auth')
+                        .findOne({
+                            filter: { email: cmt.email },
+                            projection: { _id: 0, avatar: 1 },
+                        });
+
+                    if (avt) return { ...cmt, avatar: avt.avatar };
+                    return cmt;
+                }),
+            );
+
+            return cmtList;
         } else {
             return [];
         }

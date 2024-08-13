@@ -5,7 +5,6 @@ import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { CommentInterface, ExtendedUser } from '~/libs/interfaces';
 
 interface dataType {
-    avatar: string;
     username: string;
     content: string;
     commentId: string;
@@ -20,7 +19,7 @@ export async function POST(request: NextRequest) {
     try {
         const extendedUser: ExtendedUser | undefined = session?.user;
 
-        const { avatar, username, content, commentId, tag }: dataType = await request.json();
+        const { username, content, commentId, tag }: dataType = await request.json();
         const today = new Date();
 
         if (content.length <= 0 || username.length <= 0) return toError('Bình luận không hợp lệ', 400);
@@ -30,7 +29,6 @@ export async function POST(request: NextRequest) {
             parentId: ObjectId(commentId),
             email: extendedUser?.email,
             username: username,
-            avatar: avatar,
             content: content,
             time: MongoDate(today),
             status: true,

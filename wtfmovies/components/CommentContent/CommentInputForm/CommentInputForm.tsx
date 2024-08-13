@@ -140,7 +140,6 @@ function CommentInputForm() {
             let newMegIndex = -1;
 
             const comment = {
-                avatar: state.currUser?.avatar,
                 username: state.currUser?.name,
                 content,
             };
@@ -162,6 +161,7 @@ function CommentInputForm() {
                 const newComment = {
                     ...comment,
                     _id: res.commentId,
+                    avatar: state.currUser?.avatar,
                     email: extendedUser.email,
                 };
 

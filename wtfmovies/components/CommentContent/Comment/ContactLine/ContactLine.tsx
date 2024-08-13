@@ -189,7 +189,6 @@ const ContactLine = ({
         } else {
             setReplyLoading(true);
             const comment: any = {
-                avatar: state.currUser?.avatar,
                 username: state.currUser?.name,
                 content,
             };
@@ -213,6 +212,7 @@ const ContactLine = ({
                 const newReply = {
                     ...comment,
                     _id: res.commentId,
+                    avatar: state.currUser?.avatar,
                     email: extendedUser.email,
                     parentId: parentId || commentId,
                 };
