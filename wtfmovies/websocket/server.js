@@ -37,6 +37,14 @@ app.prepare().then(() => {
             socket.broadcast.emit('newReplyComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
+        socket.on('editComment', (message) => {
+            socket.broadcast.emit('newEditComment', message);
+        });
+
+        socket.on('recallComment', (message) => {
+            socket.broadcast.emit('newRecallComment', message);
+        });
+
         socket.on('disconnect', () => {
             // socket.leave(email);
             console.log('Client disconnected');

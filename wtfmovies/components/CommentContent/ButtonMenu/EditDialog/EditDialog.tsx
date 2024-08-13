@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import { updateComment, updateReply } from '../../commentSlice';
+import { socket } from '~/websocket/websocketService';
 
 export default function EditDialog({
     open,
@@ -50,7 +51,19 @@ export default function EditDialog({
         if (response.ok) {
             if (parentId) dispatch(updateReply({ parentId, commentId, newContent }));
             else dispatch(updateComment({ commentId, newContent }));
-            handleClose();
+            // send message to another user
+            if (socket.connected) {
+                socket.emit(
+                    'editComment',
+                    JSON.stringify({
+                        parentId,
+                        commentId,
+                        newContent,
+                    }),
+                );
+            } else {
+                console.error('WebSocket connection not open.');
+            }
         } else if (response.status === 400) {
             showAlert('Cập nhật bình luận thất bại!', 'error');
         } else if (response.status === 401) {
@@ -62,6 +75,7 @@ export default function EditDialog({
             showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
         }
         setLoading(false);
+        handleClose();
     };
 
     return (

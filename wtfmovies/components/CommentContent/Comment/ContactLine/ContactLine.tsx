@@ -69,22 +69,32 @@ const ContactLine = ({
         if (isFirstRender.current) return;
 
         const fetchApi = async () => {
-            setLoading(true);
-            const response = await fetch('/api/v1/comment/likeComment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ commentId, like: likeDebounce, filmName: state.filmName }),
-            });
-
-            if (response.ok) {
-                setLoading(false);
-            } else if (response.status === 400) {
-                showAlert('Yêu thích bình luận thất bại!', 'error');
-            } else if (response.status === 403) {
+            if (!extendedUser || !extendedUser.email) {
                 dispatch(changeModalShow(true));
                 showAlert('Xác thực thất bại, đăng nhập để yêu thích bình luận này', 'info');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                setLikeCount((prev) => prev - 1);
+                setLike(false);
+            } else {
+                setLoading(true);
+                const response = await fetch('/api/v1/comment/likeComment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ commentId, like: likeDebounce, filmName: state.filmName }),
+                });
+
+                if (!response.ok) {
+                    setLikeCount((prev) => prev - 1);
+                    setLike(false);
+                    if (response.status === 400) {
+                        showAlert('Yêu thích bình luận thất bại!', 'error');
+                    } else if (response.status === 403) {
+                        dispatch(changeModalShow(true));
+                        showAlert('Xác thực thất bại, đăng nhập để yêu thích bình luận này', 'info');
+                    } else if (response.status === 500) {
+                        showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                    }
+                }
+                setLoading(false);
             }
         };
 
@@ -95,22 +105,30 @@ const ContactLine = ({
         if (isFirstRender.current) return;
 
         const fetchApi = async () => {
-            setLoading(true);
-            const response = await fetch('/api/v1/comment/unlikeComment', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ commentId, unlike: unlikeDebounce, filmName: state.filmName }),
-            });
-
-            if (response.ok) {
-                setLoading(false);
-            } else if (response.status === 400) {
-                showAlert('Yêu thích bình luận thất bại!', 'error');
-            } else if (response.status === 403) {
+            if (!extendedUser || !extendedUser.email) {
                 dispatch(changeModalShow(true));
-                showAlert('Xác thực thất bại, đăng nhập để yêu thích bình luận này', 'info');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                showAlert('Xác thực thất bại, đăng nhập để không yêu thích bình luận này', 'info');
+                setUnlike(false);
+            } else {
+                setLoading(true);
+                const response = await fetch('/api/v1/comment/unlikeComment', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ commentId, unlike: unlikeDebounce, filmName: state.filmName }),
+                });
+
+                if (!response.ok) {
+                    setUnlike(false);
+                    if (response.status === 400) {
+                        showAlert('Không yêu thích bình luận thất bại!', 'error');
+                    } else if (response.status === 403) {
+                        dispatch(changeModalShow(true));
+                        showAlert('Xác thực thất bại, đăng nhập để không yêu thích bình luận này', 'info');
+                    } else if (response.status === 500) {
+                        showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                    }
+                }
+                setLoading(false);
             }
         };
 

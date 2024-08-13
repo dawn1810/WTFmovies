@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import { removeCommentsById, removeReplyById, updateComment, updateReply } from '../../commentSlice';
+import { socket } from '~/websocket/websocketService';
 
 export default function RecallDialog({
     open,
@@ -44,6 +45,18 @@ export default function RecallDialog({
         if (response.ok) {
             if (parentId) dispatch(removeReplyById({ parentId, commentId }));
             else dispatch(removeCommentsById(commentId));
+            // send message to another user
+            if (socket.connected) {
+                socket.emit(
+                    'recallComment',
+                    JSON.stringify({
+                        parentId,
+                        commentId,
+                    }),
+                );
+            } else {
+                console.error('WebSocket connection not open.');
+            }
         } else if (response.status === 400) {
             showAlert('Thu hồi bình luận thất bại!', 'error');
         } else if (response.status === 401) {

@@ -14,7 +14,16 @@ import { ExtendedUser, UserInfoInterface } from '~/libs/interfaces';
 import { changeModalShow } from '~/layouts/components/Header/headerSlice';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { socket } from '~/websocket/websocketService';
-import { addComments, addReply, removeComments, setCurrentUser } from '../commentSlice';
+import {
+    addComments,
+    addReply,
+    removeComments,
+    removeCommentsById,
+    removeReplyById,
+    setCurrentUser,
+    updateComment,
+    updateReply,
+} from '../commentSlice';
 import { commentContentSelector } from '~/redux/selectors';
 import { Avatar } from '@mui/material';
 import { generateUUIDv4 } from '~/libs/clientFunc';
@@ -70,9 +79,23 @@ function CommentInputForm() {
             if (msgFilmName === state.filmName) addCommentToReply(comment);
         });
 
+        socket.on('newEditComment', async (message) => {
+            const { parentId, commentId, newContent } = JSON.parse(message);
+            if (parentId) dispatch(updateReply({ parentId, commentId, newContent }));
+            else dispatch(updateComment({ commentId, newContent }));
+        });
+
+        socket.on('newRecallComment', async (message) => {
+            const { parentId, commentId } = JSON.parse(message);
+            if (parentId) dispatch(removeReplyById({ parentId, commentId }));
+            else dispatch(removeCommentsById(commentId));
+        });
+
         return () => {
             socket.off('newComment');
             socket.off('newReplyComment');
+            socket.off('newEditComment');
+            socket.off('newRecallComment');
         };
     }, [state.filmName]);
 

@@ -88,10 +88,12 @@ export const commentSlice = createSlice({
         setCommentContent: (state, action) => {
             const { comments, filmName, currUser, likeList } = action.payload;
             const newComments = comments.map((e: CommentInterface) => {
-                if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
-                    return { ...e, beLike: true }; // Update the comment with 'beLike' property
-                } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
-                    return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+                if (likeList) {
+                    if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
+                        return { ...e, beLike: true }; // Update the comment with 'beLike' property
+                    } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
+                        return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+                    }
                 }
                 return e; // Return the original comment if no update is needed
             });
@@ -152,14 +154,16 @@ export const getCurrReply = createAsyncThunk('comment/getCurrReply', async (prob
     const data: any = await response.json();
 
     // update beLike and beUnlike
-    const result = data.data.map((e: CommentInterface) => {
-        if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
-            return { ...e, beLike: true }; // Update the comment with 'beLike' property
-        } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
-            return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
-        }
-        return e; // Return the original comment if no update is needed
-    });
+    const result = likeList
+        ? data.data.map((e: CommentInterface) => {
+              if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
+                  return { ...e, beLike: true }; // Update the comment with 'beLike' property
+              } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
+                  return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+              }
+              return e; // Return the original comment if no update is needed
+          })
+        : data.data;
 
     return { data: result, commentId: body.commentId };
 });
@@ -177,14 +181,16 @@ export const getMoreComments = createAsyncThunk(
         const data: any = await response.json();
 
         // update beLike and beUnlike
-        const result = data.data.map((e: CommentInterface) => {
-            if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
-                return { ...e, beLike: true }; // Update the comment with 'beLike' property
-            } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
-                return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
-            }
-            return e; // Return the original comment if no update is needed
-        });
+        const result = likeList
+            ? data.data.map((e: CommentInterface) => {
+                  if (likeList.likeComments && likeList.likeComments.includes(e._id)) {
+                      return { ...e, beLike: true }; // Update the comment with 'beLike' property
+                  } else if (likeList.unlikeComments && likeList.unlikeComments.includes(e._id)) {
+                      return { ...e, beUnlike: true }; // Update the comment with 'beUnlike' property
+                  }
+                  return e; // Return the original comment if no update is needed
+              })
+            : data.data;
         return result;
     },
 );
