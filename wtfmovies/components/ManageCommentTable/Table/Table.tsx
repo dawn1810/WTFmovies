@@ -22,6 +22,7 @@ import {
     useGridApiContext,
     GridRowModel,
     GridActionsCellItem,
+    GridCallbackDetails,
 } from '@mui/x-data-grid';
 import BlockIcon from '@mui/icons-material/Block';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
@@ -46,6 +47,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     };
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
+    const [rowSelectionInfo, setRowSelectionInfo] = useState<any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
 
@@ -73,7 +75,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         const response = await fetch('/api/v1/admin/banComment', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ commentIds: [newRow.id], ban: newRow.status }),
+            body: JSON.stringify({ commentIds: [{ _id: newRow.id, parentId: newRow.parentId }], ban: newRow.status }),
         });
 
         if (response.ok) {
@@ -92,6 +94,21 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             resolve(oldRow);
         }
         setPromiseArguments(null);
+    };
+
+    const handleSelectChange = (newRowSelectionModel: GridRowSelectionModel, detail: GridCallbackDetails<any>) => {
+        setRowSelectionModel(newRowSelectionModel);
+        const currId = newRowSelectionModel[newRowSelectionModel.length - 1];
+
+        if (currId) {
+            setRowSelectionInfo((prev: any) => [
+                ...prev,
+                {
+                    currId,
+                    parentId: detail.api.getCellValue(currId, 'parentId') || undefined,
+                },
+            ]);
+        }
     };
 
     const renderConfirmDialog = () => {
@@ -148,7 +165,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             const response = await fetch('/api/v1/admin/banComment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ commentIds: rowSelectionModel, ban: status }),
+                body: JSON.stringify({ commentIds: rowSelectionInfo, ban: status }),
             });
 
             if (response.ok) {
@@ -240,6 +257,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         { headerName: 'Tên người gửi', field: 'username', width: 230 },
         { headerName: 'Nội dung', field: 'content', width: 500 },
         { headerName: 'Thời gian', field: 'time', width: 150 },
+        { headerName: 'CommentParent', field: 'parentId', width: 150 },
         {
             headerName: 'Trạng thái',
             field: 'status',
@@ -290,9 +308,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                 }}
                 processRowUpdate={processRowUpdate}
                 onProcessRowUpdateError={(error) => console.log(error)}
-                onRowSelectionModelChange={(newRowSelectionModel) => {
-                    setRowSelectionModel(newRowSelectionModel);
-                }}
+                onRowSelectionModelChange={handleSelectChange}
             />
             {renderConfirmDialog()}
         </div>

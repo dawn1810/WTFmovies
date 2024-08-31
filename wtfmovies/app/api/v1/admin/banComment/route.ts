@@ -15,25 +15,27 @@ export async function POST(request: NextRequest) {
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { commentIds, ban }: dataType = await request.json();
 
-        const newCommentIds = commentIds.map((id: string) => ObjectId(id));
-        // console.log(newCommentIds);
+        console.log(commentIds);
 
-        if (extendedUser?.role === 'admin') {
-            const response = await mongodb()
-                .db('film')
-                .collection('comment')
-                .updateMany({
-                    filter: { _id: { $in: newCommentIds } },
-                    update: { $set: { status: ban } },
-                });
+        // const newCommentIds = commentIds.map((id: string) => ObjectId(id));
 
-            if (response.modifiedCount >= 1) {
-                return toJSON('Thay đổi trạng thái thành công');
-            }
-            return toError('Thay đổi trạng thái thất bại', 400);
-        } else {
-            return toError('Api không trong phạm trù quyền của bạn', 403);
-        }
+        // if (extendedUser?.role === 'admin') {
+        //     const response = await mongodb()
+        //         .db('film')
+        //         .collection('comment')
+        //         .updateMany({
+        //             filter: { _id: { $in: newCommentIds } },
+        //             update: { $set: { status: ban } },
+        //         });
+
+        //     if (response.modifiedCount >= 1) {
+        //         return toJSON('Thay đổi trạng thái thành công');
+        //     }
+        //     return toError('Thay đổi trạng thái thất bại', 400);
+        // } else {
+        //     return toError('Api không trong phạm trù quyền của bạn', 403);
+        // }
+        return toJSON('Thay đổi trạng thái thành công');
     } catch (err) {
         return toError('Lỗi trong quá trình thay đổi trạng thái', 500);
     }
