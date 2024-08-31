@@ -97,7 +97,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     };
 
     const handleSelectChange = (newRowSelectionModel: GridRowSelectionModel, detail: GridCallbackDetails<any>) => {
-        setRowSelectionModel(newRowSelectionModel);
         const currId = newRowSelectionModel[newRowSelectionModel.length - 1];
 
         if (currId) {
@@ -109,6 +108,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                 },
             ]);
         }
+        setRowSelectionModel(newRowSelectionModel);
     };
 
     const renderConfirmDialog = () => {
@@ -171,6 +171,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             if (response.ok) {
                 rowSelectionModel.forEach(async (id: string) => {
                     apiRef.current.startCellEditMode({ id, field: 'status' });
+
                     const isValid = await apiRef.current.setEditCellValue({
                         id,
                         field: 'status',
