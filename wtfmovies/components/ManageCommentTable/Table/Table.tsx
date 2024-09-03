@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames/bind';
 //import { AlertColor } from '@mui/material';
 import Box from '@mui/material/Box';
@@ -19,8 +19,6 @@ import {
     GridToolbarColumnsButton,
     GridToolbarContainer,
     GridToolbarDensitySelector,
-    useGridApiContext,
-    GridRowModel,
     GridActionsCellItem,
     GridCallbackDetails,
 } from '@mui/x-data-grid';
@@ -46,109 +44,44 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         dispatch(showNotify({ content, type, open: true }));
     };
 
+    const [data, setData] = useState<any>(dataset);
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [rowSelectionInfo, setRowSelectionInfo] = useState<any>([]);
-    const [promiseArguments, setPromiseArguments] = useState<any>(null);
-    const [listUpdate, setListUpdate] = useState<boolean>(false);
-
-    const processRowUpdate = useCallback(
-        (newRow: GridRowModel, oldRow: GridRowModel) =>
-            new Promise<GridRowModel>((resolve, reject) => {
-                if (newRow.status !== oldRow.status) {
-                    setPromiseArguments({ resolve, reject, newRow, oldRow });
-                } else {
-                    resolve(oldRow);
-                }
-            }),
-        [],
-    );
-
-    const handleCloseDialog = () => {
-        const { oldRow, resolve } = promiseArguments;
-        resolve(oldRow);
-        setPromiseArguments(null);
-    };
-
-    const handleCellEditStatus = async () => {
-        const { newRow, oldRow, reject, resolve } = promiseArguments;
-
-        const response = await fetch('/api/v1/admin/banComment', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ commentIds: [{ _id: newRow.id, parentId: newRow.parentId }], ban: newRow.status }),
-        });
-
-        if (response.ok) {
-            resolve(newRow);
-            showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
-        } else {
-            if (response.status === 400) {
-                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
-            } else if (response.status === 401) {
-                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
-            } else if (response.status === 403) {
-                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-            }
-            resolve(oldRow);
-        }
-        setPromiseArguments(null);
-    };
 
     const handleSelectChange = (newRowSelectionModel: GridRowSelectionModel, detail: GridCallbackDetails<any>) => {
-        const currId = newRowSelectionModel[newRowSelectionModel.length - 1];
-
-        if (currId) {
-            setRowSelectionInfo((prev: any) => [
-                ...prev,
-                {
-                    currId,
-                    parentId: detail.api.getCellValue(currId, 'parentId') || undefined,
-                },
-            ]);
+        if (newRowSelectionModel.length > rowSelectionModel.length) {
+            // Add new element if the new selection is longer
+            const currId = newRowSelectionModel[newRowSelectionModel.length - 1];
+            if (currId) {
+                setRowSelectionInfo((prev: any) => [
+                    ...prev,
+                    {
+                        _id: currId,
+                        parentId: detail.api.getCellValue(currId, 'parentId') || undefined,
+                    },
+                ]);
+            }
+        } else {
+            // Handle both shorter and same-length selections
+            setRowSelectionInfo(
+                newRowSelectionModel.slice(0, rowSelectionModel.length).map((id, index) => {
+                    if (rowSelectionInfo[index] && rowSelectionInfo[index]._id === id) {
+                        // Keep existing element if ID matches
+                        return rowSelectionInfo[index];
+                    } else {
+                        // Add new element if ID is new
+                        return {
+                            _id: id,
+                            parentId: detail.api.getCellValue(id, 'parentId') || undefined,
+                        };
+                    }
+                }),
+            );
         }
         setRowSelectionModel(newRowSelectionModel);
     };
 
-    const renderConfirmDialog = () => {
-        if (!promiseArguments) {
-            return null;
-        }
-
-        const { newRow, resolve } = promiseArguments;
-
-        if (listUpdate) {
-            resolve(newRow);
-            setPromiseArguments(null);
-            setListUpdate(false);
-        }
-
-        return (
-            <Dialog
-                open={!!promiseArguments}
-                onClose={handleCloseDialog}
-                aria-labelledby="alert-dialog-title"
-                aria-describedby="alert-dialog-description"
-            >
-                <DialogTitle id="alert-dialog-title">Bạn có muốn {newRow.status ? 'BỎ CẤM' : 'CẤM'}:</DialogTitle>
-                <DialogContent>
-                    <ul>
-                        <li>{newRow.id}</li>
-                    </ul>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseDialog}>Huỷ</Button>
-                    <Button onClick={() => handleCellEditStatus()} autoFocus>
-                        {newRow.status ? 'BỎ CẤM' : 'CẤM'}
-                    </Button>
-                </DialogActions>
-            </Dialog>
-        );
-    };
-
     const CustomToolbar = () => {
-        const apiRef = useGridApiContext();
         const [open, setOpen] = useState(false);
         const [dialogType, setDialogType] = useState(true);
 
@@ -165,25 +98,24 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             const response = await fetch('/api/v1/admin/banComment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ commentIds: rowSelectionInfo, ban: status }),
+                body: JSON.stringify({ comments: rowSelectionInfo, ban: status }),
             });
 
             if (response.ok) {
-                rowSelectionModel.forEach(async (id: string) => {
-                    apiRef.current.startCellEditMode({ id, field: 'status' });
+                setData((prevData: any) => {
+                    const updatedData = [...prevData]; // Create a copy of the original data
 
-                    const isValid = await apiRef.current.setEditCellValue({
-                        id,
-                        field: 'status',
-                        value: status,
-                        debounceMs: 200,
+                    rowSelectionModel.forEach((itemId: string) => {
+                        const index = prevData.findIndex((item: any) => item._id === itemId);
+
+                        // If the item is found, update its status
+                        if (index !== -1) {
+                            updatedData[index] = { ...updatedData[index], status: status };
+                        }
                     });
 
-                    if (isValid) {
-                        apiRef.current.stopCellEditMode({ id, field: 'status' });
-                    }
+                    return updatedData;
                 });
-                setListUpdate(true);
                 showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {
                 showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
@@ -253,36 +185,36 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     };
 
     const columns: any[] = [
-        { headerName: 'Id', field: 'id', width: 250 },
-        { headerName: 'Email người gửi', field: 'email', width: 300 },
-        { headerName: 'Tên người gửi', field: 'username', width: 230 },
-        { headerName: 'Nội dung', field: 'content', width: 500 },
-        { headerName: 'Thời gian', field: 'time', width: 150 },
-        { headerName: 'CommentParent', field: 'parentId', width: 150 },
+        { headerName: 'Id', field: 'id', width: 180 },
+        { headerName: 'ParentId', field: 'parentId', width: 180 },
+        { headerName: 'Email người gửi', field: 'email', width: 250 },
+        { headerName: 'Tên người gửi', field: 'username', width: 180 },
+        // { headerName: 'Nội dung', field: 'content', width: 500 },
+        { headerName: 'Thời gian', field: 'time', width: 120 },
         {
             headerName: 'Trạng thái',
             field: 'status',
             type: 'boolean',
-            editable: true,
+            // editable: true,
             width: 100,
         },
-        // {
-        //     field: 'detail',
-        //     type: 'actions',
-        //     headerName: 'Chi tiết',
-        //     width: 100,
-        //     cellClassName: 'actions',
-        //     getActions: ({ id }: { id: string }) => {
-        //         return [
-        //             <GridActionsCellItem
-        //                 icon={<LibraryBooksIcon />}
-        //                 label="detail"
-        //                 onClick={() => handleOpen(id)}
-        //                 color="inherit"
-        //             />,
-        //         ];
-        //     },
-        // },
+        {
+            field: 'content',
+            type: 'actions',
+            headerName: 'Nội dung',
+            width: 100,
+            cellClassName: 'actions',
+            getActions: ({ id }: { id: string }) => {
+                return [
+                    <GridActionsCellItem
+                        icon={<LibraryBooksIcon />}
+                        label="detail"
+                        // onClick={() => handleOpen(id)}
+                        color="inherit"
+                    />,
+                ];
+            },
+        },
     ];
 
     return (
@@ -290,7 +222,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
                 columns={columns}
-                rows={dataset}
+                rows={data}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
                 rowSelectionModel={rowSelectionModel}
@@ -307,11 +239,8 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                         showQuickFilter: true,
                     },
                 }}
-                processRowUpdate={processRowUpdate}
-                onProcessRowUpdateError={(error) => console.log(error)}
                 onRowSelectionModelChange={handleSelectChange}
             />
-            {renderConfirmDialog()}
         </div>
     );
 }
