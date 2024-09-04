@@ -87,7 +87,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
 
     const handleOpenDialog = (currId: string) => {
         const currIndex = data.findIndex((element: any) => element._id === currId);
-        console.log(data[currIndex]);
         setDialogData(data[currIndex]);
         setDialogOpen(true);
     };
@@ -95,8 +94,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     const handleCloseDialog = () => {
         setDialogOpen(false);
     };
-
-    const handleShowContent = (id: string) => {};
 
     const CustomToolbar = () => {
         const [open, setOpen] = useState(false);

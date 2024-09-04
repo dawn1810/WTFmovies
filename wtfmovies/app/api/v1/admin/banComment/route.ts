@@ -46,7 +46,6 @@ export async function POST(request: NextRequest) {
         } else {
             return toError('Api không trong phạm trù quyền của bạn', 403);
         }
-        return toJSON('Thay đổi trạng thái thành công');
     } catch (err) {
         return toError('Lỗi trong quá trình thay đổi trạng thái', 500);
     }

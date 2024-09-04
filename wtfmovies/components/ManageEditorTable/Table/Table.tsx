@@ -37,14 +37,14 @@ const cx = classNames.bind(style);
 
 const columns: any[] = [
     { headerName: 'STT', field: 'index', align: 'center', width: 10 },
-    { headerName: 'Email', field: 'id', width: 180 },
-    { headerName: 'Tên hiễn thị', field: 'name', width: 180 },
+    { headerName: 'Email', field: 'id', width: 280 },
+    { headerName: 'Tên hiễn thị', field: 'name', width: 200 },
     { headerName: 'Ngày sinh', field: 'birthDate', width: 180 },
     { headerName: 'Giới tính', field: 'gender', width: 180 },
     {
         headerName: 'Phân quyền',
         field: 'role',
-        width: 180,
+        width: 100,
         type: 'singleSelect',
         valueOptions: ['none', 'editor', 'admin'],
         editable: true,
@@ -52,8 +52,9 @@ const columns: any[] = [
     {
         headerName: 'Trạng thái',
         field: 'status',
+        width: 100,
         type: 'boolean',
-        editable: true,
+        // editable: true,
     },
 ];
 
@@ -65,6 +66,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
         dispatch(showNotify({ content, type, open: true }));
     };
 
+    const [data, setData] = useState<any>(dataset);
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
@@ -228,20 +230,35 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             });
 
             if (response.ok) {
-                rowSelectionModel.forEach(async (id: string) => {
-                    apiRef.current.startCellEditMode({ id, field: 'status' });
-                    const isValid = await apiRef.current.setEditCellValue({
-                        id,
-                        field: 'status',
-                        value: status,
-                        debounceMs: 200,
+                // rowSelectionModel.forEach(async (id: string) => {
+                //     apiRef.current.startCellEditMode({ id, field: 'status' });
+                //     const isValid = await apiRef.current.setEditCellValue({
+                //         id,
+                //         field: 'status',
+                //         value: status,
+                //         debounceMs: 200,
+                //     });
+
+                //     if (isValid) {
+                //         apiRef.current.stopCellEditMode({ id, field: 'status' });
+                //     }
+                // });
+                // setListUpdate(true);
+                setData((prevData: any) => {
+                    const updatedData = [...prevData]; // Create a copy of the original data
+
+                    rowSelectionModel.forEach((currEmail: string) => {
+                        const index = prevData.findIndex((item: any) => item.id === currEmail);
+
+                        console.log(index);
+                        // If the item is found, update its status
+                        if (index !== -1) {
+                            updatedData[index] = { ...updatedData[index], status: status };
+                        }
                     });
 
-                    if (isValid) {
-                        apiRef.current.stopCellEditMode({ id, field: 'status' });
-                    }
+                    return updatedData;
                 });
-                setListUpdate(true);
                 setOpen(false);
                 showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {
@@ -315,7 +332,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             <h1 className={cx('title_name')}>{title_name}</h1>
             <DataGrid
                 columns={columns}
-                rows={dataset}
+                rows={data}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
                 rowSelectionModel={rowSelectionModel}
