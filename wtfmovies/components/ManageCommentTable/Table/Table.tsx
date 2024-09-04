@@ -29,6 +29,7 @@ import LockOpenIcon from '@mui/icons-material/LockOpen';
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
+import ContentDialog from './ContentDialog';
 
 const cx = classNames.bind(style);
 
@@ -47,6 +48,9 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     const [data, setData] = useState<any>(dataset);
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [rowSelectionInfo, setRowSelectionInfo] = useState<any>([]);
+    const [banLoading, setBanLoading] = useState<boolean>(false);
+    const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+    const [dialogData, setDialogData] = useState<any>({});
 
     const handleSelectChange = (newRowSelectionModel: GridRowSelectionModel, detail: GridCallbackDetails<any>) => {
         if (newRowSelectionModel.length > rowSelectionModel.length) {
@@ -80,6 +84,19 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         }
         setRowSelectionModel(newRowSelectionModel);
     };
+
+    const handleOpenDialog = (currId: string) => {
+        const currIndex = data.findIndex((element: any) => element._id === currId);
+        console.log(data[currIndex]);
+        setDialogData(data[currIndex]);
+        setDialogOpen(true);
+    };
+
+    const handleCloseDialog = () => {
+        setDialogOpen(false);
+    };
+
+    const handleShowContent = (id: string) => {};
 
     const CustomToolbar = () => {
         const [open, setOpen] = useState(false);
@@ -137,7 +154,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">Bạn có muốn {dialogType ? 'CẤM' : 'BỎ CẤM'}:</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">Bạn có muốn {dialogType ? 'CẤM' : 'GỠ CẤM'}:</DialogTitle>
                     <DialogContent>
                         <ul>
                             {rowSelectionModel.map((item: string) => (
@@ -148,7 +165,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
                         <Button onClick={() => handleBan(!dialogType)} autoFocus>
-                            {dialogType ? 'CẤM' : 'BỎ CẤM'}
+                            {dialogType ? 'CẤM' : 'GỠ CẤM'}
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -176,7 +193,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                         className={cx('btncustom')}
                         onClick={() => handleOpen(false)}
                     >
-                        Bỏ cấm
+                        Gỡ cấm
                     </Button>
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>
@@ -201,7 +218,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         {
             field: 'content',
             type: 'actions',
-            headerName: 'Nội dung',
+            headerName: 'Chi tiết',
             width: 100,
             cellClassName: 'actions',
             getActions: ({ id }: { id: string }) => {
@@ -209,7 +226,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                     <GridActionsCellItem
                         icon={<LibraryBooksIcon />}
                         label="detail"
-                        // onClick={() => handleOpen(id)}
+                        onClick={() => handleOpenDialog(id)}
                         color="inherit"
                     />,
                 ];
@@ -241,6 +258,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                 }}
                 onRowSelectionModelChange={handleSelectChange}
             />
+            <ContentDialog open={dialogOpen} dialogData={dialogData} handleClose={handleCloseDialog} />
         </div>
     );
 }

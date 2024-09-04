@@ -172,7 +172,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 {editColumn === 7 ? (
                     <>
                         <DialogTitle id="alert-dialog-title">
-                            Bạn có muốn {newRow.status ? 'BỎ CẤM' : 'CẤM'}:
+                            Bạn có muốn {newRow.status ? 'GỠ CẤM' : 'CẤM'}:
                         </DialogTitle>
                         <DialogContent>
                             <ul>
@@ -182,7 +182,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                         <DialogActions>
                             <Button onClick={handleCloseDialog}>Huỷ</Button>
                             <Button onClick={() => handleCellEditStatus()} autoFocus>
-                                {newRow.status ? 'BỎ CẤM' : 'CẤM'}
+                                {newRow.status ? 'GỠ CẤM' : 'CẤM'}
                             </Button>
                         </DialogActions>
                     </>
@@ -263,7 +263,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">Bạn có muốn {dialogType ? 'CẤM' : 'BỎ CẤM'}:</DialogTitle>
+                    <DialogTitle id="alert-dialog-title">Bạn có muốn {dialogType ? 'CẤM' : 'GỠ CẤM'}:</DialogTitle>
                     <DialogContent>
                         <ul>
                             {rowSelectionModel.map((item: string) => (
@@ -274,7 +274,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
                         <Button onClick={() => handleBan(!dialogType)} autoFocus>
-                            {dialogType ? 'CẤM' : 'BỎ CẤM'}
+                            {dialogType ? 'CẤM' : 'GỠ CẤM'}
                         </Button>
                     </DialogActions>
                 </Dialog>
@@ -302,7 +302,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                         className={cx('btncustom')}
                         onClick={() => handleOpen(false)}
                     >
-                        Bỏ cấm
+                        Gỡ cấm
                     </Button>
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>

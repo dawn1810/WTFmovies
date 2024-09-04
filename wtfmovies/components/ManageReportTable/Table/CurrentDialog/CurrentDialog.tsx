@@ -87,7 +87,16 @@ function CurrentDialog({
         <Dialog open={open} onClose={handleClose} maxWidth="lg">
             <DialogTitle className={cx('dialog-title')}>
                 <span>{dialogType ? 'Chi tiết báo cáo: ' : 'Mẫu phản hồi báo cáo: '}</span>
-                <IconButton aria-label="delete" onClick={handleClose}>
+                <IconButton
+                    aria-label="close"
+                    onClick={handleClose}
+                    sx={(theme) => ({
+                        position: 'absolute',
+                        right: 8,
+                        top: 8,
+                        color: theme.palette.grey[500],
+                    })}
+                >
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
@@ -95,16 +104,16 @@ function CurrentDialog({
                 {dialogType ? (
                     <>
                         <div>
-                            <span style={{ opacity: 0.6 }}>Type:</span> {dialogData.type}
+                            <span style={{ opacity: 0.6 }}>Loại:</span> {dialogData.type}
                         </div>
                         <div>
-                            <span style={{ opacity: 0.6 }}>From:</span> {dialogData.from}
+                            <span style={{ opacity: 0.6 }}>Từ:</span> {dialogData.from}
                         </div>
                         <div>
-                            <span style={{ opacity: 0.6 }}>Time:</span> {dialogData.time}
+                            <span style={{ opacity: 0.6 }}>Thời gian:</span> {dialogData.time}
                         </div>
                         <div>
-                            <span style={{ opacity: 0.6 }}>Content:</span>
+                            <span style={{ opacity: 0.6 }}>Nội dung:</span>
                             <div
                                 style={{ marginLeft: '16px' }}
                                 dangerouslySetInnerHTML={{ __html: dialogData.content }}
