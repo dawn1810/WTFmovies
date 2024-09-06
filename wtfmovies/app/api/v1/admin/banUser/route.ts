@@ -1,10 +1,10 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { emails: string[]; ban: boolean };
+type dataType = { emails: string[]; ban: boolean; type: number };
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,15 +13,33 @@ export async function POST(request: NextRequest) {
         if (!session) return toError('Xác thực thất bại', 401);
 
         const extendedUser: ExtendedUser | undefined = session?.user;
-        const { emails, ban }: dataType = await request.json();
+        const { emails, ban, type }: dataType = await request.json();
 
         if (extendedUser?.role === 'admin') {
+            let today = new Date();
+            console.log(today);
+            switch (type) {
+                case 0:
+                    today.setDate(today.getDate() + 14);
+                    break;
+                case 1:
+                    today.setDate(today.getDate() + 30);
+                    break;
+                case 2:
+                    today.setDate(today.getDate() + 365);
+                    break;
+                case 3:
+                    today.setDate(today.getDate() - 1);
+                    break;
+            }
+            console.log(today);
+
             const response = await mongodb()
                 .db('user')
                 .collection('auth')
                 .updateMany({
                     filter: { email: { $in: emails } },
-                    update: { $set: { status: ban } },
+                    update: { $set: { status: ban, unBanDates: MongoDate(today) } },
                 });
 
             if (response.modifiedCount >= 1) {

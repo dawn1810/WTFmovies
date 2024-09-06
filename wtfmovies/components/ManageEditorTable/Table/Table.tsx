@@ -22,6 +22,9 @@ import {
     useGridApiContext,
     GridRowModel,
 } from '@mui/x-data-grid';
+import FormControl from '@mui/material/FormControl';
+import Select, { SelectChangeEvent } from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 import { viVN } from '@mui/x-data-grid/locales';
 
@@ -209,9 +212,13 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     };
 
     const CustomToolbar = () => {
-        const apiRef = useGridApiContext();
         const [open, setOpen] = useState(false);
         const [dialogType, setDialogType] = useState(true);
+        const [type, setType] = useState<string>('0');
+
+        const handleChangeType = (event: SelectChangeEvent) => {
+            setType(event.target.value);
+        };
 
         const handleOpen = (status: boolean) => {
             setOpen(true);
@@ -226,24 +233,10 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             const response = await fetch('/api/v1/admin/banUser', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ emails: rowSelectionModel, ban: status }),
+                body: JSON.stringify({ emails: rowSelectionModel, ban: status, type: +type }),
             });
 
             if (response.ok) {
-                // rowSelectionModel.forEach(async (id: string) => {
-                //     apiRef.current.startCellEditMode({ id, field: 'status' });
-                //     const isValid = await apiRef.current.setEditCellValue({
-                //         id,
-                //         field: 'status',
-                //         value: status,
-                //         debounceMs: 200,
-                //     });
-
-                //     if (isValid) {
-                //         apiRef.current.stopCellEditMode({ id, field: 'status' });
-                //     }
-                // });
-                // setListUpdate(true);
                 setData((prevData: any) => {
                     const updatedData = [...prevData]; // Create a copy of the original data
 
@@ -274,19 +267,22 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
         return (
             <div>
-                <Dialog
-                    open={open}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
+                <Dialog fullWidth={true} open={open} onClose={handleClose}>
                     <DialogTitle id="alert-dialog-title">Bạn có muốn {dialogType ? 'CẤM' : 'GỠ CẤM'}:</DialogTitle>
                     <DialogContent>
+                        <h4>Danh sách người dùng:</h4>
                         <ul>
                             {rowSelectionModel.map((item: string) => (
                                 <li key={item}>{item}</li>
                             ))}
                         </ul>
+                        <h4>Loại hình phạt:</h4>
+                        <Select style={{ width: '100%' }} autoFocus value={type} onChange={handleChangeType}>
+                            <MenuItem value={0}>14 ngày</MenuItem>
+                            <MenuItem value={1}>30 ngày</MenuItem>
+                            <MenuItem value={2}>1 năm</MenuItem>
+                            <MenuItem value={3}>Vĩnh viễn</MenuItem>
+                        </Select>
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
