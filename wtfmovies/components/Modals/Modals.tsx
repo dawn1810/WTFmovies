@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { getSession, signIn } from 'next-auth/react';
+import { __NEXTAUTH, getSession, signIn } from 'next-auth/react';
 import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -21,6 +21,7 @@ import { LoadingButton } from '@mui/lab';
 import { Login } from '@mui/icons-material';
 import { TextField } from '@mui/material';
 import OtpForm from '../OtpForm';
+import { authenticate } from '~/libs/actions';
 
 const cx = classNames.bind(style);
 
@@ -30,13 +31,13 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
     const [pending, setPending] = useState(false);
     const [passEye, setPassEye] = useState(false);
     const [info, setInfo] = useState({ email: '', password: '', remember: false });
-    const [alert, setAlert] = useState(false);
+    const [alert, setAlert] = useState<string>('');
 
     // redux
     const dispatch = useDispatch();
 
     const clearAllAlert = () => {
-        setAlert(false);
+        setAlert('');
     };
 
     const handleSignInGoogle = async () => {
@@ -59,30 +60,35 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
         const { email, password, remember } = info;
 
         try {
-            const res = await signIn('credentials', {
+            const res = await authenticate({
                 email: email,
                 password: password,
                 remember: remember,
                 redirect: false,
             });
 
-            if (res?.error) setAlert(true);
-            else {
+            if (res.message === 'login successful') {
                 const session = await getSession();
                 if ((session?.user as ExtendedUser)?.first) {
                     router.push('/survey');
                     sessionStorage.setItem('prev', window.location.href);
                 }
                 dispatch(changeModalShow(false));
+                await __NEXTAUTH._getSession({ event: 'storage' });
             }
-            setPending(false);
+
+            if (res?.error) {
+                setAlert(res.error?.message);
+            }
         } catch (err) {
             console.log('Something went wrong!: ', err);
+        } finally {
+            setPending(false);
         }
     };
 
     const handleHide = () => {
-        setAlert(false);
+        setAlert('');
         onHide();
     };
 
@@ -137,7 +143,7 @@ function Modals({ show, onHide, ...props }: { show: boolean; onHide: () => void 
                 <Form noValidate className={cx('login-form')} onSubmit={(e) => handleSubmit(e)}>
                     <Form.Group className="mb-3">
                         <Form.Text className={cx('alert')} hidden={!alert}>
-                            Thông tin đăng nhập không hợp lệ!
+                            {alert}
                         </Form.Text>
                     </Form.Group>
                     <Form.Group className="mb-3" controlId="formEmail">

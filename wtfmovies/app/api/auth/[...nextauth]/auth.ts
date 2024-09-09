@@ -1,10 +1,17 @@
 import { randomBytes, randomUUID } from 'crypto';
-import NextAuth, { NextAuthConfig } from 'next-auth';
+import NextAuth, { AuthError, NextAuthConfig } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google';
 import GitHubProvider from 'next-auth/providers/github';
 import FacebookProvider from 'next-auth/providers/facebook';
 import { comparePassWord, env, mongodb } from '~/libs/func';
+
+class customError extends AuthError {
+    constructor(message: string) {
+        super();
+        this.message = message;
+    }
+}
 
 const login = async (credentials: any) => {
     // check for first time login
@@ -17,13 +24,13 @@ const login = async (credentials: any) => {
             },
         });
 
-    if (!userAuth) throw new Error('Email không tồn tại');
-    else if (!userAuth.status) throw new Error('Tài khoản đang bị cấm');
+    if (!userAuth) throw new customError('Email không tồn tại');
+    else if (!userAuth.status) throw new customError('Tài khoản đang bị cấm');
 
     // have user check password
     const passAuth = await comparePassWord(userAuth.password, credentials.password);
 
-    if (!passAuth) throw new Error('Mật khẩu không chính xác');
+    if (!passAuth) throw new customError('Mật khẩu không chính xác');
 
     return userAuth; // login successfull
 };
@@ -96,8 +103,7 @@ const authOptions: NextAuthConfig = {
     ],
     callbacks: {
         async signIn({ user, account, profile }): Promise<string | boolean> {
-            console.log(user);
-
+            // console.log(user);
             if (account?.provider === 'google') {
                 return !!profile?.email_verified;
             }
@@ -172,4 +178,6 @@ const authOptions: NextAuthConfig = {
 export const {
     handlers: { GET, POST },
     auth,
+    signIn,
+    signOut,
 } = NextAuth(authOptions);

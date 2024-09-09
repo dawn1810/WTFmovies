@@ -276,13 +276,17 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                                 <li key={item}>{item}</li>
                             ))}
                         </ul>
-                        <h4>Loại hình phạt:</h4>
-                        <Select style={{ width: '100%' }} autoFocus value={type} onChange={handleChangeType}>
-                            <MenuItem value={0}>14 ngày</MenuItem>
-                            <MenuItem value={1}>30 ngày</MenuItem>
-                            <MenuItem value={2}>1 năm</MenuItem>
-                            <MenuItem value={3}>Vĩnh viễn</MenuItem>
-                        </Select>
+                        {dialogType && (
+                            <>
+                                <h4>Loại hình phạt:</h4>
+                                <Select style={{ width: '100%' }} autoFocus value={type} onChange={handleChangeType}>
+                                    <MenuItem value={0}>14 ngày</MenuItem>
+                                    <MenuItem value={1}>30 ngày</MenuItem>
+                                    <MenuItem value={2}>1 năm</MenuItem>
+                                    <MenuItem value={3}>Vĩnh viễn</MenuItem>
+                                </Select>
+                            </>
+                        )}
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>

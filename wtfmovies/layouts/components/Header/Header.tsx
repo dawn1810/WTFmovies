@@ -135,13 +135,13 @@ function Header({
     genres?: { name: string; to: string; special?: boolean }[] | any;
     notifyLength?: number;
 }) {
-    //router
-    const router = useRouter();
-
     // session
     const { data: session } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
     const isLogged = !!currentUser && !!currentUser.email;
+
+    //router
+    const router = useRouter();
 
     //redux
     const state = useSelector(headerSelector);
@@ -150,6 +150,16 @@ function Header({
     const [searchShow, setSearchShow] = useState<boolean>(false);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
+
+    useEffect(() => {
+        const checkStatus = async () => {
+            await fetch('/api/v1/checkAuth', {
+                method: 'GET',
+            });
+        };
+
+        checkStatus();
+    }, []);
 
     useEffect(() => {
         if (socket.connected) {
