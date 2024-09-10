@@ -12,7 +12,7 @@ import Typography from '@mui/material/Typography';
 // import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
 
-export default function BanNotify({ open }: { open: boolean }) {
+export default function BanNotify({ open, unBanDate }: { open: boolean; unBanDate: string }) {
     // const [progress, setProgress] = useState(0);
 
     // useEffect(() => {
@@ -53,7 +53,7 @@ export default function BanNotify({ open }: { open: boolean }) {
                     hợp cho bạn.
                 </Typography>
                 <Typography gutterBottom>
-                    Lệnh cấm này có hiệu lực đến {}. Hãy quay lại khi lệnh cấm của bạn kết thúc.
+                    Lệnh cấm này có hiệu lực đến {unBanDate}. Hãy quay lại khi lệnh cấm của bạn kết thúc.
                 </Typography>
                 <Typography gutterBottom>Cảm ơn vì bạn đã đọc hết thông báo.</Typography>
             </DialogContent>

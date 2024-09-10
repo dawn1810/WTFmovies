@@ -30,7 +30,7 @@ export async function GET(request: NextRequest) {
             const unBanDate = new Date(currUser.unBanDates);
 
             if (today > unBanDate) {
-                const updateStatus = await mongodb()
+                await mongodb()
                     .db('user')
                     .collection('auth')
                     .updateOne({
@@ -40,7 +40,8 @@ export async function GET(request: NextRequest) {
                         },
                     });
                 return toJSON('Thay đổi trạng thái thành công');
-            } else return toError('Tài khoản đang bị cấm', 400);
+            } else
+                return toError({ error: 'Tài khoản đang bị cấm', date: unBanDate.toLocaleString().split(',')[0] }, 400);
         }
     } catch (err) {
         return toError('Lỗi trong quá trình thay đổi trạng thái', 500);

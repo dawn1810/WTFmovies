@@ -150,6 +150,7 @@ function Header({
 
     const [searchShow, setSearchShow] = useState<boolean>(false);
     const [openBanNotify, setOpenBanNotify] = useState<boolean>(false);
+    const [unBanDate, setUnBanDate] = useState<string>('10/18/2003');
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -160,7 +161,9 @@ function Header({
             });
 
             if (check.status === 400) {
+                const res: any = check.json();
                 setOpenBanNotify(true);
+                setUnBanDate(res.date);
             }
         };
 
@@ -386,7 +389,7 @@ function Header({
 
             <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
             <FeedbackDialog />
-            <BanNotify open={openBanNotify} />
+            <BanNotify open={openBanNotify} unBanDate={unBanDate} />
             <Notify />
         </header>
     );
