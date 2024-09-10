@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
         const { comments, ban }: dataType = await request.json();
 
         const newCommentIds = comments.map((comment: any) => ObjectId(comment._id));
-        console.log(newCommentIds);
+        // console.log(newCommentIds);
 
         const newParentIds = comments.map((comment: any) => {
             if (comment.parentId) return ObjectId(comment.parentId);

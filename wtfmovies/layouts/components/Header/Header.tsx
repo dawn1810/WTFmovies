@@ -31,9 +31,10 @@ import Menu from '~/components/Popper/Menu';
 import ImageCustom from '~/components/ImageCustom';
 import Search from '../Search';
 import { ExtendedUser } from '~/libs/interfaces';
-import Notify from '~/components/Notify';
 import { Badge, IconButton } from '@mui/material';
 import FeedbackDialog from '~/components/FeedbackDialog';
+import BanNotify from '~/components/BanNotifyDialog';
+import Notify from '~/components/Notify';
 import { socket } from '~/websocket/websocketService';
 import { showNotify } from '~/components/Notify/notifySlide';
 
@@ -148,14 +149,19 @@ function Header({
     const dispatch = useDispatch();
 
     const [searchShow, setSearchShow] = useState<boolean>(false);
+    const [openBanNotify, setOpenBanNotify] = useState<boolean>(false);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
     useEffect(() => {
         const checkStatus = async () => {
-            await fetch('/api/v1/checkAuth', {
+            const check = await fetch('/api/v1/checkAuth', {
                 method: 'GET',
             });
+
+            if (check.status === 400) {
+                setOpenBanNotify(true);
+            }
         };
 
         checkStatus();
@@ -380,6 +386,7 @@ function Header({
 
             <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
             <FeedbackDialog />
+            <BanNotify open={openBanNotify} />
             <Notify />
         </header>
     );

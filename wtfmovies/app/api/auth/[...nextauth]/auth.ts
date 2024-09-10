@@ -25,7 +25,23 @@ const login = async (credentials: any) => {
         });
 
     if (!userAuth) throw new customError('Email không tồn tại');
-    else if (!userAuth.status) throw new customError('Tài khoản đang bị cấm');
+    else if (!userAuth.status) {
+        const today = new Date();
+        const unBanDate = new Date();
+        if (today > unBanDate) {
+            const updateStatus = await mongodb()
+                .db('user')
+                .collection('auth')
+                .updateOne({
+                    filter: { email: credentials.email },
+                    update: {
+                        $set: { status: true },
+                    },
+                });
+
+            if (updateStatus.modifiedCount === 0) throw new customError('Lỗi thử lại sau ít phút');
+        } else throw new customError('Tài khoản đang bị cấm');
+    }
 
     // have user check password
     const passAuth = await comparePassWord(userAuth.password, credentials.password);
