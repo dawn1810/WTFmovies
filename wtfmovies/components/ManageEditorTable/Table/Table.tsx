@@ -31,6 +31,7 @@ import { viVN } from '@mui/x-data-grid/locales';
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
+import { socket } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
 
@@ -230,10 +231,26 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
         };
 
         const handleBan = async (status: boolean) => {
+            let today = new Date();
+            switch (+type) {
+                case 0:
+                    today.setDate(today.getDate() + 14);
+                    break;
+                case 1:
+                    today.setDate(today.getDate() + 30);
+                    break;
+                case 2:
+                    today.setDate(today.getDate() + 365);
+                    break;
+                case 3:
+                    today.setDate(today.getDate() - 1);
+                    break;
+            }
+
             const response = await fetch('/api/v1/admin/banUser', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ emails: rowSelectionModel, ban: status, type: +type }),
+                body: JSON.stringify({ emails: rowSelectionModel, ban: status, unbanDate: today }),
             });
 
             if (response.ok) {
@@ -243,7 +260,6 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                     rowSelectionModel.forEach((currEmail: string) => {
                         const index = prevData.findIndex((item: any) => item.id === currEmail);
 
-                        console.log(index);
                         // If the item is found, update its status
                         if (index !== -1) {
                             updatedData[index] = { ...updatedData[index], status: status };
@@ -252,6 +268,20 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
                     return updatedData;
                 });
+
+                // wss to banned user
+                if (socket.connected) {
+                    socket.emit(
+                        'banUser',
+                        JSON.stringify({
+                            receiver: rowSelectionModel,
+                            unbanDate: today.toLocaleString().split(',')[0],
+                        }),
+                    );
+                } else {
+                    console.error('WebSocket connection not open.');
+                }
+
                 setOpen(false);
                 showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {

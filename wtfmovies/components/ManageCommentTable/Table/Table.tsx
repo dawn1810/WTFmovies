@@ -30,6 +30,7 @@ import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import ContentDialog from './ContentDialog';
+import { socket } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
 
@@ -130,6 +131,17 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
 
                     return updatedData;
                 });
+                // wss to remove bancomments
+                if (socket.connected) {
+                    socket.emit(
+                        'banComment',
+                        JSON.stringify({
+                            comments: rowSelectionInfo,
+                        }),
+                    );
+                } else {
+                    console.error('WebSocket connection not open.');
+                }
                 showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             } else if (response.status === 400) {
                 showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');

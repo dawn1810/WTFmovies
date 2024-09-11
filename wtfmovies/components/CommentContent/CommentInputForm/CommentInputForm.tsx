@@ -91,11 +91,22 @@ function CommentInputForm() {
             else dispatch(removeCommentsById(commentId));
         });
 
+        socket.on('banIdComment', async (message) => {
+            const { comments } = JSON.parse(message);
+            comments.forEach((comment: any) => {
+                console.log(comment);
+                const { parentId, _id } = comment;
+                if (parentId) dispatch(removeReplyById({ parentId, _id }));
+                else dispatch(removeCommentsById(_id));
+            });
+        });
+
         return () => {
             socket.off('newComment');
             socket.off('newReplyComment');
             socket.off('newEditComment');
             socket.off('newRecallComment');
+            socket.off('banIdComment');
         };
     }, [state.filmName]);
 

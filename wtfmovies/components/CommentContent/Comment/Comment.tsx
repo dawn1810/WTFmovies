@@ -184,7 +184,7 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                         likeNum: comment.like,
                     }}
                 />
-                {comment.replyLength && comment.replyLength > 0 && (
+                {comment.replyLength !== undefined && comment.replyLength > 0 && (
                     <Button
                         className={cx('reply-watch-btn')}
                         variant="text"

@@ -150,7 +150,7 @@ function Header({
 
     const [searchShow, setSearchShow] = useState<boolean>(false);
     const [openBanNotify, setOpenBanNotify] = useState<boolean>(false);
-    const [unBanDate, setUnBanDate] = useState<string>('10/18/2003');
+    const [unBanDate, setUnBanDate] = useState<string>('');
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -162,6 +162,7 @@ function Header({
 
             if (check.status === 400) {
                 const res: any = check.json();
+                console.log(res);
                 setOpenBanNotify(true);
                 setUnBanDate(res.date);
             }
@@ -194,9 +195,16 @@ function Header({
             showAlert(`${message} nhắc đến bạn trong một bình luận`, 'info');
         });
 
+        socket.on('banCurrUser', async (message) => {
+            setOpenBanNotify(true);
+            setUnBanDate(message);
+        });
+
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
+            socket.off('commentNotify');
+            socket.off('banCurrUser');
         };
     }, []);
 
@@ -211,7 +219,7 @@ function Header({
     const handleMenuChange = (menuItem: MenuItem) => {
         switch (menuItem.type) {
             case 'language':
-                // /                // Handle change language
+                // Handle change language
                 break;
             case 'logout':
                 signOut();

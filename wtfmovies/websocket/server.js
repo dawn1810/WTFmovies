@@ -26,6 +26,7 @@ app.prepare().then(() => {
             email && socket.join(email);
         });
 
+        // for comment
         socket.on('comment', (message) => {
             const data = JSON.parse(message);
             socket.broadcast.emit('newComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
@@ -43,6 +44,17 @@ app.prepare().then(() => {
 
         socket.on('recallComment', (message) => {
             socket.broadcast.emit('newRecallComment', message);
+        });
+
+        // for ban user
+        socket.on('banUser', (message) => {
+            const data = JSON.parse(message);
+            io.in(data.receiver).emit('banCurrUser', data.unbanDate);
+        });
+
+        socket.on('banComment', (message) => {
+            console.log(message);
+            socket.broadcast.emit('banIdComment', message);
         });
 
         socket.on('disconnect', () => {
