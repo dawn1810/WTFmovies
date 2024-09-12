@@ -195,6 +195,8 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                     </Button>
                 )}
                 {replyShow &&
+                    comment.replyLength !== undefined &&
+                    comment.replyLength > 0 &&
                     (comment.replyList ? (
                         <>
                             <div className={cx('reply-comment-list')}>

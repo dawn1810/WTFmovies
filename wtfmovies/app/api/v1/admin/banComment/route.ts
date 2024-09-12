@@ -16,11 +16,20 @@ export async function POST(request: NextRequest) {
         const { comments, ban }: dataType = await request.json();
 
         const newCommentIds = comments.map((comment: any) => ObjectId(comment._id));
-        // console.log(newCommentIds);
 
-        const newParentIds = comments.map((comment: any) => {
-            if (comment.parentId) return ObjectId(comment.parentId);
+        const newParentIds = new Map();
+
+        comments.forEach((comment: any) => {
+            const parentId = comment.parentId;
+            if (parentId) {
+                if (newParentIds.has(parentId)) newParentIds.set(parentId, newParentIds.get(parentId) + (ban ? 1 : -1));
+                else newParentIds.set(parentId, ban ? 1 : -1);
+            }
         });
+
+        // const newParentIds = comments.map((comment: any) => {
+        //     if (comment.parentId) return ObjectId(comment.parentId);
+        // });
 
         if (extendedUser?.role === 'admin') {
             const currCommentUpdate = await mongodb()
@@ -31,15 +40,24 @@ export async function POST(request: NextRequest) {
                     update: { $set: { status: ban } },
                 });
 
-            const commentUpdate = await mongodb()
-                .db('film')
-                .collection('comment')
-                .updateMany({
-                    filter: { _id: { $in: newParentIds } },
-                    update: { $inc: { replyLength: ban ? 1 : -1 } },
-                });
+            newParentIds.forEach(async (values, keys) => {
+                await mongodb()
+                    .db('film')
+                    .collection('comment')
+                    .updateMany({
+                        filter: { _id: ObjectId(keys) },
+                        update: { $inc: { replyLength: values } },
+                    });
+            });
+            // const commentUpdate = await mongodb()
+            //     .db('film')
+            //     .collection('comment')
+            //     .updateMany({
+            //         filter: { _id: { $in: newParentIds } },
+            //         update: { $inc: { replyLength: ban ? 1 : -1 } },
+            //     });
 
-            if (currCommentUpdate.modifiedCount >= 1 && commentUpdate) {
+            if (currCommentUpdate.modifiedCount >= 1) {
                 return toJSON('Thay đổi trạng thái thành công');
             }
             return toError('Thay đổi trạng thái thất bại', 400);

@@ -26,7 +26,6 @@ import {
 } from '../commentSlice';
 import { commentContentSelector } from '~/redux/selectors';
 import { Avatar } from '@mui/material';
-import { generateUUIDv4 } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 function CommentInputForm() {
@@ -93,10 +92,10 @@ function CommentInputForm() {
 
         socket.on('banIdComment', async (message) => {
             const { comments } = JSON.parse(message);
+
             comments.forEach((comment: any) => {
-                console.log(comment);
                 const { parentId, _id } = comment;
-                if (parentId) dispatch(removeReplyById({ parentId, _id }));
+                if (parentId) dispatch(removeReplyById({ parentId, commentId: _id }));
                 else dispatch(removeCommentsById(_id));
             });
         });

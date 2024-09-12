@@ -18,6 +18,7 @@ import NotFound from '../(root)/not-found';
 import { getNotificationList } from '~/libs/getData/notification';
 import { getCurrentUser } from '~/libs/getData/home';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
+import { redirect } from 'next/navigation';
 
 const APP_NAME = 'Editor';
 const APP_DEFAULT_TITLE = 'Editor';
@@ -73,7 +74,7 @@ export default async function AdminLayout({
     const currentUser = await getCurrentUser();
     const notifications = await getNotificationList();
 
-    if (!notifications) return NotFound();
+    if (!notifications) redirect('/');
 
     return (
         <ReduxProvider>

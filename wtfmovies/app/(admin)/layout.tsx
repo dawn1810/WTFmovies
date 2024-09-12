@@ -20,6 +20,7 @@ import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../(root)/not-found';
 import { getCurrentUser } from '~/libs/getData/home';
+import { redirect } from 'next/navigation';
 
 const APP_NAME = 'Admin';
 const APP_DEFAULT_TITLE = 'Admin';
@@ -85,7 +86,8 @@ export default async function AdminLayout({
     const currentUser = await getCurrentUser();
     const notifications = await getNotificationList();
 
-    if (!notifications) return NotFound();
+    if (!notifications) redirect('/');
+    // if (!notifications) return NotFound();
 
     return (
         <ReduxProvider>

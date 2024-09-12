@@ -162,7 +162,6 @@ function Header({
 
             if (check.status === 400) {
                 const res: any = check.json();
-                console.log(res);
                 setOpenBanNotify(true);
                 setUnBanDate(res.date);
             }
