@@ -74,16 +74,14 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
-    const [editColumn, setEditCollumn] = useState<number>(-1);
+    // const [editColumn, setEditCollumn] = useState<number>(-1);
 
     const processRowUpdate = useCallback(
         (newRow: GridRowModel, oldRow: GridRowModel) =>
             new Promise<GridRowModel>((resolve, reject) => {
-                console.log(newRow === oldRow);
-
-                if (newRow.status !== oldRow.status || newRow.role !== oldRow.role) {
-                    if (newRow.status !== oldRow.status) setEditCollumn(7);
-                    else if (newRow.role !== oldRow.role) setEditCollumn(6);
+                if (newRow.role !== oldRow.role) {
+                    // if (newRow.status !== oldRow.status) setEditCollumn(7);
+                    // else if (newRow.role !== oldRow.role) setEditCollumn(6);
                     // Save the arguments to resolve or reject the promise later
                     setPromiseArguments({ resolve, reject, newRow, oldRow });
                 } else {
@@ -99,32 +97,32 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
         setPromiseArguments(null);
     };
 
-    const handleCellEditStatus = async () => {
-        const { newRow, oldRow, reject, resolve } = promiseArguments;
+    // const handleCellEditStatus = async () => {
+    //     const { newRow, oldRow, reject, resolve } = promiseArguments;
 
-        const response = await fetch('/api/v1/admin/banUser', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ emails: [newRow.id], ban: newRow.status }),
-        });
+    //     const response = await fetch('/api/v1/admin/banUser', {
+    //         method: 'POST',
+    //         headers: { 'Content-Type': 'application/json' },
+    //         body: JSON.stringify({ emails: [newRow.id], ban: newRow.status }),
+    //     });
 
-        if (response.ok) {
-            resolve(newRow);
-            showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
-        } else {
-            if (response.status === 400) {
-                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
-            } else if (response.status === 401) {
-                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
-            } else if (response.status === 403) {
-                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-            }
-            resolve(oldRow);
-        }
-        setPromiseArguments(null);
-    };
+    //     if (response.ok) {
+    //         resolve(newRow);
+    //         showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
+    //     } else {
+    //         if (response.status === 400) {
+    //             showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
+    //         } else if (response.status === 401) {
+    //             showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
+    //         } else if (response.status === 403) {
+    //             showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
+    //         } else if (response.status === 500) {
+    //             showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+    //         }
+    //         resolve(oldRow);
+    //     }
+    //     setPromiseArguments(null);
+    // };
 
     const handleCellEditRole = async () => {
         const { newRow, oldRow, reject, resolve } = promiseArguments;
@@ -137,6 +135,20 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
         if (response.ok) {
             resolve(newRow);
+
+            // wss for change user role
+            if (socket.connected) {
+                socket.emit(
+                    'changeRole',
+                    JSON.stringify({
+                        receiver: rowSelectionModel,
+                        role: newRow.role,
+                    }),
+                );
+            } else {
+                console.error('WebSocket connection not open.');
+            }
+
             showAlert('Thay đổi phần quyền người dùng thành công 😎😎😎', 'success');
         } else {
             if (response.status === 400) {
@@ -175,7 +187,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                {editColumn === 7 ? (
+                {/* {editColumn === 7 ? (
                     <>
                         <DialogTitle id="alert-dialog-title">
                             Bạn có muốn {newRow.status ? 'GỠ CẤM' : 'CẤM'}:
@@ -192,22 +204,20 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                             </Button>
                         </DialogActions>
                     </>
-                ) : (
-                    <>
-                        <DialogTitle id="alert-dialog-title">Bạn có muốn thay đổi phân quyền:</DialogTitle>
-                        <DialogContent>
-                            <ul>
-                                <li>{newRow.id}</li>
-                            </ul>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDialog}>Huỷ</Button>
-                            <Button onClick={() => handleCellEditRole()} autoFocus>
-                                Thay đổi
-                            </Button>
-                        </DialogActions>
-                    </>
-                )}
+                ) : ( */}
+                <DialogTitle id="alert-dialog-title">Bạn có muốn thay đổi phân quyền:</DialogTitle>
+                <DialogContent>
+                    <ul>
+                        <li>{newRow.id}</li>
+                    </ul>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseDialog}>Huỷ</Button>
+                    <Button onClick={() => handleCellEditRole()} autoFocus>
+                        Thay đổi
+                    </Button>
+                </DialogActions>
+                {/* )} */}
             </Dialog>
         );
     };
@@ -270,16 +280,18 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 });
 
                 // wss to banned user
-                if (socket.connected) {
-                    socket.emit(
-                        'banUser',
-                        JSON.stringify({
-                            receiver: rowSelectionModel,
-                            unbanDate: today.toLocaleString().split(',')[0],
-                        }),
-                    );
-                } else {
-                    console.error('WebSocket connection not open.');
+                if (status) {
+                    if (socket.connected) {
+                        socket.emit(
+                            'banUser',
+                            JSON.stringify({
+                                receiver: rowSelectionModel,
+                                unbanDate: today.toLocaleString().split(',')[0],
+                            }),
+                        );
+                    } else {
+                        console.error('WebSocket connection not open.');
+                    }
                 }
 
                 setOpen(false);

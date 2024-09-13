@@ -46,15 +46,19 @@ app.prepare().then(() => {
             socket.broadcast.emit('newRecallComment', message);
         });
 
-        // for ban user
+        // admin ban and update
         socket.on('banUser', (message) => {
             const data = JSON.parse(message);
             io.in(data.receiver).emit('banCurrUser', data.unbanDate);
         });
 
         socket.on('banComment', (message) => {
-            console.log(message);
             socket.broadcast.emit('banIdComment', message);
+        });
+
+        socket.on('changeRole', (message) => {
+            const data = JSON.parse(message);
+            io.in(data.receiver).emit('changeUserRole', data.role);
         });
 
         socket.on('disconnect', () => {

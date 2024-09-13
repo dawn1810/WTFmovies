@@ -137,7 +137,7 @@ function Header({
     notifyLength?: number;
 }) {
     // session
-    const { data: session } = useSession();
+    const { data: session, update } = useSession();
     const extendedUser: ExtendedUser | undefined = session?.user;
     const isLogged = !!currentUser && !!currentUser.email;
 
@@ -199,11 +199,17 @@ function Header({
             setUnBanDate(message);
         });
 
+        socket.on('changeUserRole', async (message) => {
+            await update({ user: { ...session?.user, role: message } });
+            console.log(session);
+        });
+
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('commentNotify');
             socket.off('banCurrUser');
+            socket.off('changeUserRole');
         };
     }, []);
 
@@ -251,6 +257,7 @@ function Header({
         const [scrollPosition, setScrollPosition] = useState(0);
         const [scrollSpeed, setScrollSpeed] = useState(0);
         const [lastScrollTop, setLastScrollTop] = useState(0);
+
         useEffect(() => {
             setHeaderClass('wrapper-show');
         }, []);
