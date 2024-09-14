@@ -58,7 +58,7 @@ app.prepare().then(() => {
 
         socket.on('changeRole', (message) => {
             const data = JSON.parse(message);
-            io.in(data.receiver).emit('changeUserRole', data.role);
+            io.to(data.receiver).emit('changeUserRole', data.role);
         });
 
         socket.on('disconnect', () => {

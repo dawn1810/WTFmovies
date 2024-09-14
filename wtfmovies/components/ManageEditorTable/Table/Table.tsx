@@ -141,7 +141,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 socket.emit(
                     'changeRole',
                     JSON.stringify({
-                        receiver: rowSelectionModel,
+                        receiver: newRow.id,
                         role: newRow.role,
                     }),
                 );

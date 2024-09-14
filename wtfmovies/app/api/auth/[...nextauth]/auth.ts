@@ -147,11 +147,7 @@ const authOptions: NextAuthConfig = {
                 user = await googleLogin(user); // update session
             }
 
-            console.log(trigger, session);
-
             if (trigger === 'update' && session) {
-                console.log('aaaaaa');
-
                 if (session.user.avatar) token.avatar = session.user.avatar;
                 if (session.user.role) token.role = session.user.role;
             }
@@ -178,12 +174,10 @@ const authOptions: NextAuthConfig = {
             trigger?: any;
             newSession: any;
         }) {
-            // if (trigger === 'update' && newSession) {
-            //     console.log('bbbbbb');
-
-            //     if (newSession.user.avatar) session.user.avatar = newSession.user.avatar;
-            //     if (newSession.user.role) session.user.role = newSession.user.role;
-            // }
+            if (trigger === 'update' && newSession) {
+                if (newSession.user.avatar) session.user.avatar = newSession.user.avatar;
+                if (newSession.user.role) session.user.role = newSession.user.role;
+            }
 
             if (token) {
                 session.user.id = token.id;

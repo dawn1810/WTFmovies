@@ -199,19 +199,29 @@ function Header({
             setUnBanDate(message);
         });
 
-        socket.on('changeUserRole', async (message) => {
-            await update({ user: { ...session?.user, role: message } });
-            console.log(session);
-        });
+        // socket.on('changeUserRole', async (message) => {
+        //     console.log(session);
+        //     await update({ role: message });
+        // });
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('commentNotify');
             socket.off('banCurrUser');
-            socket.off('changeUserRole');
+            // socket.off('changeUserRole');
         };
     }, []);
+
+    useEffect(() => {
+        socket.on('changeUserRole', async (message) => {
+            await update({ user: { ...session?.user, role: message } });
+        });
+
+        return () => {
+            socket.off('changeUserRole');
+        };
+    }, [session]);
 
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
