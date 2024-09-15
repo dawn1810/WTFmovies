@@ -151,6 +151,7 @@ function Header({
     const [searchShow, setSearchShow] = useState<boolean>(false);
     const [openBanNotify, setOpenBanNotify] = useState<boolean>(false);
     const [unBanDate, setUnBanDate] = useState<string>('');
+    const [notifyType, setNotifyType] = useState<'ban' | 'role'>('ban');
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -161,9 +162,17 @@ function Header({
             });
 
             if (check.status === 400) {
-                const res: any = check.json();
+                const res: any = await check.json();
+                setNotifyType('ban');
                 setOpenBanNotify(true);
                 setUnBanDate(res.date);
+            } else if (check.status === 401) {
+                showAlert('Đăng nhập để khám phá những tính năng tốt hơn', 'info');
+            } else if (check.status === 402) {
+                const res: any = await check.json();
+                setNotifyType('role');
+                setOpenBanNotify(true);
+                setUnBanDate(res.role);
             }
         };
 
@@ -195,33 +204,26 @@ function Header({
         });
 
         socket.on('banCurrUser', async (message) => {
+            setNotifyType('ban');
             setOpenBanNotify(true);
             setUnBanDate(message);
         });
 
-        // socket.on('changeUserRole', async (message) => {
-        //     console.log(session);
-        //     await update({ role: message });
-        // });
+        socket.on('changeUserRole', async (message) => {
+            console.log(message);
+            setNotifyType('role');
+            setOpenBanNotify(true);
+            setUnBanDate(message);
+        });
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('commentNotify');
             socket.off('banCurrUser');
-            // socket.off('changeUserRole');
-        };
-    }, []);
-
-    useEffect(() => {
-        socket.on('changeUserRole', async (message) => {
-            await update({ user: { ...session?.user, role: message } });
-        });
-
-        return () => {
             socket.off('changeUserRole');
         };
-    }, [session]);
+    }, []);
 
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
@@ -413,7 +415,7 @@ function Header({
 
             <Modals show={state.modalShow} onHide={() => dispatch(changeModalShow(false))} />
             <FeedbackDialog />
-            <BanNotify open={openBanNotify} unBanDate={unBanDate} />
+            <BanNotify open={openBanNotify} unBanDate={unBanDate} type={notifyType} />
             <Notify />
         </header>
     );

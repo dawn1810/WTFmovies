@@ -149,7 +149,6 @@ const authOptions: NextAuthConfig = {
 
             if (trigger === 'update' && session) {
                 if (session.user.avatar) token.avatar = session.user.avatar;
-                if (session.user.role) token.role = session.user.role;
             }
 
             if (user) {
@@ -176,7 +175,6 @@ const authOptions: NextAuthConfig = {
         }) {
             if (trigger === 'update' && newSession) {
                 if (newSession.user.avatar) session.user.avatar = newSession.user.avatar;
-                if (newSession.user.role) session.user.role = newSession.user.role;
             }
 
             if (token) {

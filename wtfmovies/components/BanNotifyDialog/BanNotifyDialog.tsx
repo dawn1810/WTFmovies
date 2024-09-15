@@ -12,7 +12,15 @@ import Typography from '@mui/material/Typography';
 // import { useEffect, useState } from 'react';
 import { signOut } from 'next-auth/react';
 
-export default function BanNotify({ open, unBanDate }: { open: boolean; unBanDate: string }) {
+export default function BanNotify({
+    open,
+    type,
+    unBanDate,
+}: {
+    open: boolean;
+    type: 'ban' | 'role';
+    unBanDate: string;
+}) {
     // const [progress, setProgress] = useState(0);
 
     // useEffect(() => {
@@ -33,7 +41,7 @@ export default function BanNotify({ open, unBanDate }: { open: boolean; unBanDat
         <Dialog onClose={() => signOut()} aria-labelledby="customized-dialog-title" open={open}>
             {/* <LinearProgress variant="determinate" value={progress} /> */}
             <DialogTitle sx={{ m: 0, p: 2 }} id="customized-dialog-title">
-                Bạn đã bị cấm!
+                {type === 'ban' ? 'Bạn đã bị cấm' : 'Phân quyền của bạn đã được thay đổi'}
             </DialogTitle>
             <IconButton
                 aria-label="close"
@@ -48,14 +56,26 @@ export default function BanNotify({ open, unBanDate }: { open: boolean; unBanDat
                 <CloseIcon />
             </IconButton>
             <DialogContent dividers>
-                <Typography gutterBottom>
-                    Bạn đã vi phạm một số quy tắc cộng đồng của WTFmovies nên chúng tôi buộc phải đã ra lệnh cấm thích
-                    hợp cho bạn.
-                </Typography>
-                <Typography gutterBottom>
-                    Lệnh cấm này có hiệu lực đến {unBanDate}. Hãy quay lại khi lệnh cấm của bạn kết thúc.
-                </Typography>
-                <Typography gutterBottom>Cảm ơn vì bạn đã đọc hết thông báo.</Typography>
+                {type === 'ban' ? (
+                    <>
+                        <Typography gutterBottom>
+                            Bạn đã vi phạm một số quy tắc cộng đồng của WTFmovies nên chúng tôi buộc phải đã ra lệnh cấm
+                            thích hợp cho bạn.
+                        </Typography>
+                        <Typography gutterBottom>
+                            Lệnh cấm này có hiệu lực đến {unBanDate}. Hãy quay lại khi lệnh cấm của bạn kết thúc.
+                        </Typography>
+                        <Typography gutterBottom>Cảm ơn vì bạn đã đọc hết thông báo.</Typography>
+                    </>
+                ) : (
+                    <>
+                        <Typography gutterBottom>
+                            Người quản lý vừa thực hiện thay đổi phân quyền của bạn thành {unBanDate}. Hãy đăng nhập lại
+                            để tiếp tục xem phim.
+                        </Typography>
+                        <Typography gutterBottom>Rất xin lỗi vì sự bất tiện này 😥😥😥.</Typography>
+                    </>
+                )}
             </DialogContent>
             <DialogActions>
                 <Button onClick={() => signOut()}>Đã hiểu</Button>

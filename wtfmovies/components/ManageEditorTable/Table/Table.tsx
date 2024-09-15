@@ -21,6 +21,9 @@ import {
     GridToolbarDensitySelector,
     useGridApiContext,
     GridRowModel,
+    GridCellModesModel,
+    GridCellParams,
+    GridCellModes,
 } from '@mui/x-data-grid';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
@@ -74,6 +77,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
+    const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
     // const [editColumn, setEditCollumn] = useState<number>(-1);
 
     const processRowUpdate = useCallback(
@@ -123,6 +127,48 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     //     }
     //     setPromiseArguments(null);
     // };
+
+    const handleCellClick = useCallback((params: GridCellParams, event: React.MouseEvent) => {
+        if (!params.isEditable) {
+            return;
+        }
+
+        // Ignore portal
+        if ((event.target as any).nodeType === 1 && !event.currentTarget.contains(event.target as Element)) {
+            return;
+        }
+
+        setCellModesModel((prevModel) => {
+            return {
+                // Revert the mode of the other cells from other rows
+                ...Object.keys(prevModel).reduce(
+                    (acc, id) => ({
+                        ...acc,
+                        [id]: Object.keys(prevModel[id]).reduce(
+                            (acc2, field) => ({
+                                ...acc2,
+                                [field]: { mode: GridCellModes.View },
+                            }),
+                            {},
+                        ),
+                    }),
+                    {},
+                ),
+                [params.id]: {
+                    // Revert the mode of other cells in the same row
+                    ...Object.keys(prevModel[params.id] || {}).reduce(
+                        (acc, field) => ({ ...acc, [field]: { mode: GridCellModes.View } }),
+                        {},
+                    ),
+                    [params.field]: { mode: GridCellModes.Edit },
+                },
+            };
+        });
+    }, []);
+
+    const handleCellModesModelChange = useCallback((newModel: GridCellModesModel) => {
+        setCellModesModel(newModel);
+    }, []);
 
     const handleCellEditRole = async () => {
         const { newRow, oldRow, reject, resolve } = promiseArguments;
@@ -378,6 +424,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
                 rowSelectionModel={rowSelectionModel}
+                cellModesModel={cellModesModel}
                 slots={{ toolbar: CustomToolbar }}
                 initialState={{
                     filter: {
@@ -396,6 +443,8 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 onRowSelectionModelChange={(newRowSelectionModel) => {
                     setRowSelectionModel(newRowSelectionModel);
                 }}
+                onCellModesModelChange={handleCellModesModelChange}
+                onCellClick={handleCellClick}
             />
             {renderConfirmDialog()}
         </div>

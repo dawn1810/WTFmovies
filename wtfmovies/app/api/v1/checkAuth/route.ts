@@ -21,11 +21,14 @@ export async function GET(request: NextRequest) {
                     _id: 0,
                     status: 1,
                     unBanDates: 1,
+                    role: 1,
                 },
             });
 
-        if (currUser.status) return toJSON('Thay đổi trạng thái thành công');
-        else {
+        if (currUser.status && currUser.role === extendedUser?.role) return toJSON('Thay đổi trạng thái thành công');
+        else if (currUser.role !== extendedUser?.role) {
+            return toJSON({ error: 'Tài khoản được thay đổi phân quyền', role: currUser.role }, 402);
+        } else {
             const today = new Date();
             const unBanDate = new Date(currUser.unBanDates);
 
@@ -41,7 +44,7 @@ export async function GET(request: NextRequest) {
                     });
                 return toJSON('Thay đổi trạng thái thành công');
             } else
-                return toError({ error: 'Tài khoản đang bị cấm', date: unBanDate.toLocaleString().split(',')[0] }, 400);
+                return toJSON({ error: 'Tài khoản đang bị cấm', date: unBanDate.toLocaleString().split(',')[0] }, 400);
         }
     } catch (err) {
         return toError('Lỗi trong quá trình thay đổi trạng thái', 500);
