@@ -30,13 +30,13 @@ function CurrentDialog({
     handleClose: (event: any) => void;
 }) {
     //alert
-    const dispatch = useDispatch();
+    // const dispatch = useDispatch();
 
-    const showAlert = (content: string, type: any) => {
-        dispatch(showNotify({ content, type, open: true }));
-    };
+    // const showAlert = (content: string, type: any) => {
+    //     dispatch(showNotify({ content, type, open: true }));
+    // };
 
-    const [loading, setLoading] = useState<boolean>(false);
+    // const [loading, setLoading] = useState<boolean>(false);
 
     return (
         <Dialog open={open} onClose={handleClose} maxWidth="lg">

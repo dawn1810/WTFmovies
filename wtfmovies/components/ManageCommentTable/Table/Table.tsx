@@ -25,6 +25,7 @@ import {
 import BlockIcon from '@mui/icons-material/Block';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
@@ -99,6 +100,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     const CustomToolbar = () => {
         const [open, setOpen] = useState(false);
         const [dialogType, setDialogType] = useState(true);
+        const [loading, setLoading] = useState<boolean>(false);
 
         const handleOpen = (status: boolean) => {
             setOpen(true);
@@ -110,6 +112,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
         };
 
         const handleBan = async (status: boolean) => {
+            setLoading(true);
             const response = await fetch('/api/v1/admin/banComment', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -154,6 +157,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             } else if (response.status === 500) {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
+            setLoading(false);
             setOpen(false);
         };
 
@@ -175,9 +179,14 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
-                        <Button onClick={() => handleBan(!dialogType)} autoFocus>
+                        <LoadingButton
+                            loading={loading}
+                            // loadingIndicator="Loading…"
+                            onClick={() => handleBan(!dialogType)}
+                            autoFocus
+                        >
                             {dialogType ? 'CẤM' : 'GỠ CẤM'}
-                        </Button>
+                        </LoadingButton>
                     </DialogActions>
                 </Dialog>
 

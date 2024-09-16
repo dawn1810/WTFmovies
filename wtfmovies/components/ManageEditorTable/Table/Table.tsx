@@ -28,6 +28,7 @@ import {
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
+import LoadingButton from '@mui/lab/LoadingButton';
 
 import { viVN } from '@mui/x-data-grid/locales';
 
@@ -78,6 +79,8 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const [promiseArguments, setPromiseArguments] = useState<any>(null);
     const [listUpdate, setListUpdate] = useState<boolean>(false);
     const [cellModesModel, setCellModesModel] = useState<GridCellModesModel>({});
+    const [editLoading, setEditLoading] = useState<boolean>(false);
+
     // const [editColumn, setEditCollumn] = useState<number>(-1);
 
     const processRowUpdate = useCallback(
@@ -172,6 +175,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
     const handleCellEditRole = async () => {
         const { newRow, oldRow, reject, resolve } = promiseArguments;
+        setEditLoading(true);
 
         const response = await fetch('/api/v1/admin/updateRole', {
             method: 'POST',
@@ -209,7 +213,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             resolve(oldRow);
         }
         setPromiseArguments(null);
-
+        setEditLoading(false);
         setPromiseArguments(null);
     };
 
@@ -233,24 +237,6 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                {/* {editColumn === 7 ? (
-                    <>
-                        <DialogTitle id="alert-dialog-title">
-                            Bạn có muốn {newRow.status ? 'GỠ CẤM' : 'CẤM'}:
-                        </DialogTitle>
-                        <DialogContent>
-                            <ul>
-                                <li>{newRow.id}</li>
-                            </ul>
-                        </DialogContent>
-                        <DialogActions>
-                            <Button onClick={handleCloseDialog}>Huỷ</Button>
-                            <Button onClick={() => handleCellEditStatus()} autoFocus>
-                                {newRow.status ? 'GỠ CẤM' : 'CẤM'}
-                            </Button>
-                        </DialogActions>
-                    </>
-                ) : ( */}
                 <DialogTitle id="alert-dialog-title">Bạn có muốn thay đổi phân quyền:</DialogTitle>
                 <DialogContent>
                     <ul>
@@ -259,17 +245,17 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleCloseDialog}>Huỷ</Button>
-                    <Button onClick={() => handleCellEditRole()} autoFocus>
+                    <LoadingButton loading={editLoading} onClick={() => handleCellEditRole()} autoFocus>
                         Thay đổi
-                    </Button>
+                    </LoadingButton>
                 </DialogActions>
-                {/* )} */}
             </Dialog>
         );
     };
 
     const CustomToolbar = () => {
         const [open, setOpen] = useState(false);
+        const [loading, setLoading] = useState(false);
         const [dialogType, setDialogType] = useState(true);
         const [type, setType] = useState<string>('0');
 
@@ -287,6 +273,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
         };
 
         const handleBan = async (status: boolean) => {
+            setLoading(true);
             let today = new Date();
             switch (+type) {
                 case 0:
@@ -351,6 +338,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             } else if (response.status === 500) {
                 showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
             }
+            setLoading(false);
         };
 
         return (
@@ -378,9 +366,9 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
-                        <Button onClick={() => handleBan(!dialogType)} autoFocus>
+                        <LoadingButton loading={loading} onClick={() => handleBan(!dialogType)} autoFocus>
                             {dialogType ? 'CẤM' : 'GỠ CẤM'}
-                        </Button>
+                        </LoadingButton>
                     </DialogActions>
                 </Dialog>
 
