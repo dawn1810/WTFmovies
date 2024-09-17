@@ -24,6 +24,7 @@ function CurrentDialog({
     open,
     dialogType,
     dialogData,
+    approveLoading,
     handleClose,
     handleReply,
     handleApprove,
@@ -31,6 +32,7 @@ function CurrentDialog({
     open: boolean;
     dialogType: boolean;
     dialogData: { id: string; type: string; from: string; content: string; time: string };
+    approveLoading: boolean;
     handleClose: (event: any) => void;
     handleReply: (type: boolean) => void;
     handleApprove: (ids: string[]) => void;
@@ -141,9 +143,13 @@ function CurrentDialog({
                 {dialogType ? (
                     <>
                         <Button onClick={() => handleReply(false)}>PHẢN HỒI</Button>
-                        <Button onClick={() => handleApprove([dialogData.id])} autoFocus>
+                        <LoadingButton
+                            loading={approveLoading}
+                            onClick={() => handleApprove([dialogData.id])}
+                            autoFocus
+                        >
                             DUYỆT
-                        </Button>
+                        </LoadingButton>
                     </>
                 ) : (
                     <>

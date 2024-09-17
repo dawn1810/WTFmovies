@@ -28,6 +28,7 @@ import {
 import style from './Table.module.scss';
 import CurrentDialog from './CurrentDialog';
 import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
+import { LoadingButton } from '@mui/lab';
 
 const cx = classNames.bind(style);
 
@@ -45,6 +46,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     const [open, setOpen] = useState<boolean>(false);
     const [dialogData, setDialogData] = useState({ id: '', type: '', from: '', content: '', time: '' });
     const [dialogType, setDialogType] = useState(true);
+    const [approveLoading, setApproveLoading] = useState(false);
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
 
@@ -96,6 +98,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     };
 
     const handleApprove = async (ids: string[]) => {
+        setApproveLoading(true);
         const response = await fetch('/api/v1/admin/approveReport', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -103,10 +106,11 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         });
 
         if (response.ok) {
-            showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
             ids.forEach((id) => {
                 handleDeleteRow(id);
             });
+            setOpen(false);
+            showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
         } else if (response.status === 400) {
             showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
         } else if (response.status === 401) {
@@ -116,24 +120,51 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
         } else if (response.status === 500) {
             showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
         }
-        setOpen(false);
+        setApproveLoading(false);
     };
 
     const CustomToolbar = () => {
-        const [open, setOpen] = useState(false);
+        const [toolDialogOpen, setToolDialogOpen] = useState(false);
+        const [toolDialogLoading, setToolDialogLoading] = useState(false);
 
         const handleOpen = () => {
-            setOpen(true);
+            setToolDialogOpen(true);
         };
 
         const handleClose = () => {
-            setOpen(false);
+            setToolDialogOpen(false);
+        };
+
+        const handleToolApprove = async (ids: string[]) => {
+            setToolDialogLoading(true);
+            const response = await fetch('/api/v1/admin/approveReport', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ ids: ids }),
+            });
+
+            if (response.ok) {
+                ids.forEach((id) => {
+                    handleDeleteRow(id);
+                });
+                setToolDialogOpen(false);
+                showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
+            } else if (response.status === 400) {
+                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
+            } else if (response.status === 401) {
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
+            } else if (response.status === 403) {
+                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
+            } else if (response.status === 500) {
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+            setToolDialogLoading(false);
         };
 
         return (
             <div>
                 <Dialog
-                    open={open}
+                    open={toolDialogOpen}
                     onClose={handleClose}
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
@@ -148,9 +179,15 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     </DialogContent>
                     <DialogActions>
                         <Button onClick={handleClose}>Huỷ</Button>
-                        <Button onClick={() => handleApprove(rowSelectionModel)} autoFocus>
+                        <LoadingButton
+                            loading={toolDialogLoading}
+                            onClick={() => {
+                                handleToolApprove(rowSelectionModel);
+                            }}
+                            autoFocus
+                        >
                             DUYỆT
-                        </Button>
+                        </LoadingButton>
                     </DialogActions>
                 </Dialog>
 
@@ -209,6 +246,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                 handleClose={handleClose}
                 handleReply={handleReply}
                 handleApprove={handleApprove}
+                approveLoading={approveLoading}
             />
         </div>
     );
