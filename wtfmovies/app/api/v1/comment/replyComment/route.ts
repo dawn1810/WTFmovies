@@ -40,7 +40,7 @@ export async function POST(request: NextRequest) {
 
             const addNotify = await mongodb()
                 .db('user')
-                .collection('information')
+                .collection('notify')
                 .insertOne({
                     content: `${username} vừa nhắc đến bạn trong một bình luận của ${filmName}!`,
                     time: MongoDate(today),
@@ -51,9 +51,9 @@ export async function POST(request: NextRequest) {
                 .db('user')
                 .collection('information')
                 .updateOne({
-                    filter: {},
+                    filter: { email: tag },
                     update: {
-                        $push: { notifications: addNotify.insertedId },
+                        $push: { notifications: ObjectId(addNotify.insertedId) },
                     },
                 });
         }

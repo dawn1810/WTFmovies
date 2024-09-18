@@ -152,6 +152,7 @@ function Header({
     const [openBanNotify, setOpenBanNotify] = useState<boolean>(false);
     const [unBanDate, setUnBanDate] = useState<string>('');
     const [notifyType, setNotifyType] = useState<'ban' | 'role'>('ban');
+    const [notifyLen, setnotifyLen] = useState<number>(notifyLength || 0);
     const viewPort = useViewport();
     const isMobile = viewPort.width <= 1024;
 
@@ -200,7 +201,9 @@ function Header({
         socket.on('disconnect', onDisconnect);
 
         socket.on('commentNotify', async (message) => {
-            showAlert(`${message} nhắc đến bạn trong một bình luận`, 'info');
+            const { userName, filmName } = JSON.parse(message);
+            setnotifyLen((prev) => prev + 1);
+            showAlert(`${userName} vừa nhắc đến bạn trong một bình luận của ${filmName}`, 'info');
         });
 
         socket.on('banCurrUser', async (message) => {
@@ -210,7 +213,6 @@ function Header({
         });
 
         socket.on('changeUserRole', async (message) => {
-            console.log(message);
             setNotifyType('role');
             setOpenBanNotify(true);
             setUnBanDate(message);
@@ -343,7 +345,7 @@ function Header({
                             <>
                                 <Tippy delay={[0, 50]} content="Notify" placement="bottom">
                                     <IconButton onClick={handleNotification}>
-                                        <Badge badgeContent={notifyLength} max={999} color="error">
+                                        <Badge badgeContent={notifyLen} max={999} color="error">
                                             <NotificationsNoneIcon />
                                         </Badge>
                                     </IconButton>

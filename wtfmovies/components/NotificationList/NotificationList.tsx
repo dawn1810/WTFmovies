@@ -1,6 +1,6 @@
 'use client';
 import classNames from 'classnames/bind';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 //import { AlertColor } from '@mui/material';
 import Avatar from '@mui/material/Avatar';
@@ -18,6 +18,7 @@ import style from './NotificationList.module.scss';
 import { timePassed } from '~/libs/clientFunc';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
+import { socket } from '~/websocket/websocketService';
 
 const cx = classNames.bind(style);
 
@@ -30,6 +31,18 @@ function Notification({ notify }: { notify: any[] }) {
     };
 
     const [notifications, setNotifications] = useState(notify);
+
+    useEffect(() => {
+        socket.on('commentNotify', async (message) => {
+            console.log(message);
+            const { userName, filmName } = JSON.parse(message);
+            showAlert(`${userName} vừa nhắc đến bạn trong một bình luận của ${filmName}`, 'info');
+        });
+
+        return () => {
+            socket.off('commentNotify');
+        };
+    }, []);
 
     const handleRemove = async (index: number) => {
         const curr = notifications;
