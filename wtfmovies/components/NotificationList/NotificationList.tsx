@@ -31,12 +31,21 @@ function Notification({ notify }: { notify: any[] }) {
     };
 
     const [notifications, setNotifications] = useState(notify);
+    console.log(notifications);
 
     useEffect(() => {
         socket.on('commentNotify', async (message) => {
-            console.log(message);
-            const { userName, filmName } = JSON.parse(message);
-            showAlert(`${userName} vừa nhắc đến bạn trong một bình luận của ${filmName}`, 'info');
+            const today = new Date();
+            const { comment, filmName } = JSON.parse(message);
+            setNotifications((prev) => [
+                {
+                    notifyId: comment._id,
+                    content: `${comment.username} vừa nhắc đến bạn trong một bình luận của ${filmName}`,
+                    time: today.toString(),
+                    link: `http://localhost:3000/review/${filmName}`,
+                },
+                ...prev,
+            ]);
         });
 
         return () => {

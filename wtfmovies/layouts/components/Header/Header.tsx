@@ -201,9 +201,9 @@ function Header({
         socket.on('disconnect', onDisconnect);
 
         socket.on('commentNotify', async (message) => {
-            const { userName, filmName } = JSON.parse(message);
+            const { comment, filmName } = JSON.parse(message);
             setnotifyLen((prev) => prev + 1);
-            showAlert(`${userName} vừa nhắc đến bạn trong một bình luận của ${filmName}`, 'info');
+            showAlert(`${comment.username} vừa nhắc đến bạn trong một bình luận của ${filmName}`, 'info');
         });
 
         socket.on('banCurrUser', async (message) => {

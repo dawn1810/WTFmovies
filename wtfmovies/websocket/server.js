@@ -33,9 +33,8 @@ app.prepare().then(() => {
         });
 
         socket.on('replyComment', (message) => {
-            console.log(message);
             const data = JSON.parse(message);
-            io.in(data.receiver).emit('commentNotify', JSON.stringify({ userName: data.comment.username, filmName: data.filmName }));
+            io.in(data.receiver).emit('commentNotify', JSON.stringify({ comment: data.comment, filmName: data.filmName }));
             socket.broadcast.emit('newReplyComment', JSON.stringify({ msgFilmName: data.filmName, comment: data.comment }));
         });
 
