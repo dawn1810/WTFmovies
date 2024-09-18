@@ -202,6 +202,7 @@ const ContactLine = ({
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     commentId: parentId || commentId,
+                    filmName: state.filmName,
                     ...comment,
                 }),
             });

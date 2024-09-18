@@ -9,6 +9,7 @@ interface dataType {
     content: string;
     commentId: string;
     tag: string;
+    filmName: string;
 }
 
 export async function POST(request: NextRequest) {
@@ -19,7 +20,7 @@ export async function POST(request: NextRequest) {
     try {
         const extendedUser: ExtendedUser | undefined = session?.user;
 
-        const { username, content, commentId, tag }: dataType = await request.json();
+        const { username, content, commentId, tag, filmName }: dataType = await request.json();
         const today = new Date();
 
         if (content.length <= 0 || username.length <= 0) return toError('Bình luận không hợp lệ', 400);
@@ -36,6 +37,25 @@ export async function POST(request: NextRequest) {
 
         if (tag) {
             newComment.tag = tag;
+
+            const addNotify = await mongodb()
+                .db('user')
+                .collection('information')
+                .insertOne({
+                    content: `${username} vừa nhắc đến bạn trong một bình luận của ${filmName}!`,
+                    time: MongoDate(today),
+                    link: `http://localhost:3000/review/${filmName}`,
+                });
+
+            await mongodb()
+                .db('user')
+                .collection('information')
+                .updateOne({
+                    filter: {},
+                    update: {
+                        $push: { notifications: addNotify.insertedId },
+                    },
+                });
         }
 
         const result = await mongodb().db('film').collection('comment').insertOne(newComment);
