@@ -13,6 +13,7 @@ import { Metadata, ResolvingMetadata } from 'next/types';
 import Typography from '@mui/material/Typography';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
+import BreadcrumbCom from '~/components/Breadcrumb/Breadcrumb';
 
 const cx = classNames.bind(style);
 
@@ -58,13 +59,15 @@ async function Review({ params }: { params: { movie: string } }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('home-top')}>
-                <Breadcrumbs>
-                    <Link underline="hover" color="inherit" href="/">
-                        Trang chủ
-                    </Link>
-                    <Typography sx={{ color: 'text.primary' }}>Thông tin</Typography>
-                    <Typography sx={{ color: 'text.primary' }}>{filmReviewInfo.name}</Typography>
-                </Breadcrumbs>
+                <BreadcrumbCom
+                    paths={[
+                        {
+                            name: 'Trang chủ',
+                            href: '/',
+                        },
+                    ]}
+                    locations={['Thông tin phim', filmReviewInfo.name]}
+                />
                 <div className={cx('info-content')}>
                     <FilmInfo filmInfo={filmReviewInfo} loveFilms={loveFilms} />
                 </div>

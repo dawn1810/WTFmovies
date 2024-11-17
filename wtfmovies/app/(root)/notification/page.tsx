@@ -1,6 +1,7 @@
 import NotificationList from '~/components/NotificationList';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../not-found';
+import BreadcrumbCom from '~/components/Breadcrumb/Breadcrumb';
 
 async function Notification() {
     let notifications: any = await getNotificationList();
@@ -13,7 +14,20 @@ async function Notification() {
         ];
     }
 
-    return <NotificationList notify={notifications[0].list} />;
+    return (
+        <>
+            <BreadcrumbCom
+                paths={[
+                    {
+                        name: 'Trang chủ',
+                        href: '/',
+                    },
+                ]}
+                locations={['Thông báo']}
+            />
+            <NotificationList notify={notifications[0].list} />
+        </>
+    );
 }
 
 export default Notification;

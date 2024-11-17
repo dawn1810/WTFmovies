@@ -3,6 +3,7 @@ import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import ProfileForm from '~/components/ProfileForm';
 import { getUserInfo, getUserLoveFilmsInfo } from '~/libs/getData/profile';
 import NotFound from '../../not-found';
+import BreadcrumbCom from '~/components/Breadcrumb/Breadcrumb';
 
 async function Profile() {
     const session = await auth();
@@ -16,7 +17,20 @@ async function Profile() {
         const loveFilmsInfo = await getUserLoveFilmsInfo();
 
         if (!!userInfo && !!loveFilmsInfo)
-            return <ProfileForm userInfo={userInfo} loveFilmsInfo={loveFilmsInfo} currPage="1" />;
+            return (
+                <>
+                    <BreadcrumbCom
+                        paths={[
+                            {
+                                name: 'Trang chủ',
+                                href: '/',
+                            },
+                        ]}
+                        locations={['Thông tin cá nhân', userInfo.email]}
+                    />
+                    <ProfileForm userInfo={userInfo} loveFilmsInfo={loveFilmsInfo} currPage="1" />
+                </>
+            );
         else return NotFound();
     }
 }

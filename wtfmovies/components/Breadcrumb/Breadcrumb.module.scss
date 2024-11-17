@@ -1,0 +1,23 @@
+.wrapper {
+    width: var(--default-layout-width);
+    padding: 0 var(--default-layout-horizontal-spacer);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin: 0 auto 18px;
+
+    .link,
+    .location {
+        color: var(--text-color);
+    }
+
+    .link {
+        opacity: 0.5;
+
+        &:hover {
+            cursor: pointer;
+            opacity: 1;
+            text-decoration: underline;
+        }
+    }
+}
