@@ -2,6 +2,9 @@ import classNames from 'classnames/bind';
 import { getFilmsEpisode, getFilmsInfo } from '~/libs/getData/watch';
 import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
 import { getAllFilmsComment, getFilmReviewInfo, getUserLikeComment } from '~/libs/getData/review';
@@ -151,6 +154,14 @@ export default async function Watch({ params }: Props) {
 
     return (
         <div className={cx('wrapper')}>
+            <Breadcrumbs>
+                <Link underline="hover" color="inherit" href="/">
+                    Trang chủ
+                </Link>
+                <Typography sx={{ color: 'text.primary' }}>Xem phim</Typography>
+                <Typography sx={{ color: 'text.primary' }}>{filmData.name}</Typography>
+                <Typography sx={{ color: 'text.primary' }}>Tập {numberEp}</Typography>
+            </Breadcrumbs>
             <h1 className={cx('title')}>{`${filmData?.name} tập ${numberEp}`}</h1>
             <TabsBox tabs={notyfyTabs} textContent defaultActiveKey="celender" className={cx('tab-box')} />
             <WatchWithEp film_id={filmData?.film_id} numEp={Number(numberEp)} filmEpisode={filmEpisode}></WatchWithEp>

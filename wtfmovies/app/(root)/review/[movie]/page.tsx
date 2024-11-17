@@ -10,6 +10,9 @@ import { getAllFilmsComment, getFilmReviewInfo, getUserLikeComment } from '~/lib
 import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
 import NotFound from '~/app/(root)/not-found';
 import { Metadata, ResolvingMetadata } from 'next/types';
+import Typography from '@mui/material/Typography';
+import Breadcrumbs from '@mui/material/Breadcrumbs';
+import Link from '@mui/material/Link';
 
 const cx = classNames.bind(style);
 
@@ -55,6 +58,13 @@ async function Review({ params }: { params: { movie: string } }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('home-top')}>
+                <Breadcrumbs>
+                    <Link underline="hover" color="inherit" href="/">
+                        Trang chủ
+                    </Link>
+                    <Typography sx={{ color: 'text.primary' }}>Thông tin</Typography>
+                    <Typography sx={{ color: 'text.primary' }}>{filmReviewInfo.name}</Typography>
+                </Breadcrumbs>
                 <div className={cx('info-content')}>
                     <FilmInfo filmInfo={filmReviewInfo} loveFilms={loveFilms} />
                 </div>

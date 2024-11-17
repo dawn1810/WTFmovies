@@ -1,5 +1,11 @@
 import { mongodb } from '~/libs/func';
-import { CommentInterface, ExtendedUser, FilmInfoInterface, LikeCommentListInterface } from '../interfaces';
+import {
+    CommentInterface,
+    ExtendedUser,
+    FilmInfoInterface,
+    LikeCommentListInterface,
+    UserInfoInterface,
+} from '../interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInterface> => {
@@ -169,15 +175,34 @@ export const getAllFilmsComment = async (filmName: string): Promise<CommentInter
             //loop to get reply comment
             const cmtList: CommentInterface[] = await Promise.all(
                 comments[0].comments.map(async (cmt) => {
-                    const avt = await mongodb()
+                    const sender: UserInfoInterface[] = await mongodb()
                         .db('user')
-                        .collection('auth')
-                        .findOne({
-                            filter: { email: cmt.email },
-                            projection: { _id: 0, avatar: 1 },
+                        .collection('information')
+                        .aggregate({
+                            pipeline: [
+                                { $match: { email: cmt.email } },
+                                {
+                                    $lookup: {
+                                        from: 'auth',
+                                        localField: 'email',
+                                        foreignField: 'email',
+                                        as: 'authInfo',
+                                    },
+                                },
+                                {
+                                    $unwind: '$authInfo',
+                                },
+                                {
+                                    $project: {
+                                        _id: 0,
+                                        name: 1,
+                                        avatar: '$authInfo.avatar',
+                                    },
+                                },
+                            ],
                         });
 
-                    if (avt) return { ...cmt, avatar: avt.avatar };
+                    if (sender && sender[0]) return { ...cmt, avatar: sender[0].avatar, username: sender[0].name };
                     return cmt;
                 }),
             );

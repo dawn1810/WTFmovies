@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { mongodb, ObjectId, toError, toJSON } from '~/libs/func';
-import { CommentInterface } from '~/libs/interfaces';
+import { CommentInterface, UserInfoInterface } from '~/libs/interfaces';
 
 interface dataType {
     commentId: string;
@@ -27,15 +27,34 @@ export async function POST(request: NextRequest) {
 
         const cmtList: CommentInterface[] = await Promise.all(
             result.map(async (cmt) => {
-                const avt = await mongodb()
+                const sender: UserInfoInterface[] = await mongodb()
                     .db('user')
-                    .collection('auth')
-                    .findOne({
-                        filter: { email: cmt.email },
-                        projection: { _id: 0, avatar: 1 },
+                    .collection('information')
+                    .aggregate({
+                        pipeline: [
+                            { $match: { email: cmt.email } },
+                            {
+                                $lookup: {
+                                    from: 'auth',
+                                    localField: 'email',
+                                    foreignField: 'email',
+                                    as: 'authInfo',
+                                },
+                            },
+                            {
+                                $unwind: '$authInfo',
+                            },
+                            {
+                                $project: {
+                                    _id: 0,
+                                    name: 1,
+                                    avatar: '$authInfo.avatar',
+                                },
+                            },
+                        ],
                     });
 
-                if (avt) return { ...cmt, avatar: avt.avatar };
+                if (sender && sender[0]) return { ...cmt, avatar: sender[0].avatar, username: sender[0].name };
                 return cmt;
             }),
         );
