@@ -50,19 +50,13 @@ export async function POST(request: NextRequest) {
 
             const body = {
                 receiver: [
-                    {
-                        name: userName[0].name,
-                        email: userEmail,
-                    },
+                    userEmail,
                 ],
                 subject: '[WTFmovies] Cảm ơn vì thông tin của bạn',
                 description: {
-                    receiverName: userName[0].name,
-                    senderName: adminName[0].name,
                     content: content,
                 },
                 template: 'mail',
-                mail_type: 'text/html',
             };
 
             const response = await fetch('https://mailwtfdev.binhminh19112003.workers.dev/api/mail/send', {

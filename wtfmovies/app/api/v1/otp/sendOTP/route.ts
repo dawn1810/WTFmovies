@@ -12,17 +12,13 @@ export async function POST(request: NextRequest) {
 
         const body = {
             receiver: [
-                {
-                    name: userName[0],
-                    email: userEmail,
-                },
+                userEmail,
             ],
             subject: `Mã đăng nhập: ${OTP}`,
             description: {
                 otp: OTP,
             },
             template: 'otp',
-            mail_type: 'text/html',
         };
 
         const response: any = await fetch('https://mailwtfdev.binhminh19112003.workers.dev/api/mail/send', {
