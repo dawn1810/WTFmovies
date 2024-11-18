@@ -35,6 +35,7 @@ export async function POST(request: NextRequest) {
                 .db('user')
                 .collection('otpstore')
                 .insertOne({
+                    email: userEmail,
                     otp: OTP,
                     createAt: MongoDate(today),
                 });

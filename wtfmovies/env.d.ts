@@ -11,6 +11,8 @@ interface CloudflareEnv {
     GITHUB_CLIENT_SECRET: string;
     FACEBOOK_CLENT_ID: string;
     FACEBOOK_CLIENT_SECRET: string;
+    UPSTASH_REDIS_REST_URL: string;
+    UPSTASH_REDIS_REST_TOKEN: string;
     // Add here the Cloudflare Bindings you want to have available in your application
     // (for more details on Bindings see: https://developers.cloudflare.com/pages/functions/bindings/)
     //
