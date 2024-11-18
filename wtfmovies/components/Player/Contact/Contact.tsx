@@ -163,9 +163,10 @@ const Contact = forwardRef(
         // short-cut
         useEffect(() => {
             const handleKeyPress = (e: any) => {
-                console.log(e.keyCode);
-
                 const currTime = playerRef.current.getCurrentTime();
+
+                // check if  user use input or textarea
+                if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
 
                 // If spacebar is pressed, toggle play/pause
                 switch (e.keyCode) {
@@ -210,8 +211,7 @@ const Contact = forwardRef(
 
             // Remove event listener on cleanup
             return () => {
-                if (!isEdior)
-                    window.removeEventListener('keydown', handleKeyPress);
+                if (!isEdior) window.removeEventListener('keydown', handleKeyPress);
             };
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [contactState]);
@@ -307,7 +307,6 @@ const Contact = forwardRef(
             }, 500);
         };
 
-
         // else
         return (
             <div ref={ref} className={cx('player-contact-wrapper', { 'contact-show': contactState.contactShow })}>
@@ -387,7 +386,7 @@ const Contact = forwardRef(
                             </button>
                         </Menu>
 
-                        {(isEdior || contactState.currResol === 'N/A') || (
+                        {isEdior || contactState.currResol === 'N/A' || (
                             <Menu
                                 playerMenu
                                 items={contactState.resolution.map((menuItem) => {
