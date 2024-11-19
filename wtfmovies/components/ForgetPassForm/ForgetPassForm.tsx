@@ -41,7 +41,6 @@ function ForgetPassForm() {
     // otp
     const [otp, setOtp] = useState<string>('');
     const [count, setCount] = useState<number>(300);
-    const [otpId, setOtpId] = useState<string>('');
     const [sendLoading, setSendLoading] = useState<boolean>(false);
     const [sendCount, setSendCount] = useState<number>(60);
 
@@ -111,12 +110,10 @@ function ForgetPassForm() {
             const response = await fetch('/api/v1/otp/sendOTP', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ userEmail: userInfo.email, userName: userInfo.name }),
+                body: JSON.stringify({ userEmail: userInfo.email }),
             });
 
             if (response.ok) {
-                const res: string = await response.json();
-                setOtpId(res);
                 setCount(60);
                 handleNextPage();
             } else if (response.status === 400) {
@@ -140,12 +137,10 @@ function ForgetPassForm() {
         const response = await fetch('/api/v1/otp/checkOTP', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ otp, otpId }),
+            body: JSON.stringify({ otp, userEmail: userInfo.email }),
         });
 
         if (response.ok) {
-            const res: string = await response.json();
-            setOtpId(res);
             handleNextPage();
         } else if (response.status === 400) {
             showAlert('Lưu mã đăng nhập thất bại 😭😭😭', 'error');
@@ -194,7 +189,7 @@ function ForgetPassForm() {
             const response = await fetch('/api/v1/forgetpass/changePass', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ otp, otpId, newPass: info.rnewPass }),
+                body: JSON.stringify({ otp, newPass: info.rnewPass, userEmail: userInfo.email }),
             });
 
             if (response.ok) {

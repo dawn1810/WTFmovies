@@ -1,19 +1,18 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
-import { MongoDate, generateOTP, mongodb, toError, toJSON } from '~/libs/func';
+import { generateOTP, toError, toJSON } from '~/libs/func';
+import redis from '~/libs/redisConnection';
 
-type dataType = { userEmail: string; userName: string };
+type dataType = { userEmail: string};
 
 export async function POST(request: NextRequest) {
     try {
         const OTP = generateOTP();
 
-        const { userEmail, userName }: dataType = await request.json();
+        const { userEmail }: dataType = await request.json();
 
         const body = {
-            receiver: [
-                userEmail,
-            ],
+            receiver: [userEmail],
             subject: `Mã đăng nhập: ${OTP}`,
             description: {
                 otp: OTP,
@@ -30,22 +29,14 @@ export async function POST(request: NextRequest) {
         const res = await response.json();
 
         if (res.success) {
-            const today = new Date();
-            const newOTP = await mongodb()
-                .db('user')
-                .collection('otpstore')
-                .insertOne({
-                    email: userEmail,
-                    otp: OTP,
-                    createAt: MongoDate(today),
-                });
-
-            if (!!newOTP) return toJSON(newOTP.insertedId, 200);
-            else return toError('Lưu mã đăng nhập thất bại', 400);
+            // const today = new Date();
+            await redis.set(userEmail + 'OTP', OTP);
+            await redis.expire(userEmail + 'OTP', 60 * 5, 'NX');
+            return toJSON("Gửi mã đăng nhập thành công", 200);
         }
 
         return toError('Gửi mail thất bại', 401);
     } catch (err) {
-        return toError('Lỗi trong quá trình gửi mail', 500);
+        return toError('Lỗi trong quá trình gửi mail: ' + err, 500);
     }
 }

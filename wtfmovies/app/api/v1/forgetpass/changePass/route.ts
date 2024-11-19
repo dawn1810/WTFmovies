@@ -1,12 +1,13 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { ObjectId, getSHA256Hash, mongodb, toError, toJSON } from '~/libs/func';
+import redis from '~/libs/redisConnection';
 
-type dataType = { otp: string; otpId: string; newPass: string; userEmail: string };
+type dataType = { newPass: string; userEmail: string };
 
 export async function POST(request: NextRequest) {
     try {
-        const { otp, otpId, newPass, userEmail }: dataType = await request.json();
+        const { newPass, userEmail }: dataType = await request.json();
 
         const newHashPassword = await getSHA256Hash(newPass);
 
@@ -16,15 +17,8 @@ export async function POST(request: NextRequest) {
             .findOne({ filter: { email: userEmail } });
 
         if (!userAuth) return toJSON('Email không tồn tại', 400);
-
-        const otpCheck = await mongodb()
-            .db('user')
-            .collection('otpstore')
-            .deleteOne({
-                filter: { _id: ObjectId(otpId), otp: otp },
-            });
-
-        if (otpCheck.deletedCount === 0) return toJSON('Mã đăng nhập không hợp lệ', 401);
+        const otpCheck = await redis.get(userEmail + 'OTP');
+        if (!otpCheck) return toJSON('Mã đăng nhập không hợp lệ', 401);
 
         const response = await mongodb()
             .db('user')
@@ -35,6 +29,8 @@ export async function POST(request: NextRequest) {
             });
 
         if (response.modifiedCount === 1) {
+            // remove otp auth from redis
+            await redis.del(userEmail + 'OTP');
             return toJSON('Thay đổi mật khẩu thành công');
         }
 
