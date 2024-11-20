@@ -20,22 +20,22 @@ function FilmClassify({ films, tabs, tags }: FilmClassifyInterface) {
 
     const newFilmTabs: TabInterface[] = [
         {
-            title: '#TẤT CẢ',
+            title: 'TẤT CẢ',
             eventKey: 'all',
             content: tabs[0],
         },
         {
-            title: '#QUÝ NÀY',
+            title: 'QUÝ NÀY',
             eventKey: 'summer',
             content: tabs[1],
         },
         {
-            title: '#PHIM BỘ',
+            title: 'PHIM BỘ',
             eventKey: 'phimBo',
             content: tabs[2],
         },
         {
-            title: '#PHIM LẺ',
+            title: 'PHIM LẺ',
             eventKey: 'phimLe',
             content: tabs[3],
         },
