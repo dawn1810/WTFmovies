@@ -30,7 +30,67 @@ export const getUserLoveFilm = async (): Promise<string[]> => {
 
 export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; loveFilms: string[] }> => {
     try {
-        const loveFilms = await getUserLoveFilm();
+        const loveFilms = await getUserLoveFilm(); // strore love list to localstogae
+
+        // get list of carosel film - corosel store film id in db - create new db
+
+        // const films: FilmInfoInterface[] = await mongodb()
+        //     .db('film')
+        //     .collection('information')
+        //     .aggregate({
+        //         pipeline: [
+        //             { $match: { status: { $ne: 'delete' } } },
+        //             { $sort: { releaseYear: -1, updateTime: -1 } }, // Assuming you want newer updates and releases first
+        //             {
+        //                 $lookup: {
+        //                     from: 'author',
+        //                     let: { authorIds: '$author' }, // Define the local variable authorIds
+        //                     pipeline: [
+        //                         { $match: { $expr: { $in: ['$_id', '$$authorIds'] } } }, // Match the author ids
+        //                         { $project: { _id: 0, name: 1 } }, // Get name only
+        //                         { $limit: 3 },
+        //                     ],
+        //                     as: 'authorDetails',
+        //                 },
+        //             },
+        //             {
+        //                 $lookup: {
+        //                     from: 'genre',
+        //                     let: { genreIds: '$genre' }, // Define the local variable genreIds
+        //                     pipeline: [
+        //                         { $match: { $expr: { $in: ['$_id', '$$genreIds'] } } }, // Match the genre ids
+        //                         { $project: { _id: 0, name: 1 } }, // Get name only
+        //                         { $limit: 3 },
+        //                     ],
+        //                     as: 'genreDetails',
+        //                 },
+        //             },
+        //             {
+        //                 $lookup: {
+        //                     from: 'episode',
+        //                     localField: 'film_id',
+        //                     foreignField: 'film_id',
+        //                     as: 'reviews',
+        //                 },
+        //             },
+        //             {
+        //                 $project: {
+        //                     _id: 0,
+        //                     film_id: 1,
+        //                     name: 1,
+        //                     searchName: 1,
+        //                     describe: 1,
+        //                     author: '$authorDetails.name',
+        //                     genre: '$genreDetails.name',
+        //                     videoType: 1,
+        //                     views: 1,
+        //                     rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+        //                     poster: 1,
+        //                 },
+        //             },
+        //             { $limit: 5 },
+        //         ],
+        //     });
 
         const films: FilmInfoInterface[] = await mongodb()
             .db('film')
@@ -38,8 +98,20 @@ export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; l
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
-
                     { $sort: { releaseYear: -1, updateTime: -1 } }, // Assuming you want newer updates and releases first
+                    {
+                        $lookup: {
+                            from: 'carosel',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'carosel_info',
+                        },
+                    },
+                    {
+                        $match: {
+                            'carosel_info.0': { $exists: true },
+                        },
+                    },
                     {
                         $lookup: {
                             from: 'author',
@@ -73,18 +145,28 @@ export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; l
                         },
                     },
                     {
+                        $addFields: {
+                            poster: {
+                                $ifNull: [
+                                    { $arrayElemAt: ['$carosel_info.specialPoster', 0] }, // Get specialPoster from first element
+                                    '$poster', // Default to the original poster if specialPoster is null
+                                ],
+                            },
+                        },
+                    },
+                    {
                         $project: {
                             _id: 0,
                             film_id: 1,
                             name: 1,
+                            poster: 1,
                             searchName: 1,
                             describe: 1,
-                            author: '$authorDetails.name',
-                            genre: '$genreDetails.name',
+                            author: { $arrayElemAt: ['$authorDetails.name', 0] }, // Get the first author name if multiple
+                            genre: { $arrayElemAt: ['$genreDetails.name', 0] }, // Get the first genre name if multiple
                             videoType: 1,
                             views: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
-                            poster: 1,
                         },
                     },
                     { $limit: 5 },
@@ -100,6 +182,8 @@ export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; l
 
 export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
     try {
+        // get list of propose film - propose store film id in db - create new db
+
         const films: FilmInfoInterface[] = await mongodb()
             .db('film')
             .collection('information')
