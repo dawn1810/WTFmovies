@@ -122,14 +122,25 @@ export const getCaroselFilms = async (): Promise<{ films: FilmInfoInterface[]; l
 
 export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
     try {
-        // get list of propose film - propose store film id in db - create new db
-
         const films: FilmInfoInterface[] = await mongodb()
             .db('film')
             .collection('information')
             .aggregate({
                 pipeline: [
                     { $match: { status: { $ne: 'delete' } } },
+                    {
+                        $lookup: {
+                            from: 'propose',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'propose_info',
+                        },
+                    },
+                    {
+                        $match: {
+                            'propose_info.0': { $exists: true },
+                        },
+                    },
                     {
                         $lookup: {
                             from: 'episode',
