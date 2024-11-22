@@ -52,7 +52,6 @@ export default function AdminDashboard({
             label: search.content,
         };
     });
-    console.log(dataSearch);
 
     return (
         <div className={cx('wrapper')}>

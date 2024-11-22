@@ -95,7 +95,7 @@ export default function BarCard({
 
     // filter
     const handleFilterChange = (event: any) => {
-        setFilter((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+        setFilter((prev) => ({ ...prev, [event.target.name]: Number(event.target.value) }));
     };
 
     return (
