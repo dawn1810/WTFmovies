@@ -152,7 +152,7 @@ export default function BarCard({
                         >
                             <FormControlLabel value={0} control={<Radio />} label="Tuần" />
                             <FormControlLabel value={1} control={<Radio />} label="Tháng" />
-                            <FormControlLabel value={2} control={<Radio />} label="Năm" />
+                            <FormControlLabel value={2} control={<Radio />} label="Tất cả" />
                         </RadioGroup>
                     </div>
                     <div className={cx('filter')}>

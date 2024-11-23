@@ -54,7 +54,7 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
                             _id: 0,
                             name: 1,
                             views: '$weekViews',
-                            likes: 1,
+                            likes: '$weekLikes',
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                         },
                     },
@@ -72,24 +72,6 @@ export const getTopHotFilm = async (): Promise<FilmHotInterface[]> => {
 
 export const getTopHotGenre = async (): Promise<FilmHotInterface[]> => {
     try {
-        // const genres: FilmHotInterface[] = await mongodb()
-        //     .db('film')
-        //     .collection('genre')
-        //     .aggregate({
-        //         pipeline: [
-        //             {
-        //                 $project: {
-        //                     _id: 0,
-        //                     name: 1,
-        //                     views: 1,
-        //                     rating: 1,
-        //                     likes: 1,
-        //                 },
-        //             },
-        //             { $sort: { views: -1, likes: -1, rating: -1 } },
-        //             { $limit: 5 },
-        //         ],
-        //     });
         const genres: FilmHotInterface[] = await mongodb()
             .db('film')
             .collection('genre')
@@ -101,7 +83,7 @@ export const getTopHotGenre = async (): Promise<FilmHotInterface[]> => {
                             let: { genreId: '$_id' },
                             pipeline: [
                                 { $match: { $expr: { $in: ['$$genreId', '$genre'] } } },
-                                { $project: { _id: 0, film_id: 1, views: 1, likes: 1 } },
+                                { $project: { _id: 0, film_id: 1, views: '$weekViews', likes: '$weekLikes' } },
                             ],
                             as: 'info',
                         },
@@ -137,23 +119,17 @@ export const getTopHotGenre = async (): Promise<FilmHotInterface[]> => {
                     {
                         $project: {
                             _id: 0,
-                            name: "$_id",
+                            name: '$_id',
                             views: 1,
                             rating: 1,
                             likes: 1,
-                            // totalLikes: 1,
-                            // totalViews: 1,
-                            // averageRating: 1,
                         },
                     },
-                    { $sort: { totalLikes: -1, totalViews: -1, averageRating: -1 } },
+                    { $sort: { likes: -1, views: -1, rating: -1 } },
                     { $limit: 5 },
                 ],
             });
 
-
-        console.log(genres);
-        
         return genres;
     } catch (err) {
         console.log('😨😨😨 error at admin/getTopHotGenre function : ', err);

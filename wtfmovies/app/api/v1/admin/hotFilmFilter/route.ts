@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
         const { time, sortBy }: dataType = await request.json();
 
         const viewTime = time === 0 ? '$weekViews' : time === 1 ? '$monthViews' : '$views';
+        const likeTime = time === 0 ? '$weekLikes' : time === 1 ? '$monthLikes' : '$likes';
         const sort =
             sortBy === 0
                 ? { views: -1, likes: -1, rating: -1 }
@@ -43,7 +44,7 @@ export async function POST(request: NextRequest) {
                                 _id: 0,
                                 name: 1,
                                 views: viewTime,
-                                likes: 1,
+                                likes: likeTime,
                                 rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                             },
                         },

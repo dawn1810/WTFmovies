@@ -14,7 +14,9 @@ export async function POST(request: NextRequest) {
 
         const extendedUser: ExtendedUser | undefined = session?.user;
         if (extendedUser?.role === 'admin') {
-            const { sortBy }: dataType = await request.json();
+            const { time, sortBy }: dataType = await request.json();
+            const viewTime = time === 0 ? '$weekViews' : time === 1 ? '$monthViews' : '$views';
+            const likeTime = time === 0 ? '$weekLikes' : time === 1 ? '$monthLikes' : '$likes';
             const sort =
                 sortBy === 0
                     ? { views: -1, likes: -1, rating: -1 }
@@ -28,15 +30,54 @@ export async function POST(request: NextRequest) {
                 .aggregate({
                     pipeline: [
                         {
-                            $project: {
-                                _id: 0,
-                                name: 1,
-                                views: 1,
-                                likes: 1,
-                                rating: 1,
+                            $lookup: {
+                                from: 'information',
+                                let: { genreId: '$_id' },
+                                pipeline: [
+                                    { $match: { $expr: { $in: ['$$genreId', '$genre'] } } },
+                                    { $project: { _id: 0, film_id: 1, views: viewTime, likes: likeTime } },
+                                ],
+                                as: 'info',
                             },
                         },
-                        { $sort: sort },
+                        {
+                            $unwind: '$info',
+                        },
+                        {
+                            $lookup: {
+                                from: 'episode',
+                                localField: 'info.film_id',
+                                foreignField: 'film_id',
+                                as: 'episodes',
+                            },
+                        },
+                        {
+                            $unwind: '$episodes',
+                        },
+                        {
+                            $group: {
+                                _id: '$name',
+                                likes: {
+                                    $sum: '$info.likes',
+                                },
+                                views: {
+                                    $sum: '$info.views',
+                                },
+                                rating: {
+                                    $avg: '$episodes.rating',
+                                },
+                            },
+                        },
+                        {
+                            $project: {
+                                _id: 0,
+                                name: '$_id',
+                                views: 1,
+                                rating: 1,
+                                likes: 1,
+                            },
+                        },
+                        { $sort: { likes: -1, views: -1, rating: -1 } },
                         { $limit: 5 },
                     ],
                 });
