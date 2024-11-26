@@ -451,6 +451,13 @@ export interface AdminReportInfterface {
     content?: string;
 }
 
+export interface AdminCaroselInfterface {
+    _id?: string;
+    film_id: string;
+    film_name: string;
+    specialPoster: string;
+}
+
 export interface AdminDatasetInterface {
     view: LineChartDataInterface[];
     user: LineChartDataInterface[];

@@ -1,5 +1,6 @@
 import { MongoDate, mongodb } from '~/libs/func';
 import {
+    AdminCaroselInfterface,
     AdminReportInfterface,
     FilmHotInterface,
     GenresDatasetInterface,
@@ -232,6 +233,48 @@ export const getAllComment = async (): Promise<any[]> => {
         return comments;
     } catch (err) {
         console.log('😨😨😨 error at admin/getAllReport function : ', err);
+        return [];
+    }
+};
+
+// carosel manage
+export const getAllCarosel = async (): Promise<AdminCaroselInfterface[]> => {
+    try {
+        console.log('get carosel');
+        
+        const carosel: AdminCaroselInfterface[] = await mongodb()
+            .db('film')
+            .collection('carosel')
+            .aggregate({
+                pipeline: [
+                    [
+                        {
+                            $lookup: {
+                                from: 'information',
+                                localField: 'film_id',
+                                foreignField: 'film_id',
+                                as: 'film_info',
+                            },
+                        },
+                        {
+                            $unwind: '$film_info',
+                        },
+                        {
+                            $project: {
+                                specialPoster: 1,
+                                film_id: 1,
+                                film_name: '$film_info.name',
+                            },
+                        },
+                    ],
+                ],
+            });
+
+        console.log(carosel);
+
+        return carosel;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getAllCarosel function : ', err);
         return [];
     }
 };

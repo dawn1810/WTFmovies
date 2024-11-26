@@ -3,6 +3,7 @@ import classNames from 'classnames/bind';
 import style from './Admin.module.scss';
 import AdminDashboard from '~/components/AdminDashboard';
 import {
+    getAllCarosel,
     getAllComment,
     getAllReport,
     getAllUser,
@@ -15,13 +16,14 @@ import {
 } from '~/libs/getData/admin';
 import ManageEditorTable from '~/components/ManageEditorTable';
 import ManageReportTable from '~/components/ManageReportTable';
-import { AdminReportInfterface, ExtendedUser } from '~/libs/interfaces';
+import { AdminCaroselInfterface, AdminReportInfterface, ExtendedUser } from '~/libs/interfaces';
 import NotFound from '~/app/(root)/not-found';
 import ManageCommentTable from '~/components/ManageCommentTable';
 import { redirect } from 'next/navigation';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { getSideMovieFormInfo, getFilm } from '~/libs/getData/editor';
 import FilmPage from '~/components/FilmManager';
+import ManageCaroselTable from '~/components/ManageCaroselTable';
 
 const cx = classNames.bind(style);
 
@@ -75,7 +77,11 @@ async function getPage(params?: any) {
                 const data = await getFilm();
                 const sideMovieFormInfo = await getSideMovieFormInfo();
                 return <FilmPage data={data} sideMovieFormInfo={sideMovieFormInfo} />;
+            case 'carosel':
+                const carosel: AdminCaroselInfterface[] = await getAllCarosel();
 
+                if (!carosel) break;
+                else return <ManageCaroselTable dataset={carosel} />;
             default:
                 break;
         }

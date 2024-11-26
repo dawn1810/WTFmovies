@@ -72,6 +72,11 @@ const menuItems = [
         icon: <MovieOutlinedIcon />,
         scene: 'films',
     },
+    {
+        title: 'Quản lý hiễn thị',
+        icon: <MovieOutlinedIcon />,
+        scene: 'carosel',
+    },
 ];
 
 export const viewport: Viewport = {
