@@ -17,6 +17,7 @@ import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
+import PreviewIcon from '@mui/icons-material/Preview';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../(root)/not-found';
 import { getCurrentUser } from '~/libs/getData/home';
@@ -73,8 +74,8 @@ const menuItems = [
         scene: 'films',
     },
     {
-        title: 'Quản lý hiễn thị',
-        icon: <MovieOutlinedIcon />,
+        title: 'Danh sách ưu tiên',
+        icon: <PreviewIcon />,
         scene: 'carosel',
     },
 ];

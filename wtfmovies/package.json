@@ -47,7 +47,8 @@
         "screenfull": "^6.0.2",
         "slick-carousel": "^1.8.1",
         "socket.io": "^4.7.5",
-        "socket.io-client": "^4.7.5"
+        "socket.io-client": "^4.7.5",
+        "xlsx": "^0.18.5"
     },
     "peerDependencies": {
         "react": "^18",

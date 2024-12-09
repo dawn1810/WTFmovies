@@ -11,7 +11,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import GradingIcon from '@mui/icons-material/Grading';
-import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
+import BorderColorIcon from '@mui/icons-material/BorderColor';
 import ReplyIcon from '@mui/icons-material/Reply';
 import {
     DataGrid,
@@ -53,7 +53,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     const columns: any = [
         { headerName: 'Id', field: 'id', width: 200 },
         { headerName: 'filmId', field: 'film_id', width: 200 },
-        { headerName: 'Hình ảnh hiễn thị', field: 'specialPoster', width: 300 },
+        { headerName: 'Hình ảnh hiễn thị', field: 'poster', width: 300 },
         { headerName: 'Tên Phim', field: 'film_name', width: 300 },
         {
             field: 'detail',
@@ -64,7 +64,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
             getActions: ({ id }: { id: string }) => {
                 return [
                     <GridActionsCellItem
-                        icon={<LibraryBooksIcon />}
+                        icon={<BorderColorIcon />}
                         label="detail"
                         onClick={() => handleOpen(id)}
                         color="inherit"
@@ -123,73 +123,8 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     };
 
     const CustomToolbar = () => {
-        const [toolDialogOpen, setToolDialogOpen] = useState(false);
-        const [toolDialogLoading, setToolDialogLoading] = useState(false);
-
-        const handleOpen = () => {
-            setToolDialogOpen(true);
-        };
-
-        const handleClose = () => {
-            setToolDialogOpen(false);
-        };
-
-        const handleToolApprove = async (ids: string[]) => {
-            setToolDialogLoading(true);
-            const response = await fetch('/api/v1/admin/approveReport', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ ids: ids }),
-            });
-
-            if (response.ok) {
-                ids.forEach((id) => {
-                    handleDeleteRow(id);
-                });
-                setToolDialogOpen(false);
-                showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
-            } else if (response.status === 400) {
-                showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
-            } else if (response.status === 401) {
-                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
-            } else if (response.status === 403) {
-                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
-            } else if (response.status === 500) {
-                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-            }
-            setToolDialogLoading(false);
-        };
-
         return (
             <div>
-                <Dialog
-                    open={toolDialogOpen}
-                    onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle>Bạn có muốn DUYỆT:</DialogTitle>
-                    <DialogContent>
-                        <ul>
-                            {rowSelectionModel.map((item: string) => (
-                                <li key={item}>{item}</li>
-                            ))}
-                        </ul>
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Huỷ</Button>
-                        <LoadingButton
-                            loading={toolDialogLoading}
-                            onClick={() => {
-                                handleToolApprove(rowSelectionModel);
-                            }}
-                            autoFocus
-                        >
-                            DUYỆT
-                        </LoadingButton>
-                    </DialogActions>
-                </Dialog>
-
                 <GridToolbarContainer>
                     <GridToolbarColumnsButton />
                     <GridToolbarFilterButton />
@@ -197,15 +132,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                     <GridToolbarExport />
                     <Box sx={{ flexGrow: 1 }} />
 
-                    {/* <Button
-                        variant="outlined"
-                        startIcon={<GradingIcon />}
-                        disabled={rowSelectionModel.length === 0}
-                        className={cx('btncustom')}
-                        onClick={handleOpen}
-                    >
-                        Duyệt
-                    </Button> */}
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>
             </div>
@@ -219,7 +145,6 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                 columns={columns}
                 rows={rows}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
-                // checkboxSelection
                 rowSelectionModel={rowSelectionModel}
                 slots={{ toolbar: CustomToolbar }}
                 initialState={{

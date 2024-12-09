@@ -100,7 +100,6 @@ export default function ImageDropzone({
                     <img src="/images/svg/plus-add-new.svg" alt="" />
                 </div>
                 <ReviewImage classname={cx("reviewImageBaner")} imageSrc={imageDefault} croppedArea={cropResult} />
-
                 <input
                     type="file"
                     accept="image/png, image/jpeg"

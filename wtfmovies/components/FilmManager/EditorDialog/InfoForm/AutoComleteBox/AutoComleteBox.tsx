@@ -105,7 +105,7 @@ export default function CreateOptionDialog({
     };
 
     return (
-        <Fragment>
+        <>
             <Autocomplete
                 limitTags={1}
                 multiple
@@ -215,7 +215,7 @@ export default function CreateOptionDialog({
                     </DialogActions>
                 </form>
             </Dialog>
-        </Fragment>
+        </>
     );
 }
 

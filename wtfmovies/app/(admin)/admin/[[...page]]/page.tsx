@@ -44,7 +44,6 @@ async function getPage(params?: any) {
                 const topSixUser = await getTopSixUser();
                 const newReports = await getNewReport();
                 const topSearch = await getTopSearch();
-                console.log(topSearch);
 
                 if (!hotFilmList || !hotGenreList || !numStatistical || !topSixUser || !newReports) break;
                 else

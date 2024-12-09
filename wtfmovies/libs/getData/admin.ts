@@ -241,36 +241,33 @@ export const getAllComment = async (): Promise<any[]> => {
 export const getAllCarosel = async (): Promise<AdminCaroselInfterface[]> => {
     try {
         console.log('get carosel');
-        
+
         const carosel: AdminCaroselInfterface[] = await mongodb()
             .db('film')
             .collection('carosel')
             .aggregate({
                 pipeline: [
-                    [
-                        {
-                            $lookup: {
-                                from: 'information',
-                                localField: 'film_id',
-                                foreignField: 'film_id',
-                                as: 'film_info',
-                            },
+                    {
+                        $lookup: {
+                            from: 'information',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'film_info',
                         },
-                        {
-                            $unwind: '$film_info',
+                    },
+                    {
+                        $unwind: '$film_info',
+                    },
+                    {
+                        $project: {
+                            specialPoster: 1,
+                            film_id: 1,
+                            film_name: '$film_info.name',
+                            poster: '$film_info.poster',
                         },
-                        {
-                            $project: {
-                                specialPoster: 1,
-                                film_id: 1,
-                                film_name: '$film_info.name',
-                            },
-                        },
-                    ],
+                    },
                 ],
             });
-
-        console.log(carosel);
 
         return carosel;
     } catch (err) {

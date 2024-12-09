@@ -1,4 +1,5 @@
 .wrapper {
+    position: relative;
     width: var(--default-layout-width);
     margin: 0 auto;
     padding: 10px;
@@ -11,4 +12,9 @@
         "bar1 bar1 table1"
         "bar2 pie table2";
 
+    .fab {
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+    }
 }

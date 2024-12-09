@@ -15,25 +15,22 @@ export async function POST(request: NextRequest) {
         const extendedUser: ExtendedUser | undefined = session?.user;
         const { emails, ban, unbanDate }: dataType = await request.json();
 
-        if (extendedUser?.role === 'admin') {
-            const date = new Date(unbanDate);
+        if (extendedUser?.role !== 'admin') return toError('Api không trong phạm trù quyền của bạn', 403);
+        
+        const date = new Date(unbanDate);
+        const response = await mongodb()
+            .db('user')
+            .collection('auth')
+            .updateMany({
+                filter: { email: { $in: emails } },
+                update: { $set: { status: ban, unBanDates: MongoDate(date) } },
+            });
 
-            const response = await mongodb()
-                .db('user')
-                .collection('auth')
-                .updateMany({
-                    filter: { email: { $in: emails } },
-                    update: { $set: { status: ban, unBanDates: MongoDate(date) } },
-                });
-
-            if (response.modifiedCount >= 1) {
-                return toJSON('Thay đổi trạng thái thành công');
-            }
-
-            return toError('Thay đổi trạng thái thất bại', 400);
-        } else {
-            return toError('Api không trong phạm trù quyền của bạn', 403);
+        if (response.modifiedCount >= 1) {
+            return toJSON('Thay đổi trạng thái thành công');
         }
+
+        return toError('Thay đổi trạng thái thất bại', 400);
     } catch (err) {
         return toError('Lỗi trong quá trình thay đổi trạng thái', 500);
     }

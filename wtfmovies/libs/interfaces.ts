@@ -455,7 +455,8 @@ export interface AdminCaroselInfterface {
     _id?: string;
     film_id: string;
     film_name: string;
-    specialPoster: string;
+    specialPoster?: string;
+    poster: string
 }
 
 export interface AdminDatasetInterface {
