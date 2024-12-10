@@ -1,7 +1,7 @@
 export const runtime = 'edge';
 import type { NextRequest } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
-import { mongodb, toError, toJSON } from '~/libs/func';
+import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
 type dataType = { email: string; role: string };
@@ -16,6 +16,7 @@ export async function POST(request: NextRequest) {
         const { email, role }: dataType = await request.json();
 
         if (extendedUser?.role === 'admin') {
+            const today = new Date();
             const response = await mongodb()
                 .db('user')
                 .collection('auth')
@@ -24,7 +25,23 @@ export async function POST(request: NextRequest) {
                     update: { $set: { role } },
                 });
 
-            if (response.modifiedCount === 1) {
+            const history = await mongodb()
+                .db('user')
+                .collection('information')
+                .updateMany({
+                    filter: { email },
+                    update: {
+                        $push: {
+                            history: {
+                                doer: extendedUser.email,
+                                action: 'Cập nhật phân quyền thành ' + role,
+                                time: MongoDate(today),
+                            },
+                        },
+                    },
+                });
+
+            if (response.modifiedCount === 1 && history.modifiedCount === response.modifiedCount) {
                 return toJSON('Thay đổi phân quyền người dùng thành công');
             }
 

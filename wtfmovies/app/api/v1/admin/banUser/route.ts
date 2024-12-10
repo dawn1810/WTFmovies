@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
         const { emails, ban, unbanDate }: dataType = await request.json();
 
         if (extendedUser?.role !== 'admin') return toError('Api không trong phạm trù quyền của bạn', 403);
-        
+
+        const today = new Date();
         const date = new Date(unbanDate);
         const response = await mongodb()
             .db('user')
@@ -26,7 +27,24 @@ export async function POST(request: NextRequest) {
                 update: { $set: { status: ban, unBanDates: MongoDate(date) } },
             });
 
-        if (response.modifiedCount >= 1) {
+        // update user history
+        const history = await mongodb()
+            .db('user')
+            .collection('information')
+            .updateMany({
+                filter: { email: { $in: emails } },
+                update: {
+                    $push: {
+                        history: {
+                            doer: extendedUser.email,
+                            action: today > date ? 'Bị cấm từ ' + today + ' đến ' + date : 'Bị cấm vĩnh viễn',
+                            time: MongoDate(today),
+                        },
+                    },
+                },
+            });
+
+        if (response.modifiedCount >= 1 && history.modifiedCount === response.modifiedCount) {
             return toJSON('Thay đổi trạng thái thành công');
         }
 

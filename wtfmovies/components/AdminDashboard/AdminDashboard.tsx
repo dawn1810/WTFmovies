@@ -70,7 +70,7 @@ export default function AdminDashboard({
     console.log(topSearch);
 
     const handleDownload = async () => {
-        const response = await fetch('http://localhost:3001/excelTemplate/generalStatistical.xlsx', {
+        const response = await fetch('http://localhost:3000/excelTemplate/generalStatistical.xlsx', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
