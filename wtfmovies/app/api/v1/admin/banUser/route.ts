@@ -4,7 +4,7 @@ import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { MongoDate, mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
 
-type dataType = { emails: string[]; ban: boolean; unbanDate: string };
+type dataType = { emails: string[]; ban: boolean; unbanDate: string; banTime: string };
 
 export async function POST(request: NextRequest) {
     try {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
         if (!session) return toError('Xác thực thất bại', 401);
 
         const extendedUser: ExtendedUser | undefined = session?.user;
-        const { emails, ban, unbanDate }: dataType = await request.json();
+        const { emails, ban, unbanDate, banTime }: dataType = await request.json();
 
         if (extendedUser?.role !== 'admin') return toError('Api không trong phạm trù quyền của bạn', 403);
 
@@ -37,7 +37,11 @@ export async function POST(request: NextRequest) {
                     $push: {
                         history: {
                             doer: extendedUser.email,
-                            action: today > date ? 'Bị cấm từ ' + today + ' đến ' + date : 'Bị cấm vĩnh viễn',
+                            action: !ban
+                                ? today < date
+                                    ? 'Bị cấm ' + banTime + ' ngày từ ' + today.toISOString().substring(0, 10)
+                                    : 'Bị cấm vĩnh viễn'
+                                : 'Gỡ cấm',
                             time: MongoDate(today),
                         },
                     },

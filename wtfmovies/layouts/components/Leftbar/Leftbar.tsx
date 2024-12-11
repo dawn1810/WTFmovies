@@ -7,15 +7,14 @@ import images from '~/assets/image';
 import { useParams } from 'next/navigation';
 const cx = classNames.bind(styles);
 
-function Leftbar({
-    menuItems,
-}: {
-    menuItems: {
-        title: string;
-        icon: any;
-        scene: string;
-    }[];
-}) {
+type MenuItem = {
+    title: string;
+    icon: React.JSX.Element;
+    scene?: string;
+    children?: MenuItem[];
+};
+
+function Leftbar({ menuItems }: { menuItems: MenuItem[] }) {
     const params = useParams<{ page: string }>();
 
     return (

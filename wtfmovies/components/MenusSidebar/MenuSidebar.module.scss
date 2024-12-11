@@ -4,25 +4,21 @@
     border-radius: 0 !important;
     background-color: var(--primary) !important;
     min-width: auto;
+    color: var(--text-color);
 
     &:hover {
         transition-duration: 300ms;
-        // border-color: var(--primary);
         background: var(--primary-hover);
     }
 
     &:active {
         transition-duration: 300ms;
-        color: var(--body-color);
         background: var(--primary-active);
     }
 
-    &+.navBtn {
+    & + .navBtn {
         margin-left: 0px !important;
     }
-
-
-
 
     display: flex !important;
     justify-content: flex-start !important;
@@ -33,8 +29,6 @@
         background-color: var(--highlight-color) !important;
         color: var(--text-color) !important;
     }
-
-
 }
 
 /** Mobile layout **/
@@ -42,7 +36,5 @@
     .navBtn {
         padding: 0 10px 0 10px !important;
         justify-content: center !important;
-
     }
-
 }

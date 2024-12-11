@@ -12,12 +12,13 @@ import { montserrat } from '../font';
 import ReduxProvider from '~/redux/redux-provider';
 import ThemeP from '~/hooks/theme/theme';
 import BottomBar from '~/layouts/components/BottomBar';
-import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
+import PersonOutlineOutlinedIcon from '@mui/icons-material/PersonOutlineOutlined';
 import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import PreviewIcon from '@mui/icons-material/Preview';
+import BugReportIcon from '@mui/icons-material/BugReport';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../(root)/not-found';
 import { getCurrentUser } from '~/libs/getData/home';
@@ -55,23 +56,40 @@ const menuItems = [
     },
     {
         title: 'Quản lý người dùng',
-        icon: <BorderColorOutlinedIcon />,
+        icon: <PersonOutlineOutlinedIcon />,
         scene: 'users',
-    },
-    {
-        title: 'Quản lý báo cáo',
-        icon: <FlagOutlinedIcon />,
-        scene: 'report',
-    },
-    {
-        title: 'Quản lý bình luận',
-        icon: <ForumOutlinedIcon />,
-        scene: 'comment',
     },
     {
         title: 'Quản lý phim',
         icon: <MovieOutlinedIcon />,
         scene: 'films',
+    },
+    {
+        title: 'Quản lý báo cáo',
+        icon: <FlagOutlinedIcon />,
+        // scene: 'report',
+        children: [
+            {
+                title: 'Báo cáo bình luận',
+                icon: <ForumOutlinedIcon />,
+                scene: 'report/comment',
+            },
+            {
+                title: 'Báo cáo phim',
+                icon: <MovieOutlinedIcon />,
+                scene: 'report/film',
+            },
+            {
+                title: 'Báo cáo lỗi',
+                icon: <BugReportIcon />,
+                scene: 'report/bug',
+            },
+        ],
+    },
+    {
+        title: 'Quản lý bình luận',
+        icon: <ForumOutlinedIcon />,
+        scene: 'comment',
     },
     {
         title: 'Danh sách ưu tiên',

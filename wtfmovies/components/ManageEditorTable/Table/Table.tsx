@@ -34,6 +34,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
+import CircularProgress from '@mui/material/CircularProgress';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import HistoryIcon from '@mui/icons-material/History';
 
@@ -62,7 +63,8 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const [editLoading, setEditLoading] = useState<boolean>(false);
 
     // for history dialog
-    const [history, setHistory] = useState<any[]>([]);
+    const [currHistoryId, setCurrHistoryId] = useState<string>();
+    const [history, setHistory] = useState<any>({});
     const [historyOpen, setHistoryOpen] = useState<boolean>(false);
     const [historyLoading, setHistoryLoading] = useState<boolean>(false);
 
@@ -128,21 +130,26 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     // close and open History Dialog
     const handleOpenHDialog = async (id: string) => {
         setHistoryOpen(true);
-        const response = await fetch('/api/v1/admin/getUserHistory', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ email: id }),
-        });
+        setCurrHistoryId(id);
+        if (!history[id]) {
+            setHistoryLoading(true);
+            const response = await fetch('/api/v1/admin/getUserHistory', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: id }),
+            });
 
-        if (response.status === 200) {
-            const jsonData: { content: string; data: any } = await response.json();
-            setHistory(jsonData.data.history);
-        } else if (response.status === 401) {
-            showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
-        } else if (response.status === 403) {
-            showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
-        } else if (response.status === 500) {
-            showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            if (response.status === 200) {
+                const jsonData: { content: string; data: any } = await response.json();
+                setHistory((prev: any) => ({ ...prev, [id]: jsonData.data.history }));
+            } else if (response.status === 401) {
+                showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
+            } else if (response.status === 403) {
+                showAlert('Api không trong phạm trù quyền của bạn 🤬🤬🤬', 'error');
+            } else if (response.status === 500) {
+                showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+            }
+            setHistoryLoading(false);
         }
     };
 
@@ -200,6 +207,22 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
         if (response.ok) {
             resolve(newRow);
+
+            // update history
+            if (history[newRow.id]) {
+                const today = new Date();
+                setHistory((prev: any) => ({
+                    ...prev,
+                    [newRow.id]: [
+                        ...history[newRow.id],
+                        {
+                            doer: newRow.id,
+                            action: 'Cập nhật phân quyền thành ' + newRow.role,
+                            time: today.toISOString(),
+                        },
+                    ],
+                }));
+            }
 
             // wss for change user role
             if (socket.connected) {
@@ -273,19 +296,27 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
             <Dialog open={historyOpen} onClose={() => setHistoryOpen(false)} fullWidth>
                 <DialogTitle>Lịch sử thay đổi:</DialogTitle>
                 <DialogContent>
-                    {history
-                        ? history.map((item: any, index: any) => (
-                              <Accordion key={index}>
-                                  <AccordionSummary expandIcon={<ArrowDropDownIcon />} id="panel2-header">
-                                      <Typography>{item.action}</Typography>
-                                  </AccordionSummary>
-                                  <AccordionDetails>
-                                      <Typography>Người thực hiện: {item.doer}</Typography>
-                                      <Typography>Thời gian thực hiện: {item.time}</Typography>
-                                  </AccordionDetails>
-                              </Accordion>
-                          ))
-                        : 'Chưa có thay đổi'}
+                    {!historyLoading ? (
+                        history && currHistoryId && history[currHistoryId] ? ( // get curr row user's id history
+                            history[currHistoryId].map((item: any, index: any) => (
+                                <Accordion key={index}>
+                                    <AccordionSummary expandIcon={<ArrowDropDownIcon />} id="panel2-header">
+                                        <Typography>{item.action}</Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Typography>Người thực hiện: {item.doer}</Typography>
+                                        <Typography>Thời gian thực hiện: {item.time.substring(0, 10)}</Typography>
+                                    </AccordionDetails>
+                                </Accordion>
+                            ))
+                        ) : (
+                            'Chưa có thay đổi'
+                        )
+                    ) : (
+                        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                            <CircularProgress />
+                        </Box>
+                    )}
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={() => setHistoryOpen(false)}>Xong</Button>
@@ -315,43 +346,129 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
 
         const handleBan = async (status: boolean) => {
             setLoading(true);
-            let today = new Date();
+            let unbanDate = new Date();
+            let banTime = '';
             switch (+type) {
                 case 0:
-                    today.setDate(today.getDate() + 14);
+                    unbanDate.setDate(unbanDate.getDate() + 14);
+                    banTime = '14 ngày';
                     break;
                 case 1:
-                    today.setDate(today.getDate() + 30);
+                    unbanDate.setDate(unbanDate.getDate() + 30);
+                    banTime = '30 ngày';
                     break;
                 case 2:
-                    today.setDate(today.getDate() + 365);
+                    unbanDate.setDate(unbanDate.getDate() + 365);
+                    banTime = '1 năm';
                     break;
                 case 3:
-                    today.setDate(today.getDate() - 1); // ban vĩnh viễn
+                    unbanDate.setDate(unbanDate.getDate() - 1); // ban vĩnh viễn
                     break;
             }
 
             const response = await fetch('/api/v1/admin/banUser', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ emails: rowSelectionModel, ban: status, unbanDate: today }),
+                body: JSON.stringify({ emails: rowSelectionModel, ban: status, unbanDate, banTime }),
             });
 
             if (response.ok) {
                 setData((prevData: any) => {
-                    const updatedData = [...prevData]; // Create a copy of the original data
+                    const updatedData = [...prevData];
+                    const today = new Date();
 
-                    rowSelectionModel.forEach((currEmail: string) => {
+                    rowSelectionModel.forEach((currEmail: any) => {
                         const index = prevData.findIndex((item: any) => item.id === currEmail);
 
-                        // If the item is found, update its status
                         if (index !== -1) {
-                            updatedData[index] = { ...updatedData[index], status: status };
+                            updatedData[index] = { ...updatedData[index], status };
+
+                            if (history[currEmail]) {
+                                setHistory((prev: any) => ({
+                                    ...prev,
+                                    [currEmail]: [
+                                        ...history[currEmail],
+                                        {
+                                            doer: currEmail,
+                                            action: !status
+                                                ? today < unbanDate
+                                                    ? 'Bị cấm ' +
+                                                      banTime +
+                                                      ' từ ' +
+                                                      today.toISOString().substring(0, 10)
+                                                    : 'Bị cấm vĩnh viễn'
+                                                : 'Gỡ cấm',
+                                            time: today.toISOString(),
+                                        },
+                                    ],
+                                }));
+                            }
                         }
                     });
-
                     return updatedData;
                 });
+                // setData((prevData: any) => {
+                //     const updatedData = [...prevData]; // Create a copy of the original data
+                //     rowSelectionModel.forEach((currEmail: string) => {
+                //         const index = prevData.findIndex((item: any) => item.id === currEmail);
+
+                //         // If the item is found
+                //         if (index !== -1) {
+                //             // Update its status
+                //             updatedData[index] = { ...updatedData[index], status: status };
+
+                //             // Update history
+                //             if (history[currEmail]) {
+                //                 const today = new Date();
+                //                 setHistory((prev: any) => ({
+                //                     ...prev,
+                //                     [currEmail]: [
+                //                         ...history[currEmail],
+                //                         {
+                //                             doer: currEmail,
+                //                             action: !status
+                //                                 ? today < unbanDate
+                //                                     ? 'Bị cấm' +
+                //                                       (unbanDate.getDate() - today.getDate()) +
+                //                                       ' ngày từ ' +
+                //                                       today.toISOString().substring(0, 10)
+                //                                     : 'Bị cấm vĩnh viễn'
+                //                                 : 'Gỡ cấm',
+                //                             time: today.toISOString(),
+                //                         },
+                //                     ],
+                //                 }));
+                //             }
+                //         }
+                //     });
+
+                //     return updatedData;
+                // });
+
+                // rowSelectionModel.forEach((currEmail: string) => {
+                //     // Update history
+                //     if (history[currEmail]) {
+                //         const today = new Date();
+                //         setHistory((prev: any) => ({
+                //             ...prev,
+                //             [currEmail]: [
+                //                 ...history[currEmail],
+                //                 {
+                //                     doer: currEmail,
+                //                     action: !status
+                //                         ? today < unbanDate
+                //                             ? 'Bị cấm' +
+                //                               (unbanDate.getDate() - today.getDate()) +
+                //                               ' ngày từ ' +
+                //                               today.toISOString().substring(0, 10)
+                //                             : 'Bị cấm vĩnh viễn'
+                //                         : 'Gỡ cấm',
+                //                     time: today.toISOString(),
+                //                 },
+                //             ],
+                //         }));
+                //     }
+                // });
 
                 // wss to banned user
                 if (status) {
@@ -360,7 +477,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                             'banUser',
                             JSON.stringify({
                                 receiver: rowSelectionModel,
-                                unbanDate: today.toLocaleString().split(',')[0],
+                                unbanDate: unbanDate.toLocaleString().split(',')[0],
                             }),
                         );
                     } else {
