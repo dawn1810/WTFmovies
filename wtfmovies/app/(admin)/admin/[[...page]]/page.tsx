@@ -61,17 +61,31 @@ async function getPage(params?: any) {
                 const dataset = await getAllUser();
 
                 if (!dataset) break;
-                else return <ManageEditorTable dataset={dataset} />;
+                return <ManageEditorTable dataset={dataset} />;
             case 'report':
-                const reports: AdminReportInfterface[] = await getAllReport();
+                switch (params.page[1]) {
+                    case 'comment':
+                        const comments: any[] = await getAllComment();
+                        
+                        if (!comments) break;
+                        return <ManageCommentTable dataset={comments} />;
+                    case 'film':
+                        // return <ManageReportTable dataset={reports} />;
+                        return;
+                    case 'bug':
+                        const reports: AdminReportInfterface[] = await getAllReport();
 
-                if (!reports) break;
-                else return <ManageReportTable dataset={reports} />;
-            case 'comment':
-                const comments: any[] = await getAllComment();
+                        if (!reports) break;
+                        return <ManageReportTable dataset={reports} />;
+                    default:
+                        return '';
+                }
 
-                if (!comments) break;
-                else return <ManageCommentTable dataset={comments} />;
+            // case 'comment':
+            //     const comments: any[] = await getAllComment();
+
+            //     if (!comments) break;
+            //     return <ManageCommentTable dataset={comments} />;
             case 'films':
                 const data = await getFilm();
                 const sideMovieFormInfo = await getSideMovieFormInfo();

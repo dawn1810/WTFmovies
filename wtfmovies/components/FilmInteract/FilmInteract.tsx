@@ -30,8 +30,8 @@ function FilmInteract({
 
     const handleOpenReport = () => {
         dispatch(changeFbDialog(true));
-        dispatch(changeFbDialogType('report'));
-        dispatch(changeRpContent('Phim id: ' + filmInfo.id + ', tập: ' + filmInfo.numEp));
+        dispatch(changeFbDialogType('film'));
+        dispatch(changeRpContent({ id: filmInfo.id, ep: filmInfo.numEp }));
     };
 
     return (

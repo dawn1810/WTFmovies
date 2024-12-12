@@ -5,6 +5,7 @@ import classNames from 'classnames/bind';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
+import Badge from '@mui/material/Badge';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -26,12 +27,14 @@ import BlockIcon from '@mui/icons-material/Block';
 import LibraryBooksIcon from '@mui/icons-material/LibraryBooks';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import LoadingButton from '@mui/lab/LoadingButton';
+import FlagOutlinedIcon from '@mui/icons-material/FlagOutlined';
 
 import style from './Table.module.scss';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import ContentDialog from './ContentDialog';
 import { socket } from '~/websocket/websocketService';
+import ReportDialog from './ReportDialog';
 
 const cx = classNames.bind(style);
 
@@ -51,8 +54,14 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [rowSelectionInfo, setRowSelectionInfo] = useState<any>([]);
     const [banLoading, setBanLoading] = useState<boolean>(false);
+
+    // info dialog
     const [dialogOpen, setDialogOpen] = useState<boolean>(false);
     const [dialogData, setDialogData] = useState<any>({});
+
+    // report dialog
+    const [reportOpen, setReportOpen] = useState<boolean>(false);
+    const [reports, setReports] = useState<any>([]);
 
     const handleSelectChange = (newRowSelectionModel: GridRowSelectionModel, detail: GridCallbackDetails<any>) => {
         if (newRowSelectionModel.length > rowSelectionModel.length) {
@@ -95,6 +104,16 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
 
     const handleCloseDialog = () => {
         setDialogOpen(false);
+    };
+
+    const handleOpenReport = (currId: string) => {
+        const currIndex = data.findIndex((element: any) => element._id === currId);
+        setReports(data[currIndex].reports);
+        setReportOpen(true);
+    };
+
+    const handleCloseReport = () => {
+        setReportOpen(false);
     };
 
     const CustomToolbar = () => {
@@ -242,11 +261,22 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
             width: 100,
             cellClassName: 'actions',
             getActions: ({ id }: { id: string }) => {
+                const currIndex = data.findIndex((element: any) => element._id === id);
                 return [
                     <GridActionsCellItem
                         icon={<LibraryBooksIcon />}
                         label="detail"
                         onClick={() => handleOpenDialog(id)}
+                        color="inherit"
+                    />,
+                    <GridActionsCellItem
+                        icon={
+                            <Badge badgeContent={data[currIndex].reports.length} color="error">
+                                <FlagOutlinedIcon />
+                            </Badge>
+                        }
+                        label="detail"
+                        onClick={() => handleOpenReport(id)}
                         color="inherit"
                     />,
                 ];
@@ -279,6 +309,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                 onRowSelectionModelChange={handleSelectChange}
             />
             <ContentDialog open={dialogOpen} dialogData={dialogData} handleClose={handleCloseDialog} />
+            <ReportDialog open={reportOpen} reports={reports} handleClose={handleCloseReport} />
         </div>
     );
 }

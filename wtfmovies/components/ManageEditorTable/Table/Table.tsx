@@ -4,12 +4,14 @@ import classNames from 'classnames/bind';
 //import { AlertColor } from '@mui/material';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import BlockIcon from '@mui/icons-material/Block';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
+import CloseIcon from '@mui/icons-material/Close';
 import {
     DataGrid,
     GridToolbarQuickFilter,
@@ -294,7 +296,21 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const renderHistoryDialog = () => {
         return (
             <Dialog open={historyOpen} onClose={() => setHistoryOpen(false)} fullWidth>
-                <DialogTitle>Lịch sử thay đổi:</DialogTitle>
+                <DialogTitle sx={{ m: 0, p: 2 }} style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    <span>{'Chi tiết bình luận:'}</span>
+                    <IconButton
+                        aria-label="close"
+                        onClick={() => setHistoryOpen(false)}
+                        sx={(theme: any) => ({
+                            position: 'absolute',
+                            right: 8,
+                            top: 8,
+                            color: theme.palette.grey[500],
+                        })}
+                    >
+                        <CloseIcon />
+                    </IconButton>
+                </DialogTitle>
                 <DialogContent>
                     {!historyLoading ? (
                         history && currHistoryId && history[currHistoryId] ? ( // get curr row user's id history
@@ -318,9 +334,6 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                         </Box>
                     )}
                 </DialogContent>
-                <DialogActions>
-                    <Button onClick={() => setHistoryOpen(false)}>Xong</Button>
-                </DialogActions>
             </Dialog>
         );
     };

@@ -39,7 +39,7 @@ function CurrentDialog({
     // const [loading, setLoading] = useState<boolean>(false);
 
     return (
-        <Dialog open={open} onClose={handleClose} maxWidth="lg">
+        <Dialog open={open} onClose={handleClose} fullWidth>
             <DialogTitle sx={{ m: 0, p: 2 }} style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <span>{'Chi tiết bình luận:'}</span>
                 <IconButton

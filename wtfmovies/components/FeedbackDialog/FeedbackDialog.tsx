@@ -59,13 +59,12 @@ export default function FormDialog() {
     };
 
     const handleSendReport = async () => {
-        const reportContent =
-            'Báo cáo vi phạm ' + state.rpContent + '<br/>Nội dung: ' + violate + '<br/>Mô tả: ' + content;
+        const reportContent = 'Nội dung: ' + violate + '<br/>Mô tả: ' + content;
 
         const response = await fetch('/api/v1/sendReport', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ content: reportContent, type: state.fbDialogType }),
+            body: JSON.stringify({ content: reportContent, type: state.fbDialogType, reportedInfo: state.rpContent }),
         });
 
         if (response.ok) {

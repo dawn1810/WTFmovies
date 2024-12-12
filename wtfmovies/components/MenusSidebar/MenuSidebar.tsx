@@ -20,32 +20,32 @@ import StarBorder from '@mui/icons-material/StarBorder';
 
 const cx = classNames.bind(styles);
 
-const MenuSidebar = ({ menuItems, scene }: any) => {
+const MenuSidebar = ({ menuItems, open, activeMenu, handleButtonClick, handleSubButtonClick }: any) => {
     const router = useRouter();
 
-    const [activeMenu, setActiveMenu] = useState(scene);
-    const [open, setOpen] = useState(false);
+    // const [activeMenu, setActiveMenu] = useState(scene);
+    // const [open, setOpen] = useState(false);
 
-    const viewPort = useViewport();
+    // const viewPort = useViewport();
 
-    const handleButtonClick = (item: any) => {
-        if (item.scene) {
-            setActiveMenu(item.scene);
-            router.push(item.scene);
-        }
-        item.children && setOpen(!open);
-    };
+    // const handleButtonClick = (item: any) => {
+    //     if (item.scene) { // for item not have subitem
+    //         console.log(item.scene);
 
-    const handleSubButtonClick = (item: any) => {
-        console.log(activeMenu === item.scene);
+    //         setActiveMenu(item.scene);
+    //         router.replace(item.scene);
+    //     }
+    //     item.children && setOpen(!open);
+    // };
 
-        if (item.scene) {
-            setActiveMenu(item.scene);
-            // router.push(item.scene);
-        }
-    };
+    // const handleSubButtonClick = (child: any) => {
+    //     if (child.scene) {
+    //         setActiveMenu(child.scene);
+    //         router.replace(child.scene);
+    //     }
+    // };
 
-    const isMobile = viewPort.width <= 650;
+    // const isMobile = viewPort.width <= 650;
 
     return (
         // <>
@@ -92,11 +92,11 @@ const MenuSidebar = ({ menuItems, scene }: any) => {
                     </ListItemButton>
                     {item.children &&
                         item.children.map((child: any, index: number) => (
-                            <Collapse in={open} timeout="auto" unmountOnExit>
+                            <Collapse in={open} timeout="auto" unmountOnExit={false}>
                                 <List component="div" disablePadding>
                                     <ListItemButton
                                         key={index}
-                                        className={cx('navBtn', { active: activeMenu === item.scene })}
+                                        className={cx('navBtn', { active: activeMenu === child.scene })}
                                         sx={{ pl: 4 }}
                                         onClick={() => handleSubButtonClick(child)}
                                     >

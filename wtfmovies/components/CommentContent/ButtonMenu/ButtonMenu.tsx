@@ -75,8 +75,8 @@ const ButtonMenu = ({
 
     const handleOpenReport = () => {
         dispatch(changeFbDialog(true));
-        dispatch(changeFbDialogType('report'));
-        dispatch(changeRpContent('bình luận: ' + commentId));
+        dispatch(changeFbDialogType('comment'));
+        dispatch(changeRpContent({ id: commentId }));
         setAnchorEl(null);
     };
 

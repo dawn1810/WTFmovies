@@ -85,8 +85,8 @@ export interface reduxStateInterface {
         modalShow: boolean;
         query: string;
         fbDialog: boolean;
-        fbDialogType: 'report' | 'feedback';
-        rpContent: string;
+        fbDialogType: 'film' | 'comment' | 'feedback';
+        rpContent: any;
         wsdata: string;
     };
     register: {
@@ -456,7 +456,7 @@ export interface AdminCaroselInfterface {
     film_id: string;
     film_name: string;
     specialPoster?: string;
-    poster: string
+    poster: string;
 }
 
 export interface AdminDatasetInterface {

@@ -5,6 +5,7 @@
     background-color: var(--primary) !important;
     min-width: auto;
     color: var(--text-color);
+    transition: linear 0.2s;
 
     &:hover {
         transition-duration: 300ms;

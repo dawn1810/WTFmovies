@@ -10,5 +10,5 @@ export default function FilmPage({ dataset }: { dataset: AdminReportInfterface[]
         time: timePassed(data.time),
     }));
 
-    return <Table title_name="Quản lý báo cáo" dataset={mappedDataset} />;
+    return <Table title_name="Báo cáo lỗi" dataset={mappedDataset} />;
 }

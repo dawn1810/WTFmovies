@@ -18,7 +18,7 @@ import ForumOutlinedIcon from '@mui/icons-material/ForumOutlined';
 import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import MovieOutlinedIcon from '@mui/icons-material/MovieOutlined';
 import PreviewIcon from '@mui/icons-material/Preview';
-import BugReportIcon from '@mui/icons-material/BugReport';
+import BugReportOutlinedIcon from '@mui/icons-material/BugReportOutlined';
 import { getNotificationList } from '~/libs/getData/notification';
 import NotFound from '../(root)/not-found';
 import { getCurrentUser } from '~/libs/getData/home';
@@ -52,49 +52,49 @@ const menuItems = [
     {
         title: 'Tổng quan',
         icon: <HomeOutlinedIcon />,
-        scene: 'overview',
+        scene: '/admin/overview',
     },
     {
         title: 'Quản lý người dùng',
         icon: <PersonOutlineOutlinedIcon />,
-        scene: 'users',
+        scene: '/admin/users',
     },
     {
         title: 'Quản lý phim',
         icon: <MovieOutlinedIcon />,
-        scene: 'films',
+        scene: '/admin/films',
     },
     {
         title: 'Quản lý báo cáo',
         icon: <FlagOutlinedIcon />,
-        // scene: 'report',
+        // scene: '/report',
         children: [
             {
                 title: 'Báo cáo bình luận',
                 icon: <ForumOutlinedIcon />,
-                scene: 'report/comment',
+                scene: '/admin/report/comment',
             },
             {
                 title: 'Báo cáo phim',
                 icon: <MovieOutlinedIcon />,
-                scene: 'report/film',
+                scene: '/admin/report/film',
             },
             {
                 title: 'Báo cáo lỗi',
-                icon: <BugReportIcon />,
-                scene: 'report/bug',
+                icon: <BugReportOutlinedIcon />,
+                scene: '/admin/report/bug',
             },
         ],
     },
-    {
-        title: 'Quản lý bình luận',
-        icon: <ForumOutlinedIcon />,
-        scene: 'comment',
-    },
+    // {
+    //     title: 'Quản lý bình luận',
+    //     icon: <ForumOutlinedIcon />,
+    //     scene: 'comment',
+    // },
     {
         title: 'Danh sách ưu tiên',
         icon: <PreviewIcon />,
-        scene: 'carosel',
+        scene: '/admin/carosel',
     },
 ];
 

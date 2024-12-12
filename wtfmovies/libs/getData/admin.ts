@@ -1,4 +1,4 @@
-import { MongoDate, mongodb } from '~/libs/func';
+import { MongoDate, mongodb, ObjectId } from '~/libs/func';
 import {
     AdminCaroselInfterface,
     AdminReportInfterface,
@@ -204,13 +204,14 @@ export const getAllUser = async (): Promise<UserAdminInfoInfterface[]> => {
 };
 
 // report manage
+// bug
 export const getAllReport = async (): Promise<AdminReportInfterface[]> => {
     try {
         const reports: AdminReportInfterface[] = await mongodb()
             .db('statistical')
             .collection('report')
             .aggregate({
-                pipeline: [{ $match: { status: { $ne: false } } }, { $sort: { time: -1 } }],
+                pipeline: [{ $match: { type: 'feedback', status: { $ne: false } } }, { $sort: { time: -1 } }],
             });
 
         return reports;
@@ -220,17 +221,70 @@ export const getAllReport = async (): Promise<AdminReportInfterface[]> => {
     }
 };
 
-// comment manage
+// comment
 export const getAllComment = async (): Promise<any[]> => {
     try {
+        // get comment have reports
         const comments: any[] = await mongodb()
+            .db('statistical')
+            .collection('report')
+            .aggregate({
+                pipeline: [
+                    {
+                        $match: {
+                            type: 'comment',
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: '$reportedInfo.id',
+                            reports: {
+                                $push: {
+                                    from: '$from',
+                                    time: '$time',
+                                    ep: '$reportedInfo.ep',
+                                    type: '$type',
+                                    content: '$content',
+                                },
+                            },
+                        },
+                    },
+                ],
+            });
+
+        const commentIds = comments.map((comment) => ObjectId(comment._id));
+        const commentInfos: any[] = await mongodb()
             .db('film')
             .collection('comment')
             .aggregate({
-                pipeline: [{ $sort: { time: -1 } }],
+                pipeline: [
+                    {
+                        $match: {
+                            _id: { $in: commentIds },
+                        },
+                    },
+                    {
+                        $project: {
+                            parentId: 1,
+                            email: 1,
+                            username: 1,
+                            content: 1,
+                            time: 1,
+                            status: 1,
+                        },
+                    },
+                ],
             });
 
-        return comments;
+        const result = commentInfos.map((item) => {
+            const matchingSecondItem = comments.find((secondItem) => secondItem._id === item._id);
+            return {
+                ...item,
+                reports: matchingSecondItem ? matchingSecondItem.reports : [],
+            };
+        });
+
+        return result;
     } catch (err) {
         console.log('😨😨😨 error at admin/getAllReport function : ', err);
         return [];

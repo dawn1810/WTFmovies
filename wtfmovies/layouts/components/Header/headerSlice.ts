@@ -6,8 +6,8 @@ export const headerSlice = createSlice({
         modalShow: false,
         query: '',
         fbDialog: false,
-        fbDialogType: 'report',
-        rpContent: '',
+        fbDialogType: 'comment',
+        rpContent: {},
         wsdata: '',
     },
     reducers: {
