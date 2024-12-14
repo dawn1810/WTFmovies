@@ -11,5 +11,5 @@ export default function ManageCommentTable({ dataset }: { dataset: CommentInterf
         time: timePassed(data.time),
     }));
 
-    return <Table title_name="Quản lý bình luận" dataset={mappedDataset} />;
+    return <Table title_name="Báo cáo bình luận" dataset={mappedDataset} />;
 }

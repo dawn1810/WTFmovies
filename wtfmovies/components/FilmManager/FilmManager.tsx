@@ -65,6 +65,7 @@ export default function FilmManager({
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
     };
+
     async function handleEdit(event: any) {
         const selectedIDs = new Set(rowSelectionModel);
         const rowData = dataGrid.filter((row: any) => selectedIDs.has(row.id));
@@ -102,6 +103,7 @@ export default function FilmManager({
         setOpenForm(false);
         setValueFilm({});
     }
+
     const getJson = (apiRef: React.MutableRefObject<GridApi>) => {
         // Select rows and columns
         const filteredSortedRowIds = gridFilteredSortedRowIdsSelector(apiRef);
@@ -117,6 +119,7 @@ export default function FilmManager({
         });
         return JSON.stringify(data, null, 2);
     };
+
     const exportBlob = (blob: Blob, filename: string) => {
         // Save the blob in a json file
         const url = URL.createObjectURL(blob);
@@ -130,6 +133,7 @@ export default function FilmManager({
             URL.revokeObjectURL(url);
         });
     };
+
     function JsonExportMenuItem(props: GridExportMenuItemProps<{}>) {
         const apiRef = useGridApiContext();
 
@@ -173,6 +177,7 @@ export default function FilmManager({
         setOpen(false);
         setLoadingDelete(false);
     }
+    
     function CustomToolbar() {
         return (
             <GridToolbarContainer>

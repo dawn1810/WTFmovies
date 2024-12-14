@@ -186,7 +186,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                             }}
                             autoFocus
                         >
-                            DUYỆT
+                            ĐÃ ĐỌC
                         </LoadingButton>
                     </DialogActions>
                 </Dialog>
@@ -205,7 +205,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
                         className={cx('btncustom')}
                         onClick={handleOpen}
                     >
-                        Duyệt
+                        ĐÃ ĐỌC
                     </Button>
                     <GridToolbarQuickFilter />
                 </GridToolbarContainer>

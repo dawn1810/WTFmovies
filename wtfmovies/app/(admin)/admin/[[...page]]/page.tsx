@@ -9,6 +9,7 @@ import {
     getAllUser,
     getNewReport,
     getNumberStatistical,
+    getReportedFilm,
     getTopHotFilm,
     getTopHotGenre,
     getTopSearch,
@@ -24,6 +25,7 @@ import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { getSideMovieFormInfo, getFilm } from '~/libs/getData/editor';
 import FilmPage from '~/components/FilmManager';
 import ManageCaroselTable from '~/components/ManageCaroselTable';
+import ManageFilmReportTable from '~/components/ManageFilmReportTable';
 
 const cx = classNames.bind(style);
 
@@ -66,12 +68,13 @@ async function getPage(params?: any) {
                 switch (params.page[1]) {
                     case 'comment':
                         const comments: any[] = await getAllComment();
-                        
+
                         if (!comments) break;
                         return <ManageCommentTable dataset={comments} />;
                     case 'film':
-                        // return <ManageReportTable dataset={reports} />;
-                        return;
+                        const films: any[] = await getReportedFilm();
+
+                        return <ManageFilmReportTable dataset={films} />;
                     case 'bug':
                         const reports: AdminReportInfterface[] = await getAllReport();
 

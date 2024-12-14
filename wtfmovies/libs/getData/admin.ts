@@ -204,7 +204,7 @@ export const getAllUser = async (): Promise<UserAdminInfoInfterface[]> => {
 };
 
 // report manage
-// bug
+// bug report
 export const getAllReport = async (): Promise<AdminReportInfterface[]> => {
     try {
         const reports: AdminReportInfterface[] = await mongodb()
@@ -221,7 +221,7 @@ export const getAllReport = async (): Promise<AdminReportInfterface[]> => {
     }
 };
 
-// comment
+// comment report
 export const getAllComment = async (): Promise<any[]> => {
     try {
         // get comment have reports
@@ -233,6 +233,7 @@ export const getAllComment = async (): Promise<any[]> => {
                     {
                         $match: {
                             type: 'comment',
+                            status: { $ne: false },
                         },
                     },
                     {
@@ -240,6 +241,7 @@ export const getAllComment = async (): Promise<any[]> => {
                             _id: '$reportedInfo.id',
                             reports: {
                                 $push: {
+                                    _id: '$_id',
                                     from: '$from',
                                     time: '$time',
                                     ep: '$reportedInfo.ep',
@@ -278,6 +280,79 @@ export const getAllComment = async (): Promise<any[]> => {
 
         const result = commentInfos.map((item) => {
             const matchingSecondItem = comments.find((secondItem) => secondItem._id === item._id);
+            return {
+                ...item,
+                reports: matchingSecondItem ? matchingSecondItem.reports : [],
+            };
+        });
+
+        return result;
+    } catch (err) {
+        console.log('😨😨😨 error at admin/getAllReport function : ', err);
+        return [];
+    }
+};
+
+// film report
+export const getReportedFilm = async (): Promise<any[]> => {
+    try {
+        // get films have reported
+        const films: any[] = await mongodb()
+            .db('statistical')
+            .collection('report')
+            .aggregate({
+                pipeline: [
+                    {
+                        $match: {
+                            type: 'film',
+                            status: { $ne: false },
+                        },
+                    },
+                    {
+                        $group: {
+                            _id: '$reportedInfo.id',
+                            reports: {
+                                $push: {
+                                    _id: '$_id',
+                                    from: '$from',
+                                    time: '$time',
+                                    ep: '$reportedInfo.ep',
+                                    type: '$type',
+                                    content: '$content',
+                                },
+                            },
+                        },
+                    },
+                ],
+            });
+
+        const filmIds = films.map((film) => film._id);
+        const filmInfos: any[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    {
+                        $match: {
+                            film_id: { $in: filmIds },
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            film_id: 1,
+                            email: 1,
+                            name: 1,
+                            releaseYear: 1,
+                            updateTime: 1,
+                            status: 1,
+                        },
+                    },
+                ],
+            });
+
+        const result = filmInfos.map((item) => {
+            const matchingSecondItem = films.find((secondItem) => secondItem._id === item.film_id);
             return {
                 ...item,
                 reports: matchingSecondItem ? matchingSecondItem.reports : [],
