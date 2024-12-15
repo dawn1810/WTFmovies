@@ -18,6 +18,8 @@ import {
     showContact,
     changeUrl,
     changeVolume,
+    changeSeek,
+    grabSeek,
 } from './playerSlice';
 import { playerSelector } from '~/redux/selectors';
 import Contact from './Contact';
@@ -34,12 +36,14 @@ const Player = ({
     maxEp,
     className,
     isEdior,
+    film_id,
 }: {
     url: string;
     numEp: number;
     maxEp: number;
     className?: any;
     isEdior?: boolean;
+    film_id: string;
 }) => {
     let i: NodeJS.Timeout;
     const classes = cx('wrapper', {
@@ -80,8 +84,16 @@ const Player = ({
         [state.playing],
     );
 
-    const handleReady = () => {
+    const handleReady = () => { 
         dispatch(changeReady(true));
+
+        // start as data store in localStorage
+        // update user duration
+        const localStore = localStorage.getItem(film_id);
+        if (localStore) {
+            const data = JSON.parse(localStore);
+            playerRef.current.seekTo(data[numEp]);
+        }
     };
 
     const handleEnablePIP = useCallback(() => console.log('onEnablePIP'), []);
@@ -227,6 +239,7 @@ const Player = ({
                             ref={contactRef}
                             playerRef={playerRef}
                             isEdior={isEdior}
+                            film_id={film_id}
                             handlePlayPause={handlePlayPause}
                             handleClickFullscreen={handleClickFullscreen}
                             handleMouseMove={handleMouseMove}

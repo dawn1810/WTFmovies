@@ -173,6 +173,7 @@ export default async function Watch({ params }: Props) {
                 listIdEp={filmEpisode}
                 defaultActiveKey={filmData.videoType[0].title}
                 className={cx('tab-box')}
+                film_id={filmData?.film_id}
             />
             <TabsBox
                 tabs={proposeFilmsTabs}

@@ -6,7 +6,10 @@ import TabGridContent from './TabGridContent';
 import style from './TabsBox.module.scss';
 import TabFlexContent from './TabFlexContent';
 import FilmProposeList from '../FilmProposeList';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { showNotify } from '../Notify/notifySlide';
+import { duration } from '@mui/material';
 
 const cx = classNames.bind(style);
 
@@ -30,6 +33,7 @@ function TabBox({
     active_episode,
     defaultActiveKey,
     className,
+    film_id,
 }: {
     to?: string;
     setCurrTab?: any;
@@ -44,7 +48,59 @@ function TabBox({
     active_episode?: number;
     defaultActiveKey?: string;
     className?: string | [];
+    film_id?: string;
 }) {
+    const [watchedEp, setWatchedEp] = useState([]);
+
+    const dispatch = useDispatch();
+
+    const showAlert = (content: string, type: any) => {
+        dispatch(showNotify({ content, type, open: true }));
+    };
+
+    // update episode watched
+    useEffect(() => {
+        if (!film_id) return;
+        const localStore = localStorage.getItem(film_id);
+        if (!localStore) {
+            // get on db
+            const getWatchedEp = async () => {
+                const response = await fetch(`/api/v1/watchHistory/getWatchedEp`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        film_id,
+                    }),
+                });
+
+                if (response.ok) {
+                    const watched: any = await response.json();
+
+                    // update danh sách đang xem
+                    // add if not exist yet
+                    if (active_episode && !watched.data[active_episode]) {
+                        watched.data[active_episode] = 0;
+                    }
+
+                    watched.data.curr = active_episode; // update curr watching episode
+                    setWatchedEp(watched.data || []);
+                    localStorage.setItem(film_id, JSON.stringify(watched.data) || '[]');
+                } else if (response.status === 500) {
+                    showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
+                }
+            };
+            getWatchedEp();
+        } else {
+            const newData = JSON.parse(localStore || '[]');
+
+            if (active_episode && !newData[active_episode]) {
+                newData[active_episode] = 0;
+            }
+            newData.curr = active_episode; // update curr watching episode
+            setWatchedEp(newData);
+            localStorage.setItem(film_id, JSON.stringify(newData));
+        }
+    }, []);
 
     return (
         <div className={cx('wrapper', className)}>
@@ -53,8 +109,7 @@ function TabBox({
                 className={cx('tabs', 'flex-nowrap', { 'cmt-tabs': commentContent })}
                 defaultActiveKey={defaultActiveKey}
                 onSelect={(e: any) => {
-                    if (setCurrTab)
-                        setCurrTab(e)
+                    if (setCurrTab) setCurrTab(e);
                 }}
             >
                 {tabs.map((tab, index) => (
@@ -65,7 +120,6 @@ function TabBox({
                             'list-content': listContent,
                             'cmt-content': commentContent,
                         })}
-
                         key={index}
                         eventKey={tab.eventKey}
                         title={tab.title}
@@ -77,6 +131,7 @@ function TabBox({
                                 episodes={tab.content}
                                 active_episode={active_episode}
                                 listIdEp={listIdEp}
+                                watchedEp={watchedEp}
                             />
                         ) : listContent ? (
                             <FilmProposeList films={tab.content} className={cx('films-list')} />
@@ -86,7 +141,7 @@ function TabBox({
                     </Tab>
                 ))}
             </Tabs>
-        </div >
+        </div>
     );
 }
 
