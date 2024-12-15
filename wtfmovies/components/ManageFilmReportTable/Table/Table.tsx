@@ -54,6 +54,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     // report dialog
     const [reportOpen, setReportOpen] = useState<boolean>(false);
     const [reports, setReports] = useState<any>([]);
+    const [currReport, setCurrReport] = useState<number>(0);
 
     const handleSelectChange = (newRowSelectionModel: GridRowSelectionModel, detail: GridCallbackDetails<any>) => {
         if (newRowSelectionModel.length > rowSelectionModel.length) {
@@ -91,6 +92,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
     const handleOpenReport = (currId: string) => {
         const currIndex = data.findIndex((element: any) => element.id === currId);
         setReports(data[currIndex].reports);
+        setCurrReport(currIndex);
         setReportOpen(true);
     };
 
@@ -250,7 +252,14 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any; tit
                 }}
                 onRowSelectionModelChange={handleSelectChange}
             />
-            <ReportDialog open={reportOpen} reports={reports} handleClose={handleCloseReport} />
+            <ReportDialog
+                open={reportOpen}
+                reports={reports}
+                currReport={currReport}
+                setReport={setReports}
+                handleClose={handleCloseReport}
+                setData={setData}
+            />
         </div>
     );
 }

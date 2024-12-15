@@ -67,9 +67,9 @@ function ReportDialog({
                     }
                     return updatedData;
                 });
-                // for instanse click
                 handleClose(event);
             } else {
+                // for instanse click
                 setData((prev: any) => {
                     const updatedData = [...prev];
 

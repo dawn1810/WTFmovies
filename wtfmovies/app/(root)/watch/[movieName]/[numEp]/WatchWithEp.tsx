@@ -17,6 +17,8 @@ export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string; 
         serverVideo === 'Tiktok' ? filmEpisode[numEp - 1].link.Tiktok + '?.m3u8' : filmEpisode[numEp - 1].link.Youtube,
     );
 
+//update 
+
     useEffect(() => {
         setLinkVideo(
             serverVideo === 'Tiktok'
@@ -37,6 +39,7 @@ export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string; 
             clearTimeout(timer);
         };
     }, []);
+
     useEffect(() => {
         dispatch(changeEpisode(filmEpisode[numEp - 1]));
     }, [filmEpisode[numEp - 1]]);
