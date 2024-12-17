@@ -6,16 +6,55 @@ import classNames from 'classnames/bind';
 import style from './Watch.module.scss';
 import { changeEpisode } from './watchSlice';
 import { useDispatch } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+
+// dialog
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useRouter } from 'next/navigation';
 
 const cx = classNames.bind(style);
 
-export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string; filmEpisode: any; numEp: number }) {
+function formatTime(seconds: number) {
+    if (seconds < 60) {
+        return `${seconds} giây`;
+    } else {
+        const minutes = Math.floor(seconds / 60);
+        const remainingSeconds = seconds % 60;
+        let result = `${minutes} phút`;
+        if (remainingSeconds > 0) {
+            result += ` ${remainingSeconds} giây`;
+        }
+        return result;
+    }
+}
+
+export function WatchWithEp({
+    film_id,
+    filmEpisode,
+    numEp,
+    searchName,
+}: {
+    film_id: string;
+    filmEpisode: any;
+    numEp: number;
+    searchName: string;
+}) {
+    const localStore = useRef(JSON.parse(localStorage.getItem(film_id) || ''));
+
     const dispatch = useDispatch();
     const [serverVideo, setServerVideo] = useState<string>(filmEpisode[numEp - 1].link.Tiktok ? 'Tiktok' : 'Youtube');
     const [linkVideo, setLinkVideo] = useState<string>(
         serverVideo === 'Tiktok' ? filmEpisode[numEp - 1].link.Tiktok + '?.m3u8' : filmEpisode[numEp - 1].link.Youtube,
     );
+
+    const router = useRouter();
+    // nguoi dung tung xem phim va chua hoi lan nao
+    const [open, setOpen] = useState(!!localStore.current && !sessionStorage.getItem(film_id));
 
     useEffect(() => {
         setLinkVideo(
@@ -42,6 +81,20 @@ export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string; 
         dispatch(changeEpisode(filmEpisode[numEp - 1]));
     }, [filmEpisode[numEp - 1]]);
 
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleAgree = () => {
+        sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
+        router.push(`/watch/${searchName}/tap${localStore.current.curr}`);
+    };
+
+    const handleDisagree = () => {
+        sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
+        handleClose();
+    };
+
     return (
         <div className={cx('wrapper')}>
             <Player key={numEp + 'video'} url={linkVideo} numEp={numEp} maxEp={filmEpisode.length} film_id={film_id} />
@@ -51,6 +104,21 @@ export function WatchWithEp({ film_id, filmEpisode, numEp }: { film_id: string; 
                 setServerVideo={setServerVideo}
                 data={filmEpisode[numEp - 1].link}
             />
+            <Dialog open={open} onClose={handleClose} fullWidth>
+                <DialogTitle id="alert-dialog-title">{'Bạn có muốn tiếp tục xem nội dung trước đó?'}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">
+                        Xem tiếp túc tại tập {localStore.current.curr} vào lúc{' '}
+                        {formatTime(localStore.current[localStore.current.curr])}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDisagree}>Không</Button>
+                    <Button autoFocus onClick={handleAgree}>
+                        Có
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </div>
     );
 }

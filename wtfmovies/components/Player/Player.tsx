@@ -71,6 +71,19 @@ const Player = ({
 
     useEffect(() => {
         setIsClient(true);
+
+        return () => {
+            // lưu thời gian xem hiện tại khi rời trang
+            const currLocal = JSON.parse(localStorage.getItem(film_id) || '');
+
+            localStorage.setItem(
+                film_id,
+                JSON.stringify({
+                    ...currLocal,
+                    [numEp]: state.duration * state.played - 10, // -10 để người xem biêt mình đã xem đoạn lưu chưa
+                }),
+            );
+        };
     }, []);
 
     const handlePlayPause = useCallback(
@@ -84,7 +97,7 @@ const Player = ({
         [state.playing],
     );
 
-    const handleReady = () => { 
+    const handleReady = () => {
         dispatch(changeReady(true));
 
         // start as data store in localStorage
