@@ -25,6 +25,7 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
             return result.trim();
         }
+        
         const films: any[] = await mongodb()
             .db('film')
             .collection('information')
