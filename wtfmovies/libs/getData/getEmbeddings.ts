@@ -1,8 +1,12 @@
-// import { pipeline } from '@xenova/transformers';
-
-// // Function to generate embeddings for a given data source
-// export async function getEmbedding(data: string[]) {
-//     const embedder = await pipeline('feature-extraction', 'Xenova/nomic-embed-text-v1');
-//     const results = await embedder(data, { pooling: 'mean', normalize: true });
-//     return Array.from(results.data);
-// }
+export async function getEmbedding(model: string, input: any) {
+    const response = await fetch(
+        `https://api.cloudflare.com/client/v4/accounts/041b13f2e524a3d3a8744e2e3bf2917c/ai/run/${model}`,
+        {
+            headers: { Authorization: 'Bearer eU1WAu_OL-kTkpcXHldim8hWDsqVCkMmR--gmpBP' },
+            method: 'POST',
+            body: JSON.stringify(input),
+        },
+    );
+    const result = await response.json();
+    return result;
+}

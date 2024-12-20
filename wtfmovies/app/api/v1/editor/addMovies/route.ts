@@ -4,34 +4,39 @@ import { MongoDate, ObjectId, mongodb, toError, toJSON, uploadImagetoTiktok } fr
 import { makeFilmData } from '~/libs/uploadAPI';
 import { ExtendedUser } from '~/libs/interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
+import { getEmbedding } from '~/libs/getData/getEmbeddings';
 
 type dataType = {
     type?: string;
-    film_id: string,
-    name: string,
-    describe: string,
-    genre: string[],
-    director: string[],
-    actor: string[],
-    author: string[],
-    tag: string,
-    country: string,
-    releaseYear: string,
-    maxEp: number,
-    duration: number,
-    status: string,
+    film_id: string;
+    name: string;
+    describe: string;
+    genre: string[];
+    director: string[];
+    actor: string[];
+    author: string[];
+    tag: string;
+    country: string;
+    releaseYear: string;
+    maxEp: number;
+    duration: number;
+    status: string;
     listEp: {
-        tiktok: [{
-            index: number,
-            link: string,
-        }],
-        youtube: [{
-            index: number,
-            link: string,
-        }],
-    },
+        tiktok: [
+            {
+                index: number;
+                link: string;
+            },
+        ];
+        youtube: [
+            {
+                index: number;
+                link: string;
+            },
+        ];
+    };
+    embedding: any;
 };
-
 
 export async function POST(request: NextRequest) {
     try {
@@ -44,8 +49,14 @@ export async function POST(request: NextRequest) {
             const formData: any = await request.formData();
 
             //code from hell
-            const imageLink = (!!formData.get('image') && formData.get('image') instanceof Blob) ? await uploadImagetoTiktok(await formData.get('image')) : formData.get('image');
-            const imageBannerLink = (!!formData.get('imageBanner') && formData.get('imageBanner') instanceof Blob) ? await uploadImagetoTiktok(await formData.get('imageBanner')) : formData.get('imageBanner');
+            const imageLink =
+                !!formData.get('image') && formData.get('image') instanceof Blob
+                    ? await uploadImagetoTiktok(await formData.get('image'))
+                    : formData.get('image');
+            const imageBannerLink =
+                !!formData.get('imageBanner') && formData.get('imageBanner') instanceof Blob
+                    ? await uploadImagetoTiktok(await formData.get('imageBanner'))
+                    : formData.get('imageBanner');
 
             const info = await formData.get('info');
             const {
@@ -67,7 +78,11 @@ export async function POST(request: NextRequest) {
             const youtubeEpLength = listEp.youtube.length;
             const tiktokEpLength = listEp.tiktok.length;
             const proListEp = [];
-            for (let index = 0; index < ((youtubeEpLength >= tiktokEpLength) ? youtubeEpLength : tiktokEpLength); index++) {
+            for (
+                let index = 0;
+                index < (youtubeEpLength >= tiktokEpLength ? youtubeEpLength : tiktokEpLength);
+                index++
+            ) {
                 proListEp.push({
                     film_id: film_id,
                     index: index + 1,
@@ -75,23 +90,31 @@ export async function POST(request: NextRequest) {
                     upload_date: MongoDate(new Date()),
                     uploader_email: extendedUser.email,
                     link: {
-                        Youtube: listEp.youtube[index]?.link || "",
-                        Tiktok: listEp.tiktok[index]?.link || ""
+                        Youtube: listEp.youtube[index]?.link || '',
+                        Tiktok: listEp.tiktok[index]?.link || '',
                     },
-                })
+                });
             }
 
             if (proListEp.length > 0) {
-                await mongodb().db('film').collection('episode').deleteMany({ filter: { film_id: film_id } });
+                await mongodb()
+                    .db('film')
+                    .collection('episode')
+                    .deleteMany({ filter: { film_id: film_id } });
 
                 await mongodb().db('film').collection('episode').insertMany(proListEp);
             }
 
             // add author, actor, director, tag, genre
-            const authors = author.map((item: string) => (ObjectId(item)));
-            const directors = director.map((item: string) => (ObjectId(item)));
-            const actors = actor.map((item: string) => (ObjectId(item)));
-            const genres = genre.map((item: string) => (ObjectId(item)));
+            const authors = author.map((item: string) => ObjectId(item));
+            const directors = director.map((item: string) => ObjectId(item));
+            const actors = actor.map((item: string) => ObjectId(item));
+            const genres = genre.map((item: string) => ObjectId(item));
+
+            // get film information embedding
+            const embedding: any = await getEmbedding('@cf/baai/bge-small-en-v1.5', {
+                text: name + '-' + describe,
+            });
 
             // up film
             const filmInfo: any = await makeFilmData(
@@ -120,7 +143,7 @@ export async function POST(request: NextRequest) {
                         filter: {
                             film_id: film_id,
                         },
-                        update: { $set: filmInfo },
+                        update: { $set: { ...filmInfo, embedding: embedding.result.data } },
                         upsert: true,
                     });
 
@@ -129,9 +152,8 @@ export async function POST(request: NextRequest) {
                 }
             }
             return toError('Đăng tải phim không thành công', 400);
-
-        } return toError('Lỗi xác thực', 403);
-
+        }
+        return toError('Lỗi xác thực', 403);
     } catch (err) {
         return toError(err, 500);
     }

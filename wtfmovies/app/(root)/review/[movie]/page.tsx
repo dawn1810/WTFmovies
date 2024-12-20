@@ -6,8 +6,8 @@ import TabBox from '~/components/TabsBox/TabsBox';
 import FilmProposeList from '~/components/FilmProposeList';
 import style from './Review.module.scss';
 // import DefaultLayout from '~/layouts/DefaultLayout';
-import { getAllFilmsComment, getFilmReviewInfo, getUserLikeComment } from '~/libs/getData/review';
-import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
+import { getAllFilmsComment, getFilmReviewInfo, getProposeListFilms, getUserLikeComment } from '~/libs/getData/review';
+import { getCurrentUserInfo, getUserLoveFilm } from '~/libs/getData/home';
 import NotFound from '~/app/(root)/not-found';
 import { Metadata, ResolvingMetadata } from 'next/types';
 import Typography from '@mui/material/Typography';
@@ -35,7 +35,7 @@ async function Review({ params }: { params: { movie: string } }) {
     const currentUser = await getCurrentUserInfo();
     const filmReviewInfo = await getFilmReviewInfo(movie);
     const loveFilms = await getUserLoveFilm();
-    const proposeListFilms = await getProposeListFilms();
+    const proposeListFilms = await getProposeListFilms(movie);
     if (!filmReviewInfo || !proposeListFilms) return NotFound();
 
     const commentsFilm = await getAllFilmsComment(movie);

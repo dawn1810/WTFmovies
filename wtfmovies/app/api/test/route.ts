@@ -145,7 +145,7 @@ export async function GET(request: NextRequest) {
                     {
                         $vectorSearch: {
                             index: 'default',
-                            queryVector: embedding.result.data[0],
+                            queryVector: embedding.result.data[0], // get embedding vector
                             path: 'embedding',
                             exact: true,
                             limit: 5,
@@ -154,7 +154,10 @@ export async function GET(request: NextRequest) {
                     {
                         $project: {
                             _id: 0,
-                            describe: 1,
+                            name: 1,
+                            searchName: 1,
+                            updateTime: 1,
+                            img: 1,
                             score: {
                                 $meta: 'vectorSearchScore',
                             },

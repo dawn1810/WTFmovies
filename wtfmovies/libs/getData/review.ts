@@ -243,22 +243,65 @@ export const getUserLikeComment = async (filmName: string): Promise<LikeCommentL
     }
 };
 
-// export const getProposeListFilms = async (): Promise<FilmInfoInterface[]> => {
-//     const films: FilmInfoInterface[] = await mongodb()
-//         .db('film')
-//         .collection('information')
-//         .find({
-//             projection: {
-//                 _id: 0,
-//                 img: 1,
-//                 name: 1,
-//                 videoType: 1,
-//                 views: 1,
-//                 rating: 1,
-//             },
-//             limit: 10,
-//             sort: { likes: -1, views: -1, rating: -1 },
-//         });
+export const getProposeListFilms = async (filmName: string): Promise<FilmInfoInterface[]> => {
+    try {
+        const filmsEmbedding: any = await mongodb()
+            .db('film')
+            .collection('information')
+            .findOne({
+                filter: { searchName: filmName },
+                projection: {
+                    _id: 0,
+                    embedding: 1,
+                },
+            });
 
-//     return films;
-// };
+        const films: FilmInfoInterface[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    {
+                        $vectorSearch: {
+                            index: 'default',
+                            queryVector: filmsEmbedding.embedding[0], // get embedding vector
+                            path: 'embedding',
+                            exact: true,
+                            limit: 10,
+                        },
+                    },
+                    {
+                        $match: {
+                            searchName: { $ne: filmName }, // Exclude the current film
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'episode',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'reviews',
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            film_id: 1,
+                            img: 1,
+                            name: 1,
+                            searchName: 1,
+                            videoType: 1,
+                            views: 1,
+                            rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                        },
+                    },
+                    { $sort: { likes: -1, views: -1, rating: -1 } },
+                ],
+            });
+
+        return films;
+    } catch (err) {
+        console.log('😨😨😨 at home/getProposeListFilms function  : ', err);
+        return [];
+    }
+};
