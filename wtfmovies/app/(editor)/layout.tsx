@@ -48,17 +48,17 @@ const menuItems = [
     {
         title: 'Tổng quan',
         icon: <HomeOutlinedIcon />,
-        scene: 'overview',
+        scene: '/editor/overview',
     },
     {
         title: 'Quản lý phim',
         icon: <MovieOutlinedIcon />,
-        scene: 'film',
+        scene: '/editor/film',
     },
     {
         title: 'Quản lý bình luận',
         icon: <ForumOutlinedIcon />,
-        scene: 'comment',
+        scene: '/editor/comment',
     },
 ];
 
@@ -73,7 +73,6 @@ export default async function AdminLayout({
 }>) {
     const currentUser = await getCurrentUser();
     const notifications = await getNotificationList();
-
     if (!notifications) redirect('/');
 
     return (
@@ -85,7 +84,7 @@ export default async function AdminLayout({
                             <Container fluid className="p-0">
                                 <Row className="flex-nowrap g-0">
                                     <Col xs={2} id="sidebar-container">
-                                        <Leftbar menuItems={menuItems} />
+                                        <Leftbar menuItems={menuItems} type='editor' />
                                     </Col>
                                     <Col xs={10} id="main-container">
                                         <Header

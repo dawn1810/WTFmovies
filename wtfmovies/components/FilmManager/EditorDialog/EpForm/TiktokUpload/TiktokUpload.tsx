@@ -51,6 +51,8 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
     const [episode, setEpisode] = useState(listEpisode.length > 0 ? listEpisode[0].link : '');
     const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+    const [editIndex, setEditIndex] = useState<number | null>(null);
+    const [newLink, setNewLink] = useState<string>('');
 
     const handleChange = (event: SelectChangeEvent) => {
         if (event.target.value !== 'add-new')
@@ -77,7 +79,7 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
         setListEpisode((prevArray: { link: string; index: number }[]) => [
             ...prevArray,
-            { ...prevArray, index: prevArray.length + 1, link: id },
+            { link: id, index: prevArray.length + 1 },
         ]);
         setEpisode(id);
     }
@@ -88,11 +90,28 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
 
     }
 
+    function handleEditItem(index: number, link: string) {
+        setEditIndex(index);
+        setNewLink(link);
+    }
+
+    function handleSaveEdit() {
+        setListEpisode((prevArray: { link: string; index: number }[]) =>
+            prevArray.map(item =>
+                item.index === editIndex ? { ...item, link: newLink } : item
+            )
+        );
+        setEditIndex(null);
+        setNewLink('');
+    }
+
     const handleClick = (event: any) => {
-        console.log(event.target.value);
-
+        setListEpisode((prevArray: { link: string; index: number }[]) =>
+            prevArray.map(item =>
+                item.link === episode ? { ...item, link: event.target.value } : item
+            )
+        );
         setEpisode(event.target.value);
-
     };
 
 
@@ -162,6 +181,9 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                                         <IconButton onClick={() => handleDeleteItem(item.index)}>
                                             <DeleteIcon />
                                         </IconButton>
+                                        <IconButton onClick={() => handleEditItem(item.index, item.link)}>
+                                            <SaveAsIcon />
+                                        </IconButton>
                                     </MenuItem>
                                 ))}
                             {/* {defaultValue && defaultValue.map((item: { link: string, index: 1 }) => <MenuItem key={item.index} value={item.link}>{item.index}</MenuItem>)}
@@ -218,6 +240,27 @@ export default function InfoForm({ listEpisode, setListEpisode }: MovieForm) {
                     <DialogActions>
                         <Button onClick={handleCloseDeleteDialog}>Cancel</Button>
                         <Button onClick={handleConfirmDelete}>Delete</Button>
+                    </DialogActions>
+                </Dialog>
+
+                <Dialog open={editIndex !== null} onClose={() => setEditIndex(null)}>
+                    <DialogTitle>Sửa tập</DialogTitle>
+                    <DialogContent>
+                        <TextField
+                            autoFocus
+                            margin="dense"
+                            id="name"
+                            label="Liên kết mới"
+                            type="text"
+                            fullWidth
+                            variant="standard"
+                            value={newLink}
+                            onChange={(e) => setNewLink(e.target.value)}
+                        />
+                    </DialogContent>
+                    <DialogActions>
+                        <Button onClick={() => setEditIndex(null)}>Cancel</Button>
+                        <Button onClick={handleSaveEdit}>Save</Button>
                     </DialogActions>
                 </Dialog>
             </Box>

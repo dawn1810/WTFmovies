@@ -43,7 +43,7 @@ const Player = ({
     maxEp: number;
     className?: any;
     isEdior?: boolean;
-    film_id: string;
+    film_id?: string;
 }) => {
     let i: NodeJS.Timeout;
     const classes = cx('wrapper', {
@@ -73,6 +73,7 @@ const Player = ({
         setIsClient(true);
 
         return () => {
+            if (!film_id) return;
             // lưu thời gian xem hiện tại khi rời trang
             const currLocal = JSON.parse(localStorage.getItem(film_id) || '');
 
@@ -102,6 +103,7 @@ const Player = ({
 
         // start as data store in localStorage
         // update user duration
+        if (!film_id) return;
         const localStore = localStorage.getItem(film_id);
         if (localStore) {
             const data = JSON.parse(localStore);

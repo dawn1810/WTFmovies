@@ -15,12 +15,13 @@ type MenuItem = {
     children?: MenuItem[];
 };
 
-function Leftbar({ menuItems }: { menuItems: MenuItem[] }) {
+function Leftbar({ menuItems, type }: { menuItems: MenuItem[], type: "admin" | "editor" }) {
     const router = useRouter();
     const params = useParams<{ page: string }>();
+    console.log(params);
 
     const [activeMenu, setActiveMenu] = useState(
-        !!params.page[1] ? '/admin/' + params.page[0] + '/' + params.page[1] : '/admin/' + params.page[0],
+        !!params.page[1] ? `/${type}/` + params.page[0] + '/' + params.page[1] : `/${type}/` + params.page[0],
     ); // set for start
     const [open, setOpen] = useState(false);
 

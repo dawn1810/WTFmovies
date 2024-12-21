@@ -78,7 +78,7 @@ interface ContactPlayer {
     handleClickFullscreen: (e: any) => Promise<void>;
     playerRef: any;
     isEdior?: boolean;
-    film_id: string;
+    film_id?: string;
     handlePlayPause: (e: any) => void;
     handleMouseMove: () => void;
     handleNextEp: () => void;

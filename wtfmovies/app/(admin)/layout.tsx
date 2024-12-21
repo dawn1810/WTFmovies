@@ -122,7 +122,7 @@ export default async function AdminLayout({
                             <Container fluid className="p-0">
                                 <Row className="flex-nowrap g-0">
                                     <Col xs={2} id="sidebar-container">
-                                        <Leftbar menuItems={menuItems} />
+                                        <Leftbar menuItems={menuItems} type='admin' />
                                     </Col>
                                     <Col xs={10} id="main-container">
                                         <Header
