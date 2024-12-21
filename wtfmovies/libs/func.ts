@@ -179,8 +179,16 @@ function getCsrfToken(cookieString: string) {
 
 export async function uploadImagetoTiktok(file_blob: File) {
     try {
+        if (!file_blob || file_blob.size === 0) {
+            throw new Error('File is empty or not provided');
+        }
+
         const formData = new FormData();
         formData.append('Filedata', file_blob);
+
+        if (!formData.has('Filedata')) {
+            throw new Error('FormData is not correctly appended');
+        }
 
         const headers = new Headers();
 
@@ -229,8 +237,9 @@ export async function uploadImagetoTiktok(file_blob: File) {
         console.error('Upload unsuccessful:', await response.text());
         return null;
     } catch (error: any) {
+        console.log('Error uploading file:', error.message);
+
         await uploadImagetoTiktok(file_blob);
-        console.error('Error uploading file:', error.message);
         throw error;
     }
 }

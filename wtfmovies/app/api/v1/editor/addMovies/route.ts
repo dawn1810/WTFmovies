@@ -57,6 +57,7 @@ export async function POST(request: NextRequest) {
                 !!formData.get('imageBanner') && formData.get('imageBanner') instanceof Blob
                     ? await uploadImagetoTiktok(await formData.get('imageBanner'))
                     : formData.get('imageBanner');
+            console.log(imageLink, imageBannerLink);
 
             const info = await formData.get('info');
             const {
@@ -143,12 +144,15 @@ export async function POST(request: NextRequest) {
                         filter: {
                             film_id: film_id,
                         },
-                        update: { $set: { ...filmInfo, embedding: embedding.result.data } },
+                        update: { $set: { ...filmInfo, uploader_email: extendedUser.email, embedding: embedding.result.data } },
                         upsert: true,
                     });
 
-                if (!!response) {
+                if (response) {
                     return toJSON(filmInfo, 200);
+                }
+                else {
+                    return toError('Đăng tải phim không thành công', 400);
                 }
             }
             return toError('Đăng tải phim không thành công', 400);

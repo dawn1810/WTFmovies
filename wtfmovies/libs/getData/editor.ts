@@ -1,4 +1,5 @@
-import { FilmHotInterface, FilmInfo, NumStatisticalInterface, OneFilmTopInterface, TopSixUserInfoInfterface } from "../interfaces";
+import { auth } from "~/app/api/auth/[...nextauth]/auth";
+import { ExtendedUser, FilmHotInterface, FilmInfo, NumStatisticalInterface, OneFilmTopInterface, TopSixUserInfoInfterface } from "../interfaces";
 import { mongodb } from '~/libs/func';
 
 export const getFilm = async (): Promise<FilmInfo[]> => {
@@ -25,13 +26,21 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
 
             return result.trim();
         }
-        
+        const session = await auth();
+
+        if (!session) return [];
+
+        const extendedUser: ExtendedUser | undefined = session?.user;
+        const querys: any = { status: { $ne: 'delete' } };
+        if (extendedUser?.role === 'editor')
+            querys.uploader_email = extendedUser.email
+        console.log('querys', querys);
         const films: any[] = await mongodb()
             .db('film')
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $match: { status: { $ne: 'delete' } } },
+                    { $match: querys },
                     {
                         $lookup: {
                             from: 'episode',
@@ -232,13 +241,22 @@ export const getTopHotFilm = async (sortField: 'views' | 'likes' | 'comments', t
         } else {
             sortObject[`${type}${capitalizeFirstLetter(sortField)}`] = -1;
         }
+        const session = await auth();
+
+        if (!session) return [];
+
+        const extendedUser: ExtendedUser | undefined = session?.user;
+        const querys: any = { status: { $ne: 'delete' } };
+        if (extendedUser?.role === 'editor')
+            querys.uploader_email = extendedUser.email
+        console.log('querys', querys);
 
         const filmList: OneFilmTopInterface[] = await mongodb()
             .db('film')
             .collection('information')
             .aggregate({
                 pipeline: [
-                    { $match: { status: { $ne: 'delete' } } },
+                    { $match: querys },
                     {
                         $project: {
                             _id: 1,
