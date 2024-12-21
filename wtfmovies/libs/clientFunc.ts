@@ -163,7 +163,15 @@ export const formatNumber = (num: number): string => {
 
     return num.toString();
 };
-
+export const createSearchName = (name: string): string => {
+    return name
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+        .replace(/[^\w\s-]/g, '')
+        .replace(/\s+/g, '-')
+        .replace(/--+/g, '-');
+};
 // evaluate
 export const calcTotal = (store: any[]) => {
     const result = store.reduce(

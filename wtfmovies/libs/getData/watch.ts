@@ -1,5 +1,6 @@
-import { mongodb } from '~/libs/func';
+import { mongodb, ObjectId } from '~/libs/func';
 import { EpisodeInterFace, FilmInfo, MongoUpdate, ObjectMongo } from '../interfaces';
+import { auth } from '~/app/api/auth/[...nextauth]/auth';
 
 interface watchFilmInterface extends FilmInfo {
     sumEpisodes: number;
@@ -32,6 +33,7 @@ export const getFilmsInfo = async (movie_name: string): Promise<FilmInfo | undef
         console.log('😨😨😨 error at watch/getFilmsInfo function  : ', err);
     }
 };
+
 interface FilmEpisode {
     _id: string;
     link: string;
@@ -53,6 +55,25 @@ export const getFilmsEpisode = async (movie_id: string): Promise<FilmEpisode[] |
                     rating: 1,
                 },
             });
+        const session = await auth();
+
+        if (session && session.user && session.user.id) {
+            const epId = films.map((film) => film._id);
+            for (const id of epId) {
+                const rating = await mongodb()
+                    .db('film')
+                    .collection('rating')
+                    .findOne({
+                        filter: { id_ep: ObjectId(id), id_user: ObjectId(session.user.id) },
+                    });
+                if (rating) {
+                    const film = films.find(f => f._id === id);
+                    if (film) {
+                        film.rating = rating.rating;
+                    }
+                }
+            }
+        }
 
         const sortedFilms = films.sort((a, b) => a.index - b.index);
 
@@ -62,3 +83,4 @@ export const getFilmsEpisode = async (movie_id: string): Promise<FilmEpisode[] |
         return [];
     }
 };
+

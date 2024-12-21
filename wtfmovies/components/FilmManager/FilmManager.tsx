@@ -6,7 +6,7 @@ import { use, useEffect, useMemo, useState } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
-
+import { createSearchName } from '~/libs/clientFunc';
 import {
     DataGrid,
     GridToolbarQuickFilter,
@@ -25,11 +25,13 @@ import {
     GridToolbarExportContainer,
 } from '@mui/x-data-grid';
 import AddIcon from '@mui/icons-material/Add';
+import EyesIcon from '@mui/icons-material/Visibility';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
 
 import { viVN } from '@mui/x-data-grid/locales';
 import AlertDialog from '~/components/FilmManager/EditorDialog';
+import { useRouter } from 'next/navigation';
 
 import { MovieForm } from '~/components/FilmManager/EditorDialog';
 import { useDispatch } from 'react-redux';
@@ -92,7 +94,14 @@ export default function FilmManager({
     function handleDelete() {
         setOpen(true);
     }
+    const router = useRouter();
 
+    function handleView() {
+        const selectedIDs = new Set(rowSelectionModel);
+        const rowData = dataGrid.filter((row: any) => selectedIDs.has(row.id));
+        console.log(rowData[0]);
+        router.push(`/review/${rowData[0].searchName}`);
+    }
     function handleAdd() {
         setFilm_id_form(generateUUIDv4());
 
@@ -177,7 +186,7 @@ export default function FilmManager({
         setOpen(false);
         setLoadingDelete(false);
     }
-    
+
     function CustomToolbar() {
         return (
             <GridToolbarContainer>
@@ -195,7 +204,10 @@ export default function FilmManager({
                     />
                     <JsonExportMenuItem />
                 </GridToolbarExportContainer>
-
+                <Button className={cx('btncustom')} onClick={handleView} disabled={rowSelectionModel.length !== 1} variant="outlined">
+                    <EyesIcon />
+                    Xem
+                </Button>
                 <Button className={cx('btncustom')} onClick={handleAdd} variant="outlined">
                     <AddIcon />
                     Thêm

@@ -44,7 +44,9 @@ export function WatchWithEp({
     numEp: number;
     searchName: string;
 }) {
-    const localStore = useRef(JSON.parse(localStorage.getItem(film_id) || ''));
+    const localStore = useRef(
+        typeof window !== 'undefined' ? JSON.parse(localStorage.getItem(film_id) || '{}') : {}
+    );
 
     const dispatch = useDispatch();
     const [serverVideo, setServerVideo] = useState<string>(filmEpisode[numEp - 1].link.Tiktok ? 'Tiktok' : 'Youtube');
@@ -54,7 +56,8 @@ export function WatchWithEp({
 
     const router = useRouter();
     // nguoi dung tung xem phim va chua hoi lan nao
-    const [open, setOpen] = useState(!!localStore.current && !sessionStorage.getItem(film_id));
+    const [open, setOpen] = useState(
+        (typeof window !== 'undefined') ? (!!localStore.current && !sessionStorage.getItem(film_id)) : false);
 
     useEffect(() => {
         setLinkVideo(
@@ -86,12 +89,16 @@ export function WatchWithEp({
     };
 
     const handleAgree = () => {
-        sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
+        }
         router.push(`/watch/${searchName}/tap${localStore.current.curr}`);
     };
 
     const handleDisagree = () => {
-        sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
+        if (typeof window !== 'undefined') {
+            sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
+        }
         handleClose();
     };
 

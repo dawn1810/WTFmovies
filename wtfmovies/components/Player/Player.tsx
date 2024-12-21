@@ -75,7 +75,7 @@ const Player = ({
         return () => {
             if (!film_id) return;
             // lưu thời gian xem hiện tại khi rời trang
-            const currLocal = JSON.parse(localStorage.getItem(film_id) || '');
+            const currLocal = JSON.parse(localStorage.getItem(film_id) || '{}');
 
             localStorage.setItem(
                 film_id,
