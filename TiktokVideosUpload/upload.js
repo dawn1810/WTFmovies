@@ -79,7 +79,7 @@ async function uploadImagetoTiktok(file_path) {
 		console.log("Upload unsuccessful:", await response.text());
 		return null;
 	} catch (error) {
-		console.error("Error uploading file:", error.message);
+		console.error("Error uploading file:ssss", error.message);
 		return null;
 	}
 }

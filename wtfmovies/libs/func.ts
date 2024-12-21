@@ -179,12 +179,15 @@ function getCsrfToken(cookieString: string) {
 
 export async function uploadImagetoTiktok(file_blob: File) {
     try {
+        console.log('Uploading file:');
+
         if (!file_blob || file_blob.size === 0) {
             throw new Error('File is empty or not provided');
         }
 
         const formData = new FormData();
         formData.append('Filedata', file_blob);
+        console.log('Uploading file:', file_blob);
 
         if (!formData.has('Filedata')) {
             throw new Error('FormData is not correctly appended');
@@ -215,9 +218,9 @@ export async function uploadImagetoTiktok(file_blob: File) {
                 headers: headers,
             },
         );
-
+        const data = await response.text();
         if (response.ok) {
-            const responseData: ResponseTiktokOK = await response.json();
+            const responseData: ResponseTiktokOK = JSON.parse(data);
             // Update currentCookie with the new values
             const responseCookieHeader = response.headers.get('Set-Cookie');
             if (responseCookieHeader) {
@@ -230,14 +233,16 @@ export async function uploadImagetoTiktok(file_blob: File) {
                 //     if (err) throw (err);
                 // });
                 return responseData.data.url;
+            } else {
+                return console.error('Failed to upload:', data);
             }
         } else {
-            console.error('Failed to upload:', await response.text());
+            console.error('Failed to upload');
         }
-        console.error('Upload unsuccessful:', await response.text());
+        console.error('Upload unsuccessful:', data);
         return null;
     } catch (error: any) {
-        console.log('Error uploading file:', error.message);
+        console.log('Lỗi up file', error.message);
 
         await uploadImagetoTiktok(file_blob);
         throw error;
