@@ -140,7 +140,9 @@ export const getFilm = async (): Promise<FilmInfo[]> => {
                             uploadedEp: { $arrayElemAt: [{ $arrayElemAt: ['$videoType.episode', 0] }, -1] },
                             views: 1,
                             likes: 1,
-
+                            schedule: 1,
+                            notify: 1,
+                            watchPercentage: 1,
                             maxEp: 1,
                             rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
                             img: 1,

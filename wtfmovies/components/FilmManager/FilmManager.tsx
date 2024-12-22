@@ -88,7 +88,7 @@ export default function FilmManager({
     function handleView() {
         const selectedIDs = new Set(rowSelectionModel);
         const rowData = films.filter((row: any) => selectedIDs.has(row.id));
-        router.push(`/review/${rowData[0].searchName}`);
+        window.open(`/review/${rowData[0].searchName}`, '_blank');
     }
 
     function handleAdd() {

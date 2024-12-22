@@ -6,7 +6,7 @@ import classNames from 'classnames/bind';
 import style from './Watch.module.scss';
 import { changeEpisode } from './watchSlice';
 import { useDispatch } from 'react-redux';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 // dialog
 import Button from '@mui/material/Button';
@@ -38,11 +38,13 @@ export function WatchWithEp({
     filmEpisode,
     numEp,
     searchName,
+    watchPercentage
 }: {
     film_id: string;
     filmEpisode: any;
     numEp: number;
     searchName: string;
+    watchPercentage: number;
 }) {
     const localStore = useRef(
         typeof window !== 'undefined' ? JSON.parse(localStorage.getItem(film_id) || '{}') : {}
@@ -59,6 +61,35 @@ export function WatchWithEp({
     const [open, setOpen] = useState(
         (typeof window !== 'undefined') ? (!!localStore.current && !sessionStorage.getItem(film_id)) : false);
 
+    const updateView = useCallback(async () => {
+        await fetch('/api/v1/updateView', {
+            method: 'POST',
+            body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id, film_id: film_id }),
+        });
+    }, [filmEpisode, numEp, film_id]);
+
+    useEffect(() => {
+        const handleTimeUpdate = (event: any) => {
+            const player = event.target;
+            const percentageWatched = (player.currentTime / player.duration) * 100;
+            if (percentageWatched > watchPercentage) {
+                updateView();
+                player.removeEventListener('timeupdate', handleTimeUpdate);
+            }
+        };
+
+        const playerElement = document.querySelector('video');
+        if (playerElement) {
+            playerElement.addEventListener('timeupdate', handleTimeUpdate);
+        }
+
+        return () => {
+            if (playerElement) {
+                playerElement.removeEventListener('timeupdate', handleTimeUpdate);
+            }
+        };
+    }, [updateView, watchPercentage]);
+
     useEffect(() => {
         setLinkVideo(
             serverVideo === 'Tiktok'
@@ -66,19 +97,6 @@ export function WatchWithEp({
                 : filmEpisode[numEp - 1].link.Youtube,
         );
     }, [serverVideo]);
-
-    useEffect(() => {
-        const timer = setTimeout(async () => {
-            await fetch('/api/v1/updateView', {
-                method: 'POST',
-                body: JSON.stringify({ epId: filmEpisode[numEp - 1]._id, film_id: film_id }),
-            });
-        }, 5000);
-
-        return () => {
-            clearTimeout(timer);
-        };
-    }, []);
 
     useEffect(() => {
         dispatch(changeEpisode(filmEpisode[numEp - 1]));

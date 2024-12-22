@@ -47,6 +47,47 @@ export async function generateMetadata({ params }: Props, parent: ResolvingMetad
     };
 }
 
+const getScheduleDescription = (schedule: string | number) => {
+    if (typeof schedule === 'number') {
+        const daysOfWeek = ['Chủ nhật', 'Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy'];
+        return `${daysOfWeek[schedule]} hàng tuần`;
+    } else if (typeof schedule === 'string' && !isNaN(Date.parse(schedule))) {
+        const date = new Date(schedule);
+        return `Ngày ${date.getDate()} tháng ${date.getMonth() + 1} năm ${date.getFullYear()}`;
+    }
+    return 'Không có dữ liệu';
+};
+
+const getTimeUntilSchedule = (schedule: string | number) => {
+    const now = new Date();
+    let targetDate;
+
+    if (typeof schedule === 'number') {
+        targetDate = new Date();
+        targetDate.setDate(now.getDate() + ((7 + schedule - now.getDay()) % 7));
+        targetDate.setHours(0, 0, 0, 0); // Set to 00:00
+    } else if (typeof schedule === 'string' && !isNaN(Date.parse(schedule))) {
+        targetDate = new Date(schedule);
+    } else {
+        return 'Không có dữ liệu';
+    }
+
+    const diff = targetDate.getTime() - now.getTime();
+    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+
+    if (days <= 0 && hours <= 0 && minutes <= 0) {
+        return '1 tuần';
+    }
+
+    const daysText = days > 0 ? `${days} ngày` : '';
+    const hoursText = hours > 0 ? `${hours} giờ` : '';
+    const minutesText = minutes > 0 ? `${minutes} phút` : '';
+
+    return `${daysText} ${hoursText} ${minutesText}`.trim();
+};
+
 export default async function Watch({ params }: Props) {
     //get Param
     const { movieName, numEp } = params;
@@ -72,11 +113,11 @@ export default async function Watch({ params }: Props) {
     //re check info film
     if (!matchNumEp || filmEpisode.length <= 0 || !filmData || !filmData.videoType) return NotFound();
 
-    if (!filmData.notification)
-        filmData.notification = {
-            schedule: 'Phim đã hoàn thành',
-            notification: 'Không có thông báo',
-        };
+    if (!filmData.notify)
+        filmData.notify = 'Không có thông báo'
+    if (!filmData.schedule)
+        filmData.schedule = 'Không có dữ liệu'
+
 
     //spit to get "{number}"
     const regexGetEp = /(\d+)/;
@@ -123,12 +164,12 @@ export default async function Watch({ params }: Props) {
         {
             title: 'LỊCH CHIẾU',
             eventKey: 'celender',
-            content: filmData.notification?.schedule,
+            content: `Phim sẽ được chiếu vào ${getScheduleDescription(filmData.schedule)} (${getTimeUntilSchedule(filmData.schedule)} còn lại)`,
         },
         {
             title: 'THÔNG BÁO',
             eventKey: 'notify',
-            content: filmData.notification?.notification,
+            content: filmData.notify,
         },
     ];
 
@@ -166,6 +207,7 @@ export default async function Watch({ params }: Props) {
             <WatchWithEp
                 film_id={filmData?.film_id}
                 numEp={Number(numberEp)}
+                watchPercentage={filmData?.watchPercentage}
                 filmEpisode={filmEpisode}
                 searchName={filmReviewInfo.searchName}
             ></WatchWithEp>

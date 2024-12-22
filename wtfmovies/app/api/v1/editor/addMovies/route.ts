@@ -5,8 +5,12 @@ import { makeFilmData } from '~/libs/uploadAPI';
 import { ExtendedUser } from '~/libs/interfaces';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { getEmbedding } from '~/libs/getData/getEmbeddings';
+import { AnyARecord } from 'node:dns';
 
 type dataType = {
+    notify: string;
+    schedule: string | number;
+    watchPercentage: number;
     type?: string;
     film_id: string;
     name: string;
@@ -75,6 +79,9 @@ export async function POST(request: NextRequest) {
                 duration,
                 status,
                 listEp,
+                notify,
+                schedule,
+                watchPercentage,
             }: dataType = await JSON.parse(info);
             const youtubeEpLength = listEp.youtube.length;
             const tiktokEpLength = listEp.tiktok.length;
@@ -135,6 +142,9 @@ export async function POST(request: NextRequest) {
                 maxEp,
                 releaseYear,
                 proListEp.length,
+                notify,
+                schedule,
+                watchPercentage,
             );
             if (filmInfo) {
                 const response: any = await mongodb()

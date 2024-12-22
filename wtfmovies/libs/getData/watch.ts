@@ -21,7 +21,9 @@ export const getFilmsInfo = async (movie_name: string): Promise<FilmInfo | undef
                     videoType: 1,
                     views: 1,
                     rating: 1,
-                    notification: 1,
+                    watchPercentage: 1,
+                    notify: 1,
+                    schedule: 1,
                 },
             });
         // if (!films.videoType) return null

@@ -31,6 +31,9 @@ export function useMovieForm({
         { value: 'will', label: 'Sắp chiếu' },
     ];
 
+    const [lichchieu, setLichchieu] = useState(defaultValue.schedule || '');
+    const [watchPercentage, setWatchPercentage] = useState(defaultValue.watchPercentage || 0);
+    const [notify, setNotify] = useState(defaultValue.notify || '');
     const [valueAuthors, setValueAuthors] = useState(defaultValue.author || []);
     const [valueGenres, setValueGenres] = useState(defaultValue.genre || []);
     const [valueDirectors, setValueDirectors] = useState(defaultValue.director || []);
@@ -107,6 +110,9 @@ export function useMovieForm({
         timeEp = min * 60 + sec;
         const data = {
             film_id: film_id,
+            notify: notify,
+            watchPercentage: watchPercentage,
+            schedule: lichchieu,
             name: titleMovie,
             describe: sumaryMovie,
             genre: valueGenres.map((item: any) => item.id),
@@ -260,5 +266,12 @@ export function useMovieForm({
         listEpisodeYoutube,
         setListEpisodeYoutube,
         sendInfo,
+        lichchieu,
+        setLichchieu,
+        watchPercentage,
+        setWatchPercentage,
+        notify,
+        setNotify,
+
     };
 }

@@ -86,6 +86,12 @@ export function MovieForm({
         listEpisodeYoutube,
         setListEpisodeYoutube,
         sendInfo,
+        lichchieu,
+        setLichchieu,
+        watchPercentage,
+        setWatchPercentage,
+        notify,
+        setNotify,
     } = useMovieForm({
         defaultValue,
         tags,
@@ -166,12 +172,12 @@ export function MovieForm({
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                     <SubInfoForm
-                        titleMovie={titleMovie}
-                        setTitleMovie={setTitleMovie}
-                        year={year}
-                        setYear={setYear}
-                        watchPercentage={0}
-                        setWatchPercentage={() => { }}
+                        notify={notify}
+                        setNotify={setNotify}
+                        lichchieu={lichchieu}
+                        setLichchieu={setLichchieu}
+                        watchPercentage={watchPercentage}
+                        setWatchPercentage={setWatchPercentage}
                     />
                 </TabPanel>
                 <DialogActions>
