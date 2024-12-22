@@ -3,10 +3,8 @@ import type { NextRequest, NextResponse } from 'next/server';
 import { auth } from '~/app/api/auth/[...nextauth]/auth';
 import { mongodb, toError, toJSON } from '~/libs/func';
 import { ExtendedUser } from '~/libs/interfaces';
-import { readFileSync } from 'fs';
-import { NextApiRequest, NextApiResponse } from 'next';
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+export async function GET(req: NextRequest, res: NextResponse) {
     try {
         const session = await auth();
 

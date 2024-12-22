@@ -72,19 +72,19 @@ const Player = ({
     useEffect(() => {
         setIsClient(true);
 
-        return () => {
-            if (!film_id) return;
-            // lưu thời gian xem hiện tại khi rời trang
-            const currLocal = JSON.parse(localStorage.getItem(film_id) || '{}');
+        // return () => {
+        //     if (!film_id) return;
+        //     // lưu thời gian xem hiện tại khi rời trang
+        //     const currLocal = JSON.parse(localStorage.getItem(film_id) || '{}');
 
-            localStorage.setItem(
-                film_id,
-                JSON.stringify({
-                    ...currLocal,
-                    [numEp]: state.duration * state.played - 10, // -10 để người xem biêt mình đã xem đoạn lưu chưa
-                }),
-            );
-        };
+        //     localStorage.setItem(
+        //         film_id,
+        //         JSON.stringify({
+        //             ...currLocal,
+        //             [numEp]: state.duration * state.played,
+        //         }),
+        //     );
+        // };
     }, []);
 
     const handlePlayPause = useCallback(
@@ -100,7 +100,6 @@ const Player = ({
 
     const handleReady = () => {
         dispatch(changeReady(true));
-
         // start as data store in localStorage
         // update user duration
         if (!film_id) return;
@@ -111,6 +110,20 @@ const Player = ({
         }
     };
 
+    // const handleProcess = () => {
+    //     if (!film_id) return;
+    //     // lưu thời gian xem hiện tại khi rời trang
+    //     const currLocal = JSON.parse(localStorage.getItem(film_id) || '{}');
+
+    //     localStorage.setItem(
+    //         film_id,
+    //         JSON.stringify({
+    //             ...currLocal,
+    //             [numEp]: state.duration * state.played,
+    //         }),
+    //     );
+    // };
+
     const handleEnablePIP = useCallback(() => console.log('onEnablePIP'), []);
 
     const handleDisablePIP = useCallback(() => dispatch(togglePIP(false)), []);
@@ -118,10 +131,22 @@ const Player = ({
     const handlePause = useCallback(() => console.log('onPause'), []);
 
     const handleProgress: any = useCallback(
-        (progress: number) => {
+        (progress: any) => {
             if (!state.seeking) {
                 dispatch(changeProgress(progress));
             }
+
+            if (!film_id) return;
+            // lưu thời gian xem hiện tại khi rời trang
+            const currLocal = JSON.parse(localStorage.getItem(film_id) || '{}');
+
+            localStorage.setItem(
+                film_id,
+                JSON.stringify({
+                    ...currLocal,
+                    [numEp]: progress.playedSeconds,
+                }),
+            );
         },
         [state.seeking],
         // [state.seeking, state],
@@ -188,10 +213,10 @@ const Player = ({
                     playbackRate={state.playbackRate}
                     volume={state.volume}
                     muted={state.muted}
+                    progressInterval={10000}
                     onReady={handleReady}
                     onStart={() => dispatch(changePlayPause(true))}
                     onPlay={handlePlay}
-                    // onProgress
                     onBuffer={handleOnBuffer}
                     onBufferEnd={handlePlay}
                     onEnablePIP={handleEnablePIP}
