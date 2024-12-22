@@ -1,8 +1,7 @@
 'use client';
 import style from './FilmManager.module.scss';
 import classNames from 'classnames/bind';
-import { use, useEffect, useMemo, useState } from 'react';
-// import { AlertColor } from '@mui/material';
+import { useEffect, useState } from 'react';
 import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -28,17 +27,17 @@ import AddIcon from '@mui/icons-material/Add';
 import EyesIcon from '@mui/icons-material/Visibility';
 import BorderColorOutlinedIcon from '@mui/icons-material/BorderColorOutlined';
 import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
-
 import { viVN } from '@mui/x-data-grid/locales';
-import AlertDialog from '~/components/FilmManager/EditorDialog';
+import AlertDialog from '~/components/FilmManager/EditorDialog/AlertDialog';
 import { useRouter } from 'next/navigation';
-
-import { MovieForm } from '~/components/FilmManager/EditorDialog';
-import { useDispatch } from 'react-redux';
+import { MovieForm } from '~/components/FilmManager/EditorDialog/MovieForm';
+import { useDispatch, useSelector } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { generateUUIDv4 } from '~/libs/clientFunc';
+import { setFilms, setSelectedFilm, setFormOpen } from './filmManagerSlice';
 
 const cx = classNames.bind(style);
+
 export default function FilmManager({
     colum,
     children,
@@ -52,73 +51,59 @@ export default function FilmManager({
 }) {
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
     const [open, setOpen] = useState(false);
-    const [openForm, setOpenForm] = useState(false);
-    const [valueFilm, setValueFilm] = useState<any>({});
-    const [dataGrid, setDataGrid] = useState<any>(children);
     const [loadingDelete, setLoadingDelete] = useState(false);
-    const [film_id_form, setFilm_id_form] = useState(valueFilm.film_id);
+    const films = useSelector((state: any) => state.editor.films);
+    const selectedFilm = useSelector((state: any) => state.editor.selectedFilm);
+    const formOpen = useSelector((state: any) => state.editor.formOpen);
+    const dispatch = useDispatch();
+    const router = useRouter();
 
     useEffect(() => {
-        setFilm_id_form(valueFilm.film_id);
-    }, [valueFilm.film_id]);
-
-    const dispatch = useDispatch();
+        dispatch(setFilms(children));
+    }, [children, dispatch]);
 
     const showAlert = (content: string, type: any) => {
         dispatch(showNotify({ content, type, open: true }));
     };
 
-    async function handleEdit(event: any) {
+    async function handleEdit() {
         const selectedIDs = new Set(rowSelectionModel);
-        const rowData = dataGrid.filter((row: any) => selectedIDs.has(row.id));
-
-        const authorsList = new Set(rowData[0].author);
-        const genresList = new Set(rowData[0].genre);
-        const directorList = new Set(rowData[0].director);
-        const actorsList = new Set(rowData[0].actor);
-        const countrysList = new Set(rowData[0].country);
-
+        const rowData = films.filter((row: any) => selectedIDs.has(row.id));
         const data = {
             ...rowData[0],
-            author: [...sideFormInfo.author.filter((item: any) => authorsList.has(item.title))],
-            genre: [...sideFormInfo.genres.filter((item: any) => genresList.has(item.title))],
-            director: [...sideFormInfo.directors.filter((item: any) => directorList.has(item.title))],
-            actor: [...sideFormInfo.actors.filter((item: any) => actorsList.has(item.title))],
-            country: [...sideFormInfo.countrys.filter((item: any) => countrysList.has(item.label))],
+            author: [...sideFormInfo.author.filter((item: any) => rowData[0].author.includes(item.title))],
+            genre: [...sideFormInfo.genres.filter((item: any) => rowData[0].genre.includes(item.title))],
+            director: [...sideFormInfo.directors.filter((item: any) => rowData[0].director.includes(item.title))],
+            actor: [...sideFormInfo.actors.filter((item: any) => rowData[0].actor.includes(item.title))],
+            country: [...sideFormInfo.countrys.filter((item: any) => rowData[0].country.includes(item.label))],
         };
-
-        setValueFilm(data);
-        setOpenForm(true);
+        dispatch(setSelectedFilm(data));
+        dispatch(setFormOpen(true));
     }
 
     function handleDelete() {
         setOpen(true);
     }
-    const router = useRouter();
 
     function handleView() {
         const selectedIDs = new Set(rowSelectionModel);
-        const rowData = dataGrid.filter((row: any) => selectedIDs.has(row.id));
-        console.log(rowData[0]);
+        const rowData = films.filter((row: any) => selectedIDs.has(row.id));
         router.push(`/review/${rowData[0].searchName}`);
     }
-    function handleAdd() {
-        setFilm_id_form(generateUUIDv4());
 
-        setOpenForm(true);
+    function handleAdd() {
+        dispatch(setSelectedFilm({ film_id: generateUUIDv4() }));
+        dispatch(setFormOpen(true));
     }
 
     function handleCloseForm() {
-        setOpenForm(false);
-        setValueFilm({});
+        dispatch(setFormOpen(false));
+        dispatch(setSelectedFilm(null));
     }
 
     const getJson = (apiRef: React.MutableRefObject<GridApi>) => {
-        // Select rows and columns
         const filteredSortedRowIds = gridFilteredSortedRowIdsSelector(apiRef);
         const visibleColumnsField = gridVisibleColumnFieldsSelector(apiRef);
-
-        // Format the data. Here we only keep the value
         const data = filteredSortedRowIds.map((id) => {
             const row: Record<string, any> = {};
             visibleColumnsField.forEach((field) => {
@@ -130,14 +115,11 @@ export default function FilmManager({
     };
 
     const exportBlob = (blob: Blob, filename: string) => {
-        // Save the blob in a json file
         const url = URL.createObjectURL(blob);
-
         const a = document.createElement('a');
         a.href = url;
         a.download = filename;
         a.click();
-
         setTimeout(() => {
             URL.revokeObjectURL(url);
         });
@@ -145,19 +127,13 @@ export default function FilmManager({
 
     function JsonExportMenuItem(props: GridExportMenuItemProps<{}>) {
         const apiRef = useGridApiContext();
-
         const { hideMenu } = props;
-
         return (
             <MenuItem
                 onClick={() => {
                     const jsonString = getJson(apiRef);
-                    const blob = new Blob([jsonString], {
-                        type: 'text/json',
-                    });
+                    const blob = new Blob([jsonString], { type: 'text/json' });
                     exportBlob(blob, 'Danh sách tập phim.json');
-
-                    // Hide the export menu after the export
                     hideMenu?.();
                 }}
             >
@@ -178,11 +154,10 @@ export default function FilmManager({
             });
             const decodeData: { statusCode: number; content: string } = await res.json();
             if (decodeData.statusCode === 200) {
-                setDataGrid(removeItemsById(dataGrid, status.content));
+                dispatch(setFilms(removeItemsById(films, status.content)));
                 showAlert('Xoá thành công!', 'success');
             } else showAlert('Có lỗi xảy ra, vui lòng tải lại trang và thử lại!', 'error');
         }
-
         setOpen(false);
         setLoadingDelete(false);
     }
@@ -253,21 +228,18 @@ export default function FilmManager({
                 không?
             </AlertDialog>
 
-            {useMemo(
-                () => (
-                    <MovieForm
-                        dataGrid={dataGrid}
-                        setDataGrid={setDataGrid}
-                        key={valueFilm.film_id}
-                        defaultValue={valueFilm}
-                        film_id={film_id_form}
-                        isOpen={openForm}
-                        handleClose={handleCloseForm}
-                        tags={sideFormInfo.tags}
-                        countrys={sideFormInfo.countrys}
-                    ></MovieForm>
-                ),
-                [valueFilm, sideFormInfo.tags, sideFormInfo.countrys, openForm, film_id_form],
+            {formOpen && (
+                <MovieForm
+                    dataGrid={films}
+                    setDataGrid={(data: any) => dispatch(setFilms(data))}
+                    key={selectedFilm?.film_id}
+                    defaultValue={selectedFilm}
+                    film_id={selectedFilm?.film_id}
+                    isOpen={formOpen}
+                    handleClose={handleCloseForm}
+                    tags={sideFormInfo.tags}
+                    countrys={sideFormInfo.countrys}
+                />
             )}
 
             <h1 className={cx('title_name')}>{title_name}</h1>
@@ -278,7 +250,7 @@ export default function FilmManager({
                     },
                 }}
                 columns={colum}
-                rows={dataGrid}
+                rows={films}
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 checkboxSelection
                 onRowSelectionModelChange={(newRowSelectionModel) => {
