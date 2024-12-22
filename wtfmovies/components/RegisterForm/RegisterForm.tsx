@@ -188,16 +188,16 @@ function RegisterForm() {
                 </Form.Group>
 
                 <Form.Group className="mb-3" controlId="formName">
-                    <Form.Label column>Tên hiễn thị</Form.Label>
+                    <Form.Label column>Tên hiển thị</Form.Label>
                     <Form.Control
                         className={cx('text-input')}
                         type="text"
-                        placeholder="Tên hiễn thị"
+                        placeholder="Tên hiển thị"
                         name="name"
                         onChange={(e) => handleInput(e)}
                     />
                     <Form.Text id="name-describe" className={cx('alert')} hidden={!state.signupNameAlert}>
-                        Tên hiễn thị không hợp lệ!
+                        Tên hiển thị không hợp lệ!
                     </Form.Text>
                 </Form.Group>
 

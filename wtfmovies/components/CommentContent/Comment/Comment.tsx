@@ -211,7 +211,7 @@ const Comment = ({ comment, likeList }: { comment: CommentInterface; likeList?: 
                                     startIcon={<SubdirectoryArrowRightIcon />}
                                     onClick={handleMoreReply}
                                 >
-                                    Hiễn thị thêm phản hồi
+                                    hiển thị thêm phản hồi
                                 </Button>
                             )}
                         </>

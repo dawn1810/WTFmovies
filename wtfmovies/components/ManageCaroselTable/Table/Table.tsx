@@ -29,6 +29,7 @@ import style from './Table.module.scss';
 import CurrentDialog from './CurrentDialog';
 import { changeContent, changeOpen, changeType } from '~/components/Notify/notifySlide';
 import { LoadingButton } from '@mui/lab';
+import { cropImage } from '~/libs/clientFunc';
 
 const cx = classNames.bind(style);
 
@@ -44,8 +45,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     };
 
     const [open, setOpen] = useState<boolean>(false);
-    const [dialogData, setDialogData] = useState({ id: '', type: '', from: '', content: '', time: '' });
-    const [dialogType, setDialogType] = useState(true);
+    const [dialogData, setDialogData] = useState<any>(null);
     const [approveLoading, setApproveLoading] = useState(false);
 
     const [rowSelectionModel, setRowSelectionModel] = useState<GridRowSelectionModel | any>([]);
@@ -53,7 +53,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
     const columns: any = [
         { headerName: 'Id', field: 'id', width: 200 },
         { headerName: 'filmId', field: 'film_id', width: 200 },
-        { headerName: 'Hình ảnh hiễn thị', field: 'poster', width: 300 },
+        { headerName: 'Hình ảnh hiển thị', field: 'poster', width: 300 },
         { headerName: 'Tên Phim', field: 'film_name', width: 300 },
         {
             field: 'detail',
@@ -82,36 +82,27 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
 
     const handleClose = () => {
         setOpen(false);
-        setDialogType(true);
     };
 
-    const handleReply = (type: boolean) => {
-        setDialogType(type);
-    };
-
-    const handleDeleteRow = (id: string) => {
-        if (rows.length === 0) {
-            return;
-        }
-        setRows((prevRows) => prevRows.filter((row) => row.id !== id));
-    };
-
-    const handleApprove = async (ids: string[]) => {
+    const handleSave = async (data: any, cropResultBanner: any, imgBannerMovie: any) => {
         setApproveLoading(true);
-        const response = await fetch('/api/v1/admin/approveReport', {
+        const formData = new FormData();
+        const dropedImageBanner = await cropImage(imgBannerMovie, cropResultBanner);
+        if (!!dropedImageBanner) formData.append('specialPoster', dropedImageBanner);
+
+        formData.append('info', JSON.stringify(data));
+        const response = await fetch('/api/v1/admin/caroselUpdate', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ ids: ids }),
+            body: formData,
         });
 
         if (response.ok) {
-            ids.forEach((id) => {
-                handleDeleteRow(id);
-            });
+            const decodeData: any = await response.json();
+            setRows([decodeData.content, ...rows.filter((row) => row.id !== decodeData.content.id)]);
             setOpen(false);
-            showAlert('Thay đổi trạng thái thành công 😎😎😎', 'success');
+            showAlert('Thay đổi banner thành công 😎😎😎', 'success');
         } else if (response.status === 400) {
-            showAlert('Thay đổi trạng thái thất bại 😭😭😭', 'error');
+            showAlert('Thay đổi banner thất bại 😭😭😭', 'error');
         } else if (response.status === 401) {
             showAlert('Xác thực thất bại 😶‍🌫️😶‍🌫️😶‍🌫️', 'error');
         } else if (response.status === 403) {
@@ -144,6 +135,7 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
             <DataGrid
                 columns={columns}
                 rows={rows}
+                getRowId={(row) => row.id} // Add this line
                 localeText={viVN.components.MuiDataGrid.defaultProps.localeText}
                 rowSelectionModel={rowSelectionModel}
                 slots={{ toolbar: CustomToolbar }}
@@ -165,11 +157,11 @@ export default function DataGridCom({ dataset, title_name }: { dataset: any[]; t
             />
             <CurrentDialog
                 open={open}
-                dialogType={dialogType}
+                key={dialogData?.id}
+                oldId={dialogData?.id}
                 dialogData={dialogData}
                 handleClose={handleClose}
-                handleReply={handleReply}
-                handleApprove={handleApprove}
+                handleSave={handleSave}
                 approveLoading={approveLoading}
             />
         </div>

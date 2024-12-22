@@ -15,6 +15,7 @@ interface ReviewImageProps {
 
 const ReviewImage: React.FC<ReviewImageProps> = ({ classname, imageSrc, croppedArea }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
+    console.log(imageSrc);
 
     useEffect(() => {
         const drawImage = async () => {

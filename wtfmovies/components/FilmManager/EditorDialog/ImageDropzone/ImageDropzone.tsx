@@ -7,14 +7,15 @@ import ReviewImage from './ImageReview';
 const cx = classNames.bind(style);
 
 interface imageDrop {
-    setImageF: any;
+    setImageF?: any;
     setImageBannerF: any;
     imageDefault: string;
     imageBannerDefault: string;
     cropResultBanner: any;
-    cropResult: any;
+    cropResult?: any;
     setCropResultBanner: any;
-    setCropResult: any;
+    setCropResult?: any;
+    type?: "carosel" | "movies";
 }
 export default function ImageDropzone({
     cropResultBanner,
@@ -25,7 +26,10 @@ export default function ImageDropzone({
     setImageBannerF,
     imageDefault,
     imageBannerDefault,
+    type
 }: imageDrop) {
+    console.log(imageBannerDefault);
+
     const [openCropPopup, setOpenCropPopup] = useState(false);
     const [selectedImageCrop, setSelectedImageCrop] = useState<any>(null);
 
@@ -76,6 +80,7 @@ export default function ImageDropzone({
     };
     return (
         <Box className={cx('imgSellectContainer')}>
+
             <div className={cx('imgInput')} onDragOver={handleDragOver} onDrop={() => handleDrop(event, 'banner')}>
 
                 <div className={cx("addnew")}>
@@ -90,7 +95,7 @@ export default function ImageDropzone({
                     onClick={() => (fileInputRef1.current.value = null)}
                 />
             </div>
-            <div
+            {type === "carosel" || <div
                 id={cx('banner')}
                 className={cx('imgInputbanner')}
                 onDragOver={handleDragOver}
@@ -107,7 +112,7 @@ export default function ImageDropzone({
                     ref={fileInputRef2}
                     onClick={() => (fileInputRef2.current.value = null)}
                 />
-            </div>
+            </div>}
             <ImageCropPopup
                 open={openCropPopup}
                 setOpen={setOpenCropPopup}

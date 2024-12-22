@@ -74,7 +74,7 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
     const columns: any[] = [
         { headerName: 'STT', field: 'index', align: 'center', width: 10 },
         { headerName: 'Email', field: 'id', width: 280 },
-        { headerName: 'Tên hiễn thị', field: 'name', width: 200 },
+        { headerName: 'Tên hiển thị', field: 'name', width: 200 },
         { headerName: 'Ngày sinh', field: 'birthDate', width: 180 },
         { headerName: 'Giới tính', field: 'gender', width: 100 },
         {
@@ -406,9 +406,9 @@ export default function ManageEditorTable({ dataset, title_name }: { dataset: an
                                             action: !status
                                                 ? today < unbanDate
                                                     ? 'Bị cấm ' +
-                                                      banTime +
-                                                      ' từ ' +
-                                                      today.toISOString().substring(0, 10)
+                                                    banTime +
+                                                    ' từ ' +
+                                                    today.toISOString().substring(0, 10)
                                                     : 'Bị cấm vĩnh viễn'
                                                 : 'Gỡ cấm',
                                             time: today.toISOString(),
