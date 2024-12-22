@@ -59,7 +59,7 @@ export function WatchWithEp({
     const router = useRouter();
     // nguoi dung tung xem phim va chua hoi lan nao
     const [open, setOpen] = useState(
-        (typeof window !== 'undefined') ? (!!localStore.current && !sessionStorage.getItem(film_id)) : false);
+        (typeof window !== 'undefined') ? (!!localStore.current.curr && !sessionStorage.getItem(film_id)) : false);
 
     const updateView = useCallback(async () => {
         await fetch('/api/v1/updateView', {
@@ -110,6 +110,7 @@ export function WatchWithEp({
         if (typeof window !== 'undefined') {
             sessionStorage.setItem(film_id, '1'); // to know user used to answer this film
         }
+        handleClose();
         router.push(`/watch/${searchName}/tap${localStore.current.curr}`);
     };
 

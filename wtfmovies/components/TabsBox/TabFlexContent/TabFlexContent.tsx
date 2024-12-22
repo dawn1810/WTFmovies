@@ -19,7 +19,7 @@ function TabFlexContent({
     episodes: [];
     active_episode?: number;
     listIdEp?: any[];
-    watchedEp?: any[];
+    watchedEp?: any;
 }) {
     const router = useRouter();
     const dispatch = useDispatch();

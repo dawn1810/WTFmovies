@@ -4,8 +4,8 @@ import FilmInfo from '~/components/FilmInfo/FilmInfo';
 import CommentContent from '~/components/CommentContent';
 import style from './Watch.module.scss';
 import TabsBox from '~/components/TabsBox';
-import { getAllFilmsComment, getFilmReviewInfo, getUserLikeComment } from '~/libs/getData/review';
-import { getCurrentUserInfo, getProposeListFilms, getUserLoveFilm } from '~/libs/getData/home';
+import { getAllFilmsComment, getFilmReviewInfo, getProposeListFilms, getUserLikeComment } from '~/libs/getData/review';
+import { getCurrentUserInfo, getUserLoveFilm } from '~/libs/getData/home';
 import { WatchWithEp } from './WatchWithEp';
 
 import type { Metadata, ResolvingMetadata } from 'next';
@@ -104,7 +104,7 @@ export default async function Watch({ params }: Props) {
     const filmReviewInfo = await getFilmReviewInfo(movieName);
     const loveFilms = await getUserLoveFilm();
 
-    const proposeListFilms = await getProposeListFilms();
+    const proposeListFilms = await getProposeListFilms(movieName);
 
     //get info from params
     const regex = /^tap\d+$/;

@@ -9,7 +9,6 @@ import FilmProposeList from '../FilmProposeList';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { showNotify } from '../Notify/notifySlide';
-import { duration } from '@mui/material';
 
 const cx = classNames.bind(style);
 
@@ -50,7 +49,7 @@ function TabBox({
     className?: string | [];
     film_id?: string;
 }) {
-    const [watchedEp, setWatchedEp] = useState([]);
+    const [watchedEp, setWatchedEp] = useState({});
 
     const dispatch = useDispatch();
 
@@ -63,36 +62,17 @@ function TabBox({
         if (!film_id) return;
         const localStore = localStorage.getItem(film_id);
         if (!localStore) {
-            // get on db
-            const getWatchedEp = async () => {
-                const response = await fetch(`/api/v1/watchHistory/getWatchedEp`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        film_id,
-                    }),
-                });
-
-                if (response.ok) {
-                    const watched: any = await response.json();
-
-                    // update danh sách đang xem
-                    // add if not exist yet
-                    if (active_episode && !watched.data[active_episode]) {
-                        watched.data[active_episode] = 0;
-                    }
-
-                    watched.data.curr = active_episode; // update curr watching episode
-                    setWatchedEp(watched.data || []);
-                    localStorage.setItem(film_id, JSON.stringify(watched.data) || '[]');
-                } else if (response.status === 500) {
-                    showAlert('Lỗi, hãy báo cáo lại với chúng tôi cảm ơn', 'error');
-                }
+            const newData: any = {
+                curr: active_episode,
             };
-            getWatchedEp();
+            if (active_episode) {
+                newData[active_episode] = 0;
+            }
+            setWatchedEp(newData);
+            localStorage.setItem(film_id, JSON.stringify(newData));
         } else {
-            const newData = JSON.parse(localStore || '[]');
-
+            const newData = JSON.parse(localStore || '{}');
+        
             if (active_episode && !newData[active_episode]) {
                 newData[active_episode] = 0;
             }
