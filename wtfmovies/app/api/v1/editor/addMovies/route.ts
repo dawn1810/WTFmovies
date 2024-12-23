@@ -105,12 +105,18 @@ export async function POST(request: NextRequest) {
             }
 
             if (proListEp.length > 0) {
-                await mongodb()
-                    .db('film')
-                    .collection('episode')
-                    .deleteMany({ filter: { film_id: film_id } });
-
-                await mongodb().db('film').collection('episode').insertMany(proListEp);
+                for (const ep of proListEp) {
+                    await mongodb()
+                        .db('film')
+                        .collection('episode')
+                        .updateOne(
+                            {
+                                filter: { film_id: ep.film_id, index: ep.index },
+                                update: { $set: ep },
+                                upsert: true
+                            }
+                        );
+                }
             }
 
             // add author, actor, director, tag, genre

@@ -200,11 +200,11 @@ export interface FilmInfo {
     director?: string[];
     duration?: number;
     videoType?:
-        | {
-              title?: string;
-              episode?: number[];
-          }[]
-        | any;
+    | {
+        title?: string;
+        episode?: number[];
+    }[]
+    | any;
     tag?: string[];
     releaseYear?: Date;
     country?: string;
@@ -466,6 +466,7 @@ export interface AdminDatasetInterface {
 }
 
 export interface EditorDatasetInterface {
+    // all: any;
     view: LineChartDataInterface[];
     likes: LineChartDataInterface[];
     eps: LineChartDataInterface[];

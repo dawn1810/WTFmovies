@@ -9,6 +9,11 @@
     gap: 10px;
     grid-template-areas:
         "num1 num2 num3"
-        "table1 table1 pie"
+        "table1 table1 pie";
 
+    .fab {
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+    }
 }

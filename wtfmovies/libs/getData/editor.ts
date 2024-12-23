@@ -260,6 +260,14 @@ export const getTopHotFilm = async (sortField: 'views' | 'likes' | 'comments', t
                 pipeline: [
                     { $match: querys },
                     {
+                        $lookup: {
+                            from: 'episode',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'reviews',
+                        },
+                    },
+                    {
                         $project: {
                             _id: 1,
                             name: 1,
@@ -272,6 +280,8 @@ export const getTopHotFilm = async (sortField: 'views' | 'likes' | 'comments', t
                             weekViews: 1,
                             weekLikes: 1,
                             weekComments: 1,
+                            rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+
                         },
                     },
                     { $sort: sortObject },
