@@ -35,6 +35,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { showNotify } from '~/components/Notify/notifySlide';
 import { generateUUIDv4 } from '~/libs/clientFunc';
 import { setFilms, setSelectedFilm, setFormOpen } from './filmManagerSlice';
+import * as XLSX from 'xlsx';
 
 const cx = classNames.bind(style);
 
@@ -125,6 +126,20 @@ export default function FilmManager({
         });
     };
 
+    const getExcelData = (apiRef: React.MutableRefObject<GridApi>) => {
+        const filteredSortedRowIds = gridFilteredSortedRowIdsSelector(apiRef);
+        const visibleColumnsField = gridVisibleColumnFieldsSelector(apiRef);
+        const data = filteredSortedRowIds.map((id) => {
+            const row: Record<string, any> = {};
+            visibleColumnsField.forEach((field) => {
+                const cellValue = apiRef.current.getCellParams(id, field).value;
+                row[field] = Array.isArray(cellValue) ? cellValue.join(', ') : cellValue;
+            });
+            return row;
+        });
+        return data;
+    };
+
     function JsonExportMenuItem(props: GridExportMenuItemProps<{}>) {
         const apiRef = useGridApiContext();
         const { hideMenu } = props;
@@ -138,6 +153,60 @@ export default function FilmManager({
                 }}
             >
                 Xuất JSON
+            </MenuItem>
+        );
+    }
+
+    function ExcelExportMenuItem(props: GridExportMenuItemProps<{}>) {
+        const apiRef = useGridApiContext();
+        const { hideMenu } = props;
+        return (
+            <MenuItem
+                onClick={() => {
+                    const excelData = getExcelData(apiRef);
+                    const worksheet = XLSX.utils.json_to_sheet(excelData);
+
+                    // Set column widths
+                    const colWidths = excelData.reduce((acc: any[], row: { [x: string]: { toString: () => any; }; }) => {
+                        Object.keys(row).forEach((key, index) => {
+                            const value = row[key] ? row[key].toString() : '';
+                            acc[index] = Math.max(acc[index] || 10, value.length + 2);
+                        });
+                        return acc;
+                    }, []);
+                    worksheet['!cols'] = colWidths.map((width: any) => ({ wch: width }));
+
+                    // Add header styling
+                    const headerRange = XLSX.utils.decode_range(worksheet['!ref'] || 'A1');
+                    for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+                        const address = XLSX.utils.encode_col(C) + '1';
+                        if (!worksheet[address]) continue;
+                        if (!worksheet[address].s) worksheet[address].s = {};
+                        worksheet[address].s = {
+                            font: { bold: true, color: { rgb: 'FFFFFF' } },
+                            fill: { fgColor: { rgb: '4F81BD' } },
+                            alignment: { horizontal: 'center' },
+                        };
+                    }
+
+                    // Add alternating row background colors
+                    for (let R = headerRange.s.r + 1; R <= headerRange.e.r; ++R) {
+                        const isEvenRow = (R % 2 === 0);
+                        for (let C = headerRange.s.c; C <= headerRange.e.c; ++C) {
+                            const address = XLSX.utils.encode_cell({ r: R, c: C });
+                            if (!worksheet[address]) continue;
+                            if (!worksheet[address].s) worksheet[address].s = {};
+                            worksheet[address].s.fill = { fgColor: { rgb: isEvenRow ? 'F2F2F2' : 'FFFFFF' } };
+                        }
+                    }
+
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, 'Danh sách tập phim');
+                    XLSX.writeFile(workbook, 'Danh sách tập phim.xlsx');
+                    hideMenu?.();
+                }}
+            >
+                Xuất Excel
             </MenuItem>
         );
     }
@@ -178,6 +247,7 @@ export default function FilmManager({
                         }}
                     />
                     <JsonExportMenuItem />
+                    <ExcelExportMenuItem />
                 </GridToolbarExportContainer>
                 <Button className={cx('btncustom')} onClick={handleView} disabled={rowSelectionModel.length !== 1} variant="outlined">
                     <EyesIcon />
