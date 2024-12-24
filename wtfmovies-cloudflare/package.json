@@ -13,7 +13,6 @@
     "cf-typegen": "wrangler types --env-interface CloudflareEnv env.d.ts"
   },
   "dependencies": {
-    "next": "15.1.0",
     "@ducanh2912/next-pwa": "^10.2.6",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
@@ -37,8 +36,10 @@
     "hls.js": "^1.5.8",
     "mongodb": "^6.12.0",
     "mongodb-cloudflare": "^1.0.2",
+    "next": "15.1.0",
     "next-auth": "^5.0.0-beta.18",
     "next-client-cookies": "^1.1.0",
+    "next-ws": "^1.1.1",
     "normalize.css": "^8.0.1",
     "react-bootstrap": "^2.10.1",
     "react-easy-crop": "^5.0.7",
@@ -50,6 +51,7 @@
     "slick-carousel": "^1.8.1",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
+    "ws": "^8.18.0",
     "xlsx": "^0.18.5"
   },
   "peerDependencies": {
@@ -57,17 +59,18 @@
     "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "eslint": "^9",
-    "eslint-config-next": "15.1.0",
     "@cloudflare/next-on-pages": "^1.10.0",
     "@cloudflare/workers-types": "^4.20240314.0",
+    "@eslint/eslintrc": "^3",
     "@mui/x-data-grid-generator": "^7.0.0",
     "@types/classnames": "^2.3.1",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/react-slick": "^0.23.13",
+    "@types/ws": "^8.5.13",
+    "eslint": "^9",
+    "eslint-config-next": "15.1.0",
     "sass": "^1.72.0",
     "typescript": "^5",
     "vercel": "^33.6.1",
