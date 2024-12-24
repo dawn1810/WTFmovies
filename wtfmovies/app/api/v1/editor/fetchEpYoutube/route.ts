@@ -47,7 +47,7 @@ export async function POST(request: NextRequest) {
         if (!session) return toError('Xác thực thất bại', 401);
 
         const extendedUser: ExtendedUser | undefined = session?.user;
-        if (extendedUser?.role === 'editor') {
+        if (extendedUser?.role === 'editor' || extendedUser?.role === 'admin') {
             const {
                 type,
                 playlistId,
@@ -70,7 +70,7 @@ export async function POST(request: NextRequest) {
 
             if (type === 'fetchEpisodes') return toJSON(episodeList, 200);
 
-            return toError('Đăng tải phim không thành công', 400);
+            return toError('Đăng tải phim thất bại', 400);
         }
         return toJSON('😎😎😎', 200);
 
