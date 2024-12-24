@@ -30,3 +30,4 @@ yarn-error.log*
 **/public/sw.js.map
 # Exclude worker.js files in the public directory
 **/public/worker-*.js
+node_modules
