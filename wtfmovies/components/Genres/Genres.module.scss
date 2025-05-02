@@ -1,24 +1,32 @@
 .wrapper {
-    width: var(--default-layout-width);
+    width: 100%;
+
+    // width: var(--default-layout-width);
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--card-blur-color);
+    backdrop-filter: blur(10px);
+    border-radius: 0px 0px 8px 8px;
 
     .genres {
         display: flex;
         gap: 5px;
-        padding: 10px 0;
         overflow: hidden;
 
         .genres-carousel {
             display: flex;
             justify-content: center;
-            div {
-                width: var(--default-layout-width);
+
+            &>div {
+                // width: var(--default-layout-width);
+                width: 100%;
                 display: flex;
                 gap: 10px;
-                padding: 10px;
+                padding: 10px 9% 10px 9%;
+                align-items: center;
+
             }
         }
     }
@@ -34,13 +42,28 @@
 
     .left-btn {
         left: 0;
-        background: rgb(1, 0, 15);
-        background: linear-gradient(90deg, rgba(1, 0, 15, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
+        width: 9%;
+        background: linear-gradient(90deg, rgba(15, 15, 15, 1) 0%, rgba(15, 15, 15, 1) 69%, rgba(255, 255, 255, 0) 100%);
+        transition: 0.3s;
+
+        &:hover {
+            color: var(--highlight-color);
+
+        }
     }
+
     .right-btn {
         right: 0;
-        background: rgb(1, 0, 15);
-        background: linear-gradient(90deg, rgba(1, 0, 15, 0) 0%, rgba(0, 0, 0, 0.8) 100%);
+        width: 9%;
+        background: linear-gradient(-90deg, rgba(15, 15, 15, 1) 0%, rgba(15, 15, 15, 1) 69%, rgba(255, 255, 255, 0) 100%);
+        transition: 0.3s;
+
+        &:hover {
+            color: var(--highlight-color);
+
+        }
+
+
     }
 }
 

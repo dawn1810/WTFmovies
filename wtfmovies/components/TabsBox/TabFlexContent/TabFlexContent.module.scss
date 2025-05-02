@@ -2,7 +2,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
-    justify-content: center;
+    justify-content: flex-start;
+
 
     .expisode {
         position: relative;
@@ -12,6 +13,19 @@
         padding: 1px;
         margin-left: 0;
 
+        &.watched {
+            background-color: var(--body-color);
+        }
+
+
+        &.watching,
+        &:disabled {
+            opacity: 1;
+            background-color: var(--primary-active);
+            color: var(--body-color);
+        }
+
+
         span {
             position: absolute;
             width: max-content;
@@ -19,5 +33,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
+    }
+}
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+        justify-content: center;
     }
 }

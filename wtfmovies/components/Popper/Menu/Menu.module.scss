@@ -2,7 +2,12 @@
     width: 250px;
 
     .menu-item {
-        margin-left: 0;
+        margin-left: 0 !important;
+        background-color: transparent;
+
+        &:hover {
+            background-color: var(--highlight-color);
+        }
     }
 }
 
@@ -24,10 +29,12 @@
         background-color: transparent;
         border: none;
         backdrop-filter: none;
+
         &:hover {
             transition-duration: 300ms;
             background-color: var(--primary-hover);
         }
+
         &:active {
             color: var(--text-color);
             transition-duration: 300ms;
@@ -43,8 +50,8 @@
 .menu-item {
     color: var(--text-color);
     width: 100%;
-    justify-content: flex-start;
-    border-radius: 0;
+    justify-content: flex-start !important;
+    border-radius: 0 !important;
     padding: 11px 16px;
     line-height: 1.8rem;
 
@@ -56,6 +63,7 @@
         transition-duration: 300ms;
         background-color: var(--blur-background-color);
     }
+
     &:active {
         transition-duration: 300ms;
         background: var(--primary-active);

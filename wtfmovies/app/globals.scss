@@ -9,6 +9,7 @@ $primary-active: #ffffff;
 $primary-hover: transparentize($primary-active, 0.7);
 $highlight-color: #aa2020;
 $green-highlight-color: #b5e745;
+$submit-color: #0d6efd;
 $lighten-primary-active-color: transparentize($primary-active, 0.9);
 $text-color: #ffffff;
 $body-color: #000000;
@@ -16,6 +17,10 @@ $background-color: #0f0f0f;
 $card-blur-color: transparentize($background-color, 0.2);
 $card-background-color: #272727;
 $blur-background-color: transparentize($card-background-color, 0.8);
+
+// html {
+//     scroll-behavior: smooth !important;
+// }
 
 :root {
     //color search btn
@@ -28,6 +33,7 @@ $blur-background-color: transparentize($card-background-color, 0.8);
     --lighten-primary-active-color: #{$lighten-primary-active-color};
     --highlight-color: #{$highlight-color};
     --green-highlight-color: #{$green-highlight-color};
+    --submit-color: #{$submit-color};
     --text-color: #{$text-color};
     --body-color: #{$body-color};
     --card-background-color: #{$card-background-color};
@@ -41,9 +47,12 @@ $blur-background-color: transparentize($card-background-color, 0.8);
     // layout
     --default-layout-header-height: 80px;
     --default-layout-width: 1250px;
+    --default-max-height: 705px;
+
     --default-layout-horizontal-spacer: 24px;
     //
     --bs-link-hover-color: var(--highlight-color);
+
 }
 
 
@@ -55,16 +64,24 @@ $blur-background-color: transparentize($card-background-color, 0.8);
 
 html {
     font-size: 62.5%;
+    height: 100svh;
+    overflow-y: auto;
+    overflow-x: hidden;
+
 }
 
 body {
+
+    // width: calc(100vw + 8px);
+    padding-right: 0 !important;
+    padding-top: 150px;
     font-family: var(--font-family);
     font-size: 1.6rem;
     line-height: 1.5;
     text-rendering: optimizespeed;
     background-color: var(--background-color);
     color: var(--body-color);
-    overflow-y: auto;
+    // overflow-y: auto;
 }
 
 // Scrollbar CSS
@@ -89,6 +106,10 @@ input,
 [tabindex] {
     outline: none;
     border: none;
+}
+
+p {
+    margin: 0;
 }
 
 a {
@@ -131,6 +152,26 @@ body {
 /** Mobile layout **/
 @media screen and (max-width: 1024px) {
     :root {
-        --default-layout-width: 100%;
+        --default-layout-width: 95%;
     }
+}
+
+// Animation
+@keyframes rotate {
+    0% {
+        transform: scale(0.9, 1.1);
+    }
+
+    50% {
+        transform: scale(1.1, 0.9);
+    }
+
+    100% {
+        transform: scale(0.9, 1.1);
+    }
+}
+
+#layout-main-content {
+    overflow: auto;
+    height: 88vh;
 }

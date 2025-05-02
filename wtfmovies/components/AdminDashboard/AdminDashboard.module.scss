@@ -1,0 +1,20 @@
+.wrapper {
+    position: relative;
+    width: var(--default-layout-width);
+    margin: 0 auto;
+    padding: 10px;
+    display: grid;
+    grid-template-columns: repeat(3, calc(100% / 3));
+    grid-template-rows: repeat(3, auto);
+    gap: 10px;
+    grid-template-areas:
+        "num1 num2 num3"
+        "bar1 bar1 table1"
+        "bar2 pie table2";
+
+    .fab {
+        position: fixed;
+        bottom: 18px;
+        right: 18px;
+    }
+}

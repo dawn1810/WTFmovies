@@ -204,7 +204,7 @@ async function runFFmpegCommand(inputFile, outputDir) {
 		console.log(`Command`, command);
 
 		const { stdout, stderr } = await execPromise(command);
-		// await fullresTiktokupload(listPathM3U8);
+		await fullresTiktokupload(listPathM3U8);
 		console.log(`Command Output for ${inputFile}:`, stdout);
 		console.error(`Command Errors for ${inputFile}:`, stderr);
 		// Thông báo hoàn thành

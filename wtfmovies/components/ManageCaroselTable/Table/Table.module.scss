@@ -1,0 +1,39 @@
+.dataGrid {
+    .title_name {
+        color: var(--text-color);
+    }
+
+    display: flex;
+    padding: 30px;
+    gap: 30px;
+    flex-direction: column;
+    width: 100%;
+    font-size: '20px';
+    height: 80vh;
+
+}
+
+.btncustom {
+    height: 27.91167px;
+    border: 1px solid transparent;
+}
+
+.iconBtn {
+    margin-right: 8px;
+    margin-left: -2px;
+
+}
+
+.dialog-title {
+    min-width: 400px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.mail-form {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}

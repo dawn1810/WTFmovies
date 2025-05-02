@@ -1,0 +1,21 @@
+.btn-group {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    z-index: 2;
+
+    a {
+        width: unset !important;
+    }
+
+    // .action-btn {
+    //     display: flex;
+    //     align-items: center;
+    //     border-radius: 999px;
+    //     font-size: 2.2rem;
+    //     color: var(--text-color);
+    //     background-color: var(--card-blur-color);
+    //     padding: 4px 10px;
+    //     cursor: pointer;
+    // }
+}

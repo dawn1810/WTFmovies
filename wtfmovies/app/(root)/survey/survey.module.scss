@@ -1,0 +1,18 @@
+.wrapper {
+    position: relative;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 28px;
+}
+
+/** Mobile layout **/
+// @media screen and (max-width: 1024px) {
+//     .wrapper {
+
+//         .login-form {
+//             width: 98%;
+//         }
+//     }
+// }

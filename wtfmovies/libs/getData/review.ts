@@ -1,0 +1,307 @@
+import { mongodb } from '~/libs/func';
+import {
+    CommentInterface,
+    ExtendedUser,
+    FilmInfoInterface,
+    LikeCommentListInterface,
+    UserInfoInterface,
+} from '../interfaces';
+import { auth } from '~/app/api/auth/[...nextauth]/auth';
+
+export const getFilmReviewInfo = async (filmName: string): Promise<FilmInfoInterface> => {
+    try {
+        const films: FilmInfoInterface[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    { $match: { searchName: filmName, status: { $ne: 'delete' } } },
+                    {
+                        $lookup: {
+                            from: 'author',
+                            let: { authorIds: '$author' }, // Define the local variable authorIds
+                            pipeline: [
+                                { $match: { $expr: { $in: ['$_id', '$$authorIds'] } } }, // Match the author ids
+                                { $project: { _id: 0, name: 1 } }, // Get name only
+                            ],
+                            as: 'authorDetails',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'genre',
+                            let: { genreIds: '$genre' }, // Define the local variable genreIds
+                            pipeline: [
+                                { $match: { $expr: { $in: ['$_id', '$$genreIds'] } } }, // Match the genre ids
+                                { $project: { _id: 0, name: 1 } }, // Get name only
+                            ],
+                            as: 'genreDetails',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'director',
+                            let: { directorIds: '$director' }, // Define the local variable genreIds
+                            pipeline: [
+                                { $match: { $expr: { $in: ['$_id', '$$directorIds'] } } }, // Match the genre ids
+                                { $project: { _id: 0, name: 1 } }, // Get name only
+                            ],
+                            as: 'directorDetails',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'actor',
+                            let: { actorIds: '$actor' }, // Define the local variable genreIds
+                            pipeline: [
+                                { $match: { $expr: { $in: ['$_id', '$$actorIds'] } } }, // Match the genre ids
+                                { $project: { _id: 0, name: 1 } }, // Get name only
+                            ],
+                            as: 'actorDetails',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'tag',
+                            localField: 'tag',
+                            foreignField: '_id',
+                            pipeline: [
+                                { $project: { _id: 0, name: 1 } }, // Get name only
+                            ],
+                            as: 'tagDetails',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'episode',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'reviews',
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'country',
+                            localField: 'country',
+                            foreignField: '_id',
+                            as: 'country',
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            film_id: 1,
+                            name: 1,
+                            searchName: 1,
+                            describe: 1,
+                            author: '$authorDetails.name',
+                            genre: '$genreDetails.name',
+                            director: '$directorDetails.name',
+                            videoType: 1,
+                            views: 1,
+                            likes: 1,
+                            maxEp: 1,
+                            rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                            img: 1,
+                            status: 1,
+                            duration: 1,
+                            tag: '$tagDetails.name',
+                            releaseYear: 1,
+                            country: '$country.label',
+                            actor: '$actorDetails.name',
+                        },
+                    },
+                    { $limit: 1 },
+                ],
+            });
+
+        return films[0];
+    } catch (err) {
+        console.log('😨😨😨 error at review/getFilmReviewInfo function  : ', err);
+        return {
+            name: '',
+            film_id: '',
+            searchName: '',
+            describe: '',
+            author: [],
+            genre: [],
+            maxEp: null,
+            videoType: [],
+            views: 0,
+            likes: 0,
+            rating: 0,
+        };
+    }
+};
+
+interface CommentsFilmsInterface {
+    comments: CommentInterface[];
+}
+
+export const getAllFilmsComment = async (filmName: string): Promise<CommentInterface[]> => {
+    try {
+        const comments: CommentsFilmsInterface[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    { $match: { status: { $ne: false } } },
+                    { $match: { searchName: filmName } },
+                    { $match: { comment: { $exists: true, $ne: [] } } },
+                    {
+                        $lookup: {
+                            from: 'comment',
+                            let: { commentIds: '$comment' },
+                            pipeline: [
+                                { $match: { $expr: { $in: ['$_id', '$$commentIds'] } } }, // Match the author ids
+                                { $match: { status: true } }, // This line includes only documents with status true
+                                { $project: { unlike: 0 } },
+                                { $sort: { time: -1 } },
+                                { $limit: 10 },
+                            ],
+                            as: 'commentDetails',
+                        },
+                    },
+                    {
+                        $project: {
+                            comments: '$commentDetails',
+                        },
+                    },
+                    { $limit: 1 },
+                ],
+            });
+
+        if (comments.length > 0 && comments[0].comments.length > 0) {
+            //loop to get reply comment
+            const cmtList: CommentInterface[] = await Promise.all(
+                comments[0].comments.map(async (cmt) => {
+                    const sender: UserInfoInterface[] = await mongodb()
+                        .db('user')
+                        .collection('information')
+                        .aggregate({
+                            pipeline: [
+                                { $match: { email: cmt.email } },
+                                {
+                                    $lookup: {
+                                        from: 'auth',
+                                        localField: 'email',
+                                        foreignField: 'email',
+                                        as: 'authInfo',
+                                    },
+                                },
+                                {
+                                    $unwind: '$authInfo',
+                                },
+                                {
+                                    $project: {
+                                        _id: 0,
+                                        name: 1,
+                                        avatar: '$authInfo.avatar',
+                                    },
+                                },
+                            ],
+                        });
+
+                    if (sender && sender[0]) return { ...cmt, avatar: sender[0].avatar, username: sender[0].name };
+                    return cmt;
+                }),
+            );
+
+            return cmtList;
+        } else {
+            return [];
+        }
+    } catch (err) {
+        console.log('😨😨😨 error at review/getAllFilmsComment function  : ', err);
+        return [];
+    }
+};
+
+export const getUserLikeComment = async (filmName: string): Promise<LikeCommentListInterface | undefined> => {
+    try {
+        const session = await auth();
+
+        if (!session) return undefined;
+
+        const extendedUser: ExtendedUser | undefined = session?.user;
+
+        const likeList: any = await mongodb()
+            .db('user')
+            .collection('information')
+            .findOne({
+                filter: { email: extendedUser?.email },
+                projection: {
+                    _id: 0,
+                    likeCmt: 1,
+                },
+            });
+
+        return likeList.likeCmt[filmName];
+    } catch (err) {
+        console.log('😨😨😨 error at review/getUserLikeComment function: ', err);
+        return undefined;
+    }
+};
+
+export const getProposeListFilms = async (filmName: string): Promise<FilmInfoInterface[]> => {
+    try {
+        const filmsEmbedding: any = await mongodb()
+            .db('film')
+            .collection('information')
+            .findOne({
+                filter: { searchName: filmName },
+                projection: {
+                    _id: 0,
+                    embedding: 1,
+                },
+            });
+
+        const films: FilmInfoInterface[] = await mongodb()
+            .db('film')
+            .collection('information')
+            .aggregate({
+                pipeline: [
+                    {
+                        $vectorSearch: {
+                            index: 'default',
+                            queryVector: filmsEmbedding.embedding[0], // get embedding vector
+                            path: 'embedding',
+                            exact: true,
+                            limit: 10,
+                        },
+                    },
+                    {
+                        $match: {
+                            searchName: { $ne: filmName }, // Exclude the current film
+                        },
+                    },
+                    {
+                        $lookup: {
+                            from: 'episode',
+                            localField: 'film_id',
+                            foreignField: 'film_id',
+                            as: 'reviews',
+                        },
+                    },
+                    {
+                        $project: {
+                            _id: 0,
+                            film_id: 1,
+                            img: 1,
+                            name: 1,
+                            searchName: 1,
+                            videoType: 1,
+                            views: 1,
+                            rating: { $round: [{ $avg: '$reviews.rating' }, 1] },
+                        },
+                    },
+                    { $sort: { likes: -1, views: -1, rating: -1 } },
+                ],
+            });
+
+        return films;
+    } catch (err) {
+        console.log('😨😨😨 at home/getProposeListFilms function  : ', err);
+        return [];
+    }
+};

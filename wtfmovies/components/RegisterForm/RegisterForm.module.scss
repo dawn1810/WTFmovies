@@ -1,0 +1,141 @@
+.wrapper {
+    position: relative;
+    height: fit-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 28px;
+
+    .title {
+        align-self: center;
+        font-size: 2.8rem;
+        font-weight: 600;
+        color: var(--text-color);
+    }
+
+    .background-image {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: -1;
+    }
+
+    .login-form {
+        width: 40%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border-radius: 5px;
+        padding: 28px;
+        background-color: var(--card-background-color);
+        animation: form-appear ease-in-out .5s;
+
+        label {
+            color: var(--text-color);
+        }
+
+        .text-input {
+            padding: 6px 8px;
+            font-size: 1.6rem;
+        }
+
+        .submit {
+            margin-left: 0;
+            background-color: var(--submit-color);
+
+            opacity: 0.8;
+
+            &:hover {
+                opacity: 1;
+            }
+
+            &:active {
+                opacity: 0.8;
+                color: var(--text-color);
+            }
+        }
+
+        .quest-image {
+            justify-self: center;
+            align-self: center;
+            object-fit: cover;
+            border-radius: 5px;
+            background-position: center;
+            margin: 18px 0;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+
+            .submit {
+                width: 50%;
+            }
+
+            .skip {
+                width: 50%;
+                margin-left: 0;
+                background-color: var(--background-color);
+                opacity: 0.5;
+
+                &:hover {
+                    opacity: 1;
+                }
+
+                &:active {
+                    opacity: 0.5;
+                    color: var(--text-color);
+                }
+            }
+        }
+
+        .alert {
+            color: var(--highlight-color);
+            font-weight: 600;
+        }
+
+        .pass-form {
+            position: relative;
+
+            .passEye {
+                position: absolute;
+                top: 42px;
+                right: 10px;
+                background-color: transparent;
+            }
+
+        }
+
+        .notify-text {
+            color: var(--text-color);
+        }
+    }
+
+    .a-form {
+        animation: form-appear ease-in-out .5s;
+    }
+}
+
+@keyframes form-appear {
+    from {
+        scale: 0.8;
+        opacity: 0;
+    }
+
+    to {
+        scale: 1;
+        opacity: 1;
+    }
+}
+
+
+/** Mobile layout **/
+@media screen and (max-width: 1024px) {
+    .wrapper {
+
+        .login-form {
+            width: 98%;
+        }
+    }
+}
